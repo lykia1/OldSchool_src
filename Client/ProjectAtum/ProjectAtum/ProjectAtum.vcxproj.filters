@@ -1,0 +1,410 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{1fefbe6b-91d1-410b-8028-6d1ff32fb4ed}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{d7e60817-7ec2-4c6e-a020-ffa5b4ac321e}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Resource Files">
+      <UniqueIdentifier>{57b92483-f852-45aa-92f0-c3f748688a62}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+    <Filter Include="DarkCrash">
+      <UniqueIdentifier>{97974d3a-8370-40af-98f6-b2cb6011352a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGui">
+      <UniqueIdentifier>{dbc98510-fde7-43ae-9b0a-7db5739fa808}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AntiCheat">
+      <UniqueIdentifier>{b64df6e2-2155-4b71-a6f8-c63b2dc639d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AdminPanel">
+      <UniqueIdentifier>{9c3477ab-3359-4eed-bbe7-25112ee46607}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{460da54d-de52-44d6-956a-833ad70d199b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main\ArenaManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main\AtumApplication.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main\AtumDatabase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main\Background.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main\CImm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main\CInput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main\CustomOptimizer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main\FieldWinSocketManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main\GlobalImage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main\IMSocketManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\InterfaceLib\main\INFCityInfinityField.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\InterfaceLib\main\INFGameMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\InterfaceLib\main\INFInfinity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main\InfinityManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main\InitThread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main\MapLoad.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main\MeshInitThread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main\ProjectAtum.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main\QuadGround.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main\QuadTree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main\SceneData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main\SinglePlayGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main\Water.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main\WorldRankManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main\DarkCrash.cpp">
+      <Filter>DarkCrash</Filter>
+    </ClCompile>
+    <ClCompile Include="main\ErrorController.cpp">
+      <Filter>DarkCrash</Filter>
+    </ClCompile>
+    <ClCompile Include="main\NTDbgHelperWindow.cpp">
+      <Filter>DarkCrash</Filter>
+    </ClCompile>
+    <ClCompile Include="main\NTExceptionCause.cpp">
+      <Filter>DarkCrash</Filter>
+    </ClCompile>
+    <ClCompile Include="main\NTFtp.cpp">
+      <Filter>DarkCrash</Filter>
+    </ClCompile>
+    <ClCompile Include="main\NTGetWinVer.cpp">
+      <Filter>DarkCrash</Filter>
+    </ClCompile>
+    <ClCompile Include="main\NTMiniDump.cpp">
+      <Filter>DarkCrash</Filter>
+    </ClCompile>
+    <ClCompile Include="main\NTSystemInfo.cpp">
+      <Filter>DarkCrash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Common\AtumNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Common\md5.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Common\MemPoolClient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Common\metafile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Common\shieldSecurity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Common\shieldSecurityDll.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Common\utility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Common\VMemClient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main\CollisionsProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main\DrawingProc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ImGui\imgui.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ImGui\imgui_additional.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ImGui\imgui_draw.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ImGui\imgui_impl_dx9.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ImGui\imgui_impl_win32.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ImGui\imgui_tables.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ImGui\imgui_widgets.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="main\EvoAntiCheat.cpp">
+      <Filter>AntiCheat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Common\EvoAdminPanel.cpp">
+      <Filter>AdminPanel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Common\EvoAP_PlayerTab.cpp">
+      <Filter>AdminPanel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Common\UpdateWinSocket.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resource\ProjectAtum.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resource\atum.ico">
+      <Filter>Header Files\Resource Files</Filter>
+    </Image>
+    <Image Include="resource\icon2.ico">
+      <Filter>Header Files\Resource Files</Filter>
+    </Image>
+    <Image Include="resource\SpaceCowboy.ico">
+      <Filter>Header Files\Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="main\ArenaManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\AtumApplication.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\AtumDatabase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\Background.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\CImm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\CInput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\CustomOptimizer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\FieldWinSocketManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\GlobalImage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\IMSocketManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\InfinityManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\InitThread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\MapLoad.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\MeshInitThread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\QuadGround.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\QuadTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\SceneData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\SinglePlayGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\TimeMgr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\Water.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\WorldRankManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\DarkCrash.h">
+      <Filter>DarkCrash</Filter>
+    </ClInclude>
+    <ClInclude Include="main\ErrorController.h">
+      <Filter>DarkCrash</Filter>
+    </ClInclude>
+    <ClInclude Include="main\NTDbgHelperWindow.h">
+      <Filter>DarkCrash</Filter>
+    </ClInclude>
+    <ClInclude Include="main\NTExceptionCause.h">
+      <Filter>DarkCrash</Filter>
+    </ClInclude>
+    <ClInclude Include="main\NTFtp.h">
+      <Filter>DarkCrash</Filter>
+    </ClInclude>
+    <ClInclude Include="main\NTGetWinVer.h">
+      <Filter>DarkCrash</Filter>
+    </ClInclude>
+    <ClInclude Include="main\NTMiniDump.h">
+      <Filter>DarkCrash</Filter>
+    </ClInclude>
+    <ClInclude Include="main\NTSystemInfo.h">
+      <Filter>DarkCrash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Common\frost.bmp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Common\HShield.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Common\LocalizeSetting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Common\md5.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Common\MemPoolClient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Common\metafile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Common\shieldSecurity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Common\shieldSecurityDll.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Common\utility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Common\VMemClient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Common\Contents.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource\resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\Trampoline.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\StringEncrypt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\CollisionsProcessor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\DrawingProc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ImGui\imconfig.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ImGui\imgui.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ImGui\imgui_additional.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ImGui\imgui_impl_dx9.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ImGui\imgui_impl_win32.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ImGui\imgui_internal.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ImGui\imstb_rectpack.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ImGui\imstb_textedit.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ImGui\imstb_truetype.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="main\EvoAntiCheat.h">
+      <Filter>AntiCheat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Common\EvoAdminPanel.h">
+      <Filter>AdminPanel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Common\EvoAP_PlayerTab.h">
+      <Filter>AdminPanel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Common\magic.h">
+      <Filter>AntiCheat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Common\UpdateWinSocket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\hsleeReadMe.txt" />
+    <Text Include="..\hssonReadMe.txt" />
+    <Text Include="..\jhahnReadMe.txt" />
+    <Text Include="..\jskimReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="resource\3dgarro.cur">
+      <Filter>Header Files\Resource Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="main\Shaders\PS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="main\Shaders\VS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+  </ItemGroup>
+</Project>

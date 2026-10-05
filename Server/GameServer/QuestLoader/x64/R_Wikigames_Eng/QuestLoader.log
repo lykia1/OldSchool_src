@@ -1,0 +1,15 @@
+﻿  Building Lexer
+  Building Parser
+  QuestLoader.y: conflicts: 2 shift/reduce
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(254,5): warning MSB8065: Niestandardowa kompilacja dla elementu „QuestLoader.l” zakończyła się pomyślnie, ale określone dane wyjściowe „c:\backkup d\oldschool_src\server\gameserver\questloader\.l.cpp” nie zostały utworzone. Może to spowodować nieprawidłowe działanie kompilacji przyrostowej.
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(254,5): warning MSB8065: Niestandardowa kompilacja dla elementu „QuestLoader.y” zakończyła się pomyślnie, ale określone dane wyjściowe „c:\backkup d\oldschool_src\server\gameserver\questloader\.cpp” nie zostały utworzone. Może to spowodować nieprawidłowe działanie kompilacji przyrostowej.
+  Quest.cpp
+  UserVariable.cpp
+  QuestLoader.cpp
+  QuestLoader.l.cpp
+  QuestLoaderParser.cpp
+  main.cpp
+  Generowanie kodu...
+  QuestLoader.vcxproj -> C:\backkup d\OldSchool_src\BuildResult\Tools\Release\x64\QuestLoader.exe
+  'pwsh.exe' is not recognized as an internal or external command,
+  operable program or batch file.

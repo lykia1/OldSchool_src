@@ -1,0 +1,111 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: SkinnedMeshLib - Win32 R_Wikigames_Eng--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\Users\krzys\AppData\Local\Temp\RSP8A80.tmp" with contents
+[
+/nologo /MT /W3 /GX /O2 /I "../DX9bLink/Include" /I "../DataRenderLib/main" /I "../InterfaceLib/main" /I "../../../common" /I "../ProjectAtum/main" /I "../DirectXLib/main" /I "../EtcLib/main" /I "../SocketLib/main" /I "../EffectLib/main" /I "main" /D "NDEBUG" /D "WIN32" /D "_MBCS" /D "_LIB" /D "_ATUM_CLIENT" /D "WIKIGAMES_ENG" /Fp"SkinnedMeshLib___Win32_R_Wikigames_Eng/SkinnedMeshLib.pch" /YX /Fo"SkinnedMeshLib___Win32_R_Wikigames_Eng/" /Fd"SkinnedMeshLib___Win32_R_Wikigames_Eng/" /FD /c 
+"D:\src_osr\Client\ProjectAtum\SkinnedMeshLib\main\SkinnedMesh.cpp"
+]
+Creating command line "cl.exe @C:\Users\krzys\AppData\Local\Temp\RSP8A80.tmp" 
+Creating command line "link.exe -lib /nologo /out:"../../Lib/Release/SkinnedMeshLib.lib"  .\SkinnedMeshLib___Win32_R_Wikigames_Eng\SkinnedMesh.obj "
+<h3>Output Window</h3>
+Compiling...
+SkinnedMesh.cpp
+../../../common\AtumParam.h(29) : warning C4005: 'POINTER_64' : macro redefinition
+        D:\Microsoft Visual Studio 6\VC98\INCLUDE\winnt.h(85) : see previous definition of 'POINTER_64'
+../../../common\AtumParam.h(805) : warning C4005: 'MAP_INFLUENCE_EVENT_LAST' : macro redefinition
+        ../../../common\AtumParam.h(800) : see previous definition of 'MAP_INFLUENCE_EVENT_LAST'
+D:\src_osr\Client\ProjectAtum\SkinnedMeshLib\main\SkinnedMesh.h(1) : error C2018: unknown character '0xef'
+D:\src_osr\Client\ProjectAtum\SkinnedMeshLib\main\SkinnedMesh.h(1) : error C2018: unknown character '0xbb'
+D:\src_osr\Client\ProjectAtum\SkinnedMeshLib\main\SkinnedMesh.h(1) : error C2018: unknown character '0xbf'
+../../../common\GameDataLast.h(18) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(18) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(18) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(18) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(18) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(18) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(18) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(18) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(18) : error C2059: syntax error : '{'
+../../../common\GameDataLast.h(18) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(29) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(29) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(29) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(29) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(29) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(29) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(29) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(29) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(29) : error C2059: syntax error : '{'
+../../../common\GameDataLast.h(29) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(38) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(38) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(38) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(38) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(38) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(38) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(38) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(39) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(39) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(39) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(39) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(39) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(39) : error C2059: syntax error : '{'
+../../../common\GameDataLast.h(39) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(53) : error C2059: syntax error : '['
+../../../common\GameDataLast.h(54) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(57) : error C2059: syntax error : '['
+../../../common\GameDataLast.h(58) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(93) : error C2146: syntax error : missing ';' before identifier 'override'
+../../../common\GameDataLast.h(93) : error C2501: 'override' : missing storage-class or type specifiers
+../InterfaceLib/main\INFBase.h(86) : warning C4099: 'DataHeader' : type name first seen using 'struct' now seen using 'class'
+        ../../../common\GameDataLast.h(22) : see declaration of 'DataHeader'
+../InterfaceLib/main\INFGameMainQSlot.h(115) : error C2239: unexpected token '{' following declaration of 'm_pSelectItem'
+../InterfaceLib/main\INFGameMainQSlot.h(125) : error C2143: syntax error : missing ';' before 'protected'
+../InterfaceLib/main\INFGameMainQSlot.h(129) : error C2239: unexpected token '{' following declaration of 'm_pImgTabButton'
+../InterfaceLib/main\INFGameMainQSlot.h(131) : error C2239: unexpected token '{' following declaration of 'm_nButtonState'
+../InterfaceLib/main\INFGameMainQSlot.h(136) : error C2239: unexpected token '{' following declaration of 'm_vecFontLine'
+../InterfaceLib/main\INFGameMainQSlot.h(137) : error C2239: unexpected token '{' following declaration of 'm_vecFontKitCD'
+../InterfaceLib/main\INFGameMainQSlot.h(155) : error C2143: syntax error : missing ';' before '}'
+../InterfaceLib/main\INFGameMainQSlot.h(155) : error C2143: syntax error : missing ';' before '}'
+../InterfaceLib/main\INFGameMainQSlot.h(155) : error C2143: syntax error : missing ';' before '}'
+D:\src_osr\Client\ProjectAtum\SkinnedMeshLib\main\SkinnedMesh.cpp(972) : error C2039: 'GetStartPosition' : is not a member of 'CGameData'
+        ../../../common\GameDataLast.h(34) : see declaration of 'CGameData'
+D:\src_osr\Client\ProjectAtum\SkinnedMeshLib\main\SkinnedMesh.cpp(978) : error C2039: 'GetNext' : is not a member of 'CGameData'
+        ../../../common\GameDataLast.h(34) : see declaration of 'CGameData'
+D:\src_osr\Client\ProjectAtum\SkinnedMeshLib\main\SkinnedMesh.cpp(2048) : error C2065: '_malloca' : undeclared identifier
+D:\src_osr\Client\ProjectAtum\SkinnedMeshLib\main\SkinnedMesh.cpp(2193) : error C2065: 'nullptr' : undeclared identifier
+D:\src_osr\Client\ProjectAtum\SkinnedMeshLib\main\SkinnedMesh.cpp(2193) : error C2446: '==' : no conversion from 'int' to 'struct SMatrixKey *'
+        Conversion from integral type to pointer type requires reinterpret_cast, C-style cast or function-style cast
+D:\src_osr\Client\ProjectAtum\SkinnedMeshLib\main\SkinnedMesh.cpp(2193) : error C2040: '==' : 'struct SMatrixKey *' differs in levels of indirection from 'int'
+D:\src_osr\Client\ProjectAtum\SkinnedMeshLib\main\SkinnedMesh.cpp(3731) : error C2446: '==' : no conversion from 'int' to 'class CGameData *'
+        Conversion from integral type to pointer type requires reinterpret_cast, C-style cast or function-style cast
+D:\src_osr\Client\ProjectAtum\SkinnedMeshLib\main\SkinnedMesh.cpp(3731) : error C2040: '==' : 'class CGameData *' differs in levels of indirection from 'int'
+D:\src_osr\Client\ProjectAtum\SkinnedMeshLib\main\SkinnedMesh.cpp(3741) : error C2440: 'initializing' : cannot convert from 'const char *' to 'int'
+        This conversion requires a reinterpret_cast, a C-style cast or function-style cast
+D:\src_osr\Client\ProjectAtum\SkinnedMeshLib\main\SkinnedMesh.cpp(3742) : error C2664: 'strstr' : cannot convert parameter 1 from 'int' to 'const char *'
+        Conversion from integral type to pointer type requires reinterpret_cast, C-style cast or function-style cast
+D:\src_osr\Client\ProjectAtum\SkinnedMeshLib\main\SkinnedMesh.cpp(3744) : error C2664: 'strlen' : cannot convert parameter 1 from 'int' to 'const char *'
+        Conversion from integral type to pointer type requires reinterpret_cast, C-style cast or function-style cast
+D:\src_osr\Client\ProjectAtum\SkinnedMeshLib\main\SkinnedMesh.cpp(3748) : error C2664: 'strlen' : cannot convert parameter 1 from 'int' to 'const char *'
+        Conversion from integral type to pointer type requires reinterpret_cast, C-style cast or function-style cast
+D:\src_osr\Client\ProjectAtum\SkinnedMeshLib\main\SkinnedMesh.cpp(3748) : error C2664: 'strncpy' : cannot convert parameter 2 from 'int' to 'const char *'
+        Conversion from integral type to pointer type requires reinterpret_cast, C-style cast or function-style cast
+D:\src_osr\Client\ProjectAtum\SkinnedMeshLib\main\SkinnedMesh.cpp(3938) : error C2039: 'GetStartPosition' : is not a member of 'CGameData'
+        ../../../common\GameDataLast.h(34) : see declaration of 'CGameData'
+D:\src_osr\Client\ProjectAtum\SkinnedMeshLib\main\SkinnedMesh.cpp(3944) : error C2039: 'GetNext' : is not a member of 'CGameData'
+        ../../../common\GameDataLast.h(34) : see declaration of 'CGameData'
+Error executing cl.exe.
+
+
+
+<h3>Results</h3>
+SkinnedMeshLib.lib - 67 error(s), 3 warning(s)
+</pre>
+</body>
+</html>

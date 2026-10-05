@@ -1,0 +1,79 @@
+USE [atum2_db_1]
+GO
+/****** Object:  StoredProcedure [dbo].[atum_Market_Insert_ItemRegist]    Script Date: 23/01/2024 08:18:19 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+--31-7-2021 by Inetpub
+/*
+#define MARKET_STATE_SELL					1			// ĆÇ¸ĹÁß
+#define MARKET_STATE_SELL_DONE				2			// ĆÇ¸ĹżĎ·á
+#define MARKET_STATE_TIME_OUT				3			// ±â°Ł¸¸·á
+#define MARKET_STATE_DELETE					4			// °Ĺ·ˇżĎ·á(»čÁ¦´ë»ó)
+*/
+	ALTER PROCEDURE [dbo].[atum_Market_Insert_ItemRegist]
+		@i_ItemUID					bigint,
+		@i_AccountUniqueNumber	int,
+		@i_CharacterUniqueNumber int,
+		@i_MarketKind tinyint,
+		@i_Name varchar(140),
+		@i_ItemNum int,
+		@i_Count int,
+		@i_PrefixCodeNum int,
+		@i_SuffixCodeNum int,
+		@i_ShapeItemNum int,
+		@i_ColorCode int,
+		@i_ReqMinLevel tinyint,
+		@i_ReqUnitKind int,
+		@i_MoneyType tinyint,
+		@i_Price int,
+		@i_CountableItem tinyint,
+		@i_MarketItemInfl tinyint
+	AS
+BEGIN
+	SET NOCOUNT ON;
+	IF (@i_CountableItem = 1 and @i_ItemNum in (select ItemNum from td_Market where CharacterUniqueNumber = @i_CharacterUniqueNumber and MarketState = 1 and ItemNum = @i_ItemNum))
+	BEGIN
+		RETURN;
+	END
+--INSERT
+	IF @i_ItemUID NOT IN (Select ItemUID from td_Market)
+	BEGIN
+		INSERT INTO td_Market
+		VALUES (@i_ItemUID, @i_AccountUniqueNumber, @i_CharacterUniqueNumber, @i_MarketKind,@i_Name,@i_ItemNum,
+				@i_Count, @i_PrefixCodeNum, @i_SuffixCodeNum,0/*enchant updates later*/, @i_ShapeItemNum,@i_ColorCode,@i_ReqMinLevel,@i_ReqUnitKind,GetDate(),@i_MoneyType,@i_Price,1/*state selling*/,@i_MarketItemInfl   )
+	END
+	ELSE
+	BEGIN
+		Select 1,0,0,0,0,"Item in Market",0,0,0,0,0,0,0,0,0,GetDate(),0,0,0,0
+		RETURN; -- cannot insert because already in td_Market
+	END
+--UPDATE enchants
+	UPDATE td_Market Set EnchantCount = (CASE WHEN (ItemUID in (select TargetItemUniqueNumber from td_enchant)) THEN (Select Count(TargetItemUniqueNumber) from td_enchant where TargetItemUniqueNumber = @i_ItemUID) ELSE 0 END) where ItemUID = @i_ItemUID and CharacterUniqueNumber = @i_CharacterUniqueNumber
+--update count/delete
+	IF (@i_CountableItem = 1)
+		BEGIN
+			DECLARE @CurrCnt INT
+			SET @CurrCnt = (SELECT CurrentCount from td_Store where ItemNum = @i_ItemNum and Possess = @i_CharacterUniqueNumber and ItemStorage = 0 and UniqueNumber = @i_ItemUID)
+			IF(@CurrCnt - @i_Count > 0)
+				BEGIN
+					--some items left - update count
+					UPDATE td_store set CurrentCount = CurrentCount - @i_Count where ItemNum = @i_ItemNum and Possess = @i_CharacterUniqueNumber and ItemStorage = 0 and UniqueNumber = @i_ItemUID
+				END
+			ELSE
+				BEGIN
+				  --nothing left delete
+				  DELETE FROM td_store where ItemNum = @i_ItemNum and Possess = @i_CharacterUniqueNumber and ItemStorage = 0 and UniqueNumber = @i_ItemUID
+				END
+		END
+	ELSE
+		BEGIN --21-01-2022 added for delete non countable items too
+			DELETE FROM td_store where ItemNum = @i_ItemNum and Possess = @i_CharacterUniqueNumber and uniquenumber = @i_ItemUID and itemstorage = 0
+		END
+--SELECT 
+	Select MarketUID,ItemUID,AccountUniqueNumber,CharacterUniqueNumber,MarketKind,[Name],ItemNum,[Count],PrefixCodeNum,SuffixCodeNum,EnchantCount,ShapeItemNum,
+	ColorCode,ReqMinLevel,ReqUnitKind,RegistrationTime,MoneyType,Price,MarketState,MarketItemInfl
+	from td_Market where ItemUID = @i_ItemUID and CharacterUniqueNumber = @i_CharacterUniqueNumber
+
+END

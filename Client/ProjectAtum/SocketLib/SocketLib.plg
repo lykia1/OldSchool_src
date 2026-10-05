@@ -1,0 +1,178 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: SocketLib - Win32 R_Wikigames_Eng--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\Users\krzys\AppData\Local\Temp\RSP1D89.tmp" with contents
+[
+/nologo /MT /W3 /GX /O2 /I "../DX9bLink/Include" /I "../../../common" /I "../ProjectAtum/main" /I "../DirectXLib/main" /I "../DataRenderLib/main" /I "../EtcLib/main" /I "../SkinnedMeshLib/main" /I "../InterfaceLib/main" /I "../EffectLib/main" /I "main" /D "NDEBUG" /D "WIN32" /D "_MBCS" /D "_LIB" /D "_ATUM_CLIENT" /D "WIKIGAMES_ENG" /Fp"SocketLib___Win32_R_Wikigames_Eng/SocketLib.pch" /YX /Fo"SocketLib___Win32_R_Wikigames_Eng/" /Fd"SocketLib___Win32_R_Wikigames_Eng/" /FD /c 
+"D:\src_osr\Client\ProjectAtum\SocketLib\main\FieldWinSocket.cpp"
+"D:\src_osr\Client\ProjectAtum\SocketLib\main\IMSocket.cpp"
+"D:\src_osr\Client\ProjectAtum\SocketLib\main\SocketHeader.cpp"
+"D:\src_osr\Client\ProjectAtum\SocketLib\main\WinPacket.cpp"
+"D:\src_osr\Client\ProjectAtum\SocketLib\main\WinSocket.cpp"
+]
+Creating command line "cl.exe @C:\Users\krzys\AppData\Local\Temp\RSP1D89.tmp" 
+Creating temporary file "C:\Users\krzys\AppData\Local\Temp\RSP1D8A.tmp" with contents
+[
+/nologo /out:"../../Lib/Release/SocketLib.lib" 
+.\SocketLib___Win32_R_Wikigames_Eng\FieldWinSocket.obj
+.\SocketLib___Win32_R_Wikigames_Eng\IMSocket.obj
+.\SocketLib___Win32_R_Wikigames_Eng\SocketHeader.obj
+.\SocketLib___Win32_R_Wikigames_Eng\WinPacket.obj
+.\SocketLib___Win32_R_Wikigames_Eng\WinSocket.obj
+]
+Creating command line "link.exe -lib @C:\Users\krzys\AppData\Local\Temp\RSP1D8A.tmp"
+<h3>Output Window</h3>
+Compiling...
+FieldWinSocket.cpp
+../../../common\AtumParam.h(29) : warning C4005: 'POINTER_64' : macro redefinition
+        D:\Microsoft Visual Studio 6\VC98\INCLUDE\winnt.h(85) : see previous definition of 'POINTER_64'
+../../../common\AtumParam.h(805) : warning C4005: 'MAP_INFLUENCE_EVENT_LAST' : macro redefinition
+        ../../../common\AtumParam.h(800) : see previous definition of 'MAP_INFLUENCE_EVENT_LAST'
+../InterfaceLib/main\INFGameMainQSlot.h(115) : error C2239: unexpected token '{' following declaration of 'm_pSelectItem'
+../InterfaceLib/main\INFGameMainQSlot.h(125) : error C2143: syntax error : missing ';' before 'protected'
+../InterfaceLib/main\INFGameMainQSlot.h(129) : error C2239: unexpected token '{' following declaration of 'm_pImgTabButton'
+../InterfaceLib/main\INFGameMainQSlot.h(131) : error C2239: unexpected token '{' following declaration of 'm_nButtonState'
+../InterfaceLib/main\INFGameMainQSlot.h(136) : error C2239: unexpected token '{' following declaration of 'm_vecFontLine'
+../InterfaceLib/main\INFGameMainQSlot.h(137) : error C2239: unexpected token '{' following declaration of 'm_vecFontKitCD'
+../InterfaceLib/main\INFGameMainQSlot.h(155) : error C2143: syntax error : missing ';' before '}'
+../InterfaceLib/main\INFGameMainQSlot.h(155) : error C2143: syntax error : missing ';' before '}'
+../InterfaceLib/main\INFGameMainQSlot.h(155) : error C2143: syntax error : missing ';' before '}'
+../../../common\GameDataLast.h(18) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(18) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(18) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(18) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(18) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(18) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(18) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(18) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(18) : error C2059: syntax error : '{'
+../../../common\GameDataLast.h(18) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(22) : warning C4099: 'DataHeader' : type name first seen using 'class' now seen using 'struct'
+        ../InterfaceLib/main\INFBase.h(86) : see declaration of 'DataHeader'
+../../../common\GameDataLast.h(29) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(29) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(29) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(29) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(29) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(29) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(29) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(29) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(29) : error C2059: syntax error : '{'
+../../../common\GameDataLast.h(29) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(38) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(38) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(38) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(38) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(38) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(38) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(38) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(39) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(39) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(39) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(39) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(39) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(39) : error C2059: syntax error : '{'
+../../../common\GameDataLast.h(39) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(53) : error C2059: syntax error : '['
+../../../common\GameDataLast.h(54) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(57) : error C2059: syntax error : '['
+../../../common\GameDataLast.h(58) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(93) : error C2146: syntax error : missing ';' before identifier 'override'
+../../../common\GameDataLast.h(93) : error C2501: 'override' : missing storage-class or type specifiers
+IMSocket.cpp
+../../../common\AtumParam.h(29) : warning C4005: 'POINTER_64' : macro redefinition
+        D:\Microsoft Visual Studio 6\VC98\INCLUDE\winnt.h(85) : see previous definition of 'POINTER_64'
+../../../common\AtumParam.h(805) : warning C4005: 'MAP_INFLUENCE_EVENT_LAST' : macro redefinition
+        ../../../common\AtumParam.h(800) : see previous definition of 'MAP_INFLUENCE_EVENT_LAST'
+../InterfaceLib/main\INFGameMainQSlot.h(115) : error C2239: unexpected token '{' following declaration of 'm_pSelectItem'
+../InterfaceLib/main\INFGameMainQSlot.h(125) : error C2143: syntax error : missing ';' before 'protected'
+../InterfaceLib/main\INFGameMainQSlot.h(129) : error C2239: unexpected token '{' following declaration of 'm_pImgTabButton'
+../InterfaceLib/main\INFGameMainQSlot.h(131) : error C2239: unexpected token '{' following declaration of 'm_nButtonState'
+../InterfaceLib/main\INFGameMainQSlot.h(136) : error C2239: unexpected token '{' following declaration of 'm_vecFontLine'
+../InterfaceLib/main\INFGameMainQSlot.h(137) : error C2239: unexpected token '{' following declaration of 'm_vecFontKitCD'
+../InterfaceLib/main\INFGameMainQSlot.h(155) : error C2143: syntax error : missing ';' before '}'
+../InterfaceLib/main\INFGameMainQSlot.h(155) : error C2143: syntax error : missing ';' before '}'
+../InterfaceLib/main\INFGameMainQSlot.h(155) : error C2143: syntax error : missing ';' before '}'
+../../../common\GameDataLast.h(18) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(18) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(18) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(18) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(18) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(18) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(18) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(18) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(18) : error C2059: syntax error : '{'
+../../../common\GameDataLast.h(18) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(22) : warning C4099: 'DataHeader' : type name first seen using 'class' now seen using 'struct'
+        ../InterfaceLib/main\INFBase.h(86) : see declaration of 'DataHeader'
+../../../common\GameDataLast.h(29) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(29) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(29) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(29) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(29) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(29) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(29) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(29) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(29) : error C2059: syntax error : '{'
+../../../common\GameDataLast.h(29) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(38) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(38) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(38) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(38) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(38) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(38) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(38) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(39) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(39) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(39) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(39) : error C2059: syntax error : ','
+../../../common\GameDataLast.h(39) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(39) : error C2059: syntax error : '{'
+../../../common\GameDataLast.h(39) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(53) : error C2059: syntax error : '['
+../../../common\GameDataLast.h(54) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(57) : error C2059: syntax error : '['
+../../../common\GameDataLast.h(58) : error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+../../../common\GameDataLast.h(93) : error C2146: syntax error : missing ';' before identifier 'override'
+../../../common\GameDataLast.h(93) : error C2501: 'override' : missing storage-class or type specifiers
+../../../common\AtumSound.h(1) : error C2018: unknown character '0xef'
+../../../common\AtumSound.h(1) : error C2018: unknown character '0xbb'
+../../../common\AtumSound.h(1) : error C2018: unknown character '0xbf'
+../../../common\AtumSound.h(1) : error C2014: preprocessor command must start as first nonwhite space
+../../../common\AtumSound.h(20) : error C2143: syntax error : missing ';' before '='
+../../../common\AtumSound.h(20) : error C2873: 'vectorSoundPtr' : symbol cannot be used in a using-declaration
+../../../common\AtumSound.h(20) : error C2513: 'int' : no variable declared before '='
+../../../common\AtumSound.h(25) : error C2079: 'final' uses undefined class 'CAtumSound'
+../../../common\AtumSound.h(25) : error C2239: unexpected token '{' following declaration of 'final'
+D:\src_osr\Client\ProjectAtum\SocketLib\main\IMSocket.cpp(1287) : error C2027: use of undefined type 'CAtumSound'
+        ../ProjectAtum/main\AtumApplication.h(49) : see declaration of 'CAtumSound'
+D:\src_osr\Client\ProjectAtum\SocketLib\main\IMSocket.cpp(1287) : error C2227: left of '->PlayD3DSound' must point to class/struct/union
+SocketHeader.cpp
+../../../common\AtumParam.h(29) : warning C4005: 'POINTER_64' : macro redefinition
+        D:\Microsoft Visual Studio 6\VC98\INCLUDE\winnt.h(85) : see previous definition of 'POINTER_64'
+../../../common\AtumParam.h(805) : warning C4005: 'MAP_INFLUENCE_EVENT_LAST' : macro redefinition
+        ../../../common\AtumParam.h(800) : see previous definition of 'MAP_INFLUENCE_EVENT_LAST'
+WinPacket.cpp
+../../../common\AtumParam.h(29) : warning C4005: 'POINTER_64' : macro redefinition
+        D:\Microsoft Visual Studio 6\VC98\INCLUDE\winnt.h(85) : see previous definition of 'POINTER_64'
+../../../common\AtumParam.h(805) : warning C4005: 'MAP_INFLUENCE_EVENT_LAST' : macro redefinition
+        ../../../common\AtumParam.h(800) : see previous definition of 'MAP_INFLUENCE_EVENT_LAST'
+WinSocket.cpp
+../../../common\AtumParam.h(29) : warning C4005: 'POINTER_64' : macro redefinition
+        D:\Microsoft Visual Studio 6\VC98\INCLUDE\winnt.h(85) : see previous definition of 'POINTER_64'
+../../../common\AtumParam.h(805) : warning C4005: 'MAP_INFLUENCE_EVENT_LAST' : macro redefinition
+        ../../../common\AtumParam.h(800) : see previous definition of 'MAP_INFLUENCE_EVENT_LAST'
+Error executing cl.exe.
+
+
+
+<h3>Results</h3>
+SocketLib.lib - 109 error(s), 12 warning(s)
+</pre>
+</body>
+</html>

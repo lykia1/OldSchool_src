@@ -1,0 +1,4 @@
+^C:\BACKKUP D\OLDSCHOOL_SRC\SERVER\GAMESERVER\QUESTLOADER\QUESTLOADER.L
+flex.exe --wincompat -PQuestLoader -t QuestLoader.l > QuestLoader.l.cpp
+^C:\BACKKUP D\OLDSCHOOL_SRC\SERVER\GAMESERVER\QUESTLOADER\QUESTLOADER.Y
+bison.exe -pQuestLoader -o QuestLoader.cpp -d QuestLoader.y

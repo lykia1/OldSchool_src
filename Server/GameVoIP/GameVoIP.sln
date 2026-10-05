@@ -1,0 +1,68 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SCDialer1", "SCDialer1\SCDialer1.vcxproj", "{810ADC32-CD9C-49F6-AAE8-8DE1F91BD4C8}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SCDialer2", "SCDialer2\SCDialer2.vcxproj", "{0A74B67E-F85C-495B-A16D-542A55D4AF75}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SCVoIP", "SCVoIP\SCVoIP.vcxproj", "{9B0D7DF4-AC38-49EE-9A81-C3731943A2E9}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SCVoIPTestServer", "SCVoIPTestServer\SCVoIPTestServer.vcxproj", "{2C3FF817-56A5-4AB8-BFFD-8DB4594B89BE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VCServer", "VCServer\VCServer.vcxproj", "{7609027B-F367-448C-850D-5A6B18542A1C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VDServer", "VDServer\VDServer.vcxproj", "{E5F63369-C530-4B64-BD66-C9CF05183B52}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+		Template|x86 = Template|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{810ADC32-CD9C-49F6-AAE8-8DE1F91BD4C8}.Debug|x86.ActiveCfg = Debug|Win32
+		{810ADC32-CD9C-49F6-AAE8-8DE1F91BD4C8}.Debug|x86.Build.0 = Debug|Win32
+		{810ADC32-CD9C-49F6-AAE8-8DE1F91BD4C8}.Release|x86.ActiveCfg = Release|Win32
+		{810ADC32-CD9C-49F6-AAE8-8DE1F91BD4C8}.Release|x86.Build.0 = Release|Win32
+		{810ADC32-CD9C-49F6-AAE8-8DE1F91BD4C8}.Template|x86.ActiveCfg = Release|Win32
+		{810ADC32-CD9C-49F6-AAE8-8DE1F91BD4C8}.Template|x86.Build.0 = Release|Win32
+		{0A74B67E-F85C-495B-A16D-542A55D4AF75}.Debug|x86.ActiveCfg = Debug|Win32
+		{0A74B67E-F85C-495B-A16D-542A55D4AF75}.Debug|x86.Build.0 = Debug|Win32
+		{0A74B67E-F85C-495B-A16D-542A55D4AF75}.Release|x86.ActiveCfg = Release|Win32
+		{0A74B67E-F85C-495B-A16D-542A55D4AF75}.Release|x86.Build.0 = Release|Win32
+		{0A74B67E-F85C-495B-A16D-542A55D4AF75}.Template|x86.ActiveCfg = Template|Win32
+		{0A74B67E-F85C-495B-A16D-542A55D4AF75}.Template|x86.Build.0 = Template|Win32
+		{9B0D7DF4-AC38-49EE-9A81-C3731943A2E9}.Debug|x86.ActiveCfg = Debug|Win32
+		{9B0D7DF4-AC38-49EE-9A81-C3731943A2E9}.Debug|x86.Build.0 = Debug|Win32
+		{9B0D7DF4-AC38-49EE-9A81-C3731943A2E9}.Release|x86.ActiveCfg = Release|Win32
+		{9B0D7DF4-AC38-49EE-9A81-C3731943A2E9}.Release|x86.Build.0 = Release|Win32
+		{9B0D7DF4-AC38-49EE-9A81-C3731943A2E9}.Template|x86.ActiveCfg = Template|Win32
+		{9B0D7DF4-AC38-49EE-9A81-C3731943A2E9}.Template|x86.Build.0 = Template|Win32
+		{2C3FF817-56A5-4AB8-BFFD-8DB4594B89BE}.Debug|x86.ActiveCfg = Debug|Win32
+		{2C3FF817-56A5-4AB8-BFFD-8DB4594B89BE}.Debug|x86.Build.0 = Debug|Win32
+		{2C3FF817-56A5-4AB8-BFFD-8DB4594B89BE}.Release|x86.ActiveCfg = Release|Win32
+		{2C3FF817-56A5-4AB8-BFFD-8DB4594B89BE}.Release|x86.Build.0 = Release|Win32
+		{2C3FF817-56A5-4AB8-BFFD-8DB4594B89BE}.Template|x86.ActiveCfg = Template|Win32
+		{2C3FF817-56A5-4AB8-BFFD-8DB4594B89BE}.Template|x86.Build.0 = Template|Win32
+		{7609027B-F367-448C-850D-5A6B18542A1C}.Debug|x86.ActiveCfg = Debug|Win32
+		{7609027B-F367-448C-850D-5A6B18542A1C}.Debug|x86.Build.0 = Debug|Win32
+		{7609027B-F367-448C-850D-5A6B18542A1C}.Release|x86.ActiveCfg = Release|Win32
+		{7609027B-F367-448C-850D-5A6B18542A1C}.Release|x86.Build.0 = Release|Win32
+		{7609027B-F367-448C-850D-5A6B18542A1C}.Template|x86.ActiveCfg = Template|Win32
+		{7609027B-F367-448C-850D-5A6B18542A1C}.Template|x86.Build.0 = Template|Win32
+		{E5F63369-C530-4B64-BD66-C9CF05183B52}.Debug|x86.ActiveCfg = Debug|Win32
+		{E5F63369-C530-4B64-BD66-C9CF05183B52}.Debug|x86.Build.0 = Debug|Win32
+		{E5F63369-C530-4B64-BD66-C9CF05183B52}.Release|x86.ActiveCfg = Release|Win32
+		{E5F63369-C530-4B64-BD66-C9CF05183B52}.Release|x86.Build.0 = Release|Win32
+		{E5F63369-C530-4B64-BD66-C9CF05183B52}.Template|x86.ActiveCfg = Template|Win32
+		{E5F63369-C530-4B64-BD66-C9CF05183B52}.Template|x86.Build.0 = Template|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {57FA1E65-2D2F-4C89-8EDD-7285932A1D6E}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,17 @@
+diff a/Client/ProjectAtum/EffectLib/main/FxSystem.cpp b/Client/ProjectAtum/EffectLib/main/FxSystem.cpp	(rejected hunks)
+@@ -900,12 +900,14 @@
+ 	
+ 	for( UINT iPass = 0; iPass < uPasses; iPass++ )
+ 	{
+-		m_pEffectEvn->Pass( iPass );		
++		m_pEffectEvn->BeginPass( iPass );		
+ 		// ������ ������Ʈ
+ 
+ 		m_pframeCur->pMesh->DrawSubset( ipattr );
+ 		g_pApp->m_iDrawSubsetCallCount++;
++		m_pEffectEvn->EndPass();
+ 	}
+ 	
+ 	m_pEffectEvn->End();
+ }
++#endif

@@ -1,0 +1,9 @@
+diff a/Client/ProjectAtum/DataRenderLib/main/EnemyData.cpp b/Client/ProjectAtum/DataRenderLib/main/EnemyData.cpp	(rejected hunks)
+@@ -352,6 +352,7 @@
+ 	pData->InitDeviceObjects();
+ //	pData->RestoreDeviceObjects();
+ 	pData = (CChatMoveData *)m_pIDChat->AddChild(pData);
++	SAFE_DELETE(pData);
+ 	// �ʱ�ȭ�ÿ� ���� ��Ʈ������ ���Ѵ�.
+ 	D3DXMatrixLookAtRH( &m_mMatrix, &m_vPos, &(m_vPos+100.0f*m_vVel), &m_vUp);
+ 	D3DXMatrixInverse( &m_mMatrix, NULL, &m_mMatrix );

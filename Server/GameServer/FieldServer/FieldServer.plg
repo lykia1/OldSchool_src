@@ -1,0 +1,222 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: QuestLoader - Win32 R_Intecom_Viet--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\Temp\RSP71.tmp" with contents
+[
+/nologo /MT /W3 /GX /O2 /I "." /I "..\..\Common" /I "..\..\GameServer\CommonGameServer" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "YY_NEVER_INTERACTIVE" /D "WIN32" /D "_MBCS" /D "_ATUM_DATA_LOADER" /D "INTECOM_VIET" /Fp"QuestLoader___Win32_R_Intecom_Viet/QuestLoader.pch" /YX /Fo"QuestLoader___Win32_R_Intecom_Viet/" /Fd"QuestLoader___Win32_R_Intecom_Viet/" /FD /c 
+"D:\ACE_Live_Work\AceOnline_140_World\Source\Server\Projects(Masang)_Dev_Kor_140\GameServer\QuestLoader\QuestLoader.cpp"
+"D:\ACE_Live_Work\AceOnline_140_World\Source\Server\Projects(Masang)_Dev_Kor_140\GameServer\QuestLoader\QuestLoader.l.cpp"
+"D:\ACE_Live_Work\AceOnline_140_World\Source\Server\Projects(Masang)_Dev_Kor_140\GameServer\QuestLoader\QuestLoaderParser.cpp"
+]
+Creating command line "cl.exe @C:\Temp\RSP71.tmp" 
+Creating temporary file "C:\Temp\RSP72.tmp" with contents
+[
+libflex.lib /nologo /incremental:no /pdb:"QuestLoader___Win32_R_Intecom_Viet/QuestLoader.pdb" /debug /machine:I386 /out:"..\..\Bin\Release/QuestLoader.exe" 
+".\QuestLoader___Win32_R_Intecom_Viet\main.obj"
+".\QuestLoader___Win32_R_Intecom_Viet\Quest.obj"
+".\QuestLoader___Win32_R_Intecom_Viet\QuestLoader.obj"
+".\QuestLoader___Win32_R_Intecom_Viet\QuestLoader.l.obj"
+".\QuestLoader___Win32_R_Intecom_Viet\QuestLoaderParser.obj"
+".\QuestLoader___Win32_R_Intecom_Viet\UserVariable.obj"
+]
+Creating command line "link.exe @C:\Temp\RSP72.tmp"
+<h3>Output Window</h3>
+Compiling...
+QuestLoader.cpp
+QuestLoader.l.cpp
+QuestLoaderParser.cpp
+Linking...
+<h3>
+--------------------Configuration: QuestLoaderLib - Win32 R_Intecom_Viet--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\Temp\RSP74.tmp" with contents
+[
+/nologo /MT /W3 /GX /O2 /I "." /I "..\..\Common" /I "..\..\GameServer\CommonGameServer" /D "NDEBUG" /D "WIN32" /D "_MBCS" /D "_LIB" /D "_ATUM_DATA_LOADER" /D "INTECOM_VIET" /Fp"QuestLoaderLib___Win32_R_Intecom_Viet/QuestLoaderLib.pch" /YX /Fo"QuestLoaderLib___Win32_R_Intecom_Viet/" /Fd"QuestLoaderLib___Win32_R_Intecom_Viet/" /FD /c 
+"D:\ACE_Live_Work\AceOnline_140_World\Source\Server\Projects(Masang)_Dev_Kor_140\GameServer\QuestLoader\QuestLoader.cpp"
+"D:\ACE_Live_Work\AceOnline_140_World\Source\Server\Projects(Masang)_Dev_Kor_140\GameServer\QuestLoader\QuestLoader.l.cpp"
+"D:\ACE_Live_Work\AceOnline_140_World\Source\Server\Projects(Masang)_Dev_Kor_140\GameServer\QuestLoader\QuestLoaderParser.cpp"
+]
+Creating command line "cl.exe @C:\Temp\RSP74.tmp" 
+Creating temporary file "C:\Temp\RSP75.tmp" with contents
+[
+/nologo /out:"..\..\BuildResultSvr\Server\Lib\QuestLoaderLib.lib" 
+".\QuestLoaderLib___Win32_R_Intecom_Viet\QuestLoader.obj"
+".\QuestLoaderLib___Win32_R_Intecom_Viet\QuestLoader.l.obj"
+".\QuestLoaderLib___Win32_R_Intecom_Viet\QuestLoaderParser.obj"
+]
+Creating command line "link.exe -lib @C:\Temp\RSP75.tmp"
+<h3>Output Window</h3>
+Compiling...
+QuestLoader.cpp
+QuestLoader.l.cpp
+QuestLoaderParser.cpp
+Creating library...
+<h3>
+--------------------Configuration: FieldServer - Win32 R_Intecom_Viet--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\Temp\RSP76.tmp" with contents
+[
+/nologo /MT /W3 /GX /Zi /O2 /I "." /I "..\..\Common" /I ".\Main" /I "..\CommonGameServer" /D "NDEBUG" /D "_MBCS" /D "_ATUM_FIELD_SERVER" /D "WIN32" /D "_WINDOWS" /D "_ATUM_SERVER" /D "_ATUM_LOAD_TEST" /D "INTECOM_VIET" /Fp"FieldServer___Win32_R_Intecom_Viet/FieldServer.pch" /YX"stdafx.h" /Fo"FieldServer___Win32_R_Intecom_Viet/" /Fd"FieldServer___Win32_R_Intecom_Viet/" /FD /c 
+"D:\ACE_Live_Work\AceOnline_140_World\Source\Server\Projects(Masang)_Dev_Kor_140\GameServer\FieldServer\Main\FieldIOCPSocket2.cpp"
+]
+Creating command line "cl.exe @C:\Temp\RSP76.tmp" 
+Creating temporary file "C:\Temp\RSP77.tmp" with contents
+[
+winmm.lib D3dx8.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib QuestLoaderLib.lib /nologo /subsystem:windows /incremental:no /pdb:"FieldServer___Win32_R_Intecom_Viet/FieldServer.pdb" /map:"..\..\Bin\Release/FieldServer.map" /debug /machine:I386 /out:"..\..\Bin\Release\VIE\FieldServer.exe" /libpath:"..\..\Lib" /MAPINFO:EXPORTS /MAPINFO:LINES 
+".\FieldServer___Win32_R_Intecom_Viet\AllGuildItemManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\ApexProxy.obj"
+".\FieldServer___Win32_R_Intecom_Viet\ArenaDeathMatchRoom.obj"
+".\FieldServer___Win32_R_Intecom_Viet\ArenaFieldWinSocket.obj"
+".\FieldServer___Win32_R_Intecom_Viet\ArenaManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\ArenaTeam.obj"
+".\FieldServer___Win32_R_Intecom_Viet\ArenaTickManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\AtumDateTime.obj"
+".\FieldServer___Win32_R_Intecom_Viet\AtumDBHelper.obj"
+".\FieldServer___Win32_R_Intecom_Viet\AtumDBManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\AtumFieldDBManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\AtumLogSender.obj"
+".\FieldServer___Win32_R_Intecom_Viet\AtumParamProtocol.obj"
+".\FieldServer___Win32_R_Intecom_Viet\AtumParamProtocolFunctions.obj"
+".\FieldServer___Win32_R_Intecom_Viet\AtumSJ.obj"
+".\FieldServer___Win32_R_Intecom_Viet\AtumThread.obj"
+".\FieldServer___Win32_R_Intecom_Viet\BazaarManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\BillCrux_BillingLib.obj"
+".\FieldServer___Win32_R_Intecom_Viet\Billing_Yetime_Chn.obj"
+".\FieldServer___Win32_R_Intecom_Viet\BunchCountableItemCount.obj"
+".\FieldServer___Win32_R_Intecom_Viet\CallWarpEventManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\ChatBlockManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\Cinema.obj"
+".\FieldServer___Win32_R_Intecom_Viet\CityLeader.obj"
+".\FieldServer___Win32_R_Intecom_Viet\CityWar.obj"
+".\FieldServer___Win32_R_Intecom_Viet\CityWarManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\Config.obj"
+".\FieldServer___Win32_R_Intecom_Viet\CountdownChecker.obj"
+".\FieldServer___Win32_R_Intecom_Viet\CouponManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\Debuff.obj"
+".\FieldServer___Win32_R_Intecom_Viet\DissolutionItemmanager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\Dot.obj"
+".\FieldServer___Win32_R_Intecom_Viet\DropItemManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\EXPDivisionManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\FieldCharacterQuest.obj"
+".\FieldServer___Win32_R_Intecom_Viet\FieldDataManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\FieldDebuff.obj"
+".\FieldServer___Win32_R_Intecom_Viet\FieldDot.obj"
+".\FieldServer___Win32_R_Intecom_Viet\FieldGlobal.obj"
+".\FieldServer___Win32_R_Intecom_Viet\FieldIOCP.obj"
+".\FieldServer___Win32_R_Intecom_Viet\FieldIOCPSocket.obj"
+".\FieldServer___Win32_R_Intecom_Viet\FieldIOCPSocket2.obj"
+".\FieldServer___Win32_R_Intecom_Viet\FieldItemManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\FieldMapChannel.obj"
+".\FieldServer___Win32_R_Intecom_Viet\FieldMapProject.obj"
+".\FieldServer___Win32_R_Intecom_Viet\FieldMapWorkspace.obj"
+".\FieldServer___Win32_R_Intecom_Viet\FieldMonster.obj"
+".\FieldServer___Win32_R_Intecom_Viet\FieldODBC.obj"
+".\FieldServer___Win32_R_Intecom_Viet\FieldParty.obj"
+".\FieldServer___Win32_R_Intecom_Viet\FieldServer.obj"
+".\FieldServer___Win32_R_Intecom_Viet\FieldSkillManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\FieldTickManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\FieldTimerManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\GameDataLast.obj"
+".\FieldServer___Win32_R_Intecom_Viet\GameEventManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\GeneralRequestHandler.obj"
+".\FieldServer___Win32_R_Intecom_Viet\GenericHTTPClient.obj"
+".\FieldServer___Win32_R_Intecom_Viet\GiveItemManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\Global.obj"
+".\FieldServer___Win32_R_Intecom_Viet\GlobalFunc.obj"
+".\FieldServer___Win32_R_Intecom_Viet\GlobalGameServer.obj"
+".\FieldServer___Win32_R_Intecom_Viet\GuildDamageManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\GuildItemManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\GuildWar.obj"
+".\FieldServer___Win32_R_Intecom_Viet\HappyHourEventManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\IMWinSocket.obj"
+".\FieldServer___Win32_R_Intecom_Viet\InfinityBase.obj"
+".\FieldServer___Win32_R_Intecom_Viet\InfinityBossrush.obj"
+".\FieldServer___Win32_R_Intecom_Viet\InfinityDefence.obj"
+".\FieldServer___Win32_R_Intecom_Viet\InfinityManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\InfinityMapManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\InfinityMShipBattle.obj"
+".\FieldServer___Win32_R_Intecom_Viet\InfinityTickManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\InflRateManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\InflWarManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\InnovaLibrary.obj"
+".\FieldServer___Win32_R_Intecom_Viet\InvokingItemInfo.obj"
+".\FieldServer___Win32_R_Intecom_Viet\InvokingItemManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\IOCP.obj"
+".\FieldServer___Win32_R_Intecom_Viet\IOCPSocket.obj"
+".\FieldServer___Win32_R_Intecom_Viet\LetterManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\LoadLibrary.obj"
+".\FieldServer___Win32_R_Intecom_Viet\Localization.obj"
+".\FieldServer___Win32_R_Intecom_Viet\LogWinSocket.obj"
+".\FieldServer___Win32_R_Intecom_Viet\MapBlock.obj"
+".\FieldServer___Win32_R_Intecom_Viet\MapChannel.obj"
+".\FieldServer___Win32_R_Intecom_Viet\MapOwnership.obj"
+".\FieldServer___Win32_R_Intecom_Viet\MapProject.obj"
+".\FieldServer___Win32_R_Intecom_Viet\MapWorkspace.obj"
+".\FieldServer___Win32_R_Intecom_Viet\md5_lib_src.obj"
+".\FieldServer___Win32_R_Intecom_Viet\Monster.obj"
+".\FieldServer___Win32_R_Intecom_Viet\MonsterDBAccess.obj"
+".\FieldServer___Win32_R_Intecom_Viet\MTAutoCriticalSection.obj"
+".\FieldServer___Win32_R_Intecom_Viet\MTCriticalSection.obj"
+".\FieldServer___Win32_R_Intecom_Viet\NPCScripts.obj"
+".\FieldServer___Win32_R_Intecom_Viet\ODBCStatement.obj"
+".\FieldServer___Win32_R_Intecom_Viet\OutPost.obj"
+".\FieldServer___Win32_R_Intecom_Viet\OutPostManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\Overlapped.obj"
+".\FieldServer___Win32_R_Intecom_Viet\PCBangIPManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\PetDataManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\PreWinSocket.obj"
+".\FieldServer___Win32_R_Intecom_Viet\Quest.obj"
+".\FieldServer___Win32_R_Intecom_Viet\QuestMatching.obj"
+".\FieldServer___Win32_R_Intecom_Viet\QueueINT.obj"
+".\FieldServer___Win32_R_Intecom_Viet\Racing.obj"
+".\FieldServer___Win32_R_Intecom_Viet\RacingDemon.obj"
+".\FieldServer___Win32_R_Intecom_Viet\Revision.obj"
+".\FieldServer___Win32_R_Intecom_Viet\SecurityManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\ServicePauseManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\sha256.obj"
+".\FieldServer___Win32_R_Intecom_Viet\SocketHeader.obj"
+".\FieldServer___Win32_R_Intecom_Viet\StdAfx.obj"
+".\FieldServer___Win32_R_Intecom_Viet\SystemLogManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\ThreadCheck.obj"
+".\FieldServer___Win32_R_Intecom_Viet\TickManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\UserVariable.obj"
+".\FieldServer___Win32_R_Intecom_Viet\VMem.obj"
+".\FieldServer___Win32_R_Intecom_Viet\VMemPool.obj"
+".\FieldServer___Win32_R_Intecom_Viet\WarContributionCalculation.obj"
+".\FieldServer___Win32_R_Intecom_Viet\WayPointManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\WinPacket.obj"
+".\FieldServer___Win32_R_Intecom_Viet\WinSocket.obj"
+".\FieldServer___Win32_R_Intecom_Viet\WRankingFame.obj"
+".\FieldServer___Win32_R_Intecom_Viet\WRankingFameManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\WRankingLevel.obj"
+".\FieldServer___Win32_R_Intecom_Viet\WRankingLevelManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\WRankingManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\WRankingPVP.obj"
+".\FieldServer___Win32_R_Intecom_Viet\WRankingPVPManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\WRankingServiceManager.obj"
+".\FieldServer___Win32_R_Intecom_Viet\XOR_Lib.obj"
+".\FieldServer___Win32_R_Intecom_Viet\XTrap4Server.obj"
+".\FieldServer___Win32_R_Intecom_Viet\zwave_sdk_linker.obj"
+".\FieldServer___Win32_R_Intecom_Viet\FieldServer.res"
+"\ACE_Live_Work\AceOnline_140_World\Source\Server\Projects(Masang)_Dev_Kor_140\BuildResultSvr\Server\Lib\QuestLoaderLib.lib"
+]
+Creating command line "link.exe @C:\Temp\RSP77.tmp"
+<h3>Output Window</h3>
+Compiling...
+FieldIOCPSocket2.cpp
+Linking...
+
+
+
+<h3>Results</h3>
+FieldServer.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

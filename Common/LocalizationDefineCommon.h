@@ -1,0 +1,1220 @@
+// 2006-09-05 by cmkwon
+// #include "LocalizationDefineCommon.h"
+#include "Contents.h"
+
+#ifndef _LOCALIZATION_DEFINE_COMMON_H_
+#define _LOCALIZATION_DEFINE_COMMON_H_
+
+
+///////////////////////////////////////////////////////////////////////////////
+// 2006-09-04 by cmkwon, 언어간 다른 Define 리스트
+
+///////////////////////////////////////////////////////////////////////////////
+// 2008-01-08 by cmkwon, 언어 서비스 관련 정의를 하나로 통일함 - SERVICE_TYPE_XXX 로 통일함, Preprocessor definitions 은 사용하지 않음
+// 2008-04-25 by cmkwon, 지원 언어/서비스 추가시 꼭 추가 되어야 하는 사항 - [서비스-필수]서비스 타입(SERVICE_TYPE_XXX) 정의 하기
+//  SERVICE_TYPE_KOREAN_SERVER_1		==> 한국	Masangsoft		- Kor	100
+//  SERVICE_TYPE_KOREAN_SERVER_2		==>	한국	Yedang			- Kor	1000
+//  SERVICE_TYPE_ENGLISH_SERVER_1		==>	캐나다	Wikigames		- Eng	2000
+//  SERVICE_TYPE_ENGLISH_SERVER_2		==>	영국	Gameforge4D		- Eng	5000	
+//  SERVICE_TYPE_GERMAN_SERVER_1		==>	독일	Gameforge4D		- Deu	5100	// 2008-04-11 by cmkwon, 지원 서비스 추가 - Gameforge4D 독일어 
+//  SERVICE_TYPE_CHINESE_SERVER_1		==>	중국	Yetime			- Chn	3000
+//  SERVICE_TYPE_VIETNAMESE_SERVER_1	==>	베트남	VTC-Intecom		- Viet	4000
+//  SERVICE_TYPE_THAI_SERVER_1			==>	태국	WinnerOnline	- Tha	6000	// 2008-04-11 by cmkwon, 지원 서비스 추가 - WinnerOnline 태국어
+//	SERVICE_TYPE_SINGAPORE_1			==> 영어		 WinnerOnline- Sgp	6100	// 2010-12-07 by shcho,	 지원 서비스 추가(WinnerOnline 영어) - 
+//	SERVICE_TYPE_INDONESIA_SERVER_1		==> 인도네시아어 WinnerOnline- IND	6200	// 2010-01-11 by shcho,	 지원 서비스 추가(WinnerOnline 인도네시아어) - 
+//  SERVICE_TYPE_RUSSIAN_SERVER_1		==>	러시아	Innova			- Rus	7000	// 2008-05-29 by cmkwon, 지원 서비스 추가(Innova_Rus 러시아어 추가) - 
+//  SERVICE_TYPE_TAIWANESE_SERVER_1		==>	대만	Newpower		- Tpe	8000	// 2008-09-23 by cmkwon, 지원 서비스 추가(대만 Netpower_Tpe) - 
+//  SERVICE_TYPE_JAPANESE_SERVER_1		==> 일본	Arario			- Jpn	10000	// 2008-12-03 by cmkwon, 지원 서비스 추가(일본 Arario_Jpn) - 
+//  SERVICE_TYPE_TURKISH_SERVER_1		==> 터키	Gameforge4D		- Tur	5200	// 2008-12-22 by cmkwon, 지원 서비스 추가(Gameforge4D 터키아, 불어, 이탈리아어) - 
+//  SERVICE_TYPE_ITALIAN_SERVER_1		==> 이탈리아어	Gameforge4D	- Ita	5400	// 2008-12-22 by cmkwon, 지원 서비스 추가(Gameforge4D 터키아, 불어, 이탈리아어) - 
+//  SERVICE_TYPE_FRENCH_SERVER_1		==> 프랑스어	Gameforge4D	- Fra	5500	// 2008-12-22 by cmkwon, 지원 서비스 추가(Gameforge4D 터키아, 불어, 이탈리아어) - 
+//  SERVICE_TYPE_POLISH_SERVER_1		==> 폴란드어	Gameforge4D	- Pol	5600	// 2009-06-04 by cmkwon, 지원 서비스 추가(Gameforge4D 폴란드어, 스페인어) - 
+//  SERVICE_TYPE_SPANISH_SERVER_1		==> 스페인어	Gameforge4D	- Esp	5700	// 2009-06-04 by cmkwon, 지원 서비스 추가(Gameforge4D 폴란드어, 스페인어) - 
+//	SERVICE_TYPE_ARGENTINA_SERVER_1		==> 아르헨티나	LIN			- Arg	11000	// 2010-11-01 by shcho,	 지원 서비스 추가(Gameforge4D 스페인어, 아르헨티나어) -  
+
+// 국가 소스통합 때 추가 되어야 할 부분 순서 01
+#ifdef S_140_SERVER_SETTING_HSSON
+#define SERVICE_TYPE_KOREAN_SERVER_1
+#define SERVICE_UID_FOR_WORLD_RANKING		100			// 2009-02-12 by cmkwon, EP3-3 월드랭킹시스템 구현 - 
+#endif
+
+#ifdef S_KOR_SERVER_SETTING_HSSON
+#define SERVICE_TYPE_KOREAN_SERVER_2
+#define SERVICE_UID_FOR_WORLD_RANKING		1000			// 2009-02-12 by cmkwon, EP3-3 월드랭킹시스템 구현 - 
+#endif
+
+#ifdef S_JPN_SERVER_SETTING_HSSON
+#define SERVICE_TYPE_JAPANESE_SERVER_1
+#define SERVICE_UID_FOR_WORLD_RANKING		10000			// 2009-02-12 by cmkwon, EP3-3 월드랭킹시스템 구현 - 
+#endif
+
+#ifdef S_CAN_SERVER_SETTING_HSSON
+#define SERVICE_TYPE_ENGLISH_SERVER_1
+#define SERVICE_UID_FOR_WORLD_RANKING		2000			// 2009-02-12 by cmkwon, EP3-3 월드랭킹시스템 구현 - 
+#endif
+
+#ifdef S_RUS_SERVER_SETTING_HSSON
+#define SERVICE_TYPE_RUSSIAN_SERVER_1
+#define SERVICE_UID_FOR_WORLD_RANKING		7000			// 2009-02-12 by cmkwon, EP3-3 월드랭킹시스템 구현 - 
+#endif
+
+#ifdef S_VIE_SERVER_SETTING_HSSON
+#define SERVICE_TYPE_VIETNAMESE_SERVER_1
+#define SERVICE_UID_FOR_WORLD_RANKING		4000			// 2009-02-12 by cmkwon, EP3-3 월드랭킹시스템 구현 - 
+#endif
+
+///////////////////////////////////////////////////////////////////////////////
+// 2008-05-09 by cmkwon, CodePage 정의 추가 - 
+//		Korean Extended Wansung			==> 949			: Korean(Masangsoft_Kor, Yedang_Kor)
+//		Latin 1							==> 1252		: English(Yedang-Global_Eng, Gameforge4D_Eng), German(Gameforge4D_Deu), French(Gameforge4D_Fra), Italian(Gameforge4D_Ita), Spanish(Gameforge4D_Esp)
+//		Japanese (Shift-JIS)			==> 932			
+//		Chinese (PRC)					==> 936			: Chinese(Yetime_Chn)
+//		Chinese (Taiwan, Hong Kong)		==> 950			: Taiwnaese(Netpower_Tpe)
+//		Viet Nam						==> 1258		: Vietnamnese(VTC-Intecom_Viet)
+//		Thai							==> 874			: Thai(WinnerOnline_Tha)
+//		Cyrillic, Russian (Russia)		==> 1251		: Russian(Innova_Rus)
+//		Turkish							==> 1254		: Turkish(Gameforge4D_Tur)
+//		Central European, Eastern European	==> 1250	: Polish(Gameforge4D_Pol)
+
+// 국가 소스통합 때 추가 되어야 할 부분 순서 02
+#ifdef S_140_SERVER_SETTING_HSSON
+#define CODE_PAGE							949
+#endif
+
+#ifdef S_KOR_SERVER_SETTING_HSSON
+#define CODE_PAGE							949
+#endif
+
+#ifdef S_JPN_SERVER_SETTING_HSSON
+#define CODE_PAGE							932
+#endif
+
+#ifdef S_CAN_SERVER_SETTING_HSSON
+#define CODE_PAGE							1252
+#endif
+
+#ifdef S_RUS_SERVER_SETTING_HSSON
+#define CODE_PAGE							1251
+#endif
+
+#ifdef S_VIE_SERVER_SETTING_HSSON
+#define CODE_PAGE							1258
+#endif
+
+///////////////////////////////////////////////////////////////////////////////
+// 2009-04-20 by cmkwon, Gameforge4D "/누구" 명령어 제거하기 - 
+#if defined(SERVICE_TYPE_ENGLISH_SERVER_2) || defined(SERVICE_TYPE_GERMAN_SERVER_1) || defined(SERVICE_TYPE_TURKISH_SERVER_1) || defined(SERVICE_TYPE_ITALIAN_SERVER_1) || defined(SERVICE_TYPE_FRENCH_SERVER_1) || defined(SERVICE_TYPE_POLISH_SERVER_1) || defined(SERVICE_TYPE_SPANISH_SERVER_1)
+	#define _DEFINED_GAMEFORGE4D_		// 2009-04-21 by cmkwon, 스펠링 수정함.
+#endif
+
+
+///////////////////////////////////////////////////////////////////////////////
+// 2009-04-29 by cmkwon, 핵쉴드 사용 여부 #define 으로 처리 - 
+// 2008-04-25 by cmkwon, 지원 언어/서비스 추가시 꼭 추가 되어야 하는 사항 - [언어-옵션] 추가 언어시에 핵쉴드 사용 여부 추가
+// 2009-10-06 by cmkwon, 베트남 게임 가드 X-TRAP으로 변경 - 베트남 핵쉴드에서 제외
+//#if defined(SERVICE_TYPE_KOREAN_SERVER_1) || defined(SERVICE_TYPE_KOREAN_SERVER_2) || defined(SERVICE_TYPE_ENGLISH_SERVER_1) || defined(SERVICE_TYPE_VIETNAMESE_SERVER_1) || defined(SERVICE_TYPE_THAI_SERVER_1) || defined(_DEFINED_GAMEFORGE4D_)
+// 2009-11-04 by cmkwon, 태국 게임가드 Apex로 변경 - 태국(SERVICE_TYPE_THAI_SERVER_1) 제거함.
+//#if defined(SERVICE_TYPE_KOREAN_SERVER_1) || defined(SERVICE_TYPE_KOREAN_SERVER_2) || defined(SERVICE_TYPE_ENGLISH_SERVER_1) || defined(SERVICE_TYPE_THAI_SERVER_1) || defined(_DEFINED_GAMEFORGE4D_)
+#if defined(SERVICE_TYPE_KOREAN_SERVER_1) || defined(SERVICE_TYPE_KOREAN_SERVER_2) || defined(SERVICE_TYPE_ENGLISH_SERVER_1) || defined(_DEFINED_GAMEFORGE4D_)
+
+#ifdef GAMEGUARD_NOT_EXECUTE_HSSON	
+
+#else
+	 	#define _USING_HACKSHIELD_			// 2009-04-29 by cmkwon, 핵쉴드 사용 여부 #define 으로 처리 - 핵쉴드 사용 여부 정의
+#endif
+
+	#if defined(_ATUM_FIELD_SERVER)
+		#pragma comment(lib, "AntiCpXSvr.lib")
+	#endif // END - #if defined(_ATUM_FIELD_SERVER)
+#endif 
+
+// 국가 소스통합 때 추가 되어야 할 부분 순서 03
+#ifdef S_140_SERVER_SETTING_HSSON
+#define SIZE_MAX_INITIAL_GUILD_CAPACITY				30		// 초기 길드 생성 시 가능 길드원 수, // 2006-09-06 by cmkwon, 한국 서버만 변경 (40-->30)
+#define SIZE_MAX_GUILD_CAPACITY						300		// 2008-05-28 by dhjin, EP3 여단 수정 사항 - 최대 길드원 수
+#define SIZE_MAX_ITEM_GENERAL						61		// 캐릭터의 인벤토리에 소유할 수 있는 아이템의 최대 개수(1개는 SPI 아이템의 카운트이다, 클라이언트는 60을 사용한다.), // 2006-09-06 by cmkwon, 한국 서버만 변경(61-->41)
+#define SIZE_MAX_ITEM_GENERAL_IN_STORE				101		// 창고에 소유할 수 있는 아이템의 최대 개수, // 2006-09-06 by cmkwon, 한국 서버만 변경(101-->51)
+#define CHARACTER_MAX_LEVEL							110
+#define COUNT_IN_MEMBERSHIP_ADDED_INVENTORY			40
+#define COUNT_IN_MEMBERSHIP_ADDED_STORE				50
+#define COUNT_IN_MEMBERSHIP_ADDED_GUILD_CAPACITY	30
+#endif
+
+#ifdef S_KOR_SERVER_SETTING_HSSON
+#define SIZE_MAX_INITIAL_GUILD_CAPACITY				30		// 초기 길드 생성 시 가능 길드원 수, // 2006-09-06 by cmkwon, 한국 서버만 변경 (40-->30)
+#define SIZE_MAX_GUILD_CAPACITY						300		// 2008-05-28 by dhjin, EP3 여단 수정 사항 - 최대 길드원 수
+#define SIZE_MAX_ITEM_GENERAL						61		// 캐릭터의 인벤토리에 소유할 수 있는 아이템의 최대 개수(1개는 SPI 아이템의 카운트이다, 클라이언트는 60을 사용한다.), // 2006-09-06 by cmkwon, 한국 서버만 변경(61-->41)
+#define SIZE_MAX_ITEM_GENERAL_IN_STORE				101		// 창고에 소유할 수 있는 아이템의 최대 개수, // 2006-09-06 by cmkwon, 한국 서버만 변경(101-->51)
+#define CHARACTER_MAX_LEVEL							110
+#define COUNT_IN_MEMBERSHIP_ADDED_INVENTORY			40
+#define COUNT_IN_MEMBERSHIP_ADDED_STORE				50
+#define COUNT_IN_MEMBERSHIP_ADDED_GUILD_CAPACITY	30
+#endif
+
+#ifdef S_JPN_SERVER_SETTING_HSSON
+#define SIZE_MAX_INITIAL_GUILD_CAPACITY				30		// 초기 길드 생성 시 가능 길드원 수, // 2006-09-06 by cmkwon, 한국 서버만 변경 (40-->30)
+#define SIZE_MAX_GUILD_CAPACITY						300		// 2008-05-28 by dhjin, EP3 여단 수정 사항 - 최대 길드원 수
+#define SIZE_MAX_ITEM_GENERAL						61		// 캐릭터의 인벤토리에 소유할 수 있는 아이템의 최대 개수(1개는 SPI 아이템의 카운트이다, 클라이언트는 60을 사용한다.), // 2006-09-06 by cmkwon, 한국 서버만 변경(61-->41)
+#define SIZE_MAX_ITEM_GENERAL_IN_STORE				101		// 창고에 소유할 수 있는 아이템의 최대 개수, // 2006-09-06 by cmkwon, 한국 서버만 변경(101-->51)
+#define CHARACTER_MAX_LEVEL							110
+#define COUNT_IN_MEMBERSHIP_ADDED_INVENTORY			40
+#define COUNT_IN_MEMBERSHIP_ADDED_STORE				50
+#define COUNT_IN_MEMBERSHIP_ADDED_GUILD_CAPACITY	30
+#endif
+
+#ifdef S_CAN_SERVER_SETTING_HSSON
+#define SIZE_MAX_INITIAL_GUILD_CAPACITY				30		// 초기 길드 생성 시 가능 길드원 수, // 2006-09-06 by cmkwon, 한국 서버만 변경 (40-->30)
+#define SIZE_MAX_GUILD_CAPACITY						300		// 2008-05-28 by dhjin, EP3 여단 수정 사항 - 최대 길드원 수
+#define SIZE_MAX_ITEM_GENERAL						61		// 캐릭터의 인벤토리에 소유할 수 있는 아이템의 최대 개수(1개는 SPI 아이템의 카운트이다, 클라이언트는 60을 사용한다.), // 2006-09-06 by cmkwon, 한국 서버만 변경(61-->41)
+#define SIZE_MAX_ITEM_GENERAL_IN_STORE				101		// 창고에 소유할 수 있는 아이템의 최대 개수, // 2006-09-06 by cmkwon, 한국 서버만 변경(101-->51)
+#define CHARACTER_MAX_LEVEL							123		
+#define COUNT_IN_MEMBERSHIP_ADDED_INVENTORY			40
+#define COUNT_IN_MEMBERSHIP_ADDED_STORE				50
+#define COUNT_IN_MEMBERSHIP_ADDED_GUILD_CAPACITY	30
+#endif
+
+#ifdef S_RUS_SERVER_SETTING_HSSON
+#define SIZE_MAX_INITIAL_GUILD_CAPACITY				30		// 초기 길드 생성 시 가능 길드원 수, // 2006-09-06 by cmkwon, 한국 서버만 변경 (40-->30)
+#define SIZE_MAX_GUILD_CAPACITY						300		// 2008-05-28 by dhjin, EP3 여단 수정 사항 - 최대 길드원 수
+#define SIZE_MAX_ITEM_GENERAL						61		// 캐릭터의 인벤토리에 소유할 수 있는 아이템의 최대 개수(1개는 SPI 아이템의 카운트이다, 클라이언트는 60을 사용한다.), // 2006-09-06 by cmkwon, 한국 서버만 변경(61-->41)
+#define SIZE_MAX_ITEM_GENERAL_IN_STORE				101		// 창고에 소유할 수 있는 아이템의 최대 개수, // 2006-09-06 by cmkwon, 한국 서버만 변경(101-->51)
+#define CHARACTER_MAX_LEVEL							110
+#define COUNT_IN_MEMBERSHIP_ADDED_INVENTORY			40
+#define COUNT_IN_MEMBERSHIP_ADDED_STORE				50
+#define COUNT_IN_MEMBERSHIP_ADDED_GUILD_CAPACITY	30
+#endif
+
+#ifdef S_VIE_SERVER_SETTING_HSSON
+#define SIZE_MAX_INITIAL_GUILD_CAPACITY				40		// 초기 길드 생성 시 가능 길드원 수, // 2006-09-06 by cmkwon, 한국 서버만 변경 (40-->30)
+#define SIZE_MAX_GUILD_CAPACITY						300		// 2008-05-28 by dhjin, EP3 여단 수정 사항 - 최대 길드원 수
+#define SIZE_MAX_ITEM_GENERAL						61		// 캐릭터의 인벤토리에 소유할 수 있는 아이템의 최대 개수(1개는 SPI 아이템의 카운트이다, 클라이언트는 60을 사용한다.), // 2006-09-06 by cmkwon, 한국 서버만 변경(61-->41)
+#define SIZE_MAX_ITEM_GENERAL_IN_STORE				101		// 창고에 소유할 수 있는 아이템의 최대 개수, // 2006-09-06 by cmkwon, 한국 서버만 변경(101-->51)
+#define CHARACTER_MAX_LEVEL							110
+#define COUNT_IN_MEMBERSHIP_ADDED_INVENTORY			20		// 2006-09-06 by cmkwon, 멥버쉽 서비스시 추가 인베토리 카운트
+#define COUNT_IN_MEMBERSHIP_ADDED_STORE				20		// 2006-09-06 by cmkwon, 멥버쉽 서비스시 추가 창고 카운트
+#define COUNT_IN_MEMBERSHIP_ADDED_GUILD_CAPACITY	20		// 2006-09-06 by cmkwon, 멥버쉽 서비스시 추가 최대여단원 카운트
+#endif
+
+
+
+// 국가 소스통합 때 추가 되어야 할 부분 순서 04
+#ifdef S_140_SERVER_SETTING_HSSON
+#define STAT_BGEAR_ATTACK_PART						3
+#define STAT_BGEAR_DEFENSE_PART						3
+#define STAT_BGEAR_FUEL_PART						3
+#define STAT_BGEAR_SOUL_PART						3
+#define STAT_BGEAR_SHIELD_PART						3
+#define STAT_BGEAR_DODGE_PART						3
+
+#define STAT_MGEAR_ATTACK_PART						2
+#define STAT_MGEAR_DEFENSE_PART						4
+#define STAT_MGEAR_FUEL_PART						3
+#define STAT_MGEAR_SOUL_PART						4
+#define STAT_MGEAR_SHIELD_PART						3
+#define STAT_MGEAR_DODGE_PART						2
+
+#define STAT_AGEAR_ATTACK_PART						4
+#define STAT_AGEAR_DEFENSE_PART						3
+#define STAT_AGEAR_FUEL_PART						3
+#define STAT_AGEAR_SOUL_PART						3
+#define STAT_AGEAR_SHIELD_PART						4
+#define STAT_AGEAR_DODGE_PART						1
+
+#define STAT_IGEAR_ATTACK_PART						4
+#define STAT_IGEAR_DEFENSE_PART						2
+#define STAT_IGEAR_FUEL_PART						3
+#define STAT_IGEAR_SOUL_PART						3
+#define STAT_IGEAR_SHIELD_PART						2
+#define STAT_IGEAR_DODGE_PART						4
+#endif
+
+#ifdef S_KOR_SERVER_SETTING_HSSON 
+#define STAT_BGEAR_ATTACK_PART						3
+#define STAT_BGEAR_DEFENSE_PART						3
+#define STAT_BGEAR_FUEL_PART						3
+#define STAT_BGEAR_SOUL_PART						3
+#define STAT_BGEAR_SHIELD_PART						3
+#define STAT_BGEAR_DODGE_PART						3
+
+#define STAT_MGEAR_ATTACK_PART						2
+#define STAT_MGEAR_DEFENSE_PART						4
+#define STAT_MGEAR_FUEL_PART						3
+#define STAT_MGEAR_SOUL_PART						4
+#define STAT_MGEAR_SHIELD_PART						3
+#define STAT_MGEAR_DODGE_PART						2
+
+#define STAT_AGEAR_ATTACK_PART						4
+#define STAT_AGEAR_DEFENSE_PART						3
+#define STAT_AGEAR_FUEL_PART						3
+#define STAT_AGEAR_SOUL_PART						3
+#define STAT_AGEAR_SHIELD_PART						4
+#define STAT_AGEAR_DODGE_PART						1
+
+#define STAT_IGEAR_ATTACK_PART						4
+#define STAT_IGEAR_DEFENSE_PART						2
+#define STAT_IGEAR_FUEL_PART						3
+#define STAT_IGEAR_SOUL_PART						3
+#define STAT_IGEAR_SHIELD_PART						2
+#define STAT_IGEAR_DODGE_PART						4
+#endif
+
+#ifdef S_JPN_SERVER_SETTING_HSSON
+#define STAT_BGEAR_ATTACK_PART						3
+#define STAT_BGEAR_DEFENSE_PART						3
+#define STAT_BGEAR_FUEL_PART						3
+#define STAT_BGEAR_SOUL_PART						3
+#define STAT_BGEAR_SHIELD_PART						3
+#define STAT_BGEAR_DODGE_PART						3
+
+#define STAT_MGEAR_ATTACK_PART						2
+#define STAT_MGEAR_DEFENSE_PART						4
+#define STAT_MGEAR_FUEL_PART						3
+#define STAT_MGEAR_SOUL_PART						4
+#define STAT_MGEAR_SHIELD_PART						3
+#define STAT_MGEAR_DODGE_PART						2
+
+#define STAT_AGEAR_ATTACK_PART						4
+#define STAT_AGEAR_DEFENSE_PART						3
+#define STAT_AGEAR_FUEL_PART						3
+#define STAT_AGEAR_SOUL_PART						3
+#define STAT_AGEAR_SHIELD_PART						4
+#define STAT_AGEAR_DODGE_PART						1
+
+#define STAT_IGEAR_ATTACK_PART						4
+#define STAT_IGEAR_DEFENSE_PART						2
+#define STAT_IGEAR_FUEL_PART						3
+#define STAT_IGEAR_SOUL_PART						3
+#define STAT_IGEAR_SHIELD_PART						2
+#define STAT_IGEAR_DODGE_PART						4
+#endif
+
+#ifdef S_CAN_SERVER_SETTING_HSSON
+#define STAT_BGEAR_ATTACK_PART						3
+#define STAT_BGEAR_DEFENSE_PART						3
+#define STAT_BGEAR_FUEL_PART						3
+#define STAT_BGEAR_SOUL_PART						3
+#define STAT_BGEAR_SHIELD_PART						3
+#define STAT_BGEAR_DODGE_PART						3
+
+#define STAT_MGEAR_ATTACK_PART						2
+#define STAT_MGEAR_DEFENSE_PART						4
+#define STAT_MGEAR_FUEL_PART						3
+#define STAT_MGEAR_SOUL_PART						4
+#define STAT_MGEAR_SHIELD_PART						3
+#define STAT_MGEAR_DODGE_PART						2
+
+#define STAT_AGEAR_ATTACK_PART						4
+#define STAT_AGEAR_DEFENSE_PART						3
+#define STAT_AGEAR_FUEL_PART						3
+#define STAT_AGEAR_SOUL_PART						3
+#define STAT_AGEAR_SHIELD_PART						4
+#define STAT_AGEAR_DODGE_PART						1
+
+#define STAT_IGEAR_ATTACK_PART						4
+#define STAT_IGEAR_DEFENSE_PART						2
+#define STAT_IGEAR_FUEL_PART						3
+#define STAT_IGEAR_SOUL_PART						3
+#define STAT_IGEAR_SHIELD_PART						2
+#define STAT_IGEAR_DODGE_PART						4
+#endif
+
+#ifdef S_RUS_SERVER_SETTING_HSSON
+#define STAT_BGEAR_ATTACK_PART						3
+#define STAT_BGEAR_DEFENSE_PART						3
+#define STAT_BGEAR_FUEL_PART						3
+#define STAT_BGEAR_SOUL_PART						3
+#define STAT_BGEAR_SHIELD_PART						3
+#define STAT_BGEAR_DODGE_PART						3
+
+#define STAT_MGEAR_ATTACK_PART						2
+#define STAT_MGEAR_DEFENSE_PART						4
+#define STAT_MGEAR_FUEL_PART						3
+#define STAT_MGEAR_SOUL_PART						4
+#define STAT_MGEAR_SHIELD_PART						3
+#define STAT_MGEAR_DODGE_PART						2
+
+#define STAT_AGEAR_ATTACK_PART						4
+#define STAT_AGEAR_DEFENSE_PART						3
+#define STAT_AGEAR_FUEL_PART						3
+#define STAT_AGEAR_SOUL_PART						3
+#define STAT_AGEAR_SHIELD_PART						4
+#define STAT_AGEAR_DODGE_PART						1
+
+#define STAT_IGEAR_ATTACK_PART						4
+#define STAT_IGEAR_DEFENSE_PART						2
+#define STAT_IGEAR_FUEL_PART						3
+#define STAT_IGEAR_SOUL_PART						3
+#define STAT_IGEAR_SHIELD_PART						2
+#define STAT_IGEAR_DODGE_PART						4
+#endif
+
+#ifdef S_VIE_SERVER_SETTING_HSSON
+#define STAT_BGEAR_ATTACK_PART						3
+#define STAT_BGEAR_DEFENSE_PART						3
+#define STAT_BGEAR_FUEL_PART						3
+#define STAT_BGEAR_SOUL_PART						3
+#define STAT_BGEAR_SHIELD_PART						3
+#define STAT_BGEAR_DODGE_PART						3
+
+#define STAT_MGEAR_ATTACK_PART						2
+#define STAT_MGEAR_DEFENSE_PART						4
+#define STAT_MGEAR_FUEL_PART						3
+#define STAT_MGEAR_SOUL_PART						4
+#define STAT_MGEAR_SHIELD_PART						3
+#define STAT_MGEAR_DODGE_PART						2
+
+#define STAT_AGEAR_ATTACK_PART						4
+#define STAT_AGEAR_DEFENSE_PART						3
+#define STAT_AGEAR_FUEL_PART						3
+#define STAT_AGEAR_SOUL_PART						3
+#define STAT_AGEAR_SHIELD_PART						4
+#define STAT_AGEAR_DODGE_PART						1
+
+#define STAT_IGEAR_ATTACK_PART						4
+#define STAT_IGEAR_DEFENSE_PART						2
+#define STAT_IGEAR_FUEL_PART						3
+#define STAT_IGEAR_SOUL_PART						3
+#define STAT_IGEAR_SHIELD_PART						2
+#define STAT_IGEAR_DODGE_PART						4
+#endif
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// 2006-09-15 by cmkwon, 
+// Kor_Masang140	==> 121.134.114.140:9979	// 2007-01-03 by cmkwon, 마상 이전
+// Kor_Yedang		==> 192.168.10.40:9979		// 2007-01-03 by cmkwon, Yedang 사설 IP
+// Eng_Gala-Net		==> 상관 없음
+// Viet_VTC-Intecom	==> 상관 없음
+// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+
+// 국가 소스통합 때 추가 되어야 할 부분 순서 05
+#ifdef S_140_SERVER_SETTING_HSSON
+#define MSBILLING_DB_SERVER_IP						"61.39.170.140"
+#endif															   
+
+#ifdef S_KOR_SERVER_SETTING_HSSON
+#define MSBILLING_DB_SERVER_IP						"192.168.10.40"
+#endif
+
+#ifdef S_JPN_SERVER_SETTING_HSSON
+#define MSBILLING_DB_SERVER_IP						"192.168.10.40"
+#endif
+
+#ifdef S_CAN_SERVER_SETTING_HSSON
+#define MSBILLING_DB_SERVER_IP						"127.0.0.1"
+#endif
+
+#ifdef S_RUS_SERVER_SETTING_HSSON
+#define MSBILLING_DB_SERVER_IP						"192.168.10.40"
+#endif
+
+#ifdef S_VIE_SERVER_SETTING_HSSON
+#define MSBILLING_DB_SERVER_IP						"61.39.170.140"
+#endif
+
+
+
+#define MSBILLING_DB_SERVER_PORT					9979
+
+// Kor_Masang51		==> 1
+// Kor_ETRI			==> 1
+// Eng_Gala-Net		==> 상관 없음
+// Viet_VTC-Intecom	==> 상관 없음
+#define MSBILLING_GAMEUID							1
+
+// 2006-09-22 by dhjin
+// Kor_Masang51		==> 201			// 2006-10-23 by cmkwon, 변경(101-->201)
+// Kor_ETRI			==> 201			// 2006-10-23 by cmkwon, 변경(101-->201)
+// Eng_Gala-Net		==> 201			// 2006-10-23 by cmkwon, 변경(101-->201)
+// Viet_VTC-Intecom	==> 201			// 2006-10-23 by cmkwon, 변경(101-->201)
+#define COUNT_IN_MEMBERSHIP_GUILDSTORE				201		// 2006-09-22 by dhjin, 멤버쉽 서비스시 여단 창고 카운트
+
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+// 2007-02-13 by cmkwon
+
+// 국가 소스통합 때 추가 되어야 할 부분 순서 06
+#ifdef S_140_SERVER_SETTING_HSSON
+#define STRMSG_S_GAMEHOMEPAGE_DOMAIN			"http://www.aceonline.co.kr"
+#endif															   
+
+#ifdef S_KOR_SERVER_SETTING_HSSON
+#define STRMSG_S_GAMEHOMEPAGE_DOMAIN			"http://aceonline.ndolfin.com"		// 2009-05-13 by cmkwon, 예당 홈페이지 도메인 변경 - 기존(aceonline.co.kr)
+#endif
+
+#ifdef S_JPN_SERVER_SETTING_HSSON
+#define STRMSG_S_GAMEHOMEPAGE_DOMAIN			"http://www.aceonline.jp"
+#endif
+
+#ifdef S_CAN_SERVER_SETTING_HSSON
+#define STRMSG_S_GAMEHOMEPAGE_DOMAIN			"http://oldschoolrivals.com"		// 2008-08-05 by cmkwon, WikiGames_Eng 게임 정보 수정 - ,"http://www.ace-onlines.com"
+#endif
+
+#ifdef S_RUS_SERVER_SETTING_HSSON
+#define STRMSG_S_GAMEHOMEPAGE_DOMAIN			"http://www.aceonline.ru"	// 2008-06-24 by cmkwon, 수정됨
+#endif
+
+#ifdef S_VIE_SERVER_SETTING_HSSON
+#define STRMSG_S_GAMEHOMEPAGE_DOMAIN			"http://phidoi.vtc.vn"		// 2007-10-05 by cmkwon, 수정(기존 "http://caoboi.vtc.vn")
+#endif
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// 2006-05-22 by cmkwon, 비번 MD5로 인코딩시에 원래 비번 앞에 추가될 스트링 - 
+#define MD5_PASSWORD_ADDITIONAL_STRING			""
+
+#define EXT_AUTH_GAME_NAME						"SCO"		// 2006-05-22 by cmkwon
+
+// 국가 소스통합 때 추가 되어야 할 부분 순서 07
+#ifdef S_140_SERVER_SETTING_HSSON
+// 2008-06-05 by cmkwon, AdminTool, Monitor 접근 가능 IP를 server config file 에 설정하기 - MS140번 서버만 테스트를 위해 IP 를 틀리게(121.134.11.) 설정 함
+// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP1		"0.0.0.0"		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP2		"0.0.0.0"		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP3		"0.0.0.0"		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP4		"0.0.0.0"		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP5		"0.0.0.0"		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP6		"0.0.0.0"		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP7		"0.0.0.0"		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP8		"0.0.0.0"		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP9		"0.0.0.0"		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP10		"0.0.0.0"		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define IS_SCADMINTOOL_CONNECTABLE_IP(ip)		( 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP1,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP1)) \
+												|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP2,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP2)) \
+												|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP3,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP3)) \
+												|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP4,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP4)) \
+												|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP5,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP5)) \
+												|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP6,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP6)) \
+												|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP7,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP7)) \
+												|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP8,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP8)) \
+												|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP9,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP9)) \
+												|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP10,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP10)) )
+
+///////////////////////////////////////////////////////////////////////////////
+// 2006-05-02 by cmkwon, Launcher URL
+#define LAUNCHER_WEB_URL						"http://www.masangsoft.com/SCGame/scLauncher.htm"
+#define TESTSERVER_LAUNCHER_WEB_URL				"http://www.masangsoft.com/SCGame/scLauncher.htm"		// 2006-08-04 by cmkwon, 추가함
+
+
+///////////////////////////////////////////////////////////////////////////////
+// 2007-02-13 by cmkwon
+#define BILLING_DBSERVER_DATABASE_NAME			"MS_Billing"
+#define BILLING_DBSERVER_USER_ID				"atum"
+// Kor_Masang51		==> callweb
+// Kor_Yedang		==> 2006-12-25 by cmkwon, 수정함
+#define BILLING_DBSERVER_USER_PWD				"callweb"
+#endif // S_140_SERVER_SETTING_HSSON
+
+#ifdef S_KOR_SERVER_SETTING_HSSON
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP1		"61.39.170."		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP2		"61.39.170."		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP3		"10.10.90."			// 2007-07-04 by cmkwon, 마상소프트(VPN 접속 사설 IP)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP4		"112.107.1."		// 2010-02-10 by cmkwon, 와이디 지원 서버 IDC IP - 
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP5		"61.39.170."		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP6		"61.39.170."		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP7		"61.39.170."		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP8		"61.39.170."		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP9		"61.39.170."		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP10		"61.39.170."		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define IS_SCADMINTOOL_CONNECTABLE_IP(ip)		( 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP1,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP1)) \
+												|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP2,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP2)) \
+												|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP3,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP3)) \
+												|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP4,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP4)) \
+												|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP5,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP5)) \
+												|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP6,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP6)) \
+												|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP7,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP7)) \
+												|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP8,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP8)) \
+												|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP9,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP9)) \
+												|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP10,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP10)) )
+///////////////////////////////////////////////////////////////////////////////
+// 2006-05-02 by cmkwon, Launcher URL
+#define LAUNCHER_WEB_URL						"http://aceonline.ndolfin.com/SCGame/scLauncher.htm"			// 2009-05-13 by cmkwon, 예당 홈페이지 도메인 변경 - 기존(aceonline.co.kr), // 2006-09-12 by cmkwon, 수정
+#define TESTSERVER_LAUNCHER_WEB_URL				"http://aceonline.ndolfin.com/SCGame/scLauncher_test.htm"		// 2009-05-13 by cmkwon, 예당 홈페이지 도메인 변경 - 기존(aceonline.co.kr), // 2006-12-25 by cmkwon, 수정
+///////////////////////////////////////////////////////////////////////////////
+// 2007-02-13 by cmkwon
+#define BILLING_DBSERVER_DATABASE_NAME			"MS_Billing"
+#define BILLING_DBSERVER_USER_ID				"atum"
+// Kor_Masang51		==> callweb
+// Kor_Yedang		==> 2006-12-25 by cmkwon, 수정함
+#define BILLING_DBSERVER_USER_PWD				"dpdltm!@eoqkr"
+#endif // S_KOR_SERVER_SETTING_HSSON
+
+
+
+#ifdef S_JPN_SERVER_SETTING_HSSON
+// 2008-06-05 by cmkwon, AdminTool, Monitor 접근 가능 IP를 server config file 에 설정하기 - MS140번 서버만 테스트를 위해 IP 를 틀리게(121.134.11.) 설정 함
+// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP1		"61.39.170."		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP2		"61.39.170."		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP3		"61.39.170."		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP4		"61.39.170."		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP5		"61.39.170."		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP6		"61.39.170."		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP7		"61.39.170."		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP8		"61.39.170."		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP9		"61.39.170."		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP10		"61.39.170."		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define IS_SCADMINTOOL_CONNECTABLE_IP(ip)		( 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP1,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP1)) \
+	|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP2,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP2)) \
+	|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP3,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP3)) \
+	|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP4,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP4)) \
+	|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP5,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP5)) \
+	|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP6,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP6)) \
+	|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP7,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP7)) \
+	|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP8,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP8)) \
+	|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP9,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP9)) \
+|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP10,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP10)) )
+
+///////////////////////////////////////////////////////////////////////////////
+// 2006-05-02 by cmkwon, Launcher URL
+#define LAUNCHER_WEB_URL						"http://www.aceonline.co.kr/SCGame/scLauncher.htm"			// 2006-09-12 by cmkwon, 수정
+#define TESTSERVER_LAUNCHER_WEB_URL				"http://www.aceonline.co.kr/SCGame/scLauncher_test.htm"		// 2006-12-25 by cmkwon, 수정
+
+
+///////////////////////////////////////////////////////////////////////////////
+// 2007-02-13 by cmkwon
+#define BILLING_DBSERVER_DATABASE_NAME			"MS_Billing"
+#define BILLING_DBSERVER_USER_ID				"atum"
+// Kor_Masang51		==> callweb
+// Kor_Yedang		==> 2006-12-25 by cmkwon, 수정함
+#define BILLING_DBSERVER_USER_PWD				"dpdltm!@eoqkr"
+#endif // S_JPN_SERVER_SETTING_HSSON
+
+
+
+
+#ifdef S_CAN_SERVER_SETTING_HSSON
+// 2008-06-05 by cmkwon, AdminTool, Monitor 접근 가능 IP를 server config file 에 설정하기 - MS140번 서버만 테스트를 위해 IP 를 틀리게(121.134.11.) 설정 함
+// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP1		"127.0.0."		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP2		"127.0.0."		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP3		"127.0.0."		// 2008-08-05 by cmkwon, WikiGames_Eng 게임 정보 수정 - 본섭 Private IP
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP4		"127.0.0.1"		// 2008-08-05 by cmkwon, WikiGames_Eng 게임 정보 수정 - 본섭 Public IP
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP5		"127.0.0."		// 2008-08-05 by cmkwon, WikiGames_Eng 게임 정보 수정 - 테섭 Public IP
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP6		"127.0.0."		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP7		"127.0.0."		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP8		"192.168.1."		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP9		"192.168.1."		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP10		"192.168.1.9"		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define IS_SCADMINTOOL_CONNECTABLE_IP(ip)		( 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP1,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP1)) \
+												|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP2,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP2)) \
+												|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP3,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP3)) \
+												|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP4,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP4)) \
+												|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP5,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP5)) \
+												|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP6,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP6)) \
+												|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP7,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP7)) \
+												|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP8,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP8)) \
+												|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP9,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP9)) \
+												|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP10,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP10)) )
+
+///////////////////////////////////////////////////////////////////////////////
+// 2006-05-02 by cmkwon, Launcher URL
+#define LAUNCHER_WEB_URL						"https://dev.rivals-evolution.net/launcher/"
+#define TESTSERVER_LAUNCHER_WEB_URL				"https://dev.rivals-evolution.net/launcher/"
+
+
+///////////////////////////////////////////////////////////////////////////////
+// 2007-02-13 by cmkwon
+#define BILLING_DBSERVER_DATABASE_NAME			"MS_Billing"
+#define BILLING_DBSERVER_USER_ID				"atum"
+// Kor_Masang51		==> callweb
+// Kor_Yedang		==> 2006-12-25 by cmkwon, 수정함
+#define BILLING_DBSERVER_USER_PWD				"callweb"
+#endif // S_CAN_SERVER_SETTING_HSSON
+
+
+
+
+#ifdef S_RUS_SERVER_SETTING_HSSON
+// 2008-06-05 by cmkwon, AdminTool, Monitor 접근 가능 IP를 server config file 에 설정하기 - MS140번 서버만 테스트를 위해 IP 를 틀리게(121.134.11.) 설정 함
+// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP1		"61.39.170."		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP2		"61.39.170."		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP3		"61.39.170."		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP4		"61.39.170."		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP5		"61.39.170."		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP6		"61.39.170."		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP7		"61.39.170."		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP8		"89.249.25."		// 2008-07-29 by cmkwon, Innova_Rus 수정 - 서버 공인 IP
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP9		"172.29."			// 2008-07-29 by cmkwon, Innova_Rus 수정 - 서버 사설 IP
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP10		"89.208.20.170"		// 2008-07-29 by cmkwon, Innova_Rus 수정 - 본부장님 러시아에서 요청(AdminTool 교육을 위해)
+#define IS_SCADMINTOOL_CONNECTABLE_IP(ip)		( 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP1,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP1)) \
+	|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP2,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP2)) \
+	|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP3,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP3)) \
+	|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP4,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP4)) \
+	|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP5,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP5)) \
+	|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP6,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP6)) \
+	|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP7,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP7)) \
+	|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP8,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP8)) \
+	|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP9,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP9)) \
+|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP10,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP10)) )
+
+///////////////////////////////////////////////////////////////////////////////
+// 2006-05-02 by cmkwon, Launcher URL
+#define LAUNCHER_WEB_URL						"http://launcher.aceonline.ru"		// 2008-06-24 by cmkwon, 수정됨
+#define TESTSERVER_LAUNCHER_WEB_URL				"http://launcher.aceonline.ru"		// 2008-06-24 by cmkwon, 수정됨
+
+
+///////////////////////////////////////////////////////////////////////////////
+// 2007-02-13 by cmkwon
+#define BILLING_DBSERVER_DATABASE_NAME			"MS_Billing"
+#define BILLING_DBSERVER_USER_ID				"atum"
+// Kor_Masang51		==> callweb
+// Kor_Yedang		==> 2006-12-25 by cmkwon, 수정함
+#define BILLING_DBSERVER_USER_PWD				"dpdltm!@eoqkr"
+#endif // S_RUS_SERVER_SETTING_HSSON
+
+
+#ifdef S_VIE_SERVER_SETTING_HSSON
+// 2008-06-05 by cmkwon, AdminTool, Monitor 접근 가능 IP를 server config file 에 설정하기 - MS140번 서버만 테스트를 위해 IP 를 틀리게(121.134.11.) 설정 함
+// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP1		"61.39.170.14"	// 2007-01-03 by cmkwon, 내부 테섭군
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP2		"61.39.170.15"	// 2007-01-03 by cmkwon, 프로그램팀군
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP3		"61.39.170.1"		// 2008-05-19 by cmkwon, 마상 모두, // 2007-01-03 by cmkwon, 기획,운영팀군
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP4		"222.255.15.252"	// 2008-05-19 by cmkwon, Hoa 요청, // 2007-01-03 by cmkwon, 사장님,본부장님
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP5		"117.103.192.64"	// 2008-04-28 by cmkwon, VTC-Intecom Monitor PC1
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP6		"222.255.15.15"		// 2008-04-28 by cmkwon, VTC-Intecom Monitor PC1(<==222.255.15.252)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP7		"127.0.0.1"			// 2007-03-06 by cmkwon, VTC-Intecom Monitor PC2(delete 203.162.1.223)
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP8		"222.255.15.248"	// 2007-01-03 by cmkwon, Masang Remote PC in VTC
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP9		"222.255.15.37"		// 2007-01-03 by cmkwon, VTC Main Pre Server public IP
+#define SCADMINTOOL_CONNECTABLE_PREFIX_IP10		"10.10.1."			// 2007-01-03 by cmkwon, VTC Server private IP
+#define IS_SCADMINTOOL_CONNECTABLE_IP(ip)		( 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP1,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP1)) \
+	|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP2,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP2)) \
+	|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP3,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP3)) \
+	|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP4,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP4)) \
+	|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP5,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP5)) \
+	|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP6,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP6)) \
+	|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP7,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP7)) \
+	|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP8,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP8)) \
+	|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP9,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP9)) \
+|| 0 == strncmp((ip),SCADMINTOOL_CONNECTABLE_PREFIX_IP10,strlen(SCADMINTOOL_CONNECTABLE_PREFIX_IP10)) )
+
+///////////////////////////////////////////////////////////////////////////////
+// 2006-05-02 by cmkwon, Launcher URL
+#define LAUNCHER_WEB_URL						"http://phidoi.vtc.vn/notice.asp"		// 2007-10-05 by cmkwon, 수정(기존 "http://caoboi.vtc.vn/notice.asp")
+#define TESTSERVER_LAUNCHER_WEB_URL				"http://phidoi.vtc.vn/notice.asp"		// 2007-10-05 by cmkwon, 수정(기존 "http://caoboi.vtc.vn/notice.asp")
+
+
+///////////////////////////////////////////////////////////////////////////////
+// 2007-02-13 by cmkwon
+#define BILLING_DBSERVER_DATABASE_NAME			"MS_Billing"
+#define BILLING_DBSERVER_USER_ID				"atum"
+// Kor_Masang51		==> callweb
+// Kor_Yedang		==> 2006-12-25 by cmkwon, 수정함
+#define BILLING_DBSERVER_USER_PWD				"callweb"
+#endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// 2007-02-13 by cmkwon
+
+// 국가 소스통합 때 추가 되어야 할 부분 순서 08
+#ifdef S_140_SERVER_SETTING_HSSON
+#define	SG_BOX_FONT_FACENAME						"굴림"					// 2007-02-12 by cmkwon, 글씨체
+#define	SG_BOX_FONT_CHARSET							ANSI_CHARSET			// 2007-02-12 by cmkwon, 캐릭터셋
+#define	SG_BOX_FONT_WEIGHT							FW_BOLD					// 2007-02-12 by cmkwon, 글씨체 두깨
+#endif
+
+#ifdef S_KOR_SERVER_SETTING_HSSON
+#define	SG_BOX_FONT_FACENAME						"굴림"					// 2007-02-12 by cmkwon, 글씨체
+#define	SG_BOX_FONT_CHARSET							ANSI_CHARSET			// 2007-02-12 by cmkwon, 캐릭터셋
+#define	SG_BOX_FONT_WEIGHT							FW_BOLD					// 2007-02-12 by cmkwon, 글씨체 두깨
+#endif
+
+#ifdef S_JPN_SERVER_SETTING_HSSON
+#define	SG_BOX_FONT_FACENAME						"MS PGothic"				// 2007-02-12 by cmkwon, 글씨체
+#define	SG_BOX_FONT_CHARSET							SHIFTJIS_CHARSET			// 2007-02-12 by cmkwon, 캐릭터셋
+#define	SG_BOX_FONT_WEIGHT							FW_BOLD					// 2007-02-12 by cmkwon, 글씨체 두깨
+#endif
+
+#ifdef S_CAN_SERVER_SETTING_HSSON
+#define	SG_BOX_FONT_FACENAME						"Tahoma"					// 2007-02-12 by cmkwon, 글씨체
+#define	SG_BOX_FONT_CHARSET							ANSI_CHARSET			// 2007-02-12 by cmkwon, 캐릭터셋
+#define	SG_BOX_FONT_WEIGHT							FW_BOLD					// 2007-02-12 by cmkwon, 글씨체 두깨
+#endif
+
+#ifdef S_RUS_SERVER_SETTING_HSSON
+#define	SG_BOX_FONT_FACENAME						"Verdana"				// 2008-06-18 by cmkwon, 글씨체, 러시아로부터 받음
+#define	SG_BOX_FONT_CHARSET							ANSI_CHARSET			// 2007-02-12 by cmkwon, 캐릭터셋
+#define	SG_BOX_FONT_WEIGHT							FW_BOLD					// 2007-02-12 by cmkwon, 글씨체 두깨
+#endif
+
+#ifdef S_VIE_SERVER_SETTING_HSSON
+#define	SG_BOX_FONT_FACENAME					"Times New Roman"		// 2007-02-12 by cmkwon, 글씨체
+#define	SG_BOX_FONT_CHARSET						VIETNAMESE_CHARSET		// 2007-02-12 by cmkwon, 캐릭터셋
+#define	SG_BOX_FONT_WEIGHT						FW_BOLD					// 2007-02-12 by cmkwon, 글씨체 두깨
+#endif
+
+
+
+
+
+
+
+
+
+// #define STR_XOR_KEY_STRING_PRE_SERVER_ADDRESS				"+-faNsf(^fP{)3>fnao??_+|23kdasf*^@`d{]s*&DS"	// 2008-04-23 by cmkwon, PreServer 주소를 IP와 도메인 둘다 지원 - 
+
+
+
+
+// 국가 소스통합 때 추가 되어야 할 부분 순서 09
+#if defined(S_140_SERVER_SETTING_HSSON) && defined(S_ACCESS_INTERNAL_SERVER_HSSON)
+	// 내부 서버로 ip 세팅
+	// 61.39.170.140							==>	"1D1C4852775D571F6E48614F19"		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+	// 61.39.170.151							==>	"1D1C4852775D571F6E48614E1C"
+	#define CHOICE_PRE_SERVER_IP_OR_DOMAIN_IN_XOR	"1D1C4852775D571F6E48614F19"
+
+	#define REGISTRY_BASE_PATH						"SpaceCowboy(Masang51)"
+	#define EXE_1_FILE_NAME							"SpaceCowboy.exe"
+	#define LAUNCHER_FILE_NAME						"Launcher.atm"
+
+	#define CLIENT_EXEUTE_FILE_NAME					"SpaceCowboy.atm"
+	#define URL_REGISTER_PAGE						"Sign_up.htm"
+
+	#define WEB_START_REGISTRY_VALUE_NAME			"InstallPath"
+
+#elif defined(S_140_SERVER_SETTING_HSSON)
+	// 본 서버로 ip 세팅
+	// 121.134.114.140							==>	"1A1F574F7F4052066F57645518070E"
+	#define CHOICE_PRE_SERVER_IP_OR_DOMAIN_IN_XOR	"1A1F574F7F4052066F57645518070E"
+
+	#define REGISTRY_BASE_PATH						"SpaceCowboy(Masang51)_Test"
+	#define EXE_1_FILE_NAME							"SpaceCowboy.exe"
+	#define LAUNCHER_FILE_NAME						"Launcher.atm"
+
+	#define CLIENT_EXEUTE_FILE_NAME					"SpaceCowboy_Test.atm"
+	#define URL_REGISTER_PAGE						"Sign_up.htm"
+
+	#define WEB_START_REGISTRY_VALUE_NAME			"InstallPath"
+#endif
+
+
+
+#if defined(S_KOR_SERVER_SETTING_HSSON) && defined(S_ACCESS_INTERNAL_SERVER_HSSON)
+	// 내부 서버로 ip 세팅
+	// 112.107.1.11								==> "1A1C544F7F4351066F48614A"		// 2009-02-16 by dhjin, 예당 IDC변경 (// 211.189.116.11	==>	"191C574F7F4B5F066F5766551802")
+	#define CHOICE_PRE_SERVER_IP_OR_DOMAIN_IN_XOR	"1A1C544F7F4351066F48614A"
+
+	#define REGISTRY_BASE_PATH		 				"ACEonline_Test"
+	#define EXE_1_FILE_NAME							"ACEonline.exe"
+	#define LAUNCHER_FILE_NAME						"Launcher_Test.atm"
+
+	#define CLIENT_EXEUTE_FILE_NAME					"ACEonline.atm"
+	#define URL_REGISTER_PAGE						"reg.asp"				// 2006-04-05 by cmkwon, 수정함
+
+	#define WEB_START_REGISTRY_VALUE_NAME			"InstallPath"
+#elif defined(S_KOR_SERVER_SETTING_HSSON)
+	// 본 서버로 ip 세팅
+	// 112.107.1.13								==> "1A1C544F7F4351066F486148"		 // 2009-02-16 by dhjin, 예당 IDC변경 (// 211.189.116.13 ==>	"191C574F7F4B5F066F5766551800")
+	// 61.39.170.141							==> "1D1C4852775D571F6E48614F18"	 // 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+	#define CHOICE_PRE_SERVER_IP_OR_DOMAIN_IN_XOR	"1A1C544F7F4351066F486148"
+
+	#define REGISTRY_BASE_PATH						"ACEonline"
+	#define EXE_1_FILE_NAME							"ACEonline.exe"
+	#define LAUNCHER_FILE_NAME						"Launcher.atm"
+
+	#define CLIENT_EXEUTE_FILE_NAME					"ACEonline.atm"
+	#define URL_REGISTER_PAGE						"reg.asp"				// 2006-04-05 by cmkwon, 수정함
+
+	#define WEB_START_REGISTRY_VALUE_NAME			"InstallPath"
+#endif
+
+
+
+#if defined(S_JPN_SERVER_SETTING_HSSON) && defined(S_ACCESS_INTERNAL_SERVER_HSSON)
+// 내부 서버로 ip 세팅
+//61.206.174.229(Arario_테섭)				==>	"1D1C48537E45481969527E491B0A"	// 2009-10-26 by cmkwon, 서버군통합, IDC 이전 작업 - 기존 119.75.233.55
+//61.206.174.70(Arario_테섭)변경됨			==>	"1D1C48537E45481969527E4C193A"	// 2010-10-18 by shcho, 일본 테섭 IP / PORT번호 변경 - 기존 229를 70으로 변경 
+#define CHOICE_PRE_SERVER_IP_OR_DOMAIN_IN_XOR	"1D1C48537E45481969527E4C193A"
+
+#define REGISTRY_BASE_PATH						"ACEOnline(JPN)_Test"
+#define EXE_1_FILE_NAME							"ACEonline.exe"
+#define LAUNCHER_FILE_NAME						"Launcher.atm"
+
+#define CLIENT_EXEUTE_FILE_NAME					"ACEonline.atm"
+#define URL_REGISTER_PAGE						"reg.asp"				// 2006-04-05 by cmkwon, 수정함
+
+#define WEB_START_REGISTRY_VALUE_NAME			"InstallPath"
+#elif defined(S_JPN_SERVER_SETTING_HSSON)
+// 61.206.174.81(Arario_본섭)				==>	"1D1C48537E45481969527E4318"	// 2009-10-26 by cmkwon, 서버군통합, IDC 이전 작업 - 기존 119.75.233.81
+// 61.206.174.160(Arario_본섭)				==> "1D1C48537E45481969527E4A1F03"	// 2010. 10. 04. by hsLee.	서버 IP변경. - 기본 61.206.174.81
+// 61.39.170.222(마상 내부 서버)			==> "1D1C4852775D571F6E4862491B"	// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define CHOICE_PRE_SERVER_IP_OR_DOMAIN_IN_XOR	"1D1C48537E45481969527E4A1F03"
+
+#define REGISTRY_BASE_PATH						"ACEOnline(JPN)"
+#define EXE_1_FILE_NAME							"ACEonline.exe"
+#define LAUNCHER_FILE_NAME						"Launcher.atm"
+
+#define CLIENT_EXEUTE_FILE_NAME					"ACEonline.atm"
+#define URL_REGISTER_PAGE						"reg.asp"				// 2006-04-05 by cmkwon, 수정함
+
+#define WEB_START_REGISTRY_VALUE_NAME			"InstallPath"
+#endif
+
+
+
+#if defined(S_CAN_SERVER_SETTING_HSSON) && defined(S_ACCESS_INTERNAL_SERVER_HSSON)
+	// 내부 서버로 ip 세팅
+	// 66.207.198.252							==>	"1D1B48537E444819675E7E491C01"	 // 2010-05-26 IP변경 기존IP 208.68.90.122
+//xor key => +-faNsf(^fP{)3>fnao??_+|23kdasf*^@`d{]s*&DS
+#define CHOICE_PRE_SERVER_IP_OR_DOMAIN_IN_XOR	"121C48507D4748196C48614B1D"//"191D514F7F4B56066C556855180A0D" osr test server////121C48507D4748196C48614B1D => 91.134.12.104 osr real server// "1A1F514F7E5D56066F" //By Romu , change ip to local
+
+#define REGISTRY_BASE_PATH						"OldSchoolRivals_Inetpub"
+	#define EXE_1_FILE_NAME							"OldSchoolRivals.exe"
+	#define LAUNCHER_FILE_NAME						"Launcher.atm"
+
+	#define CLIENT_EXEUTE_FILE_NAME					"ACEonline.atm"
+	#define URL_REGISTER_PAGE						"reg.asp"				// 2006-04-05 by cmkwon, 수정함
+
+	#define WEB_START_REGISTRY_VALUE_NAME			"InstallPath"
+#elif defined(S_CAN_SERVER_SETTING_HSSON)
+// 74.200.4.135								==>	"1C1948537E43481C7057634E"		// 2009-09-02 by cmkwon, WikiGames 서버 IP 수정 - 
+// 61.39.170.142							==> "1D1C4852775D571F6E48614F1B"	// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+// preserver.ace.subagames.com				==> "5B5F03122B01104D2C4831184C1D4D130C00085E523A5852515C06"	
+#define CHOICE_PRE_SERVER_IP_OR_DOMAIN_IN_XOR	"1A14574F7F455E066F4869" //"5B5F03122B01104D2C4831184C1D4D130C00085E523A5852515C06"
+
+#define REGISTRY_BASE_PATH						"OldSchoolRivals"
+#define EXE_1_FILE_NAME							"OldSchoolRivals.exe"
+#define LAUNCHER_FILE_NAME						"Launcher.atm"
+
+#define CLIENT_EXEUTE_FILE_NAME					"ACEonline.atm"
+#define URL_REGISTER_PAGE						"reg.asp"				// 2006-04-05 by cmkwon, 수정함
+
+#define WEB_START_REGISTRY_VALUE_NAME			"InstallPath"
+#endif
+
+
+
+#if defined(S_RUS_SERVER_SETTING_HSSON) && defined(S_ACCESS_INTERNAL_SERVER_HSSON)
+	// 내부 서버로 ip 세팅
+	// 109.105.134.130								==>	"1A1D5F4F7F4353066F55645518000E"			// 2010-04-26 by cmkwon, 러시아 Innova 테섭 IP 변경 - 기존(89.249.25.58)
+	#define CHOICE_PRE_SERVER_IP_OR_DOMAIN_IN_XOR	"1A1D5F4F7F4353066F55645518000E"
+
+	#define REGISTRY_BASE_PATH						"ACEonline(RU)_Test"
+	#define EXE_1_FILE_NAME							"ACEonline.exe"
+	#define LAUNCHER_FILE_NAME						"Launcher.atm"
+
+	#define CLIENT_EXEUTE_FILE_NAME					"ACEonline.atm"
+	#define URL_REGISTER_PAGE						"reg.asp"				// 2006-04-05 by cmkwon, 수정함
+
+	#define WEB_START_REGISTRY_VALUE_NAME			"InstallPath"
+#elif defined(S_RUS_SERVER_SETTING_HSSON)
+	// 109.105.134.133							==>	"1A1D5F4F7F4353066F55645518000D"			// 2008-06-24 by cmkwon, 수정됨
+	// 61.39.170.220							==> "1D1C4852775D571F6E48624919"				// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+	#define CHOICE_PRE_SERVER_IP_OR_DOMAIN_IN_XOR	"1A1D5F4F7F4353066F55645518000D"
+
+	#define REGISTRY_BASE_PATH						"ACEonline(RU)"
+	#define EXE_1_FILE_NAME							"ACEonline.exe"
+	#define LAUNCHER_FILE_NAME						"Launcher.atm"
+
+	#define CLIENT_EXEUTE_FILE_NAME					"ACEonline.atm"
+	#define URL_REGISTER_PAGE						"reg.asp"				// 2006-04-05 by cmkwon, 수정함
+	
+	#define WEB_START_REGISTRY_VALUE_NAME			"InstallPath"
+#endif
+
+#if defined(S_VIE_SERVER_SETTING_HSSON) && defined(S_ACCESS_INTERNAL_SERVER_HSSON)
+// 2011-08-16 by shcho, 베트남 IP변경됨 - preServer(기존:222.235.15.54 -> 변경:117.103.198.155)
+// 222.255.15.54								==>	"191F544F7C4653066F537E4E1D"
+// 117.103.198.155								==> "1A1C514F7F4355066F5F685518060B"
+#define CHOICE_PRE_SERVER_IP_OR_DOMAIN_IN_XOR	"1A1C514F7F4355066F5F685518060B"
+
+#define REGISTRY_BASE_PATH						"PhiDoi_Test"
+#define EXE_1_FILE_NAME							"PhiDoi.exe"
+#define LAUNCHER_FILE_NAME						"Launcher.atm"
+
+#define CLIENT_EXEUTE_FILE_NAME					"PhiDoi.atm"
+#define URL_REGISTER_PAGE						"reg.asp"				// 2006-04-05 by cmkwon, 수정함
+
+#define WEB_START_REGISTRY_VALUE_NAME			"InstallPath"
+#elif defined(S_VIE_SERVER_SETTING_HSSON)
+// 117.103.194.77					        ==>	"1A1C514F7F4355066F5F64551E04"		// 2011-08-16 by shcho, 베트남 IP변경됨 
+// MasangTest(61.39.170.143)				==> "1D1C4852775D571F6E48614F1A"		// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define CHOICE_PRE_SERVER_IP_OR_DOMAIN_IN_XOR	"1A1C514F7F4355066F5F64551E04"
+
+#define REGISTRY_BASE_PATH						"PhiDoi"
+#define EXE_1_FILE_NAME							"PhiDoi.exe"
+#define LAUNCHER_FILE_NAME						"Launcher.atm"
+
+#define CLIENT_EXEUTE_FILE_NAME					"PhiDoi.atm"
+#define URL_REGISTER_PAGE						"reg.asp"				// 2006-04-05 by cmkwon, 수정함
+
+#define WEB_START_REGISTRY_VALUE_NAME			"InstallPath"
+#endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// 2006-12-22 by cmkwon, 게임이름 변경하면서 
+
+// 국가 소스통합 때 추가 되어야 할 부분 순서 10
+#ifdef S_140_SERVER_SETTING_HSSON
+#define STRMSG_WINDOW_TEXT							"SpaceCowboy Online"
+#define STRMSG_REG_STRING_CLIENT_VERSION			"SpaceCowboyVersion"
+#define STRMSG_REG_STRING_REGISTRYKEY_NAME			"Masang Soft"
+#endif
+
+
+#ifdef S_KOR_SERVER_SETTING_HSSON
+#define STRMSG_WINDOW_TEXT							"ACEonline"
+#define STRMSG_REG_STRING_CLIENT_VERSION			"ACEonlineVersion"
+#define STRMSG_REG_STRING_REGISTRYKEY_NAME			"Yedang Online"
+#endif
+
+#ifdef S_JPN_SERVER_SETTING_HSSON
+#define STRMSG_WINDOW_TEXT							"ACEonline"
+#define STRMSG_REG_STRING_CLIENT_VERSION			"ACEonlineVersion"
+#define STRMSG_REG_STRING_REGISTRYKEY_NAME			"Arario"
+#endif
+
+#ifdef S_CAN_SERVER_SETTING_HSSON
+#define STRMSG_WINDOW_TEXT							"OldSchoolRivals"
+#define STRMSG_REG_STRING_CLIENT_VERSION			"OSRVersion"
+#define STRMSG_REG_STRING_REGISTRYKEY_NAME			"Inetpub"				// 2008-07-31 by cmkwon, Yedang-Global_Eng 를 Wikigames_Eng 로 변경 함 - 
+#endif
+
+#ifdef S_RUS_SERVER_SETTING_HSSON
+#define STRMSG_WINDOW_TEXT							"ACEonline"
+#define STRMSG_REG_STRING_CLIENT_VERSION			"ACEonlineVersion"
+#define STRMSG_REG_STRING_REGISTRYKEY_NAME			"Innova"
+#endif
+
+#ifdef S_VIE_SERVER_SETTING_HSSON
+#define STRMSG_WINDOW_TEXT							"PhiDoi"
+#define STRMSG_REG_STRING_CLIENT_VERSION			"PhiDoiVersion"
+#define STRMSG_REG_STRING_REGISTRYKEY_NAME			"VTC Game"
+#endif
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// 2007-06-27 by cmkwon, 중국 방심취 시스템 수정 - 미성년자 관련
+// Kor		- 만 20세
+// China	- 만 18세
+#define ADULT_YEARS									20			// 2007-06-29 by cmkwon,
+
+///////////////////////////////////////////////////////////////////////////////
+// 2007-07-06 by cmkwon, SCAdminTool에서 OnlyServerAdmin관련 수정 - 계정 정보
+#define SCADMINTOOL_ONLY_SERVER_ADMIN_ACCOUNT_NAME		"SC_moniter"
+#define SCADMINTOOL_ONLY_SERVER_ADMIN_PASSWORD			"cowboyWkd"
+
+///////////////////////////////////////////////////////////////////////////////
+// 2007-09-05 by cmkwon, EXE_1에 로그인 서버 선택 인터페이스 수정 - 상위 URL, 우측 하단 URL
+#define EXE1_URL_1										"http://notice.aceonline.com.cn/ace2.htm"
+#define EXE1_URL_2										"http://notice.aceonline.com.cn/ace1.htm"
+
+
+///////////////////////////////////////////////////////////////////////////////
+// 2008-12-19 by cmkwon, 한국 Yedang 핵쉴드 모니터링 서버 설정 추가 - IP가 ""로 설정되면 모니터링 서버를 사용하지 않는 것임, 현재는 Masang140과 Yedang만 사용 할 것임
+
+// 국가 소스통합 때 추가 되어야 할 부분 순서 11
+#ifdef S_140_SERVER_SETTING_HSSON
+#define GAME_GUARD_MONITORING_SERVER_IP					"61.39.170.141"
+#endif
+
+#ifdef S_KOR_SERVER_SETTING_HSSON
+#define GAME_GUARD_MONITORING_SERVER_IP					"112.107.1.11"		// 2009-02-16 by dhjin, 예당 IDC 이전 - 211.189.116.11
+#endif
+
+#ifdef S_JPN_SERVER_SETTING_HSSON
+#define GAME_GUARD_MONITORING_SERVER_IP					""
+#endif
+
+#ifdef S_CAN_SERVER_SETTING_HSSON
+#define GAME_GUARD_MONITORING_SERVER_IP					""
+#endif
+
+#ifdef S_RUS_SERVER_SETTING_HSSON
+#define GAME_GUARD_MONITORING_SERVER_IP					""
+#endif
+
+#ifdef S_VIE_SERVER_SETTING_HSSON
+#define GAME_GUARD_MONITORING_SERVER_IP					""
+#endif
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// 2009-02-12 by cmkwon, EP3-3 월드랭킹시스템 구현 - 월드랭킹 DB 서버 정보
+// 2009-06-01 by cmkwon, 월드 랭킹 시스템 테스트 기능 구현(for 테섭) - 
+// 국가 소스통합 때 추가 되어야 할 부분 순서 12
+#ifdef S_140_SERVER_SETTING_HSSON
+#define WRK_DBSERVER_IP							"61.39.170.135"				// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define WRK_DBSERVER_PORT						9979
+#define WRK_DBSERVER_DATABASE_NAME				"atum2_db_WorldRanking"
+#define WRK_DBSERVER_ID							"atum"
+#define WRK_DBSERVER_PWD						"callweb"
+#define WRK_DBSERVER_IP_FOR_TEST_SERVER			"61.39.170.140"				// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)// 2009-06-01 by cmkwon, 월드 랭킹 시스템 테스트 기능 구현(for 테섭) - 
+#define WRK_DBSERVER_PORT_FOR_TEST_SERVER		9979					// 2009-06-01 by cmkwon, 월드 랭킹 시스템 테스트 기능 구현(for 테섭) - 
+#endif
+
+#ifdef S_KOR_SERVER_SETTING_HSSON
+#define WRK_DBSERVER_IP							"61.39.170.131"				// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define WRK_DBSERVER_PORT						1433
+#define WRK_DBSERVER_DATABASE_NAME				"atum2_db_WorldRanking"
+#define WRK_DBSERVER_ID							"atum"
+#define WRK_DBSERVER_PWD						"callweb"
+#define WRK_DBSERVER_IP_FOR_TEST_SERVER			"61.39.170.140"				// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)// 2009-06-01 by cmkwon, 월드 랭킹 시스템 테스트 기능 구현(for 테섭) - 
+#define WRK_DBSERVER_PORT_FOR_TEST_SERVER		9979					// 2009-06-01 by cmkwon, 월드 랭킹 시스템 테스트 기능 구현(for 테섭) - 
+#endif
+
+#ifdef S_JPN_SERVER_SETTING_HSSON
+#define WRK_DBSERVER_IP							"61.39.170.131"				// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define WRK_DBSERVER_PORT						1433
+#define WRK_DBSERVER_DATABASE_NAME				"atum2_db_WorldRanking"
+#define WRK_DBSERVER_ID							"atum"
+#define WRK_DBSERVER_PWD						"callweb"
+#define WRK_DBSERVER_IP_FOR_TEST_SERVER			"61.39.170.140"				// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)// 2009-06-01 by cmkwon, 월드 랭킹 시스템 테스트 기능 구현(for 테섭) - 
+#define WRK_DBSERVER_PORT_FOR_TEST_SERVER		9979					// 2009-06-01 by cmkwon, 월드 랭킹 시스템 테스트 기능 구현(for 테섭) - 
+#endif
+
+#ifdef S_CAN_SERVER_SETTING_HSSON
+#define WRK_DBSERVER_IP							"database2.internal"				// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define WRK_DBSERVER_PORT						1433
+#define WRK_DBSERVER_DATABASE_NAME				"atum2_db_1"
+#define WRK_DBSERVER_ID							"sa"
+#define WRK_DBSERVER_PWD						"TbkS6Q775bXKSLz"
+#define WRK_DBSERVER_IP_FOR_TEST_SERVER			"127.0.0.1"				// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)// 2009-06-01 by cmkwon, 월드 랭킹 시스템 테스트 기능 구현(for 테섭) - 
+#define WRK_DBSERVER_PORT_FOR_TEST_SERVER		1433					// 2009-06-01 by cmkwon, 월드 랭킹 시스템 테스트 기능 구현(for 테섭) - 
+#endif
+
+#ifdef S_RUS_SERVER_SETTING_HSSON
+#define WRK_DBSERVER_IP							"61.39.170.131"				// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define WRK_DBSERVER_PORT						1433
+#define WRK_DBSERVER_DATABASE_NAME				"atum2_db_WorldRanking"
+#define WRK_DBSERVER_ID							"atum"
+#define WRK_DBSERVER_PWD						"callweb"
+#define WRK_DBSERVER_IP_FOR_TEST_SERVER			"61.39.170.140"				// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)// 2009-06-01 by cmkwon, 월드 랭킹 시스템 테스트 기능 구현(for 테섭) - 
+#define WRK_DBSERVER_PORT_FOR_TEST_SERVER		9979					// 2009-06-01 by cmkwon, 월드 랭킹 시스템 테스트 기능 구현(for 테섭) - 
+#endif
+
+#ifdef S_VIE_SERVER_SETTING_HSSON
+#define WRK_DBSERVER_IP							"61.39.170.131"				// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)
+#define WRK_DBSERVER_PORT						1433
+#define WRK_DBSERVER_DATABASE_NAME				"atum2_db_WorldRanking"
+#define WRK_DBSERVER_ID							"atum"
+#define WRK_DBSERVER_PWD						"callweb"
+#define WRK_DBSERVER_IP_FOR_TEST_SERVER			"61.39.170.140"				// 2009-12-28 by cmkwon, 마상회사 IP 변경 - 기존(121.134.114.)// 2009-06-01 by cmkwon, 월드 랭킹 시스템 테스트 기능 구현(for 테섭) - 
+#define WRK_DBSERVER_PORT_FOR_TEST_SERVER		9979					// 2009-06-01 by cmkwon, 월드 랭킹 시스템 테스트 기능 구현(for 테섭) - 
+#endif
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// 2009-03-31 by cmkwon, 세력초기화 시스템 구현 - 
+#define MAX_INFLUENCE_PERCENT			53		// 최대 5% 차이까지만 세력 선택이 가능한다.
+
+
+///////////////////////////////////////////////////////////////////////////////
+// 2009-05-12 by cmkwon, (일본요청) 일본만 전진 기지전 주기 7일로 수정 - 전진기지전 주기 서비스별로 다르게 설정
+// 국가 소스통합 때 추가 되어야 할 부분 순서 13
+#ifdef S_140_SERVER_SETTING_HSSON
+#define	OUTPOST_NEXTWARGAP				5
+#endif
+
+#ifdef S_KOR_SERVER_SETTING_HSSON
+#define	OUTPOST_NEXTWARGAP				5
+#endif
+
+#ifdef S_JPN_SERVER_SETTING_HSSON
+#define	OUTPOST_NEXTWARGAP				7
+#endif
+
+#ifdef S_CAN_SERVER_SETTING_HSSON
+#define	OUTPOST_NEXTWARGAP				5
+#endif
+
+#ifdef S_RUS_SERVER_SETTING_HSSON
+#define	OUTPOST_NEXTWARGAP				5
+#endif
+
+#ifdef S_VIE_SERVER_SETTING_HSSON
+#define	OUTPOST_NEXTWARGAP				5
+#endif
+
+///////////////////////////////////////////////////////////////////////////////
+// 2009-07-08 by cmkwon, 전쟁 관련 정의 위치 이동(LocalizationDefineCommon.h) - 
+// 국가 소스통합 때 추가 되어야 할 부분 순서 14
+#ifdef S_140_SERVER_SETTING_HSSON
+#define	OUTPOST_WARTIME					10			// 전진기지전 진행 시간			==> 마상 10분, 나머지는 120분
+#define OUTPOST_WARTIME_FOR_TESTSERVER	10			// 테섭은 전진기지전 진행 시간	==> 마상 10분, 나머지는 60분
+#define PAY_MINIMUN_COUNT				1			// 모선전,전진기지전,거점전 개인 보상을 위한 최소 인원수 ==> 마상 1명, 나머지는 10명
+#endif
+
+#ifdef S_KOR_SERVER_SETTING_HSSON
+#define	OUTPOST_WARTIME					120			// 전진기지전 진행 시간			==> 마상 10분, 나머지는 120분
+#define OUTPOST_WARTIME_FOR_TESTSERVER	60			// 테섭은 전진기지전 진행 시간	==> 마상 10분, 나머지는 60분
+#define PAY_MINIMUN_COUNT				10			// 모선전,전진기지전,거점전 개인 보상을 위한 최소 인원수 ==> 마상 1명, 나머지는 10명
+#endif
+
+#ifdef S_JPN_SERVER_SETTING_HSSON
+#define	OUTPOST_WARTIME					120			// 전진기지전 진행 시간			==> 마상 10분, 나머지는 120분
+#define OUTPOST_WARTIME_FOR_TESTSERVER	60			// 테섭은 전진기지전 진행 시간	==> 마상 10분, 나머지는 60분
+#define PAY_MINIMUN_COUNT				10			// 모선전,전진기지전,거점전 개인 보상을 위한 최소 인원수 ==> 마상 1명, 나머지는 10명
+#endif
+
+#ifdef S_CAN_SERVER_SETTING_HSSON
+#define	OUTPOST_WARTIME					60			// 전진기지전 진행 시간			==> 마상 10분, 나머지는 120분
+#define OUTPOST_WARTIME_FOR_TESTSERVER	60			// 테섭은 전진기지전 진행 시간	==> 마상 10분, 나머지는 60분
+#define PAY_MINIMUN_COUNT				10			// 모선전,전진기지전,거점전 개인 보상을 위한 최소 인원수 ==> 마상 1명, 나머지는 10명
+#endif
+
+#ifdef S_RUS_SERVER_SETTING_HSSON
+#define	OUTPOST_WARTIME					120			// 전진기지전 진행 시간			==> 마상 10분, 나머지는 120분
+#define OUTPOST_WARTIME_FOR_TESTSERVER	60			// 테섭은 전진기지전 진행 시간	==> 마상 10분, 나머지는 60분
+#define PAY_MINIMUN_COUNT				10			// 모선전,전진기지전,거점전 개인 보상을 위한 최소 인원수 ==> 마상 1명, 나머지는 10명
+#endif
+
+#ifdef S_VIE_SERVER_SETTING_HSSON
+#define	OUTPOST_WARTIME					120			// 전진기지전 진행 시간			==> 마상 10분, 나머지는 120분
+#define OUTPOST_WARTIME_FOR_TESTSERVER	60			// 테섭은 전진기지전 진행 시간	==> 마상 10분, 나머지는 60분
+#define PAY_MINIMUN_COUNT				10			// 모선전,전진기지전,거점전 개인 보상을 위한 최소 인원수 ==> 마상 1명, 나머지는 10명
+#endif
+
+
+///////////////////////////////////////////////////////////////////////////////
+// 2009-11-02 by cmkwon, 캐쉬(인벤/창고 확장) 아이템 추가 구현 - 
+#define SIZE_MAX_ADDABLE_INVENTORY_COUNT		150		// 기본과 프리미엄을 제외한 추가로 가능한 최대 인벤 추가 개수
+#define SIZE_MAX_ADDABLE_STORE_COUNT			150		// 기본과 프리미엄을 제외한 추가로 가능한 최대 창고 추가 개수
+
+
+////////////////////////////////////////////////////////////////////////////////
+// 컨텐츠 버젼 관리용 디파인. by hsLee. 
+#define __CONTENTS_SHOW_INFINITY_DIFFICULTY_EDIT_WND__		// 인피니티 난이도 조정 UI 보이기.	2010. 07. 27. by hsLee.
+////////////////////////////////////////////////////////////////////////////////
+
+
+#endif // end_#ifndef _LOCALIZATION_DEFINE_COMMON_H_

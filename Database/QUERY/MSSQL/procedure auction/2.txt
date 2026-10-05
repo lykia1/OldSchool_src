@@ -1,0 +1,19 @@
+USE [atum2_db_1]
+GO
+/****** Object:  StoredProcedure [dbo].[atum_Market_Get_Enchant_Info]    Script Date: 23/01/2024 08:17:20 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+--31-7-2021 by Inetpub
+	ALTER PROCEDURE [dbo].[atum_Market_Get_Enchant_Info]
+		@i_ItemUID					bigint	
+	AS
+	SELECT 
+    EnchantItemNum, 
+    COUNT(EnchantItemNum)
+FROM
+    td_enchant
+	where TargetItemUniqueNumber =@i_ItemUID
+GROUP BY EnchantItemNum
+		--SELECT EnchantItemNum,ROW_NUMBER() OVER( ORDER BY sequencenumber asc ) AS 'count' from td_enchant where TargetItemUniqueNumber =20339

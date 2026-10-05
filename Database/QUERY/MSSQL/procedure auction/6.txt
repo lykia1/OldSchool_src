@@ -1,0 +1,93 @@
+USE [atum2_db_1]
+GO
+/****** Object:  StoredProcedure [dbo].[atum_Market_GetTradeItem]    Script Date: 23/01/2024 08:18:05 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+--31-07-2021 by Inetpub for 4.6
+ALTER PROCEDURE [dbo].[atum_Market_GetTradeItem]
+	@i_MarketUID		BIGINT,
+	@i_ItemUID			BIGINT,
+	@i_ItemNum			INT,
+	@i_ItemCount		INT,
+	@i_CharUID			INT,
+	@i_IsCountableAndHaveItem	TINYINT,
+	@i_Status		tinyint
+AS 
+BEGIN
+SET NOCOUNT ON;
+DECLARE @nSellerUID INT
+DECLARE @State TINYINT
+DECLARE @Pref INT
+DECLARE @Suf INT
+DECLARE @Color INT
+DECLARE @Shape INT
+SET @Color = (Select ColorCode from td_Market where MarketUID = @i_MarketUID and ItemUID =@i_ItemUID)
+SET @Shape = (Select ShapeItemNum from td_Market where MarketUID = @i_MarketUID and ItemUID =@i_ItemUID)
+SET @Pref = (Select PrefixCodeNum from td_Market where MarketUID = @i_MarketUID and ItemUID =@i_ItemUID)
+SET @Suf = (Select SuffixCodeNum from td_Market where MarketUID = @i_MarketUID and ItemUID =@i_ItemUID)
+SET @State = (Select MarketState from td_Market where MarketUID = @i_MarketUID and ItemUID =@i_ItemUID)
+SET @nSellerUID = (Select c.UniqueNumber from td_Market m , td_Character c where m.CharacterUniqueNumber = c.UniqueNumber and m.MarketUID = @i_MarketUID)
+DECLARE @MarSta TINYINT
+--market states: 
+/*
+#define MARKET_STATE_SELL					1			// selling
+#define MARKET_STATE_SELL_DONE				2			// sold
+#define MARKET_STATE_TIME_OUT				3			// time out
+#define MARKET_STATE_DELETE					4			// deleted item
+*/
+
+--doesnt exist in DB
+IF((select Count(MarketUID) from td_market where MarketUID = @i_MarketUID) < 1)
+BEGIN
+	SELECT 82;
+	RETURN;
+END
+
+--check if DB have same status as client if not report err 81
+SET @MarSta = (select MarketState from td_market where MarketUID = @i_MarketUID)
+IF(@MarSta <> @i_Status)
+BEGIN
+	SELECT 81;
+	RETURN;
+END
+
+DECLARE @MarChar INT
+SET @MarChar = (Select CharacterUniqueNumber from td_Market where MarketUID = @i_MarketUID)
+IF(@MarSta = 2/*MARKET_STATE_SELL_DONE*/ and @MarChar <> @i_CharUID) --sold so it cannot be reverted by getitem
+	BEGIN
+		SELECT 81;
+		RETURN;
+	END
+ELSE IF(@MarSta = 1/*MARKET_STATE_SELL_DONE*/ or @MarSta = 3/*MARKET_STATE_TIME_OUT*/) --back to inventory possible
+BEGIN
+	BEGIN
+		IF @i_IsCountableAndHaveItem = 1
+			BEGIN
+				UPDATE td_store set currentcount = currentcount + @i_ItemCount where Possess = @i_CharUID and ItemStorage = 0 and ItemNum = @i_ItemNum
+			END
+		ELSE
+				BEGIN
+			--insert
+			--EXEC dbo.atum_admin_InsertStoreItem_DB_by_CharacUniqueNum @i_BuyerCharUID,@i_ItemNum,@i_ItemCount
+
+			delete from td_Store where uniquenumber = @i_ItemUID
+			
+			SET IDENTITY_INSERT td_store ON
+						
+			INSERT INTO dbo.td_Store(UniqueNumber,AccountUniqueNumber,Possess,ItemStorage,Wear,CurrentCount,ItemWindowIndex,ItemNum,NumOfEnchants,PrefixCodeNum,SuffixCodeNum,CurrentEndurance,ColorCode,UsingTimeStamp,CreatedTime,ShapeItemNum,MainSvrItemUID,CoolingTime)
+			SELECT @i_ItemUID,c.accountUniqueNumber, c.UniqueNumber, 0, 0, @i_ItemCount, 99,
+				@i_ItemNum, 0, @Pref, @Suf, 0, @Color, 0, GetDate(), @Shape, 0, 0
+			FROM  td_Character c
+			WHERE c.uniquenumber = @i_CharUID 
+			
+			SET IDENTITY_INSERT td_store OFF		
+		END
+	END
+
+END
+	--delete from td_Market
+	DELETE FROM td_Market where MarketUID = @i_MarketUID
+	Select 4 --select MARKET_STATE_DELETE for further server processing
+ END --start of proc

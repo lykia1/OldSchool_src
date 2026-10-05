@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <Keyword>MFCProj</Keyword>
+    <ProjectGuid>{810ADC32-CD9C-49F6-AAE8-8DE1F91BD4C8}</ProjectGuid>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>.\..\..\output\SCDialer1\Release\</OutDir>
+    <IntDir>.\..\..\output\SCDialer1\Release\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>.\..\..\output\SCDialer1\Debug\</OutDir>
+    <IntDir>.\..\..\output\SCDialer1\Debug\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <StringPooling>true</StringPooling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <Optimization>MaxSpeed</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>.;./RAD_RTP;./PlatformSDK/include;./RAD_RTP/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;_G7231CODEC;_LOCAL_PLAY_G7231;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\..\..\output\SCDialer1\Release\</AssemblerListingLocation>
+      <PrecompiledHeaderOutputFile>.\..\..\output\SCDialer1\Release\SCDialer1.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <ObjectFileName>.\..\..\output\SCDialer1\Release\</ObjectFileName>
+      <ProgramDataBaseFileName>.\..\..\output\SCDialer1\Release\</ProgramDataBaseFileName>
+    </ClCompile>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\..\..\output\SCDialer1\Release\SCDialer1.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0412</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\..\..\output\SCDialer1\Release\SCDialer1.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <LinkDLL>true</LinkDLL>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>..\..\Bin\GameVoIP\Release\SCDialer1.ocx</OutputFile>
+      <ImportLibrary>.\..\..\output\SCDialer1\Release\SCDialer1.lib</ImportLibrary>
+      <AdditionalDependencies>wsock32.lib;mpr.lib;winmm.lib;snmpapi.lib;./RAD_RTP/lib/rv32rtp.lib;Version.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions> /MAPINFO:LINES  /MAPINFO:EXPORTS </AdditionalOptions>
+      <ModuleDefinitionFile>.\SCDialer1.def</ModuleDefinitionFile>
+    </Link>
+    <CustomBuildStep>
+      <Command>regsvr32 /s /c "$(TargetPath)" 
+echo regsvr32 exec. time &gt; "$(OutDir)regsvr32.trg" </Command>
+      <Message>Registering ActiveX Control...</Message>
+      <Outputs>$(OutDir)\regsvr32.trg;%(Outputs)</Outputs>
+    </CustomBuildStep>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <Optimization>Disabled</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level3</WarningLevel>
+      <MinimalRebuild>true</MinimalRebuild>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <AdditionalIncludeDirectories>.;./PlatformSDK/include;./RAD_RTP;./RAD_RTP/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;_G7231CODEC;_LOCAL_PLAY_G7231;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\..\..\output\SCDialer1\Debug\</AssemblerListingLocation>
+      <BrowseInformation>true</BrowseInformation>
+      <PrecompiledHeaderOutputFile>.\..\..\output\SCDialer1\Debug\SCDialer1.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <ObjectFileName>.\..\..\output\SCDialer1\Debug\</ObjectFileName>
+      <ProgramDataBaseFileName>.\..\..\output\SCDialer1\Debug\</ProgramDataBaseFileName>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+    </ClCompile>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\..\..\output\SCDialer1\Debug\SCDialer1.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0412</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\..\..\output\SCDialer1\Debug\SCDialer1.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <LinkDLL>true</LinkDLL>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>..\..\Bin\GameVoIP\Debug\SCDialer1.ocx</OutputFile>
+      <ImportLibrary>.\..\..\output\SCDialer1\Debug\SCDialer1.lib</ImportLibrary>
+      <AdditionalDependencies>wsock32.lib;mpr.lib;winmm.lib;snmpapi.lib;./RAD_RTP/lib/rv32rtp.lib;./PlatformSDK/lib/iphlpapi.lib;Version.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions> /MAPINFO:LINES  /MAPINFO:EXPORTS </AdditionalOptions>
+      <ModuleDefinitionFile>.\SCDialer1.def</ModuleDefinitionFile>
+    </Link>
+    <CustomBuildStep>
+      <Command>regsvr32 /s /c "$(TargetPath)" 
+echo regsvr32 exec. time &gt; "$(OutDir)regsvr32.trg" </Command>
+      <Message>Registering ActiveX Control...</Message>
+      <Outputs>$(OutDir)\regsvr32.trg;%(Outputs)</Outputs>
+    </CustomBuildStep>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Code2.cpp" />
+    <ClCompile Include="datasocket.cpp" />
+    <ClCompile Include="DrvLoad.cpp" />
+    <ClCompile Include="file_ver.cpp" />
+    <ClCompile Include="IncommingDlg.cpp" />
+    <ClCompile Include="NATAnalyzer.cpp" />
+    <ClCompile Include="NATAnalyzerSock.cpp" />
+    <ClCompile Include="NATSocket1.cpp" />
+    <ClCompile Include="RAD_RTP\AudioCodec.cpp" />
+    <ClCompile Include="RAD_RTP\audiosound.cpp" />
+    <ClCompile Include="RAD_RTP\DataQueue.cpp" />
+    <ClCompile Include="RAD_RTP\G7231Codec.cpp" />
+    <ClCompile Include="RAD_RTP\G729Codec.cpp" />
+    <ClCompile Include="RAD_RTP\H323Connection.cpp" />
+    <ClCompile Include="RAD_RTP\Queue.cpp" />
+    <ClCompile Include="RAD_RTP\RTPBase.cpp" />
+    <ClCompile Include="RAD_RTP\RTPCtrl.cpp" />
+    <ClCompile Include="RAD_RTP\RTPCtrlManager.cpp" />
+    <ClCompile Include="RouteSocket.cpp" />
+    <ClCompile Include="RTPRouter.cpp" />
+    <ClCompile Include="SCDialer1.cpp" />
+    <ClCompile Include="SCDialer1Ctl.cpp" />
+    <ClCompile Include="SCDialer1Ppg.cpp" />
+    <ClCompile Include="StdAfx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">stdafx.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="SystemLogManager.cpp" />
+    <ClCompile Include="WindowsRegistry.cpp" />
+    <ClCompile Include="WinPacket.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="dialtone.7231" />
+    <CustomBuild Include="dialtone2.7231" />
+    <CustomBuild Include="file_ver.inl" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\#.7231" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\0.7231" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\0.7231L" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\1.7231" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\1.7231L" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\2.7231" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\2.7231L" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\3.7231" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\3.7231L" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\4.7231" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\4.7231L" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\5.7231" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\5.7231L" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\6.7231" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\6.7231L" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\7.7231" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\7.7231L" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\8.7231" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\8.7231L" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\9.7231" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\9.7231L" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\asterisk.7231" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\asterisk.7231L" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\back.7231" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\Busy.7231" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\dialtone.7231" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\ment.7231" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\ring.7231" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\sendbtn.7231" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\sharp.7231L" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\timeout.7231" />
+    <CustomBuild Include="RAD_RTP\lib\RV32RTP.dll" />
+    <CustomBuild Include="RAD_RTP\lib\Sx5363.ini" />
+    <CustomBuild Include="RAD_RTP\lib\SX5363S.DLL" />
+    <CustomBuild Include="RAD_RTP\lib\sx80lc32.dll" />
+    <CustomBuild Include="SCDialer1.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="SCDialer1.odl">
+      <TargetEnvironment Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Win32</TargetEnvironment>
+      <TargetEnvironment Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Win32</TargetEnvironment>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SCDialer1.rc">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OUTDIR);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OUTDIR);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Code2.h" />
+    <ClInclude Include="datasocket.h" />
+    <ClInclude Include="DialerDefine.h" />
+    <ClInclude Include="file_ver.h" />
+    <ClInclude Include="IncommingDlg.h" />
+    <ClInclude Include="NATAnalyzer.h" />
+    <ClInclude Include="NATAnalyzerSock.h" />
+    <ClInclude Include="NATSocket1.h" />
+    <ClInclude Include="PlatformSDK\include\IPExport.h" />
+    <ClInclude Include="PlatformSDK\include\IPHlpApi.h" />
+    <ClInclude Include="PlatformSDK\include\IPTypes.h" />
+    <ClInclude Include="Protocol_FireTalk_II.h" />
+    <ClInclude Include="RAD_RTP\AudioCodec.h" />
+    <ClInclude Include="RAD_RTP\audiosound.h" />
+    <ClInclude Include="RAD_RTP\DataQueue.h" />
+    <ClInclude Include="RAD_RTP\DbgOut_C.h" />
+    <ClInclude Include="RAD_RTP\G7231Codec.h" />
+    <ClInclude Include="RAD_RTP\G729Codec.h" />
+    <ClInclude Include="RAD_RTP\H323Connection.h" />
+    <ClInclude Include="RAD_RTP\include\payload.h" />
+    <ClInclude Include="RAD_RTP\include\rtcp.h" />
+    <ClInclude Include="RAD_RTP\include\rtp.h" />
+    <ClInclude Include="RAD_RTP\include\rvcommon.h" />
+    <ClInclude Include="RAD_RTP\include\rvstd.h" />
+    <ClInclude Include="RAD_RTP\Queue.h" />
+    <ClInclude Include="RAD_RTP\RTPBase.h" />
+    <ClInclude Include="RAD_RTP\RTPCtrl.h" />
+    <ClInclude Include="RAD_RTP\RTPCtrlManager.h" />
+    <ClInclude Include="RAD_RTP\sx5363api.h" />
+    <ClInclude Include="RAD_RTP\sx80api.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="RouteSocket.h" />
+    <ClInclude Include="RTPRouter.h" />
+    <ClInclude Include="SCDialer1.h" />
+    <ClInclude Include="SCDialer1Ctl.h" />
+    <ClInclude Include="SCDialer1Ppg.h" />
+    <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="SystemLogManager.h" />
+    <ClInclude Include="WindowsRegistry.h" />
+    <ClInclude Include="WinPacket.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="SCDialer1.ico" />
+    <Image Include="SCDialer1Ctl.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="sound\ring.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="PlatformSDK\lib\IPHlpApi.Lib" />
+    <Library Include="RAD_RTP\lib\RV32RTP.lib" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,440 @@
+diff a/Client/ProjectAtum/SkinnedMeshLib/main/SkinnedMesh.cpp b/Client/ProjectAtum/SkinnedMeshLib/main/SkinnedMesh.cpp	(rejected hunks)
+@@ -44,225 +44,226 @@
+ //////////////////////////////////////////////////////////////////////
+ // Construction/Destruction
+ //////////////////////////////////////////////////////////////////////
+-extern LPDIRECT3DDEVICE9	g_pD3dDev ;
++extern LPDIRECT3DDEVICE9	g_pD3dDev;
++
+ extern unsigned char D3DRM_XTEMPLATES[];
+ 
+ char *szTemplates = "xof 0303txt 0032\
+-template XSkinMeshHeader {\
+- <3cf169ce-ff7c-44ab-93c0-f78f62d172e2>\
+- WORD nMaxSkinWeightsPerVertex;\
+- WORD nMaxSkinWeightsPerFace;\
+- WORD nBones;}\
+-template VertexDuplicationIndices {\
+- <b8d65549-d7c9-4995-89cf-53a9a8b031e3>\
+- DWORD nIndices;\
+- DWORD nOriginalVertices;\
+- array DWORD indices[nIndices];}\
+-template SkinWeights {\
+- <6f0d123b-bad2-4167-a0d0-80224f25fabb>\
+- STRING transformNodeName;\
+- DWORD nWeights;\
+- array DWORD vertexIndices[nWeights];\
+- array FLOAT weights[nWeights];\
+- Matrix4x4 matrixOffset;}";
++					template XSkinMeshHeader {\
++					 <3cf169ce-ff7c-44ab-93c0-f78f62d172e2>\
++					  WORD nMaxSkinWeightsPerVertex;\
++					   WORD nMaxSkinWeightsPerFace;\
++					    WORD nBones;}\
++						template VertexDuplicationIndices {\
++						 <b8d65549-d7c9-4995-89cf-53a9a8b031e3>\
++						  DWORD nIndices;\
++						   DWORD nOriginalVertices;\
++						    array DWORD indices[nIndices];}\
++							template SkinWeights {\
++							 <6f0d123b-bad2-4167-a0d0-80224f25fabb>\
++							  STRING transformNodeName;\
++							   DWORD nWeights;\
++							    array DWORD vertexIndices[nWeights];\
++								 array FLOAT weights[nWeights];\
++								  Matrix4x4 matrixOffset;}";
+ 
+ 
+ void SFrame::SetTime(float fGlobalTime)
+ {
+-    UINT iKey;
+-    UINT dwp2;
+-    UINT dwp3;
+-    D3DXMATRIXA16 matResult;
+-    D3DXMATRIXA16 matTemp;
+-    float fTime1;
+-    float fTime2;
+-    float fLerpValue;
+-    D3DXVECTOR3 vScale;
+-    D3DXVECTOR3 vPos;
+-    D3DXQUATERNION quat;
+-    BOOL bAnimate = false;
+-    float fTime;
+-
+-    if (m_pMatrixKeys )
+-    {
+-        fTime = (float)fmod(fGlobalTime, m_pMatrixKeys[m_cMatrixKeys-1].dwTime);
+-
+-        for (iKey = 0 ;iKey < m_cMatrixKeys ; iKey++)
+-        {
+-            if ((float)m_pMatrixKeys[iKey].dwTime > fTime)
+-            {
+-                dwp3 = iKey;
+-
+-                if (iKey > 0)
+-                {
+-                    dwp2= iKey - 1;
+-                }
+-                else  // when iKey == 0, then dwp2 == 0
+-                {
+-                    dwp2 = iKey;
+-                }
+-
+-                break;
+-            }
+-        }
+-        fTime1 = (float)m_pMatrixKeys[dwp2].dwTime;
+-        fTime2 = (float)m_pMatrixKeys[dwp3].dwTime;
+-
+-        if ((fTime2 - fTime1) ==0)
+-            fLerpValue = 0;
+-        else
+-            fLerpValue =  (fTime - fTime1)  / (fTime2 - fTime1);
+-
+-        if (fLerpValue > 0.5)
+-        {
+-            iKey = dwp3;
+-        }
+-        else
+-        {
+-            iKey = dwp2;
+-        }
+-
+-        pframeToAnimate->matRot = m_pMatrixKeys[iKey].mat;
+-    }
+-    else
+-    {
+-        D3DXMatrixIdentity(&matResult);
+-
+-        if (m_pScaleKeys)
+-        {
+-            dwp2 = dwp3 = 0;
+-
+-            fTime = (float)fmod(fGlobalTime, m_pScaleKeys[m_cScaleKeys-1].dwTime);
+-
+-            for (iKey = 0 ;iKey < m_cScaleKeys ; iKey++)
+-            {
+-                if ((float)m_pScaleKeys[iKey].dwTime > fTime)
+-                {
+-                    dwp3 = iKey;
+-
+-                    if (iKey > 0)
+-                    {
+-                        dwp2= iKey - 1;
+-                    }
+-                    else  // when iKey == 0, then dwp2 == 0
+-                    {
+-                        dwp2 = iKey;
+-                    }
+-
+-                    break;
+-                }
+-            }
+-            fTime1 = (float)m_pScaleKeys[dwp2].dwTime;
+-            fTime2 = (float)m_pScaleKeys[dwp3].dwTime;
+-
+-            if ((fTime2 - fTime1) ==0)
+-                fLerpValue = 0;
+-            else
+-                fLerpValue =  (fTime - fTime1)  / (fTime2 - fTime1);
+-
+-            D3DXVec3Lerp(&vScale,
+-                    &m_pScaleKeys[dwp2].vScale,
+-                    &m_pScaleKeys[dwp3].vScale,
+-                    fLerpValue);
+-
+-
+-            D3DXMatrixScaling(&matTemp, vScale.x, vScale.y, vScale.z);
+-
+-            D3DXMatrixMultiply(&matResult, &matResult, &matTemp);
+-
+-            bAnimate = true;
+-        }
+-
+-        //check rot keys
+-        if (m_pRotateKeys )
+-        {
+-            int i1 = 0;
+-            int i2 = 0;
+-
+-            fTime = (float)fmod(fGlobalTime, m_pRotateKeys[m_cRotateKeys-1].dwTime);
+-
+-            for (iKey = 0 ;iKey < m_cRotateKeys ; iKey++)
+-            {
+-                if ((float)m_pRotateKeys[iKey].dwTime > fTime)
+-                {
+-                    i1 = (iKey > 0) ? iKey - 1 : 0;
+-                    i2 = iKey;
+-                    break;
+-                }
+-            }
+-
+-            fTime1 = (float)m_pRotateKeys[i1].dwTime;
+-            fTime2 = (float)m_pRotateKeys[i2].dwTime;
+-
+-            if ((fTime2 - fTime1) ==0)
+-                fLerpValue = 0;
+-            else
+-                fLerpValue =  (fTime - fTime1)  / (fTime2 - fTime1);
+-           D3DXQuaternionSlerp(&quat, &m_pRotateKeys[i1].quatRotate, &m_pRotateKeys[i2].quatRotate, fLerpValue);
+-
+-            quat.w = -quat.w;
+-            D3DXMatrixRotationQuaternion(&matTemp, &quat);
+-            D3DXMatrixMultiply(&matResult, &matResult, &matTemp);
+-
+-            bAnimate = true;
+-        }
+-
+-        if (m_pPositionKeys)
+-        {
+-            dwp2=dwp3=0;
+-
+-            fTime = (float)fmod(fGlobalTime, m_pPositionKeys[m_cPositionKeys-1].dwTime);
+-
+-            for (iKey = 0 ;iKey < m_cPositionKeys ; iKey++)
+-            {
+-                if ((float)m_pPositionKeys[iKey].dwTime > fTime)
+-                {
+-                    dwp3 = iKey;
+-
+-                    if (iKey > 0)
+-                    {
+-                        dwp2= iKey - 1;
+-                    }
+-                    else  // when iKey == 0, then dwp2 == 0
+-                    {
+-                        dwp2 = iKey;
+-                    }
+-
+-                    break;
+-                }
+-            }
+-            fTime1 = (float)m_pPositionKeys[dwp2].dwTime;
+-            fTime2 = (float)m_pPositionKeys[dwp3].dwTime;
+-
+-            if ((fTime2 - fTime1) ==0)
+-                fLerpValue = 0;
+-            else
+-                fLerpValue =  (fTime - fTime1)  / (fTime2 - fTime1);
+-
+-
+-            D3DXVec3Lerp((D3DXVECTOR3*)&vPos,
+-                    &m_pPositionKeys[dwp2].vPos,
+-                    &m_pPositionKeys[dwp3].vPos,
+-                    fLerpValue);
+-
+-//			m_vCurrentPos = vPos;
+-            D3DXMatrixTranslation(&matTemp, vPos.x, vPos.y, vPos.z);
+-
+-            D3DXMatrixMultiply(&matResult, &matResult, &matTemp);
+-            bAnimate = true;
+-        }
+-        else
+-        {
+-            D3DXMatrixTranslation(&matTemp, pframeToAnimate->matRotOrig._41, pframeToAnimate->matRotOrig._42, pframeToAnimate->matRotOrig._43);
+-
+-            D3DXMatrixMultiply(&matResult, &matResult, &matTemp);
+-        }
+-
+-        if (bAnimate)
+-        {
+-            pframeToAnimate->matRot = matResult;
+-        }
+-    }
++	UINT iKey;
++	UINT dwp2;
++	UINT dwp3;
++	D3DXMATRIXA16 matResult;
++	D3DXMATRIXA16 matTemp;
++	float fTime1;
++	float fTime2;
++	float fLerpValue;
++	D3DXVECTOR3 vScale;
++	D3DXVECTOR3 vPos;
++	D3DXQUATERNION quat;
++	BOOL bAnimate = false;
++	float fTime;
++
++	if (m_pMatrixKeys)
++	{
++		fTime = (float)fmod(fGlobalTime, m_pMatrixKeys[m_cMatrixKeys - 1].dwTime);
++
++		for (iKey = 0; iKey < m_cMatrixKeys; iKey++)
++		{
++			if ((float)m_pMatrixKeys[iKey].dwTime > fTime)
++			{
++				dwp3 = iKey;
++
++				if (iKey > 0)
++				{
++					dwp2 = iKey - 1;
++				}
++				else  // when iKey == 0, then dwp2 == 0
++				{
++					dwp2 = iKey;
++				}
++
++				break;
++			}
++		}
++		fTime1 = (float)m_pMatrixKeys[dwp2].dwTime;
++		fTime2 = (float)m_pMatrixKeys[dwp3].dwTime;
++
++		if ((fTime2 - fTime1) == 0)
++			fLerpValue = 0;
++		else
++			fLerpValue = (fTime - fTime1) / (fTime2 - fTime1);
++
++		if (fLerpValue > 0.5)
++		{
++			iKey = dwp3;
++		}
++		else
++		{
++			iKey = dwp2;
++		}
++
++		pframeToAnimate->matRot = m_pMatrixKeys[iKey].mat;
++	}
++	else
++	{
++		D3DXMatrixIdentity(&matResult);
++
++		if (m_pScaleKeys)
++		{
++			dwp2 = dwp3 = 0;
++
++			fTime = (float)fmod(fGlobalTime, m_pScaleKeys[m_cScaleKeys - 1].dwTime);
++
++			for (iKey = 0; iKey < m_cScaleKeys; iKey++)
++			{
++				if ((float)m_pScaleKeys[iKey].dwTime > fTime)
++				{
++					dwp3 = iKey;
++
++					if (iKey > 0)
++					{
++						dwp2 = iKey - 1;
++					}
++					else  // when iKey == 0, then dwp2 == 0
++					{
++						dwp2 = iKey;
++					}
++
++					break;
++				}
++			}
++			fTime1 = (float)m_pScaleKeys[dwp2].dwTime;
++			fTime2 = (float)m_pScaleKeys[dwp3].dwTime;
++
++			if ((fTime2 - fTime1) == 0)
++				fLerpValue = 0;
++			else
++				fLerpValue = (fTime - fTime1) / (fTime2 - fTime1);
++
++			D3DXVec3Lerp(&vScale,
++				&m_pScaleKeys[dwp2].vScale,
++				&m_pScaleKeys[dwp3].vScale,
++				fLerpValue);
++
++
++			D3DXMatrixScaling(&matTemp, vScale.x, vScale.y, vScale.z);
++
++			D3DXMatrixMultiply(&matResult, &matResult, &matTemp);
++
++			bAnimate = true;
++		}
++
++		//check rot keys
++		if (m_pRotateKeys)
++		{
++			int i1 = 0;
++			int i2 = 0;
++
++			fTime = (float)fmod(fGlobalTime, m_pRotateKeys[m_cRotateKeys - 1].dwTime);
++
++			for (iKey = 0; iKey < m_cRotateKeys; iKey++)
++			{
++				if ((float)m_pRotateKeys[iKey].dwTime > fTime)
++				{
++					i1 = (iKey > 0) ? iKey - 1 : 0;
++					i2 = iKey;
++					break;
++				}
++			}
++
++			fTime1 = (float)m_pRotateKeys[i1].dwTime;
++			fTime2 = (float)m_pRotateKeys[i2].dwTime;
++
++			if ((fTime2 - fTime1) == 0)
++				fLerpValue = 0;
++			else
++				fLerpValue = (fTime - fTime1) / (fTime2 - fTime1);
++			D3DXQuaternionSlerp(&quat, &m_pRotateKeys[i1].quatRotate, &m_pRotateKeys[i2].quatRotate, fLerpValue);
++
++			quat.w = -quat.w;
++			D3DXMatrixRotationQuaternion(&matTemp, &quat);
++			D3DXMatrixMultiply(&matResult, &matResult, &matTemp);
++
++			bAnimate = true;
++		}
++
++		if (m_pPositionKeys)
++		{
++			dwp2 = dwp3 = 0;
++
++			fTime = (float)fmod(fGlobalTime, m_pPositionKeys[m_cPositionKeys - 1].dwTime);
++
++			for (iKey = 0; iKey < m_cPositionKeys; iKey++)
++			{
++				if ((float)m_pPositionKeys[iKey].dwTime > fTime)
++				{
++					dwp3 = iKey;
++
++					if (iKey > 0)
++					{
++						dwp2 = iKey - 1;
++					}
++					else  // when iKey == 0, then dwp2 == 0
++					{
++						dwp2 = iKey;
++					}
++
++					break;
++				}
++			}
++			fTime1 = (float)m_pPositionKeys[dwp2].dwTime;
++			fTime2 = (float)m_pPositionKeys[dwp3].dwTime;
++
++			if ((fTime2 - fTime1) == 0)
++				fLerpValue = 0;
++			else
++				fLerpValue = (fTime - fTime1) / (fTime2 - fTime1);
++
++
++			D3DXVec3Lerp((D3DXVECTOR3*)&vPos,
++				&m_pPositionKeys[dwp2].vPos,
++				&m_pPositionKeys[dwp3].vPos,
++				fLerpValue);
++
++			//			m_vCurrentPos = vPos;
++			D3DXMatrixTranslation(&matTemp, vPos.x, vPos.y, vPos.z);
++
++			D3DXMatrixMultiply(&matResult, &matResult, &matTemp);
++			bAnimate = true;
++		}
++		else
++		{
++			D3DXMatrixTranslation(&matTemp, pframeToAnimate->matRotOrig._41, pframeToAnimate->matRotOrig._42, pframeToAnimate->matRotOrig._43);
++
++			D3DXMatrixMultiply(&matResult, &matResult, &matTemp);
++		}
++
++		if (bAnimate)
++		{
++			pframeToAnimate->matRot = matResult;
++		}
++	}
+ }
+ 
+ // 2009. 11. 23 by jskim ���ҽ� �ε� ���� ����	

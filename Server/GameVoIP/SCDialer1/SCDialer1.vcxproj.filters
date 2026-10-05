@@ -1,0 +1,323 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{2e087068-5ef6-4f2f-a0b8-21cd443bf3c0}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{c00c3ab8-2802-4d88-98d0-e9dd62d36bdd}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{a9ad4a22-0a6f-43aa-9c34-ba4bd2e376e6}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="RAD_RTP\AudioCodec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RAD_RTP\audiosound.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RAD_RTP\DataQueue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="datasocket.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DrvLoad.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="file_ver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RAD_RTP\G7231Codec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RAD_RTP\G729Codec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RAD_RTP\H323Connection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IncommingDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NATAnalyzer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NATAnalyzerSock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NATSocket1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RAD_RTP\Queue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RouteSocket.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RAD_RTP\RTPBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RAD_RTP\RTPCtrl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RAD_RTP\RTPCtrlManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RTPRouter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SCDialer1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SCDialer1Ctl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SCDialer1Ppg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StdAfx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SystemLogManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowsRegistry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WinPacket.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="SCDialer1.odl">
+      <Filter>Source Files</Filter>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SCDialer1.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="RAD_RTP\AudioCodec.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RAD_RTP\audiosound.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RAD_RTP\DataQueue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="datasocket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RAD_RTP\DbgOut_C.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DialerDefine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="file_ver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RAD_RTP\G7231Codec.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RAD_RTP\G729Codec.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RAD_RTP\H323Connection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IncommingDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlatformSDK\include\IPExport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlatformSDK\include\IPHlpApi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlatformSDK\include\IPTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NATAnalyzer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NATAnalyzerSock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NATSocket1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RAD_RTP\include\payload.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Protocol_FireTalk_II.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RAD_RTP\Queue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RouteSocket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RAD_RTP\include\rtcp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RAD_RTP\include\rtp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RAD_RTP\RTPBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RAD_RTP\RTPCtrl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RAD_RTP\RTPCtrlManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RTPRouter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RAD_RTP\include\rvcommon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RAD_RTP\include\rvstd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SCDialer1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SCDialer1Ctl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SCDialer1Ppg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StdAfx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RAD_RTP\sx5363api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RAD_RTP\sx80api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemLogManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowsRegistry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WinPacket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="SCDialer1.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="SCDialer1Ctl.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="sound\ring.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="RAD_RTP\lib\RV32RTP.lib" />
+    <Library Include="PlatformSDK\lib\IPHlpApi.Lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="SCDialer1.def">
+      <Filter>Source Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="file_ver.inl">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\#.7231">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\0.7231">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\1.7231">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\2.7231">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\3.7231">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\4.7231">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\5.7231">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\6.7231">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\7.7231">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\8.7231">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\9.7231">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\asterisk.7231">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\ment.7231">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\ring.7231">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\0.7231L" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\1.7231L" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\2.7231L" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\3.7231L" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\4.7231L" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\5.7231L" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\6.7231L" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\7.7231L" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\8.7231L" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\9.7231L" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\asterisk.7231L" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\back.7231" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\Busy.7231" />
+    <CustomBuild Include="dialtone.7231" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\dialtone.7231" />
+    <CustomBuild Include="dialtone2.7231" />
+    <CustomBuild Include="RAD_RTP\lib\RV32RTP.dll" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\sendbtn.7231" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\sharp.7231L" />
+    <CustomBuild Include="RAD_RTP\lib\Sx5363.ini" />
+    <CustomBuild Include="RAD_RTP\lib\SX5363S.DLL" />
+    <CustomBuild Include="RAD_RTP\lib\sx80lc32.dll" />
+    <CustomBuild Include="RAD_RTP\G7231_dtmf\timeout.7231" />
+  </ItemGroup>
+</Project>

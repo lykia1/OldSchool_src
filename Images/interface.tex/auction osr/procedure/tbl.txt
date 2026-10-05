@@ -1,0 +1,39 @@
+USE [atum2_db_1]
+GO
+
+/****** Object:  Table [dbo].[td_Market]    Script Date: 23/01/2024 08:19:37 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[td_Market](
+	[MarketUID] [bigint] IDENTITY(1,1) NOT NULL,
+	[ItemUID] [bigint] NULL,
+	[AccountUniqueNumber] [int] NULL,
+	[CharacterUniqueNumber] [int] NULL,
+	[MarketKind] [tinyint] NULL,
+	[Name] [varchar](140) NULL,
+	[ItemNum] [int] NULL,
+	[Count] [int] NULL,
+	[PrefixCodeNum] [int] NULL,
+	[SuffixCodeNum] [int] NULL,
+	[EnchantCount] [tinyint] NULL,
+	[ShapeItemNum] [int] NULL,
+	[ColorCode] [int] NULL,
+	[ReqMinLevel] [tinyint] NULL,
+	[ReqUnitKind] [int] NULL,
+	[RegistrationTime] [datetime] NULL,
+	[MoneyType] [tinyint] NULL,
+	[Price] [int] NULL,
+	[MarketState] [tinyint] NULL,
+	[MarketItemInfl] [tinyint] NULL,
+ CONSTRAINT [PK_td_Market1] PRIMARY KEY CLUSTERED 
+(
+	[MarketUID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+

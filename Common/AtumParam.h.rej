@@ -1,0 +1,12 @@
+diff a/Common/AtumParam.h b/Common/AtumParam.h	(rejected hunks)
+@@ -3614,8 +3614,8 @@
+ 	MONSTER_BALANCE_DATA MonsterInfoBalance;			// ���� �뷱�� ����.
+ // End 2010. 05. 19 by hsLee ���Ǵ�Ƽ �ʵ� 2�� ���̵� ����. (��ȣó�� + ���� ó��(����) )
+ 
+-protected:
+-	MONSTER(){};
++//protected:
++	//MONSTER(){};
+ };
+ 
+ 
