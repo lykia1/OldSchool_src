@@ -908,161 +908,38 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 
 #else
 
-	// Ĺ¸ŔĚĆ˛ąŮ ±×¸®±â(Title Bar)
-	/*tmBitmap.LoadBitmap(IDB_TITLE);
-	pTmOldBitmap = tmMemDC.SelectObject(&tmBitmap);
-	memDCBackGround.BitBlt(0, 0, EXE2_BG_TITLE_BAR_SIZE_X, EXE2_BG_TITLE_BAR_SIZE_Y, &tmMemDC, 0, 0, SRCCOPY);
-	tmMemDC.SelectObject(pTmOldBitmap);
-	tmBitmap.DeleteObject();*/
+	// AceTR approved launcher skin.
+	// The complete interface artwork lives in res\\BG_VTC.bmp.  Render it
+	// into m_BackGround and place the real MFC controls on top of it.
+	if (tmBitmap.LoadBitmap(IDB_BG_VTC))
+	{
+		BITMAP skinInfo = {0};
+		tmBitmap.GetObject(sizeof(BITMAP), &skinInfo);
+		pTmOldBitmap = tmMemDC.SelectObject(&tmBitmap);
 
-	// ąč°ć Č­¸é ±×¸®±â(Background)
+		if (skinInfo.bmWidth == EXE2_LAUNCHER_BG_SIZE_X &&
+			skinInfo.bmHeight == EXE2_LAUNCHER_BG_SIZE_Y)
+		{
+			memDCBackGround.BitBlt(
+				0, 0,
+				EXE2_LAUNCHER_BG_SIZE_X, EXE2_LAUNCHER_BG_SIZE_Y,
+				&tmMemDC, 0, 0, SRCCOPY);
+		}
+		else
+		{
+			memDCBackGround.SetStretchBltMode(HALFTONE);
+			memDCBackGround.StretchBlt(
+				0, 0,
+				EXE2_LAUNCHER_BG_SIZE_X, EXE2_LAUNCHER_BG_SIZE_Y,
+				&tmMemDC,
+				0, 0, skinInfo.bmWidth, skinInfo.bmHeight,
+				SRCCOPY);
+		}
 
-	// AceTR modern launcher shell - native GDI, no external image dependency.
-	CBrush brushBase(RGB(10, 12, 18));
-	CBrush brushTop(RGB(18, 21, 29));
-	CBrush brushPanel(RGB(24, 27, 37));
-	CBrush brushPanel2(RGB(18, 21, 29));
-	CBrush brushCard(RGB(30, 34, 46));
-	CBrush brushAccent(RGB(225, 82, 35));
-	CBrush brushAccentSoft(RGB(109, 48, 31));
-	CBrush brushOnline(RGB(42, 190, 108));
-	CPen penBorder(PS_SOLID, 1, RGB(52, 58, 74));
-	CPen penSoft(PS_SOLID, 1, RGB(42, 47, 61));
+		tmMemDC.SelectObject(pTmOldBitmap);
+		tmBitmap.DeleteObject();
+	}
 
-	memDCBackGround.FillRect(CRect(0, 0, 1200, 700), &brushBase);
-	memDCBackGround.FillRect(CRect(0, 0, 1200, 64), &brushTop);
-	memDCBackGround.FillRect(CRect(0, 62, 1200, 64), &brushAccent);
-
-	CPen* pOldPen = memDCBackGround.SelectObject(&penBorder);
-	CBrush* pOldBrush = memDCBackGround.SelectObject(&brushPanel);
-
-	// Hero / news area
-	memDCBackGround.RoundRect(CRect(55, 82, 805, 472), CPoint(18, 18));
-	memDCBackGround.SelectObject(&brushCard);
-	memDCBackGround.RoundRect(CRect(75, 132, 785, 360), CPoint(16, 16));
-
-	// Faux cinematic banner layers
-	memDCBackGround.SelectObject(&brushAccentSoft);
-	memDCBackGround.RoundRect(CRect(90, 150, 770, 344), CPoint(14, 14));
-	memDCBackGround.SelectObject(&brushCard);
-	memDCBackGround.RoundRect(CRect(110, 170, 750, 324), CPoint(12, 12));
-
-	// News cards
-	memDCBackGround.SelectObject(&brushCard);
-	memDCBackGround.RoundRect(CRect(92, 370, 305, 448), CPoint(12, 12));
-	memDCBackGround.RoundRect(CRect(315, 370, 528, 448), CPoint(12, 12));
-	memDCBackGround.RoundRect(CRect(538, 370, 770, 448), CPoint(12, 12));
-
-	// Login panel
-	memDCBackGround.SelectObject(&brushPanel2);
-	memDCBackGround.RoundRect(CRect(840, 82, 1160, 625), CPoint(18, 18));
-
-	// Server status card
-	memDCBackGround.SelectObject(&brushPanel2);
-	memDCBackGround.RoundRect(CRect(55, 485, 805, 602), CPoint(16, 16));
-
-	// Bottom updater
-	memDCBackGround.SelectObject(&brushPanel2);
-	memDCBackGround.RoundRect(CRect(55, 615, 1160, 682), CPoint(14, 14));
-
-	memDCBackGround.SetBkMode(TRANSPARENT);
-	memDCBackGround.SetTextColor(RGB(245, 247, 251));
-
-	CFont brandFont;
-	brandFont.CreateFont(30, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0,
-		DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-		CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
-	CFont* pOldFont = memDCBackGround.SelectObject(&brandFont);
-	memDCBackGround.TextOut(28, 17, "AceTR");
-
-	CFont navFont;
-	navFont.CreateFont(15, 0, 0, 0, FW_SEMIBOLD, FALSE, FALSE, 0,
-		DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-		CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
-	memDCBackGround.SelectObject(&navFont);
-	memDCBackGround.SetTextColor(RGB(174, 180, 194));
-
-	CFont sectionFont;
-	sectionFont.CreateFont(17, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0,
-		DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-		CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
-	memDCBackGround.SelectObject(&sectionFont);
-	memDCBackGround.SetTextColor(RGB(215, 219, 229));
-	memDCBackGround.TextOut(75, 100, "GUNCEL");
-	memDCBackGround.TextOut(865, 108, "HESABINLA GİRİŞ YAP");
-	memDCBackGround.TextOut(75, 494, "SUNUCU DURUMU");
-
-	CFont heroFont;
-	heroFont.CreateFont(31, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0,
-		DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-		CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
-	memDCBackGround.SelectObject(&heroFont);
-	memDCBackGround.SetTextColor(RGB(255, 255, 255));
-	memDCBackGround.TextOut(145, 210, "ACE TR");
-	memDCBackGround.SetTextColor(RGB(245, 132, 88));
-	memDCBackGround.TextOut(145, 182, "REKABETCI HAVA SAVASI");
-
-	CFont heroSubFont;
-	heroSubFont.CreateFont(17, 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0,
-		DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-		CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
-	memDCBackGround.SelectObject(&heroSubFont);
-	memDCBackGround.SetTextColor(RGB(220, 224, 232));
-	memDCBackGround.TextOut(146, 250, "Gökyüzündeki savaş yeniden başlıyor.");
-	memDCBackGround.SetTextColor(RGB(245, 132, 88));
-	memDCBackGround.TextOut(146, 285, "SEZON • ETKİNLİK • NATION WAR");
-
-	CFont labelFont;
-	labelFont.CreateFont(14, 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0,
-		DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-		CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
-
-	CFont cardTitleFont;
-	cardTitleFont.CreateFont(14, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0,
-		DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-		CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
-	memDCBackGround.SelectObject(&cardTitleFont);
-	memDCBackGround.SetTextColor(RGB(245, 247, 251));
-	memDCBackGround.TextOut(108, 381, "SON DUYURU");
-	memDCBackGround.TextOut(331, 381, "ETKİNLİK");
-	memDCBackGround.TextOut(554, 381, "TOPLULUK");
-
-	memDCBackGround.SelectObject(&labelFont);
-	memDCBackGround.SetTextColor(RGB(150, 157, 174));
-	memDCBackGround.TextOut(331, 408, "Haftalık etkinlikleri");
-	memDCBackGround.TextOut(331, 425, "kaçırma.");
-	memDCBackGround.TextOut(554, 408, "Web ve Discord'da");
-	memDCBackGround.TextOut(554, 425, "bize katıl.");
-	memDCBackGround.SetTextColor(RGB(255, 255, 255));
-	memDCBackGround.TextOut(620, 285, "ACE TR");
-
-	
-	labelFont.CreateFont(14, 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0,
-		DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-		CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
-	memDCBackGround.SelectObject(&labelFont);
-	memDCBackGround.SetTextColor(RGB(150, 157, 174));
-	memDCBackGround.TextOut(885, 236, "KULLANICI ADI");
-	memDCBackGround.TextOut(885, 306, "ŞİFRE");
-	memDCBackGround.TextOut(910, 392, "Beni hatirla");
-	memDCBackGround.TextOut(910, 427, "64-bit istemci");
-	memDCBackGround.TextOut(885, 447, "ÇÖZÜNÜRLÜK");
-	memDCBackGround.TextOut(910, 512, "Pencere modu");
-
-	memDCBackGround.SetTextColor(RGB(150, 157, 174));
-	memDCBackGround.TextOut(82, 512, "Sunucu baglantisi ve gecikme bilgisi");
-	memDCBackGround.SetTextColor(RGB(108, 115, 132));
-	memDCBackGround.TextOut(82, 580, "Baglanti hazir oldugunda OYNA aktif olur.");
-
-	// Online indicator
-	memDCBackGround.SelectObject(&brushOnline);
-	memDCBackGround.Ellipse(CRect(865, 173, 875, 183));
-	memDCBackGround.SetTextColor(RGB(115, 224, 164));
-	memDCBackGround.TextOut(885, 168, "ONLINE OYUNCU");
-
-	memDCBackGround.SelectObject(pOldFont);
-	memDCBackGround.SelectObject(pOldBrush);
-	memDCBackGround.SelectObject(pOldPen);
 	memDCBackGround.SelectObject(pOldBitmapBackGround);
 
 #endif
