@@ -975,6 +975,11 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	memDCBackGround.SetTextColor(RGB(245, 132, 88));
 	memDCBackGround.TextOut(146, 285, "SEZON • ETKİNLİK • NATION WAR");
 
+	CFont labelFont;
+	labelFont.CreateFont(14, 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0,
+		DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
+		CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
+
 	CFont cardTitleFont;
 	cardTitleFont.CreateFont(14, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0,
 		DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
@@ -994,7 +999,7 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	memDCBackGround.SetTextColor(RGB(255, 255, 255));
 	memDCBackGround.TextOut(620, 285, "ACE TR");
 
-	CFont labelFont;
+	
 	labelFont.CreateFont(14, 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0,
 		DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
 		CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
