@@ -6319,6 +6319,7 @@
     <ClCompile Include="..\..\..\Common\MemPoolClient.cpp" />
     <ClCompile Include="main\MeshInitThread.cpp" />
     <ClCompile Include="..\..\..\Common\metafile.cpp" />
+    <ClCompile Include="main\AceTRClientBootstrap.cpp" />
     <ClCompile Include="main\ProjectAtum.cpp" />
     <ClCompile Include="main\QuadGround.cpp" />
     <ClCompile Include="main\QuadTree.cpp" />
@@ -6465,6 +6466,7 @@
     <ClInclude Include="..\ImGui\imstb_rectpack.h" />
     <ClInclude Include="..\ImGui\imstb_textedit.h" />
     <ClInclude Include="..\ImGui\imstb_truetype.h" />
+    <ClInclude Include="main\AceTRClientBootstrap.h" />
     <ClInclude Include="main\ArenaManager.h" />
     <ClInclude Include="main\AtumApplication.h" />
     <ClInclude Include="main\AtumDatabase.h" />
