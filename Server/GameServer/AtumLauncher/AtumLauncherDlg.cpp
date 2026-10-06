@@ -1304,6 +1304,47 @@ void CAtumLauncherDlg::OnPaint()
 
 		if (m_bLauncherLoggedIn)
 		{
+			// Modern server status strip. The legacy list box is hidden after login.
+			CBrush statusBrush(RGB(17, 20, 27));
+			CBrush onlineBrush(RGB(67, 203, 133));
+			CPen statusPen(PS_SOLID, 1, RGB(48, 54, 69));
+			CBrush* oldStatusBrush = PaintDC.SelectObject(&statusBrush);
+			CPen* oldStatusPen = PaintDC.SelectObject(&statusPen);
+			PaintDC.RoundRect(CRect(82, 532, 782, 565), CPoint(10, 10));
+
+			PaintDC.SelectObject(&onlineBrush);
+			PaintDC.Ellipse(CRect(96, 543, 106, 553));
+			PaintDC.SelectObject(&statusBrush);
+
+			CFont statusFont;
+			statusFont.CreateFont(14, 0, 0, 0, FW_SEMIBOLD, FALSE, FALSE, 0,
+				DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
+				CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
+			CFont* oldStatusFont = PaintDC.SelectObject(&statusFont);
+			PaintDC.SetBkMode(TRANSPARENT);
+			PaintDC.SetTextColor(RGB(214, 220, 231));
+			PaintDC.TextOut(116, 539, "SUNUCU ÇEVRİMİÇİ");
+
+			CString serverLabel;
+			serverLabel.Format("Sunucu: %s", m_strServerGroupName.IsEmpty() ? "AceTR" : (LPCSTR)m_strServerGroupName);
+			PaintDC.SetTextColor(RGB(150, 157, 174));
+			PaintDC.TextOut(300, 539, serverLabel);
+
+			CString pingLabel;
+			const int pingMs = NTGetPingAverageTime();
+			if (pingMs > 0)
+				pingLabel.Format("Ping: %d ms", pingMs);
+			else
+				pingLabel = "Ping: ölçülüyor";
+			PaintDC.TextOut(610, 539, pingLabel);
+
+			PaintDC.SelectObject(oldStatusFont);
+			PaintDC.SelectObject(oldStatusPen);
+			PaintDC.SelectObject(oldStatusBrush);
+		}
+
+		if (m_bLauncherLoggedIn)
+		{
 			CBrush panelBrush(RGB(18, 21, 29));
 			CBrush actionBrush(RGB(28, 32, 43));
 			CBrush actionHotBrush(RGB(225, 82, 35));
@@ -1414,21 +1455,77 @@ void CAtumLauncherDlg::OnPaint()
 				PaintDC.TextOut(875, 120, "KARAKTERLERİM");
 				PaintDC.SelectObject(&smallFont);
 				PaintDC.SetTextColor(RGB(150, 157, 174));
-				PaintDC.TextOut(875, 155, "Hesabına bağlı karakterler");
+				PaintDC.TextOut(875, 155, "Karakterlerini ve savaş profilini görüntüle");
 
 				CString data = m_szLauncherCharacterData;
 				int tokenPos = 0;
-				int y = 198;
+				int cardY = 192;
 				int shown = 0;
 				CString line = data.Tokenize("\n", tokenPos);
-				while (!line.IsEmpty() && shown < 7)
+
+				CFont characterNameFont;
+				characterNameFont.CreateFont(17, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0,
+					DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
+					CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
+				CFont metaFont;
+				metaFont.CreateFont(13, 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0,
+					DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
+					CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
+
+				while (!line.IsEmpty() && shown < 4)
 				{
 					line.Replace("\r", "");
-					PaintDC.SetTextColor(shown == 0 ? RGB(245, 247, 251) : RGB(210, 214, 224));
-					PaintDC.TextOut(875, y, line);
-					y += 34;
+
+					CString characterName;
+					CString levelText;
+					CString gearText;
+					CString nationText;
+					int partPos = 0;
+					characterName = line.Tokenize("|", partPos);
+					levelText = line.Tokenize("|", partPos);
+					gearText = line.Tokenize("|", partPos);
+					nationText = line.Tokenize("|", partPos);
+
+					CRect cardRect(872, cardY, 1130, cardY + 58);
+					CBrush characterCardBrush(shown == 0 ? RGB(31, 35, 47) : RGB(25, 29, 39));
+					CPen characterCardPen(PS_SOLID, 1, shown == 0 ? RGB(225, 82, 35) : RGB(50, 56, 72));
+					CBrush* previousCardBrush = PaintDC.SelectObject(&characterCardBrush);
+					CPen* previousCardPen = PaintDC.SelectObject(&characterCardPen);
+					PaintDC.RoundRect(cardRect, CPoint(10, 10));
+
+					// Gear mark
+					CBrush gearDot(shown == 0 ? RGB(225, 82, 35) : RGB(83, 91, 111));
+					PaintDC.SelectObject(&gearDot);
+					PaintDC.Ellipse(CRect(885, cardY + 18, 901, cardY + 34));
+					PaintDC.SelectObject(&characterCardBrush);
+
+					PaintDC.SelectObject(&characterNameFont);
+					PaintDC.SetTextColor(RGB(245, 247, 251));
+					PaintDC.TextOut(912, cardY + 10, characterName);
+
+					PaintDC.SelectObject(&metaFont);
+					PaintDC.SetTextColor(RGB(150, 157, 174));
+					CString meta;
+					meta.Format("%s  •  %s", (LPCSTR)gearText, (LPCSTR)nationText);
+					PaintDC.TextOut(912, cardY + 32, meta);
+
+					PaintDC.SetTextColor(RGB(245, 132, 88));
+					CRect levelRect(1050, cardY + 10, 1118, cardY + 30);
+					PaintDC.DrawText(levelText, &levelRect, DT_RIGHT | DT_VCENTER | DT_SINGLELINE);
+
+					PaintDC.SelectObject(previousCardPen);
+					PaintDC.SelectObject(previousCardBrush);
+
+					cardY += 66;
 					++shown;
 					line = data.Tokenize("\n", tokenPos);
+				}
+
+				if (shown == 0)
+				{
+					PaintDC.SelectObject(&smallFont);
+					PaintDC.SetTextColor(RGB(170, 176, 190));
+					PaintDC.TextOut(875, 205, "Bu hesapta karakter bulunamadı.");
 				}
 
 				CBrush* prevBrush = PaintDC.SelectObject(&actionBrush);
