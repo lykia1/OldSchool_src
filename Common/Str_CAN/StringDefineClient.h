@@ -112,9 +112,9 @@
 
 // COMMUNITY_MSG
 #define STRMSG_C_COMMUNITY_0001		"Arkadas olarak eklemek istediginiz karakter adini girin."
-#define STRMSG_C_COMMUNITY_0002		"%s kisgesini arkadas listesinden silmek istediginize emin misiniz?"
+#define STRMSG_C_COMMUNITY_0002		"%s karakterini arkadas listesinden silmek istediginize emin misiniz?"
 #define STRMSG_C_COMMUNITY_0003		"Engelleme listesine eklemek istediginiz karakter adini girin."
-#define STRMSG_C_COMMUNITY_0004		"%s kisgesini engelleme listesinden silmek istediginize emin misiniz?"
+#define STRMSG_C_COMMUNITY_0004		"%s karakterini engelleme listesinden silmek istediginize emin misiniz?"
 #define STRMSG_C_COMMUNITY_0005		"\\rKendinizi arkadas olarak kaydedemezsiniz!\\r"
 #define STRMSG_C_COMMUNITY_0006		"Arkadas olarak kaydetmek istediginiz karakter adini girin."
 #define STRMSG_C_COMMUNITY_0007		"\\rKendinizi kendi engelleme listenize ekleyemezsiniz!\\r"
@@ -1464,7 +1464,7 @@
 #define STRMSG_C_051208_0103	"Karakter durumu uygun degil. Secilemez."
 #define STRMSG_C_051208_0104	"Bu ulus secilemez."
 #define STRMSG_C_051208_0105	"Seviye gereksinimi nedeniyle satin alinamiyor."
-#define STRMSG_C_051208_0106	"Burası renk dukkani degil."
+#define STRMSG_C_051208_0106	"Burasi renk dukkani degil."
 #define STRMSG_C_051208_0107	"Renk Esya Numarasi hatasi."
 
 #define STRMSG_C_051209_0001	"\\yArka plan bilgisi:\\y"
@@ -1593,7 +1593,7 @@
 
 #define STRMSG_C_060731_0000	"%s, %s×%d satin aldi.
  %d SPI satis bedeli alindi.(%s)"
-#define	STRMSG_C_060731_0001	"%s dukkanı inceliyor.(%s)"
+#define	STRMSG_C_060731_0001	"%s dukkani inceliyor.(%s)"
 #define	STRMSG_C_060731_0002	"%s size %s×%d satti.
  Satin alma bedeli olarak %d SPI odediniz.(%s)"
 #define	STRMSG_C_060731_0003	"SPI yetersiz oldugu icin %s esyasi satin alinamaz.(%s)"
@@ -1863,7 +1863,7 @@
 #define STRMSG_C_070627_0209	"Bu gorev baslatildigi anda tamamlanacaktir."	
 
 #define STRMSG_C_070710_0201	"\\rSu anda Arena kullaniminiz yasak. (Kalan sure : %d dk)"	
-#define STRMSG_C_070712_0201	"FreeSKA paralı asker egitim merkezine hos geldiniz. Ulusunuzu secmeden once burada gorevler yapacaksiniz. Bu yer hakkinda ayrintili bilgi almak istiyorsaniz baslat dugmesine basin."	
+#define STRMSG_C_070712_0201	"FreeSKA parali asker egitim merkezine hos geldiniz. Ulusunuzu secmeden once burada gorevler yapacaksiniz. Bu yer hakkinda ayrintili bilgi almak istiyorsaniz baslat dugmesine basin."	
 #define STRMSG_C_070712_0202	"Operator, basarili bir pilot olma yolunuzu ayrintili sekilde anlatti. Yardimci oldu mu? Sorunuz varsa sag alttaki SSS dugmesine basarak beni, Gina'yi cagirabilirsiniz. Elimden gelen yardimi yapacagim. Iyi sanslar......."	
 #define STRMSG_C_070712_0203	"Gorev tamamlandi. Odulunuz icin envanterinizi kontrol edin."
 #define STRMSG_C_070712_0204	"%d deneyim puani verildi"
@@ -1885,7 +1885,7 @@
 #define STRMSG_C_070718_0205	"Bu kez irtifa dusurmeyi ogrenecegiz. Altinizdaki kapidan gecmek icin fareyi \\yAsagi\\y hareket ettirin."
 #define STRMSG_C_070718_0206	"Bu kez GEAR indirmeyi ogreneceksiniz. Her haritadaki ikmal merkezinde \\yC\\y tusuna basarak enerji, mermi ve yakit ikmali yapabilirsiniz. Simdi piste inmek icin \\yC\\y tusuna basin."
 #define STRMSG_C_070718_0207	"Simdi yerde hareket etmeyi ogrenecegiz. Ondeki hedef bolgeye hareket etmek icin \\yW,S,A,D\\y tuslarini kullanin."
-#define STRMSG_C_070718_0208	"Bu kez hiz azaltma ve durmayi ogrenecegiz. Minimum ucus hizi icin \\yS\\y tusuna basin. Pratik yapalim. \\yS\\y tusuna basip minimum hizda \\y3 saniye\\y ucan."
+#define STRMSG_C_070718_0208	"Bu kez hiz azaltma ve durmayi ogrenecegiz. Minimum ucus hizi icin \\yS\\y tusuna basin. Pratik yapalim. \\yS\\y tusuna basip minimum hizda \\y3 saniye\\y ucun."
 #define STRMSG_C_070718_0209	"Hizi azaltmayi basardiniz. Simdi GEAR'i durdurmayi deneyelim. Ucus sirasinda \\yB\\y tusuna basin ve ardindan \\yOnayla\\y secenegine basin. Durdugunuzda envanter ve diger secenekler kullanilabilir. Ancak bu durumda da saldiriya ugrabilirsiniz."
 #define STRMSG_C_070718_0210	"Simdi duran bir GEAR'i tekrar hareket ettirmeyi ogrenecegiz. Yeniden hareket etmek ve normal kontrole donmek icin \\yW\\y tusuna basin."
 #define STRMSG_C_070718_0211	"Simdi temel kacinma hareketini, saga ve sola kaymayi ogrenecegiz. Sola yatmak icin \\yA\\y, saga yatmak icin \\yD\\y tusuna basin. Bu sekilde rakibin standart silahindan (A-GEAR icin Gelismis silah) kacinabilirsiniz."
@@ -2038,7 +2038,7 @@
 #define STRMSG_C_071115_0103   "Diger ulusa hediye gonderilemez."
 
 #define STRMSG_C_071116_0100   "\\rOy sonuclari:"
-#define STRMSG_C_071116_0101   "\\y%s tugayinin #%d adayi %s, %%d oyla en yuksek oy oranini aldi."
+#define STRMSG_C_071116_0101   "\\y#%d aday, %s tugayindan %s, %d%% oyla en yuksek oy oranini aldi."
 
 #define STRMSG_C_071119_0100   "%s - %s"
 #define STRMSG_C_071120_0100   "Aday olarak kayitli kullanicilar adlarini degistiremez."
