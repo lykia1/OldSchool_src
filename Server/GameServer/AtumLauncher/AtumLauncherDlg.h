@@ -355,6 +355,7 @@ public:
 	int					m_nModernNavHover;
 	BOOL				m_bModernNavTracking;
 	BOOL				m_bLauncherLoggedIn;
+	int					m_nLauncherAccountPage; // 0=overview, 1=account, 2=support
 	char				m_szLaunchCmdLine[2048];
 	char				m_szLaunchAppPath[1024];
 	char				m_szLaunchCmdParam[2048];
