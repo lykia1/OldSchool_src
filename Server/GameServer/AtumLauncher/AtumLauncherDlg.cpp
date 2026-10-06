@@ -86,11 +86,21 @@ constexpr auto TICKGAP_NETWORK_STATE_WORST_PING_TICK = 1500;
 static const CRect ACETR_NAV_HOME_RECT(485, 10, 585, 56);
 static const CRect ACETR_NAV_NEWS_RECT(585, 10, 680, 56);
 static const CRect ACETR_NAV_EVENTS_RECT(680, 10, 790, 56);
+static const CRect ACETR_NAV_WEB_RECT(805, 10, 875, 56);
+static const CRect ACETR_NAV_DISCORD_RECT(875, 10, 980, 56);
 
 static void OpenLauncherConfiguredUrl(LPCSTR key)
 {
+	char defaultUrl[1024] = {0};
+	lstrcpyn(defaultUrl, STRMSG_S_GAMEHOMEPAGE_DOMAIN, sizeof(defaultUrl));
+
+	// Web should use the main site by default. Discord intentionally has
+	// no hard-coded invite; set it in [LauncherLinks] to enable it.
+	if (lstrcmpi(key, "Discord") == 0)
+		defaultUrl[0] = 0;
+
 	char url[1024] = {0};
-	GetPrivateProfileString("LauncherLinks", key, STRMSG_S_GAMEHOMEPAGE_DOMAIN,
+	GetPrivateProfileString("LauncherLinks", key, defaultUrl,
 		url, sizeof(url), _INI_FILE_NAME);
 
 	if (url[0] == 0)
@@ -725,7 +735,7 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 							  CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH , SG_BOX_FONT_FACENAME);    // "System" Font´Â ´ëÇĄŔűŔÎ Fixed FontŔÓ´Ů.
 	GetDlgItem(IDC_FILE_INFO)->SetFont(&m_fontFileInfo);
 
-	GetDlgItem(IDC_NOTICE2)->MoveWindow(86, 390, 680, 52);
+	GetDlgItem(IDC_NOTICE2)->MoveWindow(108, 405, 180, 34);
 	wndStyle = ::GetWindowLong(GetDlgItem(IDC_NOTICE2)->m_hWnd, GWL_STYLE);
 	::SetWindowLong(GetDlgItem(IDC_NOTICE2)->m_hWnd, GWL_STYLE, wndStyle | SS_CENTERIMAGE);	// ĂëµćÇŃ Ŕ©µµżě ĽöÁ÷ÁßľÓ(SS_CENTERIMAGE)ĽÓĽşŔ» Ăß°ˇ
 	m_fontNotice.CreateFont(13, 0, 0, 0, EXE2_BG_UPDATE_INFO_FONT_WEIGHT, 0, FALSE, FALSE, SG_BOX_FONT_CHARSET, OUT_DEFAULT_PRECIS,
@@ -900,6 +910,12 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	memDCBackGround.SelectObject(&brushCard);
 	memDCBackGround.RoundRect(CRect(110, 170, 750, 324), CPoint(12, 12));
 
+	// News cards
+	memDCBackGround.SelectObject(&brushCard);
+	memDCBackGround.RoundRect(CRect(92, 370, 305, 448), CPoint(12, 12));
+	memDCBackGround.RoundRect(CRect(315, 370, 528, 448), CPoint(12, 12));
+	memDCBackGround.RoundRect(CRect(538, 370, 770, 448), CPoint(12, 12));
+
 	// Login panel
 	memDCBackGround.SelectObject(&brushPanel2);
 	memDCBackGround.RoundRect(CRect(840, 82, 1160, 625), CPoint(18, 18));
@@ -958,6 +974,23 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	memDCBackGround.TextOut(146, 250, "Gökyüzündeki savaş yeniden başlıyor.");
 	memDCBackGround.SetTextColor(RGB(245, 132, 88));
 	memDCBackGround.TextOut(146, 285, "SEZON • ETKİNLİK • NATION WAR");
+
+	CFont cardTitleFont;
+	cardTitleFont.CreateFont(14, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0,
+		DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
+		CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
+	memDCBackGround.SelectObject(&cardTitleFont);
+	memDCBackGround.SetTextColor(RGB(245, 247, 251));
+	memDCBackGround.TextOut(108, 381, "SON DUYURU");
+	memDCBackGround.TextOut(331, 381, "ETKİNLİK");
+	memDCBackGround.TextOut(554, 381, "TOPLULUK");
+
+	memDCBackGround.SelectObject(&labelFont);
+	memDCBackGround.SetTextColor(RGB(150, 157, 174));
+	memDCBackGround.TextOut(331, 408, "Haftalık etkinlikleri");
+	memDCBackGround.TextOut(331, 425, "kaçırma.");
+	memDCBackGround.TextOut(554, 408, "Web ve Discord'da");
+	memDCBackGround.TextOut(554, 425, "bize katıl.");
 	memDCBackGround.SetTextColor(RGB(255, 255, 255));
 	memDCBackGround.TextOut(620, 285, "ACE TR");
 
@@ -1209,10 +1242,12 @@ void CAtumLauncherDlg::OnPaint()
 		NavItem navItems[] = {
 			{ ACETR_NAV_HOME_RECT, "ANA SAYFA", 1 },
 			{ ACETR_NAV_NEWS_RECT, "HABERLER", 2 },
-			{ ACETR_NAV_EVENTS_RECT, "ETKİNLİKLER", 3 }
+			{ ACETR_NAV_EVENTS_RECT, "ETKİNLİKLER", 3 },
+			{ ACETR_NAV_WEB_RECT, "WEB", 4 },
+			{ ACETR_NAV_DISCORD_RECT, "DISCORD", 5 }
 		};
 
-		for (int i = 0; i < 3; ++i)
+		for (int i = 0; i < 5; ++i)
 		{
 			const bool hot = (m_nModernNavHover == navItems[i].id);
 			PaintDC.SetTextColor(hot ? RGB(255, 255, 255) : RGB(174, 180, 194));
@@ -4014,7 +4049,9 @@ void CAtumLauncherDlg::OnLButtonDown(UINT nFlags, CPoint point)
 	// Keep top navigation clickable instead of treating it as a drag surface.
 	if (ACETR_NAV_HOME_RECT.PtInRect(point) ||
 		ACETR_NAV_NEWS_RECT.PtInRect(point) ||
-		ACETR_NAV_EVENTS_RECT.PtInRect(point))
+		ACETR_NAV_EVENTS_RECT.PtInRect(point) ||
+		ACETR_NAV_WEB_RECT.PtInRect(point) ||
+		ACETR_NAV_DISCORD_RECT.PtInRect(point))
 	{
 		return;
 	}
@@ -4040,6 +4077,16 @@ void CAtumLauncherDlg::OnLButtonUp(UINT nFlags, CPoint point)
 		OpenLauncherConfiguredUrl("Events");
 		return;
 	}
+	if (ACETR_NAV_WEB_RECT.PtInRect(point))
+	{
+		OpenLauncherConfiguredUrl("Website");
+		return;
+	}
+	if (ACETR_NAV_DISCORD_RECT.PtInRect(point))
+	{
+		OpenLauncherConfiguredUrl("Discord");
+		return;
+	}
 
 	CDialog::OnLButtonUp(nFlags, point);
 }
@@ -4050,11 +4097,13 @@ void CAtumLauncherDlg::OnMouseMove(UINT nFlags, CPoint point)
 	if (ACETR_NAV_HOME_RECT.PtInRect(point)) hover = 1;
 	else if (ACETR_NAV_NEWS_RECT.PtInRect(point)) hover = 2;
 	else if (ACETR_NAV_EVENTS_RECT.PtInRect(point)) hover = 3;
+	else if (ACETR_NAV_WEB_RECT.PtInRect(point)) hover = 4;
+	else if (ACETR_NAV_DISCORD_RECT.PtInRect(point)) hover = 5;
 
 	if (hover != m_nModernNavHover)
 	{
 		m_nModernNavHover = hover;
-		InvalidateRect(CRect(470, 8, 800, 60), FALSE);
+		InvalidateRect(CRect(470, 8, 990, 60), FALSE);
 	}
 
 	if (!m_bModernNavTracking)
@@ -4076,7 +4125,7 @@ LRESULT CAtumLauncherDlg::OnModernNavMouseLeave(WPARAM, LPARAM)
 	if (m_nModernNavHover != 0)
 	{
 		m_nModernNavHover = 0;
-		InvalidateRect(CRect(470, 8, 800, 60), FALSE);
+		InvalidateRect(CRect(470, 8, 990, 60), FALSE);
 	}
 	return 0;
 }
@@ -4090,7 +4139,9 @@ BOOL CAtumLauncherDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 
 	if (ACETR_NAV_HOME_RECT.PtInRect(point) ||
 		ACETR_NAV_NEWS_RECT.PtInRect(point) ||
-		ACETR_NAV_EVENTS_RECT.PtInRect(point))
+		ACETR_NAV_EVENTS_RECT.PtInRect(point) ||
+		ACETR_NAV_WEB_RECT.PtInRect(point) ||
+		ACETR_NAV_DISCORD_RECT.PtInRect(point))
 	{
 		::SetCursor(::LoadCursor(NULL, IDC_HAND));
 		return TRUE;
