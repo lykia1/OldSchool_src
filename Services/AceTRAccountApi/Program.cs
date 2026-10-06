@@ -8,8 +8,11 @@ var accountDb = builder.Configuration.GetConnectionString("AccountDb")
     ?? throw new InvalidOperationException("ConnectionStrings:AccountDb is missing.");
 var gameDb = builder.Configuration.GetConnectionString("GameDb")
     ?? throw new InvalidOperationException("ConnectionStrings:GameDb is missing.");
+var signingSecret = builder.Configuration["LauncherApi:SigningSecret"]
+    ?? Environment.GetEnvironmentVariable("ACETR_LAUNCHER_API_SECRET")
+    ?? throw new InvalidOperationException("LauncherApi signing secret is missing.");
 
-builder.Services.AddSingleton(new DbOptions(accountDb, gameDb));
+builder.Services.AddSingleton(new DbOptions(accountDb, gameDb, signingSecret));
 
 var app = builder.Build();
 
@@ -19,7 +22,7 @@ app.MapGet("/health", () => Results.Ok(new { ok = true, service = "AceTRAccountA
 
 app.MapGet("/api/account/profile", async (HttpRequest request, DbOptions db) =>
 {
-    var session = await LauncherSession.TryValidateAsync(request, db.AccountDb);
+    var session = LauncherSession.TryValidate(request, db.SigningSecret);
     if (session is null)
         return Results.Unauthorized();
 
@@ -60,7 +63,7 @@ app.MapGet("/api/account/profile", async (HttpRequest request, DbOptions db) =>
 
 app.MapGet("/api/account/characters", async (HttpRequest request, DbOptions db) =>
 {
-    var session = await LauncherSession.TryValidateAsync(request, db.AccountDb);
+    var session = LauncherSession.TryValidate(request, db.SigningSecret);
     if (session is null)
         return Results.Unauthorized();
 
@@ -101,9 +104,43 @@ app.MapGet("/api/account/characters", async (HttpRequest request, DbOptions db) 
     return Results.Ok(result);
 });
 
+app.MapGet("/api/launcher/characters", async (HttpRequest request, DbOptions db) =>
+{
+    var session = LauncherSession.TryValidate(request, db.SigningSecret);
+    if (session is null)
+        return Results.Unauthorized();
+
+    await using var con = new SqlConnection(db.GameDb);
+    await con.OpenAsync();
+
+    const string sql = """
+        SELECT CharacterName, Level, UnitKind, Race
+        FROM dbo.td_Character WITH (NOLOCK)
+        WHERE AccountName = @accountName
+          AND Race < 128
+        ORDER BY Level DESC, CharacterName ASC
+        """;
+
+    await using var cmd = new SqlCommand(sql, con);
+    cmd.Parameters.Add("@accountName", SqlDbType.VarChar, 20).Value = session.AccountName;
+
+    var lines = new List<string>();
+    await using var reader = await cmd.ExecuteReaderAsync();
+    while (await reader.ReadAsync())
+    {
+        var name = reader.GetString(0).Replace("|", "").Replace("\r", "").Replace("\n", "");
+        var level = Convert.ToInt32(reader.GetValue(1));
+        var unitKind = Convert.ToInt32(reader.GetValue(2));
+        var race = Convert.ToInt32(reader.GetValue(3));
+        lines.Add($"{name}|Lv.{level}|{GearName(unitKind)}|Race {race}");
+    }
+
+    return Results.Text(string.Join("\n", lines), "text/plain; charset=utf-8");
+});
+
 app.MapPost("/api/account/email", async (HttpRequest request, UpdateEmailRequest body, DbOptions db) =>
 {
-    var session = await LauncherSession.TryValidateAsync(request, db.AccountDb);
+    var session = LauncherSession.TryValidate(request, db.SigningSecret);
     if (session is null || !session.AccountName.Equals(body.AccountName, StringComparison.OrdinalIgnoreCase))
         return Results.Unauthorized();
 
@@ -144,36 +181,50 @@ static string GearName(int unitKind)
     };
 }
 
-public sealed record DbOptions(string AccountDb, string GameDb);
+public sealed record DbOptions(string AccountDb, string GameDb, string SigningSecret);
 
-public sealed record LauncherSessionInfo(string AccountName, DateTime ExpiresAtUtc);
+public sealed record LauncherSessionInfo(string AccountName, long ExpiresAtUnix);
 
 public static class LauncherSession
 {
-    public static async Task<LauncherSessionInfo?> TryValidateAsync(HttpRequest request, string accountDb)
+    public static LauncherSessionInfo? TryValidate(HttpRequest request, string signingSecret)
     {
         var token = request.Headers["X-AceTR-Session"].ToString();
-        if (string.IsNullOrWhiteSpace(token) || token.Length > 128)
+        if (string.IsNullOrWhiteSpace(token) || token.Length > 192)
             return null;
 
-        await using var con = new SqlConnection(accountDb);
-        await con.OpenAsync();
-
-        const string sql = """
-            SELECT TOP 1 AccountName, ExpiresAtUtc
-            FROM dbo.td_LauncherSession WITH (NOLOCK)
-            WHERE SessionToken = @token
-              AND RevokedAtUtc IS NULL
-              AND ExpiresAtUtc > SYSUTCDATETIME()
-            """;
-
-        await using var cmd = new SqlCommand(sql, con);
-        cmd.Parameters.Add("@token", SqlDbType.VarChar, 128).Value = token;
-
-        await using var reader = await cmd.ExecuteReaderAsync();
-        if (!await reader.ReadAsync())
+        var parts = token.Split('|');
+        if (parts.Length != 4)
             return null;
 
-        return new LauncherSessionInfo(reader.GetString(0), reader.GetDateTime(1));
+        var accountName = parts[0];
+        if (string.IsNullOrWhiteSpace(accountName) || accountName.Length > 20)
+            return null;
+
+        if (!long.TryParse(parts[1], out var expiresAt))
+            return null;
+
+        var now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        if (expiresAt <= now || expiresAt > now + 3600)
+            return null;
+
+        var nonce = parts[2];
+        var suppliedSignature = parts[3];
+        if (nonce.Length != 32 || suppliedSignature.Length != 64)
+            return null;
+
+        var payload = $"{accountName}|{expiresAt}|{nonce}";
+        using var hmac = new System.Security.Cryptography.HMACSHA256(
+            System.Text.Encoding.UTF8.GetBytes(signingSecret));
+        var expectedBytes = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(payload));
+        var expected = Convert.ToHexString(expectedBytes).ToLowerInvariant();
+
+        var expectedRaw = System.Text.Encoding.ASCII.GetBytes(expected);
+        var suppliedRaw = System.Text.Encoding.ASCII.GetBytes(suppliedSignature.ToLowerInvariant());
+        if (expectedRaw.Length != suppliedRaw.Length ||
+            !System.Security.Cryptography.CryptographicOperations.FixedTimeEquals(expectedRaw, suppliedRaw))
+            return null;
+
+        return new LauncherSessionInfo(accountName, expiresAt);
     }
 }
