@@ -1158,7 +1158,7 @@ BOOL CAtumLauncherDlg::ConnectPreServer()
 
 		this->CheckDlgButton(IDC_CHECK_WINDOWS_MODE, 1);
 	}
-	((CAtumLauncherApp*)AfxGetApp())->WriteProfile();
+	((CAtumLauncherApp*)AfxGetApp())->WriteProfile(*this);
 
 	m_bUpdateClientFile = dlg.m_bUpdateClientFile;
 
@@ -2945,7 +2945,7 @@ void CAtumLauncherDlg::OnOk()
 
 
 
-		((CAtumLauncherApp*)AfxGetApp())->WriteProfile();
+		((CAtumLauncherApp*)AfxGetApp())->WriteProfile(*this);
 
 		// °ÔŔÓ ˝ĂŔŰ ąöĆ° ż©·Żąř ´©¸Ł´Â °Ĺ ąćÁö
 		DisableControls();
