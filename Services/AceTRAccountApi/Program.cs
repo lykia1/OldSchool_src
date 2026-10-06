@@ -8,9 +8,18 @@ var accountDb = builder.Configuration.GetConnectionString("AccountDb")
     ?? throw new InvalidOperationException("ConnectionStrings:AccountDb is missing.");
 var gameDb = builder.Configuration.GetConnectionString("GameDb")
     ?? throw new InvalidOperationException("ConnectionStrings:GameDb is missing.");
-var signingSecret = builder.Configuration["LauncherApi:SigningSecret"]
-    ?? Environment.GetEnvironmentVariable("ACETR_LAUNCHER_API_SECRET")
-    ?? throw new InvalidOperationException("LauncherApi signing secret is missing.");
+var signingSecret = Environment.GetEnvironmentVariable("ACETR_LAUNCHER_API_SECRET");
+if (string.IsNullOrWhiteSpace(signingSecret))
+{
+    signingSecret = builder.Configuration["LauncherApi:SigningSecret"];
+}
+
+if (string.IsNullOrWhiteSpace(signingSecret) ||
+    signingSecret == "SET_A_LONG_RANDOM_SECRET_OR_USE_ACETR_LAUNCHER_API_SECRET")
+{
+    throw new InvalidOperationException(
+        "LauncherApi signing secret is missing. Set ACETR_LAUNCHER_API_SECRET or configure LauncherApi:SigningSecret.");
+}
 
 builder.Services.AddSingleton(new DbOptions(accountDb, gameDb, signingSecret));
 
