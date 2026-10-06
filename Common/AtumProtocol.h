@@ -2029,6 +2029,7 @@ void PrintExchangeMsg(BYTE SendOrRecv, MessageType_t nType, char *peerIP, ENServ
 #define T_PC_CONNECT_NETWORK_CHECK_OK				(MessageType_t)((T0_PC_CONNECT<<8)|T1_PC_CONNECT_NETWORK_CHECK_OK)		// 2007-06-18 by cmkwon, P->C, // 2007-06-18 by cmkwon, 네트워크 상태 체크
 #define T_PC_CONNECT_GET_NEW_GAME_SERVER_GROUP_LIST		(MessageType_t)((T0_PC_CONNECT<<8)|T1_PC_CONNECT_GET_NEW_GAME_SERVER_GROUP_LIST)	// 2007-09-05 by cmkwon, EXE_1에 로그인 서버 선택 인터페이스 수정 - C->P
 #define T_PC_CONNECT_GET_NEW_GAME_SERVER_GROUP_LIST_OK	(MessageType_t)((T0_PC_CONNECT<<8)|T1_PC_CONNECT_GET_NEW_GAME_SERVER_GROUP_LIST_OK)	// 2007-09-05 by cmkwon, EXE_1에 로그인 서버 선택 인터페이스 수정 - P->C
+#define T_PC_CONNECT_LAUNCHER_SESSION			(MessageType_t)((T0_PC_CONNECT<<8)|T1_PC_CONNECT_LAUNCHER_SESSION)	// P->Launcher
 #ifdef _INET_MAC_ADDRESS_CHECKER
 #define T_PC_CONNECT_SEND_GET_BLOCKED_MAC_ADDR			(MessageType_t)((T0_PC_CONNECT<<8)|T1_PC_CONNECT_SEND_GET_BLOCKED_MAC_ADDR) // 2016-03-06 by inet - for send to p-server mac address
 #define T_PC_CONNECT_SEND_GET_BLOCKED_MAC_ADDR_BLOCK	(MessageType_t)((T0_PC_CONNECT<<8)|T1_PC_CONNECT_SEND_GET_BLOCKED_MAC_ADDR_BLOCK) // 2016-03-07 by inet - for send to p-server mac address
