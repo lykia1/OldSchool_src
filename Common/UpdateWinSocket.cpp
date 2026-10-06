@@ -198,6 +198,19 @@ BOOL CUpdateWinSocket::OnRecvdPacket(LPSTR pPacket, int nLength, BYTE nSeq)
 				nBytesUsed += nMsgSize;
 			}
 			break;
+		case T_PC_CONNECT_LAUNCHER_SESSION:
+			{
+				nMsgSize = MSG_SIZE(MSG_PC_CONNECT_LAUNCHER_SESSION);
+				pRMsg = new char[nMsgSize];
+				memcpy(pRMsg, pPacket + nBytesUsed, nMsgSize);
+				EnterCriticalSection(&m_criticalRecvMessageQueue);
+				m_queueRecvMessage.push(pRMsg);
+				LeaveCriticalSection(&m_criticalRecvMessageQueue);
+				pRMsg = NULL;
+				PostNotify(WS_RECEIVED, 0, (char*)this);
+				nBytesUsed += nMsgSize;
+			}
+			break;
 		case T_PC_CONNECT_GET_SERVER_GROUP_LIST_OK:
 			{
 				nMsgSize = MSG_SIZE(MSG_PC_CONNECT_GET_SERVER_GROUP_LIST_OK)
