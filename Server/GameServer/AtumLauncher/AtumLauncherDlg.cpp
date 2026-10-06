@@ -83,12 +83,12 @@ constexpr auto DELFILELIST_FILE_NAME = "deletefilelist.txt";
 constexpr auto STRING_SERVER_GROUP_NAME_DELIMIT = " ";
 constexpr auto TICKGAP_NETWORK_STATE_WORST_PING_TICK = 1500;
 
-static const CRect ACETR_NAV_HOME_RECT(5, 146, 279, 230);
-static const CRect ACETR_NAV_NEWS_RECT(5, 230, 279, 312);
-static const CRect ACETR_NAV_EVENTS_RECT(5, 312, 279, 397);
-static const CRect ACETR_NAV_WEB_RECT(5, 397, 279, 482);
-static const CRect ACETR_NAV_DISCORD_RECT(5, 482, 279, 567);
-static const CRect ACETR_REMEMBER_RECT(1297, 626, 1455, 660);
+static const CRect ACETR_NAV_HOME_RECT(18, 118, 205, 166);
+static const CRect ACETR_NAV_NEWS_RECT(18, 172, 205, 220);
+static const CRect ACETR_NAV_EVENTS_RECT(18, 226, 205, 274);
+static const CRect ACETR_NAV_WEB_RECT(18, 280, 205, 328);
+static const CRect ACETR_NAV_DISCORD_RECT(18, 334, 205, 382);
+static const CRect ACETR_REMEMBER_RECT(970, 438, 1130, 466);
 
 static size_t LauncherApiWriteCallback(void* contents, size_t size, size_t nmemb, void* userp)
 {
@@ -462,8 +462,8 @@ BOOL CAtumLauncherDlg::ReadNoticeFile()
 	return TRUE;
 }
 
-	#define EXE2_LAUNCHER_BG_SIZE_X                 1672
-#define EXE2_LAUNCHER_BG_SIZE_Y                 941
+	#define EXE2_LAUNCHER_BG_SIZE_X                 1280
+#define EXE2_LAUNCHER_BG_SIZE_Y                 720
 
 #define EXE2_BG_TITLE_BAR_SIZE_X                EXE2_LAUNCHER_BG_SIZE_X
 #define EXE2_BG_TITLE_BAR_SIZE_Y                64
@@ -472,9 +472,9 @@ BOOL CAtumLauncherDlg::ReadNoticeFile()
 #define EXE2_BG_BACKGROUND_IMAGE_SIZE_Y         EXE2_LAUNCHER_BG_SIZE_Y
 
 // AceTR modern launcher - right login panel
-#define EXE2_BG_RESOLUTION_COMBOBOX_POS_X       1304
-#define EXE2_BG_RESOLUTION_COMBOBOX_POS_Y       760
-#define EXE2_BG_RESOLUTION_COMBOBOX_WIDTH       310
+#define EXE2_BG_RESOLUTION_COMBOBOX_POS_X       970
+#define EXE2_BG_RESOLUTION_COMBOBOX_POS_Y       560
+#define EXE2_BG_RESOLUTION_COMBOBOX_WIDTH       270
 #define EXE2_BG_RESOLUTION_COMBOBOX_HEIGHT      180
 
 #define EXE2_BG_WINDOWSMODE_CHECKBOX_POS_X      1304
@@ -482,21 +482,21 @@ BOOL CAtumLauncherDlg::ReadNoticeFile()
 #define EXE2_BG_WINDOWSMODE_CHECKBOX_WIDTH      16
 #define EXE2_BG_WINDOWSMODE_CHECKBOX_HEIGHT     16
 
-#define EXE2_BG_ACCOUNTNAME_EDIT_POS_X          1334
-#define EXE2_BG_ACCOUNTNAME_EDIT_POS_Y          511
-#define EXE2_BG_ACCOUNTNAME_EDIT_WIDTH          258
+#define EXE2_BG_ACCOUNTNAME_EDIT_POS_X          974
+#define EXE2_BG_ACCOUNTNAME_EDIT_POS_Y          325
+#define EXE2_BG_ACCOUNTNAME_EDIT_WIDTH          252
 #define EXE2_BG_ACCOUNTNAME_EDIT_HEIGHT         42
 
-#define EXE2_BG_PASSWORD_EDIT_POS_X             1334
-#define EXE2_BG_PASSWORD_EDIT_POS_Y             570
-#define EXE2_BG_PASSWORD_EDIT_WIDTH              258
+#define EXE2_BG_PASSWORD_EDIT_POS_X             974
+#define EXE2_BG_PASSWORD_EDIT_POS_Y             385
+#define EXE2_BG_PASSWORD_EDIT_WIDTH              252
 #define EXE2_BG_PASSWORD_EDIT_HEIGHT             42
 
 // Server list
-#define EXE2_BG_SERVERLIST_BOX_POS_X            1304
-#define EXE2_BG_SERVERLIST_BOX_POS_Y            386
-#define EXE2_BG_SERVERLIST_BOX_WIDTH            310
-#define EXE2_BG_SERVERLIST_BOX_HEIGHT           50
+#define EXE2_BG_SERVERLIST_BOX_POS_X            972
+#define EXE2_BG_SERVERLIST_BOX_POS_Y            232
+#define EXE2_BG_SERVERLIST_BOX_WIDTH            256
+#define EXE2_BG_SERVERLIST_BOX_HEIGHT           54
 
 #define EXE2_BG_SERVERLIST_ITEM_BG_WIDTH        640
 #define EXE2_BG_SERVERLIST_ITEM_BG_HEIGHT       32
@@ -506,45 +506,45 @@ BOOL CAtumLauncherDlg::ReadNoticeFile()
 #define EXE2_BG_SERVERLIST_ITEM_ICON_HEIGHT     10
 
 // Window chrome
-#define EXE2_BG_MINIMIZED_BTN_POS_X             1532
-#define EXE2_BG_MINIMIZED_BTN_POS_Y             16
-#define EXE2_BG_MINIMIZED_BTN_WIDTH             46
-#define EXE2_BG_MINIMIZED_BTN_HEIGHT            44
-#define EXE2_BG_CANCEL_BTN_POS_X                1598
-#define EXE2_BG_CANCEL_BTN_POS_Y                16
-#define EXE2_BG_CANCEL_BTN_WIDTH                50
-#define EXE2_BG_CANCEL_BTN_HEIGHT               44
+#define EXE2_BG_MINIMIZED_BTN_POS_X             1188
+#define EXE2_BG_MINIMIZED_BTN_POS_Y             18
+#define EXE2_BG_MINIMIZED_BTN_WIDTH             36
+#define EXE2_BG_MINIMIZED_BTN_HEIGHT            34
+#define EXE2_BG_CANCEL_BTN_POS_X                1230
+#define EXE2_BG_CANCEL_BTN_POS_Y                18
+#define EXE2_BG_CANCEL_BTN_WIDTH                36
+#define EXE2_BG_CANCEL_BTN_HEIGHT               34
 
 // Primary action
-#define EXE2_BG_GAMESTART_BTN_POS_X             1304
-#define EXE2_BG_GAMESTART_BTN_POS_Y             676
-#define EXE2_BG_GAMESTART_BTN_WIDTH             310
-#define EXE2_BG_GAMESTART_BTN_HEIGHT            72
+#define EXE2_BG_GAMESTART_BTN_POS_X             970
+#define EXE2_BG_GAMESTART_BTN_POS_Y             485
+#define EXE2_BG_GAMESTART_BTN_WIDTH             258
+#define EXE2_BG_GAMESTART_BTN_HEIGHT            62
 
 // Patch/update area
-#define EXE2_BG_UPDATE_PROGRESS_BAR_POS_X       523
-#define EXE2_BG_UPDATE_PROGRESS_BAR_POS_Y       869
-#define EXE2_BG_UPDATE_PROGRESS_BAR_WIDTH       455
-#define EXE2_BG_UPDATE_PROGRESS_BAR_HEIGHT      18
+#define EXE2_BG_UPDATE_PROGRESS_BAR_POS_X       250
+#define EXE2_BG_UPDATE_PROGRESS_BAR_POS_Y       666
+#define EXE2_BG_UPDATE_PROGRESS_BAR_WIDTH       690
+#define EXE2_BG_UPDATE_PROGRESS_BAR_HEIGHT      12
 
-#define EXE2_BG_DOWNLOAD_FILE_STATIC_POS_X      291
-#define EXE2_BG_DOWNLOAD_FILE_STATIC_POS_Y      845
-#define EXE2_BG_DOWNLOAD_FILE_STATIC_WIDTH      230
+#define EXE2_BG_DOWNLOAD_FILE_STATIC_POS_X      250
+#define EXE2_BG_DOWNLOAD_FILE_STATIC_POS_Y      640
+#define EXE2_BG_DOWNLOAD_FILE_STATIC_WIDTH      350
 #define EXE2_BG_DOWNLOAD_FILE_STATIC_HEIGHT     20
 #define EXE2_BG_DOWNLOAD_FILE_FONT_SIZE         15
 #define EXE2_BG_DOWNLOAD_FILE_FONT_WEIGHT       FW_NORMAL
 #define EXE2_BG_DOWNLOAD_FILE_FONT_COLOR        RGB(205,205,215)
 
-#define EXE2_BG_UPDATE_INFO_STATIC_POS_X        942
-#define EXE2_BG_UPDATE_INFO_STATIC_POS_Y        845
-#define EXE2_BG_UPDATE_INFO_STATIC_WIDTH        180
+#define EXE2_BG_UPDATE_INFO_STATIC_POS_X        750
+#define EXE2_BG_UPDATE_INFO_STATIC_POS_Y        640
+#define EXE2_BG_UPDATE_INFO_STATIC_WIDTH        190
 #define EXE2_BG_UPDATE_INFO_STATIC_HEIGHT       20
 #define EXE2_BG_UPDATE_INFO_FONT_SIZE           15
 #define EXE2_BG_UPDATE_INFO_FONT_WEIGHT         FW_NORMAL
 #define EXE2_BG_UPDATE_INFO_FONT_COLOR          RGB(205,205,215)
 
-#define EXE2_BG_REMEMBERID_CHECKBOX_POS_X       1304
-#define EXE2_BG_REMEMBERID_CHECKBOX_POS_Y       635
+#define EXE2_BG_REMEMBERID_CHECKBOX_POS_X       974
+#define EXE2_BG_REMEMBERID_CHECKBOX_POS_Y       445
 #define EXE2_BG_REMEMBERID_CHECKBOX_WIDTH       22
 #define EXE2_BG_REMEMBERID_CHECKBOX_HEIGHT      22
 
@@ -694,7 +694,7 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	GetDlgItem(IDC_CHECK_REMEMBER_ID)->ShowWindow(SW_HIDE);
 
 	GetDlgItem(IDC_LIST)->MoveWindow(EXE2_BG_SERVERLIST_BOX_POS_X, EXE2_BG_SERVERLIST_BOX_POS_Y, EXE2_BG_SERVERLIST_BOX_WIDTH, EXE2_BG_SERVERLIST_BOX_HEIGHT);
-	GetDlgItem(IDC_LIST)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_LIST)->ShowWindow(SW_SHOW);
 	m_ctrlServerList.SetItemHeight(26);
 	m_ctrlServerList.SetItemBGImageSize(EXE2_BG_SERVERLIST_ITEM_BG_WIDTH, EXE2_BG_SERVERLIST_ITEM_BG_HEIGHT);
 	m_ctrlServerList.SetItemIconImage(EXE2_BG_SERVERLIST_ITEM_ICON_POS_X, EXE2_BG_SERVERLIST_ITEM_ICON_POS_Y, EXE2_BG_SERVERLIST_ITEM_ICON_WIDTH, EXE2_BG_SERVERLIST_ITEM_ICON_HEIGHT);
@@ -716,7 +716,7 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	m_ctlINETCfgBtn.SetToolTipText("Oyun Ayarlari");
 	m_ctlINETCfgBtn.SetModernButton("AYAR", RGB(38, 42, 52));
 
-	GetDlgItem(IDC_BTN_VIEW_INET_CFG)->MoveWindow(1360, 846, 140, 58);
+	GetDlgItem(IDC_BTN_VIEW_INET_CFG)->MoveWindow(1110, 610, 120, 44);
 #endif	
 	// 2007-09-07 by cmkwon, »çżëÇĎÁö ľĘ´Â ąöĆ°ŔÓ
 	//// Join Button
@@ -724,7 +724,7 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 
 	// Update Progress Bar
 	m_progressCtrl.MoveWindow(EXE2_BG_UPDATE_PROGRESS_BAR_POS_X, EXE2_BG_UPDATE_PROGRESS_BAR_POS_Y, EXE2_BG_UPDATE_PROGRESS_BAR_WIDTH, EXE2_BG_UPDATE_PROGRESS_BAR_HEIGHT);
-	GetDlgItem(IDC_PLAYER_CNT)->MoveWindow(1330, 287, 230, 28);
+	GetDlgItem(IDC_PLAYER_CNT)->MoveWindow(974, 170, 240, 22);
 	GetDlgItem(IDC_PLAYER_CNT)->ShowWindow(SW_HIDE);
 
 
@@ -1122,55 +1122,142 @@ void CAtumLauncherDlg::OnPaint()
 	{
 		CPaintDC dc(this);
 		SendMessage(WM_ICONERASEBKGND, (WPARAM)dc.GetSafeHdc(), 0);
-		CRect rect;
-		GetClientRect(&rect);
+		CRect rect; GetClientRect(&rect);
 		dc.DrawIcon((rect.Width() - GetSystemMetrics(SM_CXICON)) / 2,
 			(rect.Height() - GetSystemMetrics(SM_CYICON)) / 2, m_hIcon);
 		return;
 	}
 
-	// The approved AceTR artwork is the launcher itself. Do not redraw
-	// approximated panels/text here; only render the skin pixel-for-pixel.
 	CPaintDC dc(this);
-	CDC memDC;
-	BITMAP bitmapInfo = {0};
-	memDC.CreateCompatibleDC(&dc);
-	CBitmap* oldBitmap = memDC.SelectObject(&m_BackGround);
-	m_BackGround.GetObject(sizeof(BITMAP), &bitmapInfo);
+	CRect client; GetClientRect(&client);
 
-	if (bitmapInfo.bmWidth == EXE2_LAUNCHER_BG_SIZE_X &&
-		bitmapInfo.bmHeight == EXE2_LAUNCHER_BG_SIZE_Y)
-	{
-		dc.BitBlt(0, 0, bitmapInfo.bmWidth, bitmapInfo.bmHeight,
-			&memDC, 0, 0, SRCCOPY);
-	}
-	else
+	// Base shell
+	CBrush bg(RGB(6, 12, 20));
+	dc.FillRect(client, &bg);
+	CBrush top(RGB(9, 18, 29));
+	dc.FillRect(CRect(0,0,1280,72), &top);
+	CBrush side(RGB(7, 16, 26));
+	dc.FillRect(CRect(0,72,224,720), &side);
+
+	CPen border(PS_SOLID,1,RGB(25,58,78));
+	CPen accent(PS_SOLID,1,RGB(0,174,239));
+	CBrush panel(RGB(10, 23, 36));
+	CBrush panel2(RGB(13, 29, 44));
+	CPen* oldPen=dc.SelectObject(&border);
+	CBrush* oldBrush=dc.SelectObject(&panel);
+
+	// Header underline
+	dc.SelectObject(&accent);
+	dc.MoveTo(0,71); dc.LineTo(1280,71);
+	dc.SelectObject(&border);
+
+	// Main hero frame
+	dc.RoundRect(CRect(238,96,936,570),CPoint(10,10));
+	// Right login panel
+	dc.RoundRect(CRect(952,96,1262,570),CPoint(10,10));
+	// Bottom patch panel
+	dc.RoundRect(CRect(238,590,1262,704),CPoint(10,10));
+
+	// Hero artwork crop from the existing AceTR bitmap resource.
+	CDC memDC;
+	memDC.CreateCompatibleDC(&dc);
+	CBitmap* oldBmp=memDC.SelectObject(&m_BackGround);
+	BITMAP bi={0}; m_BackGround.GetObject(sizeof(BITMAP),&bi);
+	if (bi.bmWidth > 1000 && bi.bmHeight > 500)
 	{
 		dc.SetStretchBltMode(HALFTONE);
-		dc.StretchBlt(0, 0, EXE2_LAUNCHER_BG_SIZE_X, EXE2_LAUNCHER_BG_SIZE_Y,
-			&memDC, 0, 0, bitmapInfo.bmWidth, bitmapInfo.bmHeight, SRCCOPY);
+		// Crop the clean aircraft/sky artwork region from the approved image.
+		dc.StretchBlt(250,108,674,378,&memDC,292,150,960,470,SRCCOPY);
 	}
+	memDC.SelectObject(oldBmp);
 
-	memDC.SelectObject(oldBitmap);
+	// Hero lower caption plate
+	dc.SelectObject(&panel2);
+	dc.RoundRect(CRect(250,488,924,558),CPoint(8,8));
 
-	// Native Remember Me state. The background artwork remains untouched;
-	// only this small interactive state is rendered at runtime.
-	CRect rememberBox(1302, 632, 1325, 655);
-	CBrush rememberBg(RGB(4, 27, 42));
-	CPen rememberBorder(PS_SOLID, 1, RGB(0, 174, 239));
-	CBrush* oldBrush = dc.SelectObject(&rememberBg);
-	CPen* oldPen = dc.SelectObject(&rememberBorder);
-	dc.Rectangle(rememberBox);
-	if (m_ctlBtnRememberID.GetCheck() == BST_CHECKED)
+	// Typography
+	dc.SetBkMode(TRANSPARENT);
+	CFont brand, title, subtitle, nav, small, stat;
+	brand.CreateFont(31,0,0,0,FW_BOLD,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
+	title.CreateFont(26,0,0,0,FW_BOLD,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
+	subtitle.CreateFont(15,0,0,0,FW_NORMAL,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
+	nav.CreateFont(16,0,0,0,FW_SEMIBOLD,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
+	small.CreateFont(14,0,0,0,FW_NORMAL,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
+	stat.CreateFont(15,0,0,0,FW_BOLD,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
+
+	CFont* oldFont=dc.SelectObject(&brand);
+	dc.SetTextColor(RGB(232,246,255));
+	dc.TextOut(26,20,"ACE");
+	dc.SetTextColor(RGB(0,184,255));
+	dc.TextOut(92,20,"TR");
+	dc.SelectObject(&small);
+	dc.SetTextColor(RGB(111,142,160));
+	dc.TextOut(150,30,"ACE ONLINE TURKIYE");
+
+	// Left navigation
+	const char* items[5]={"ANA SAYFA","HABERLER","SIRALAMA","MARKET","TOPLULUK"};
+	CRect navRects[5]={ACETR_NAV_HOME_RECT,ACETR_NAV_NEWS_RECT,ACETR_NAV_EVENTS_RECT,ACETR_NAV_WEB_RECT,ACETR_NAV_DISCORD_RECT};
+	dc.SelectObject(&nav);
+	for(int i=0;i<5;i++)
 	{
-		CPen checkPen(PS_SOLID, 2, RGB(185, 245, 255));
-		dc.SelectObject(&checkPen);
-		dc.MoveTo(1307, 643);
-		dc.LineTo(1312, 648);
-		dc.LineTo(1320, 638);
+		BOOL active=(m_nLauncherMainPage==i);
+		BOOL hover=(m_nModernNavHover==i+1);
+		if(active||hover)
+		{
+			CBrush hi(active?RGB(10,45,67):RGB(9,34,51));
+			CPen hiPen(PS_SOLID,1,active?RGB(0,174,239):RGB(22,84,116));
+			CBrush* ob=dc.SelectObject(&hi); CPen* op=dc.SelectObject(&hiPen);
+			dc.RoundRect(navRects[i],CPoint(7,7));
+			dc.SelectObject(op); dc.SelectObject(ob);
+		}
+		dc.SetTextColor(active?RGB(100,220,255):RGB(170,194,207));
+		CRect tr=navRects[i]; tr.left+=18;
+		dc.DrawText(items[i],tr,DT_LEFT|DT_VCENTER|DT_SINGLELINE);
 	}
-	dc.SelectObject(oldPen);
+
+	// Hero copy
+	dc.SelectObject(&title);
+	dc.SetTextColor(RGB(245,250,253));
+	dc.TextOut(270,501,"Gökyüzü Yeniden Bizim");
+	dc.SelectObject(&subtitle);
+	dc.SetTextColor(RGB(137,168,184));
+	dc.TextOut(270,535,"Yeni sezon, etkinlikler ve güncellemeler AceTR'de.");
+
+	// Login/status panel labels
+	dc.SelectObject(&stat);
+	dc.SetTextColor(RGB(227,242,249));
+	dc.TextOut(974,120,"SUNUCU DURUMU");
+	dc.SetTextColor(RGB(50,220,133));
+	dc.TextOut(974,150,"●  ÇEVRİMİÇİ");
+	dc.SetTextColor(RGB(140,169,184));
+	dc.TextOut(974,200,"SUNUCU");
+	dc.TextOut(974,296,"KULLANICI GİRİŞİ");
+	dc.TextOut(974,310,"");
+	dc.TextOut(974,448,"Beni Hatırla");
+
+	// Native remember checkbox
+	CRect box(974,444,994,464);
+	CBrush cbBg(RGB(7,27,41)); CPen cbPen(PS_SOLID,1,RGB(0,174,239));
+	CBrush* cbOldB=dc.SelectObject(&cbBg); CPen* cbOldP=dc.SelectObject(&cbPen);
+	dc.Rectangle(box);
+	if(m_ctlBtnRememberID.GetCheck()==BST_CHECKED)
+	{
+		CPen ck(PS_SOLID,2,RGB(176,242,255)); dc.SelectObject(&ck);
+		dc.MoveTo(978,454); dc.LineTo(983,459); dc.LineTo(991,449);
+	}
+	dc.SelectObject(cbOldP); dc.SelectObject(cbOldB);
+
+	// Patch labels
+	dc.SelectObject(&stat);
+	dc.SetTextColor(RGB(228,242,248));
+	dc.TextOut(258,612,"GÜNCELLEME");
+	dc.SelectObject(&small);
+	dc.SetTextColor(RGB(125,153,168));
+	dc.TextOut(258,636,"Dosyalar kontrol ediliyor...");
+
+	dc.SelectObject(oldFont);
 	dc.SelectObject(oldBrush);
+	dc.SelectObject(oldPen);
 }
 
 HCURSOR CAtumLauncherDlg::OnQueryDragIcon()
@@ -4120,7 +4207,7 @@ void CAtumLauncherDlg::OnMouseMove(UINT nFlags, CPoint point)
 	if (hover!=m_nModernNavHover)
 	{
 		m_nModernNavHover=hover;
-		InvalidateRect(CRect(0, 140, 282, 570), FALSE);
+		InvalidateRect(CRect(0, 100, 224, 400), FALSE);
 	}
 
 	if (!m_bModernNavTracking)
@@ -4140,7 +4227,7 @@ LRESULT CAtumLauncherDlg::OnModernNavMouseLeave(WPARAM, LPARAM)
 	if(m_nModernNavHover!=0)
 	{
 		m_nModernNavHover=0;
-		InvalidateRect(CRect(0, 140, 282, 570), FALSE);
+		InvalidateRect(CRect(0, 100, 224, 400), FALSE);
 	}
 	return 0;
 }
