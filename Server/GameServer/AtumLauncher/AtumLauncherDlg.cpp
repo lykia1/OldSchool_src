@@ -550,7 +550,7 @@ static void AceDrawLinkCard(CDC& dc, const CRect& r, LPCSTR title, LPCSTR sub, i
 	if(iconKind==0){ dc.Ellipse(ir); dc.MoveTo(ir.left+4,(ir.top+ir.bottom)/2); dc.LineTo(ir.right-4,(ir.top+ir.bottom)/2); dc.Ellipse(ir.left+11,ir.top,ir.right-11,ir.bottom); }
 	else if(iconKind==1){ dc.RoundRect(ir,CPoint(12,12)); dc.Ellipse(ir.left+8,ir.top+12,ir.left+13,ir.top+17); dc.Ellipse(ir.right-13,ir.top+12,ir.right-8,ir.top+17); dc.MoveTo(ir.left+10,ir.bottom-10); dc.LineTo(ir.right-10,ir.bottom-10); }
 	else if(iconKind==2){ dc.MoveTo(ir.left+20,ir.top+4); dc.LineTo(ir.left+20,ir.bottom-4); dc.MoveTo(ir.left+12,ir.top+15); dc.LineTo(ir.right-3,ir.top+15); dc.MoveTo(ir.left+12,ir.top+15); dc.LineTo(ir.left+12,ir.top+27); }
-	else { dc.Arc(ir,ir.left+4,ir.top+20,ir.left+34,ir.top+20); dc.MoveTo(ir.left+4,ir.top+20); dc.LineTo(ir.left+4,ir.bottom-7); dc.MoveTo(ir.right-4,ir.top+20); dc.LineTo(ir.right-4,ir.bottom-7); }
+	else { dc.Arc(ir, CPoint(ir.left+4,ir.top+20), CPoint(ir.left+34,ir.top+20)); dc.MoveTo(ir.left+4,ir.top+20); dc.LineTo(ir.left+4,ir.bottom-7); dc.MoveTo(ir.right-4,ir.top+20); dc.LineTo(ir.right-4,ir.bottom-7); }
 	dc.SelectObject(hollow);
 	dc.SelectObject(oldP);
 
