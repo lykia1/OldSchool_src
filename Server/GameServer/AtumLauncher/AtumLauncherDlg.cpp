@@ -1314,7 +1314,11 @@ void CAtumLauncherDlg::OnPaint()
 				PaintDC.TextOut(875, 120, "HESABIM");
 				PaintDC.SelectObject(&smallFont);
 				PaintDC.SetTextColor(RGB(78, 218, 143));
-				PaintDC.TextOut(875, 158, "●  OTURUM AÇIK");
+				CBrush onlineDot(RGB(78, 218, 143));
+				CBrush* prevOnlineBrush = PaintDC.SelectObject(&onlineDot);
+				PaintDC.Ellipse(CRect(875, 162, 883, 170));
+				PaintDC.SelectObject(prevOnlineBrush);
+				PaintDC.TextOut(890, 158, "OTURUM AÇIK");
 
 				PaintDC.SelectObject(&nameFont);
 				PaintDC.SetTextColor(RGB(255, 255, 255));
@@ -1357,7 +1361,7 @@ void CAtumLauncherDlg::OnPaint()
 				PaintDC.TextOut(875, 120, "HESAP YÖNETİMİ");
 				PaintDC.SelectObject(&smallFont);
 				PaintDC.SetTextColor(RGB(150, 157, 174));
-				PaintDC.TextOut(875, 155, "Tüm işlemler launcher içinde yapılacak.");
+				PaintDC.TextOut(875, 158, "Hesap işlemlerini buradan yönetebilirsin.");
 
 				struct AccountAction { CRect r; LPCSTR text; int hoverId; };
 				AccountAction actions[] = {
@@ -2158,6 +2162,7 @@ LONG CAtumLauncherDlg::OnSocketNotify(WPARAM wParam, LPARAM lParam)
 						GetDlgItem(IDC_CHECK_64_BIT)->ShowWindow(SW_HIDE);
 						GetDlgItem(IDC_COMBO_WINDOW_DEGREE_LAUNCHER)->ShowWindow(SW_HIDE);
 						GetDlgItem(IDC_CHECK_WINDOWS_MODE)->ShowWindow(SW_HIDE);
+						GetDlgItem(IDC_PLAYER_CNT)->ShowWindow(SW_HIDE);
 
 						GetDlgItem(IDGO)->EnableWindow(TRUE);
 						m_KbcGO.SetButtonEnable();
@@ -3889,6 +3894,7 @@ void CAtumLauncherDlg::LogoutLauncherAccount()
 	GetDlgItem(IDC_CHECK_64_BIT)->ShowWindow(SW_SHOW);
 	GetDlgItem(IDC_COMBO_WINDOW_DEGREE_LAUNCHER)->ShowWindow(SW_SHOW);
 	GetDlgItem(IDC_CHECK_WINDOWS_MODE)->ShowWindow(SW_SHOW);
+	GetDlgItem(IDC_PLAYER_CNT)->ShowWindow(SW_SHOW);
 
 	m_KbcGO.SetModernButton("GİRİŞ YAP", RGB(225, 82, 35));
 	m_KbcGO.SetToolTipText("Giris Yap");
