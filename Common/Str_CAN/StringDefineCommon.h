@@ -917,7 +917,7 @@
 
 
 // 2008-09-09 by cmkwon, /세력소환 명령어 인자 리스트에 기어타입 추가 - 
-#define STRCMD_CS_COMMAND_COMEONINFL_HELP2		"format: /ComeOnInfl [1(Normal)|2(BCU)|4(ANI)|255(All)] [maximum people] [0|minimum level] [0|maximum level] [1(B)|16(M)|256(A)|4096(I)|4369(ALL)] [Message to user] - Request to certain nation, level users to move to your position."
+#define STRCMD_CS_COMMAND_COMEONINFL_HELP2		"kullanim: /ComeOnInfl [1(Normal)|2(BCU)|4(ANI)|255(All)] [maksimum kisi] [0|minimum seviye] [0|maksimum seviye] [1(B)|16(M)|256(A)|4096(I)|4369(ALL)] [Kullaniciya mesaj] - Belirli ulus ve seviye araligindaki kullanicilara konumunuza gelme istegi gonderir."
 
 // 2008-09-09 by cmkwon, "/kick" 명령어 추가 - 
 #define STRCMD_CS_COMMAND_KICK_0							"/Kick"
