@@ -1,13 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
     <PlatformTarget>x86</PlatformTarget>
+    <Prefer32Bit>true</Prefer32Bit>
     <AssemblyName>AceTRLauncher</AssemblyName>
     <RootNamespace>AceTRLauncher</RootNamespace>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,9 +18,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="launcher.json" CopyToOutputDirectory="PreserveNewest" />
-    <None Update="Assets\launcher_master.jpg"
-          CopyToOutputDirectory="PreserveNewest"
-          Condition="Exists('Assets\launcher_master.jpg')" />
+    <None Include="launcher.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Assets\launcher_master.jpg" Condition="Exists('Assets\launcher_master.jpg')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
+
 </Project>
