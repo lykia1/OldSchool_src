@@ -299,6 +299,7 @@ typedef vector<DEVMODE>			vectDEVMODE;		// 2008-01-03 by cmkwon, 지원하는 �
 // CAtumLauncherDlg dialog
 class CFTPManager;
 class CHttpManager;
+struct IWebBrowser2;
 //class CScreenKeyboardDlg;		// 2007-09-10 by cmkwon, 베트남 화면키보드 구현 -
 #ifdef _INET_CONFIGURATOR
 class InetConfiguratorDLG;
@@ -362,6 +363,10 @@ public:
 	char				m_szLaunchCmdLine[2048];
 	char				m_szLaunchAppPath[1024];
 	char				m_szLaunchCmdParam[2048];
+
+	// AceTR embedded center web view
+	CWnd				m_wndWebView;
+	IWebBrowser2*		m_pWebBrowser;
 
 // Dialog Data
 	//{{AFX_DATA(CAtumLauncherDlg)
@@ -555,6 +560,8 @@ public:
 	void LogoutLauncherAccount();
 	BOOL LoadLauncherCharacters();
 	void SetLauncherMainPage(int page);
+	BOOL InitLauncherWebView();
+	void NavigateLauncherWeb(LPCSTR key);
 
 	void SetPrivateIP();
 
