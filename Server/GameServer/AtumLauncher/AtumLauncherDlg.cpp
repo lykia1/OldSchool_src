@@ -83,19 +83,11 @@ constexpr auto DELFILELIST_FILE_NAME = "deletefilelist.txt";
 constexpr auto STRING_SERVER_GROUP_NAME_DELIMIT = " ";
 constexpr auto TICKGAP_NETWORK_STATE_WORST_PING_TICK = 1500;
 
-static const CRect ACETR_NAV_HOME_RECT(485, 10, 585, 56);
-static const CRect ACETR_NAV_NEWS_RECT(585, 10, 680, 56);
-static const CRect ACETR_NAV_EVENTS_RECT(680, 10, 790, 56);
-static const CRect ACETR_NAV_WEB_RECT(805, 10, 875, 56);
-static const CRect ACETR_NAV_DISCORD_RECT(875, 10, 980, 56);
-static const CRect ACETR_ACCOUNT_MANAGE_RECT(875, 475, 1000, 515);
-static const CRect ACETR_ACCOUNT_SUPPORT_RECT(1010, 475, 1125, 515);
-static const CRect ACETR_ACCOUNT_LOGOUT_RECT(875, 520, 1125, 548);
-static const CRect ACETR_ACCOUNT_BACK_RECT(875, 475, 1125, 510);
-static const CRect ACETR_ACCOUNT_PASSWORD_RECT(875, 205, 1125, 245);
-static const CRect ACETR_ACCOUNT_EMAIL_RECT(875, 255, 1125, 295);
-static const CRect ACETR_ACCOUNT_CHARACTERS_RECT(875, 305, 1125, 345);
-static const CRect ACETR_ACCOUNT_SECURITY_RECT(875, 355, 1125, 395);
+static const CRect ACETR_NAV_HOME_RECT(18, 150, 230, 207);
+static const CRect ACETR_NAV_NEWS_RECT(18, 207, 230, 264);
+static const CRect ACETR_NAV_EVENTS_RECT(18, 264, 230, 321);
+static const CRect ACETR_NAV_WEB_RECT(18, 321, 230, 378);
+static const CRect ACETR_NAV_DISCORD_RECT(18, 378, 230, 435);
 
 static size_t LauncherApiWriteCallback(void* contents, size_t size, size_t nmemb, void* userp)
 {
@@ -469,8 +461,8 @@ BOOL CAtumLauncherDlg::ReadNoticeFile()
 	return TRUE;
 }
 
-	#define EXE2_LAUNCHER_BG_SIZE_X                 1200
-#define EXE2_LAUNCHER_BG_SIZE_Y                 700
+	#define EXE2_LAUNCHER_BG_SIZE_X                 1280
+#define EXE2_LAUNCHER_BG_SIZE_Y                 720
 
 #define EXE2_BG_TITLE_BAR_SIZE_X                EXE2_LAUNCHER_BG_SIZE_X
 #define EXE2_BG_TITLE_BAR_SIZE_Y                64
@@ -479,9 +471,9 @@ BOOL CAtumLauncherDlg::ReadNoticeFile()
 #define EXE2_BG_BACKGROUND_IMAGE_SIZE_Y         EXE2_LAUNCHER_BG_SIZE_Y
 
 // AceTR modern launcher - right login panel
-#define EXE2_BG_RESOLUTION_COMBOBOX_POS_X       885
-#define EXE2_BG_RESOLUTION_COMBOBOX_POS_Y       468
-#define EXE2_BG_RESOLUTION_COMBOBOX_WIDTH       245
+#define EXE2_BG_RESOLUTION_COMBOBOX_POS_X       970
+#define EXE2_BG_RESOLUTION_COMBOBOX_POS_Y       455
+#define EXE2_BG_RESOLUTION_COMBOBOX_WIDTH       270
 #define EXE2_BG_RESOLUTION_COMBOBOX_HEIGHT      180
 
 #define EXE2_BG_WINDOWSMODE_CHECKBOX_POS_X      885
@@ -500,10 +492,10 @@ BOOL CAtumLauncherDlg::ReadNoticeFile()
 #define EXE2_BG_PASSWORD_EDIT_HEIGHT             34
 
 // Server list
-#define EXE2_BG_SERVERLIST_BOX_POS_X            80
-#define EXE2_BG_SERVERLIST_BOX_POS_Y            530
-#define EXE2_BG_SERVERLIST_BOX_WIDTH            700
-#define EXE2_BG_SERVERLIST_BOX_HEIGHT           38
+#define EXE2_BG_SERVERLIST_BOX_POS_X            970
+#define EXE2_BG_SERVERLIST_BOX_POS_Y            375
+#define EXE2_BG_SERVERLIST_BOX_WIDTH            270
+#define EXE2_BG_SERVERLIST_BOX_HEIGHT           48
 
 #define EXE2_BG_SERVERLIST_ITEM_BG_WIDTH        640
 #define EXE2_BG_SERVERLIST_ITEM_BG_HEIGHT       32
@@ -513,38 +505,38 @@ BOOL CAtumLauncherDlg::ReadNoticeFile()
 #define EXE2_BG_SERVERLIST_ITEM_ICON_HEIGHT     10
 
 // Window chrome
-#define EXE2_BG_MINIMIZED_BTN_POS_X             1122
+#define EXE2_BG_MINIMIZED_BTN_POS_X             1200
 #define EXE2_BG_MINIMIZED_BTN_POS_Y             18
 #define EXE2_BG_MINIMIZED_BTN_WIDTH             26
 #define EXE2_BG_MINIMIZED_BTN_HEIGHT            26
-#define EXE2_BG_CANCEL_BTN_POS_X                1157
+#define EXE2_BG_CANCEL_BTN_POS_X                1236
 #define EXE2_BG_CANCEL_BTN_POS_Y                18
 #define EXE2_BG_CANCEL_BTN_WIDTH                26
 #define EXE2_BG_CANCEL_BTN_HEIGHT               26
 
 // Primary action
-#define EXE2_BG_GAMESTART_BTN_POS_X             885
-#define EXE2_BG_GAMESTART_BTN_POS_Y             548
-#define EXE2_BG_GAMESTART_BTN_WIDTH             245
-#define EXE2_BG_GAMESTART_BTN_HEIGHT            62
+#define EXE2_BG_GAMESTART_BTN_POS_X             970
+#define EXE2_BG_GAMESTART_BTN_POS_Y             545
+#define EXE2_BG_GAMESTART_BTN_WIDTH             270
+#define EXE2_BG_GAMESTART_BTN_HEIGHT            82
 
 // Patch/update area
-#define EXE2_BG_UPDATE_PROGRESS_BAR_POS_X       70
-#define EXE2_BG_UPDATE_PROGRESS_BAR_POS_Y       655
-#define EXE2_BG_UPDATE_PROGRESS_BAR_WIDTH       1060
+#define EXE2_BG_UPDATE_PROGRESS_BAR_POS_X       260
+#define EXE2_BG_UPDATE_PROGRESS_BAR_POS_Y       685
+#define EXE2_BG_UPDATE_PROGRESS_BAR_WIDTH       680
 #define EXE2_BG_UPDATE_PROGRESS_BAR_HEIGHT      10
 
-#define EXE2_BG_DOWNLOAD_FILE_STATIC_POS_X      70
-#define EXE2_BG_DOWNLOAD_FILE_STATIC_POS_Y      632
+#define EXE2_BG_DOWNLOAD_FILE_STATIC_POS_X      260
+#define EXE2_BG_DOWNLOAD_FILE_STATIC_POS_Y      660
 #define EXE2_BG_DOWNLOAD_FILE_STATIC_WIDTH      300
 #define EXE2_BG_DOWNLOAD_FILE_STATIC_HEIGHT     20
 #define EXE2_BG_DOWNLOAD_FILE_FONT_SIZE         15
 #define EXE2_BG_DOWNLOAD_FILE_FONT_WEIGHT       FW_NORMAL
 #define EXE2_BG_DOWNLOAD_FILE_FONT_COLOR        RGB(205,205,215)
 
-#define EXE2_BG_UPDATE_INFO_STATIC_POS_X        390
-#define EXE2_BG_UPDATE_INFO_STATIC_POS_Y        632
-#define EXE2_BG_UPDATE_INFO_STATIC_WIDTH        740
+#define EXE2_BG_UPDATE_INFO_STATIC_POS_X        570
+#define EXE2_BG_UPDATE_INFO_STATIC_POS_Y        660
+#define EXE2_BG_UPDATE_INFO_STATIC_WIDTH        370
 #define EXE2_BG_UPDATE_INFO_STATIC_HEIGHT       20
 #define EXE2_BG_UPDATE_INFO_FONT_SIZE           15
 #define EXE2_BG_UPDATE_INFO_FONT_WEIGHT         FW_NORMAL
@@ -661,8 +653,8 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 							  CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH , SG_BOX_FONT_FACENAME);    // "System" Font´Â ´ëÇĄŔűŔÎ Fixed FontŔÓ´Ů.
     GetDlgItem(IDC_LIST)->SetFont(&m_fontServerGroupListBox);
 
-	m_KbcGO.SetModernButton("GİRİŞ YAP", RGB(225, 82, 35));
-	m_KbcGO.SetToolTipText("Giris Yap");
+	m_KbcGO.SetModernButton("OYNA", RGB(225, 82, 35));
+	m_KbcGO.SetToolTipText("Oyunu Baslat");
 	m_kbcBtnJoin.SetBmpButtonImage(IDB_JOINBTN, RGB(0,0,255));
 	m_kbcBtnJoin.SetToolTipText("Join");
 
@@ -676,6 +668,9 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	m_ctlBtnRememberID.SetFont(&m_fontModernSmall);
 	m_ctrl64Bit.SetFont(&m_fontModernSmall);
 	GetDlgItem(IDC_CHECK_WINDOWS_MODE)->MoveWindow(EXE2_BG_WINDOWSMODE_CHECKBOX_POS_X, EXE2_BG_WINDOWSMODE_CHECKBOX_POS_Y, EXE2_BG_WINDOWSMODE_CHECKBOX_WIDTH, EXE2_BG_WINDOWSMODE_CHECKBOX_HEIGHT);
+	GetDlgItem(IDC_COMBO_WINDOW_DEGREE_LAUNCHER)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_CHECK_WINDOWS_MODE)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_CHECK_64_BIT)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_CHARACTER_NAME)->ShowWindow(SW_HIDE);
 
 	// AccountName Edit Box, Password Edit Box
@@ -690,10 +685,10 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	GetDlgItem(IDC_EDIT_ACCOUNT)->SendMessage(EM_SETMARGINS, EC_LEFTMARGIN | EC_RIGHTMARGIN, MAKELPARAM(10, 10));
 	GetDlgItem(IDC_EDIT_PASSWORD)->SendMessage(EM_SETMARGINS, EC_LEFTMARGIN | EC_RIGHTMARGIN, MAKELPARAM(10, 10));
 
-#if !defined(SERVICE_TYPE_KOREAN_SERVER_2) || defined(_DEBUG)	// 2007-09-07 by cmkwon, ÇŃ±ą żąĹ¸ŔÓ¸¸ Release¸¸ ŔÔ·ÂŔĚ ľř´Ů
-	GetDlgItem(IDC_EDIT_ACCOUNT)->ShowWindow(SW_SHOW);
-	GetDlgItem(IDC_EDIT_PASSWORD)->ShowWindow(SW_SHOW);
-#endif
+// AceTR: account login is handled by the game client, not the launcher.
+	GetDlgItem(IDC_EDIT_ACCOUNT)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_EDIT_PASSWORD)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_CHECK_REMEMBER_ID)->ShowWindow(SW_HIDE);
 
 	GetDlgItem(IDC_LIST)->MoveWindow(EXE2_BG_SERVERLIST_BOX_POS_X, EXE2_BG_SERVERLIST_BOX_POS_Y, EXE2_BG_SERVERLIST_BOX_WIDTH, EXE2_BG_SERVERLIST_BOX_HEIGHT);
 	GetDlgItem(IDC_LIST)->ShowWindow(SW_SHOW);		
@@ -1243,463 +1238,111 @@ void CAtumLauncherDlg::OnPaint()
 {
 	if (IsIconic())
 	{
-		CPaintDC dc(this); // device context for painting
-
-		SendMessage(WM_ICONERASEBKGND, (WPARAM) dc.GetSafeHdc(), 0);
-
-		// Center icon in client rectangle
-		int cxIcon = GetSystemMetrics(SM_CXICON);
-		int cyIcon = GetSystemMetrics(SM_CYICON);
-		CRect rect;
-		GetClientRect(&rect);
-		int x = (rect.Width() - cxIcon + 1) / 2;
-		int y = (rect.Height() - cyIcon + 1) / 2;
-
-		// Draw the icon
-		dc.DrawIcon(x, y, m_hIcon);
+		CPaintDC dc(this);
+		SendMessage(WM_ICONERASEBKGND, (WPARAM)dc.GetSafeHdc(), 0);
+		CRect rect; GetClientRect(&rect);
+		dc.DrawIcon((rect.Width() - GetSystemMetrics(SM_CXICON)) / 2,
+			(rect.Height() - GetSystemMetrics(SM_CYICON)) / 2, m_hIcon);
+		return;
 	}
-	else
+
+	CPaintDC dc(this);
+	CDC mem;
+	BITMAP bm = {0};
+	mem.CreateCompatibleDC(&dc);
+	CBitmap* oldBmp = mem.SelectObject(&m_BackGround);
+	m_BackGround.GetObject(sizeof(BITMAP), &bm);
+	dc.SetStretchBltMode(HALFTONE);
+	dc.StretchBlt(0, 0, EXE2_LAUNCHER_BG_SIZE_X, EXE2_LAUNCHER_BG_SIZE_Y,
+		&mem, 0, 0, bm.bmWidth, bm.bmHeight, SRCCOPY);
+	mem.SelectObject(oldBmp);
+
+	// Dark glass panels.
+	CBrush panel(RGB(10, 18, 29));
+	CBrush panel2(RGB(14, 25, 39));
+	CPen border(PS_SOLID, 1, RGB(34, 122, 158));
+	CBrush* oldBrush = dc.SelectObject(&panel);
+	CPen* oldPen = dc.SelectObject(&border);
+	dc.RoundRect(CRect(10, 125, 245, 640), CPoint(12, 12));
+	dc.RoundRect(CRect(255, 125, 950, 640), CPoint(12, 12));
+	dc.SelectObject(&panel2);
+	dc.RoundRect(CRect(960, 125, 1268, 640), CPoint(12, 12));
+
+	dc.SetBkMode(TRANSPARENT);
+	CFont titleFont, navFont, heroFont, bodyFont, statusFont;
+	titleFont.CreateFont(30,0,0,0,FW_BOLD,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
+	navFont.CreateFont(18,0,0,0,FW_SEMIBOLD,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
+	heroFont.CreateFont(27,0,0,0,FW_BOLD,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
+	bodyFont.CreateFont(15,0,0,0,FW_NORMAL,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
+	statusFont.CreateFont(16,0,0,0,FW_BOLD,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
+
+	CFont* oldFont=dc.SelectObject(&titleFont);
+	dc.SetTextColor(RGB(235,248,255));
+	dc.TextOut(34,38,"ACE TR");
+	dc.SelectObject(&bodyFont);
+	dc.SetTextColor(RGB(94,218,255));
+	dc.TextOut(36,79,"ACE ONLINE TURKIYE");
+
+	struct NavItem { CRect r; LPCSTR text; int id; };
+	NavItem navItems[] = {
+		{ACETR_NAV_HOME_RECT,"ANA SAYFA",1},
+		{ACETR_NAV_NEWS_RECT,"HABERLER",2},
+		{ACETR_NAV_EVENTS_RECT,"SIRALAMA",3},
+		{ACETR_NAV_WEB_RECT,"MARKET",4},
+		{ACETR_NAV_DISCORD_RECT,"TOPLULUK",5}
+	};
+	dc.SelectObject(&navFont);
+	for(int i=0;i<5;++i)
 	{
-		CPaintDC PaintDC (this);
-		CDC		dcMem;
-		BITMAP	stBitmap;
-
-		dcMem.CreateCompatibleDC(&PaintDC);
-		CBitmap *OldBitmap = dcMem.SelectObject(&m_BackGround);
-
-		m_BackGround.GetObject(sizeof(BITMAP), &stBitmap);
-		PaintDC.BitBlt(0, 0, stBitmap.bmWidth, stBitmap.bmHeight, &dcMem, 0, 0, SRCCOPY);
-
-		// Interactive navigation layer.
-		CFont navFont;
-		navFont.CreateFont(15, 0, 0, 0, FW_SEMIBOLD, FALSE, FALSE, 0,
-			DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-			CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
-		CFont* oldFont = PaintDC.SelectObject(&navFont);
-		PaintDC.SetBkMode(TRANSPARENT);
-
-		struct NavItem { CRect r; LPCSTR text; int id; };
-		NavItem navItems[] = {
-			{ ACETR_NAV_HOME_RECT, "ANA SAYFA", 1 },
-			{ ACETR_NAV_NEWS_RECT, "HABERLER", 2 },
-			{ ACETR_NAV_EVENTS_RECT, "ETKİNLİKLER", 3 },
-			{ ACETR_NAV_WEB_RECT, "WEB", 4 },
-			{ ACETR_NAV_DISCORD_RECT, "DISCORD", 5 }
-		};
-
-		for (int i = 0; i < 5; ++i)
+		const bool hot=(m_nModernNavHover==navItems[i].id);
+		const bool active=(m_nLauncherMainPage==(navItems[i].id-1));
+		if(hot||active)
 		{
-			const bool hot = (m_nModernNavHover == navItems[i].id);
-			const bool active = (m_nLauncherMainPage == (navItems[i].id - 1));
-			PaintDC.SetTextColor((hot || active) ? RGB(255, 255, 255) : RGB(174, 180, 194));
-			PaintDC.DrawText(navItems[i].text, navItems[i].r, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
-
-			if (hot || active)
-			{
-				CRect underline = navItems[i].r;
-				underline.top = underline.bottom - 3;
-				underline.bottom -= 1;
-				PaintDC.FillSolidRect(underline, RGB(225, 82, 35));
-			}
+			dc.FillSolidRect(CRect(navItems[i].r.left,navItems[i].r.top,navItems[i].r.right,navItems[i].r.bottom),RGB(19,55,76));
+			dc.FillSolidRect(CRect(navItems[i].r.left,navItems[i].r.top,navItems[i].r.left+4,navItems[i].r.bottom),RGB(50,218,255));
 		}
-		PaintDC.SelectObject(oldFont);
-
-		// Top navigation opens native launcher pages; no external browser is required.
-		if (m_nLauncherMainPage != 0)
-		{
-			CBrush pageBrush(RGB(22, 25, 34));
-			CBrush cardBrush(RGB(29, 33, 45));
-			CBrush accentBrush(RGB(225, 82, 35));
-			CPen pagePen(PS_SOLID, 1, RGB(54, 60, 76));
-			CBrush* oldPageBrush = PaintDC.SelectObject(&pageBrush);
-			CPen* oldPagePen = PaintDC.SelectObject(&pagePen);
-
-			PaintDC.RoundRect(CRect(55, 82, 805, 602), CPoint(16, 16));
-			PaintDC.SetBkMode(TRANSPARENT);
-
-			CFont pageTitleFont;
-			pageTitleFont.CreateFont(25, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0,
-				DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-				CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
-			CFont pageSubFont;
-			pageSubFont.CreateFont(14, 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0,
-				DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-				CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
-			CFont cardTitleFont2;
-			cardTitleFont2.CreateFont(17, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0,
-				DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-				CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
-
-			CFont* oldPageFont = PaintDC.SelectObject(&pageTitleFont);
-			PaintDC.SetTextColor(RGB(245, 247, 251));
-
-			CString pageTitle;
-			CString pageSubtitle;
-			if (m_nLauncherMainPage == 1)
-			{
-				pageTitle = "HABER MERKEZİ";
-				pageSubtitle = "AceTR dünyasındaki son gelişmeler ve duyurular";
-			}
-			else if (m_nLauncherMainPage == 2)
-			{
-				pageTitle = "ETKİNLİKLER";
-				pageSubtitle = "Aktif ve yaklaşan oyun etkinliklerini takip et";
-			}
-			else if (m_nLauncherMainPage == 3)
-			{
-				pageTitle = "ACE TR MERKEZİ";
-				pageSubtitle = "Oyun, hesap ve topluluk servislerine tek noktadan eriş";
-			}
-			else
-			{
-				pageTitle = "TOPLULUK";
-				pageSubtitle = "Discord topluluğu, destek ve sosyal kanallar";
-			}
-
-			PaintDC.TextOut(82, 110, pageTitle);
-			PaintDC.SelectObject(&pageSubFont);
-			PaintDC.SetTextColor(RGB(150, 157, 174));
-			PaintDC.TextOut(82, 148, pageSubtitle);
-
-			if (m_nLauncherMainPage == 1)
-			{
-				// News cards.
-				for (int i = 0; i < 3; ++i)
-				{
-					CRect card(82, 190 + i * 105, 778, 278 + i * 105);
-					PaintDC.SelectObject(&cardBrush);
-					PaintDC.RoundRect(card, CPoint(12, 12));
-					PaintDC.SelectObject(&accentBrush);
-					PaintDC.FillSolidRect(CRect(card.left, card.top, card.left + 4, card.bottom), RGB(225, 82, 35));
-					PaintDC.SelectObject(&cardTitleFont2);
-					PaintDC.SetTextColor(RGB(240, 243, 248));
-					PaintDC.TextOut(102, card.top + 15, i == 0 ? "SON DUYURU" : (i == 1 ? "GÜNCELLEME NOTLARI" : "TOPLULUK HABERLERİ"));
-					PaintDC.SelectObject(&pageSubFont);
-					PaintDC.SetTextColor(RGB(150, 157, 174));
-					PaintDC.TextOut(102, card.top + 47, i == 0 ? "En son launcher duyurusu ve sunucu bilgilendirmeleri." : (i == 1 ? "Yeni sürüm, denge ve içerik değişiklikleri burada." : "Turnuvalar, topluluk etkinlikleri ve önemli gelişmeler."));
-				}
-			}
-			else if (m_nLauncherMainPage == 2)
-			{
-				CRect liveCard(82, 190, 778, 300);
-				PaintDC.SelectObject(&cardBrush);
-				PaintDC.RoundRect(liveCard, CPoint(12, 12));
-				PaintDC.SelectObject(&accentBrush);
-				PaintDC.Ellipse(CRect(103, 214, 115, 226));
-				PaintDC.SelectObject(&cardTitleFont2);
-				PaintDC.SetTextColor(RGB(245, 247, 251));
-				PaintDC.TextOut(128, 205, "NATION WAR");
-				PaintDC.SelectObject(&pageSubFont);
-				PaintDC.SetTextColor(RGB(150, 157, 174));
-				PaintDC.TextOut(128, 236, "Etkinlik takvimi ve canlı durum bilgisi bu panelde gösterilecek.");
-				PaintDC.TextOut(82, 335, "YAKLAŞAN ETKİNLİKLER");
-				PaintDC.SetTextColor(RGB(205, 210, 221));
-				PaintDC.TextOut(82, 370, "Haftalık PvP etkinlikleri");
-				PaintDC.TextOut(82, 402, "Nation War programı");
-				PaintDC.TextOut(82, 434, "Sezon görevleri ve ödüller");
-			}
-			else if (m_nLauncherMainPage == 3)
-			{
-				CRect gameCard(82, 190, 430, 320);
-				CRect serviceCard(445, 190, 778, 320);
-				PaintDC.SelectObject(&cardBrush);
-				PaintDC.RoundRect(gameCard, CPoint(12, 12));
-				PaintDC.RoundRect(serviceCard, CPoint(12, 12));
-				PaintDC.SelectObject(&cardTitleFont2);
-				PaintDC.SetTextColor(RGB(245, 247, 251));
-				PaintDC.TextOut(105, 215, "OYUN MERKEZİ");
-				PaintDC.TextOut(468, 215, "HESAP SERVİSLERİ");
-				PaintDC.SelectObject(&pageSubFont);
-				PaintDC.SetTextColor(RGB(150, 157, 174));
-				PaintDC.TextOut(105, 252, "Sunucu ve istemci bilgileri");
-				PaintDC.TextOut(105, 276, "Sürüm ve bakım durumu");
-				PaintDC.TextOut(468, 252, "Profil ve karakter yönetimi");
-				PaintDC.TextOut(468, 276, "Güvenlik ve destek merkezi");
-			}
-			else
-			{
-				CRect discordCard(82, 190, 778, 330);
-				PaintDC.SelectObject(&cardBrush);
-				PaintDC.RoundRect(discordCard, CPoint(12, 12));
-				PaintDC.SelectObject(&cardTitleFont2);
-				PaintDC.SetTextColor(RGB(245, 247, 251));
-				PaintDC.TextOut(105, 215, "ACE TR DISCORD");
-				PaintDC.SelectObject(&pageSubFont);
-				PaintDC.SetTextColor(RGB(150, 157, 174));
-				PaintDC.TextOut(105, 252, "Duyurular, oyuncu bulma, destek ve topluluk etkinlikleri.");
-				PaintDC.TextOut(105, 282, "Discord içerikleri sonraki aşamada API üzerinden launcher içine alınabilir.");
-			}
-
-			PaintDC.SelectObject(oldPageFont);
-			PaintDC.SelectObject(oldPagePen);
-			PaintDC.SelectObject(oldPageBrush);
-		}
-
-		if (m_bLauncherLoggedIn)
-		{
-			// Modern server status strip. The legacy list box is hidden after login.
-			CBrush statusBrush(RGB(17, 20, 27));
-			CBrush onlineBrush(RGB(67, 203, 133));
-			CPen statusPen(PS_SOLID, 1, RGB(48, 54, 69));
-			CBrush* oldStatusBrush = PaintDC.SelectObject(&statusBrush);
-			CPen* oldStatusPen = PaintDC.SelectObject(&statusPen);
-			PaintDC.RoundRect(CRect(82, 532, 782, 565), CPoint(10, 10));
-
-			PaintDC.SelectObject(&onlineBrush);
-			PaintDC.Ellipse(CRect(96, 543, 106, 553));
-			PaintDC.SelectObject(&statusBrush);
-
-			CFont statusFont;
-			statusFont.CreateFont(14, 0, 0, 0, FW_SEMIBOLD, FALSE, FALSE, 0,
-				DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-				CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
-			CFont* oldStatusFont = PaintDC.SelectObject(&statusFont);
-			PaintDC.SetBkMode(TRANSPARENT);
-			PaintDC.SetTextColor(RGB(214, 220, 231));
-			PaintDC.TextOut(116, 539, "SUNUCU ÇEVRİMİÇİ");
-
-			CString serverLabel;
-			serverLabel.Format("Sunucu: %s", m_strServerGroupName.IsEmpty() ? "AceTR" : (LPCSTR)m_strServerGroupName);
-			PaintDC.SetTextColor(RGB(150, 157, 174));
-			PaintDC.TextOut(300, 539, serverLabel);
-
-			CString pingLabel;
-			const int pingMs = NTGetPingAverageTime();
-			if (pingMs > 0)
-				pingLabel.Format("Ping: %d ms", pingMs);
-			else
-				pingLabel = "Ping: ölçülüyor";
-			PaintDC.TextOut(610, 539, pingLabel);
-
-			PaintDC.SelectObject(oldStatusFont);
-			PaintDC.SelectObject(oldStatusPen);
-			PaintDC.SelectObject(oldStatusBrush);
-		}
-
-		if (m_bLauncherLoggedIn)
-		{
-			CBrush panelBrush(RGB(18, 21, 29));
-			CBrush actionBrush(RGB(28, 32, 43));
-			CBrush actionHotBrush(RGB(225, 82, 35));
-			CPen panelPen(PS_SOLID, 1, RGB(52, 58, 74));
-			CPen actionPen(PS_SOLID, 1, RGB(56, 62, 78));
-			CBrush* oldBrush = PaintDC.SelectObject(&panelBrush);
-			CPen* oldPen = PaintDC.SelectObject(&panelPen);
-			PaintDC.RoundRect(CRect(852, 98, 1148, 535), CPoint(14, 14));
-			PaintDC.SetBkMode(TRANSPARENT);
-
-			CFont titleFont;
-			titleFont.CreateFont(18, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0,
-				DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-				CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
-			CFont smallFont;
-			smallFont.CreateFont(14, 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0,
-				DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-				CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
-			CFont nameFont;
-			nameFont.CreateFont(24, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0,
-				DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-				CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
-
-			CFont* pf = PaintDC.SelectObject(&titleFont);
-			PaintDC.SetTextColor(RGB(245, 247, 251));
-
-			if (m_nLauncherAccountPage == 0)
-			{
-				PaintDC.TextOut(875, 120, "HESABIM");
-				PaintDC.SelectObject(&smallFont);
-				PaintDC.SetTextColor(RGB(78, 218, 143));
-				CBrush onlineDot(RGB(78, 218, 143));
-				CBrush* prevOnlineBrush = PaintDC.SelectObject(&onlineDot);
-				PaintDC.Ellipse(CRect(875, 162, 883, 170));
-				PaintDC.SelectObject(prevOnlineBrush);
-				PaintDC.TextOut(890, 158, "OTURUM AÇIK");
-
-				PaintDC.SelectObject(&nameFont);
-				PaintDC.SetTextColor(RGB(255, 255, 255));
-				PaintDC.TextOut(875, 195, m_szAccountName);
-
-				PaintDC.SelectObject(&smallFont);
-				PaintDC.SetTextColor(RGB(150, 157, 174));
-				PaintDC.TextOut(875, 242, "Hesap durumu");
-				PaintDC.TextOut(875, 290, "Sunucu");
-				PaintDC.TextOut(875, 338, "İstemci sürümü");
-				PaintDC.TextOut(875, 386, "Launcher oturumu");
-
-				PaintDC.SetTextColor(RGB(235, 238, 244));
-				PaintDC.TextOut(1025, 242, "Aktif");
-				PaintDC.TextOut(1025, 290, m_strServerGroupName.IsEmpty() ? "AceTR" : m_strServerGroupName);
-				PaintDC.TextOut(1025, 338, m_CurrentVersion.GetVersionString());
-				PaintDC.TextOut(1025, 386, "Doğrulandı");
-
-				CBrush* prevBrush = PaintDC.SelectObject(&actionBrush);
-				CPen* prevPen = PaintDC.SelectObject(&actionPen);
-				if (m_nModernNavHover == 6) PaintDC.SelectObject(&actionHotBrush);
-				PaintDC.RoundRect(ACETR_ACCOUNT_MANAGE_RECT, CPoint(10, 10));
-				PaintDC.SelectObject(&actionBrush);
-				if (m_nModernNavHover == 7) PaintDC.SelectObject(&actionHotBrush);
-				PaintDC.RoundRect(ACETR_ACCOUNT_SUPPORT_RECT, CPoint(10, 10));
-				PaintDC.SelectObject(&actionBrush);
-				PaintDC.SetTextColor(RGB(238, 241, 247));
-				CRect rManage = ACETR_ACCOUNT_MANAGE_RECT;
-				PaintDC.DrawText("HESAP YÖNETİMİ", &rManage, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
-				CRect rSupport = ACETR_ACCOUNT_SUPPORT_RECT;
-				PaintDC.DrawText("DESTEK", &rSupport, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
-				PaintDC.SetTextColor(m_nModernNavHover == 8 ? RGB(255, 132, 95) : RGB(150, 157, 174));
-				CRect rLogout = ACETR_ACCOUNT_LOGOUT_RECT;
-				PaintDC.DrawText("OTURUMU KAPAT", &rLogout, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
-				PaintDC.SelectObject(prevPen);
-				PaintDC.SelectObject(prevBrush);
-			}
-			else if (m_nLauncherAccountPage == 1)
-			{
-				PaintDC.TextOut(875, 120, "HESAP YÖNETİMİ");
-				PaintDC.SelectObject(&smallFont);
-				PaintDC.SetTextColor(RGB(150, 157, 174));
-				PaintDC.TextOut(875, 158, "Hesap işlemlerini buradan yönetebilirsin.");
-
-				struct AccountAction { CRect r; LPCSTR text; int hoverId; };
-				AccountAction actions[] = {
-					{ ACETR_ACCOUNT_PASSWORD_RECT, "ŞİFRE DEĞİŞTİR", 9 },
-					{ ACETR_ACCOUNT_EMAIL_RECT, "E-POSTA YÖNETİMİ", 10 },
-					{ ACETR_ACCOUNT_CHARACTERS_RECT, "KARAKTERLERİM", 11 },
-					{ ACETR_ACCOUNT_SECURITY_RECT, "GÜVENLİK", 12 }
-				};
-
-				CBrush* prevBrush = PaintDC.SelectObject(&actionBrush);
-				CPen* prevPen = PaintDC.SelectObject(&actionPen);
-				for (int i = 0; i < 4; ++i)
-				{
-					PaintDC.SelectObject(m_nModernNavHover == actions[i].hoverId ? &actionHotBrush : &actionBrush);
-					PaintDC.RoundRect(actions[i].r, CPoint(10, 10));
-					PaintDC.SetTextColor(RGB(238, 241, 247));
-					PaintDC.DrawText(actions[i].text, &actions[i].r, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
-				}
-				PaintDC.SelectObject(&actionBrush);
-				PaintDC.RoundRect(ACETR_ACCOUNT_BACK_RECT, CPoint(10, 10));
-				PaintDC.SetTextColor(RGB(180, 186, 198));
-				CRect rBack = ACETR_ACCOUNT_BACK_RECT;
-				PaintDC.DrawText("GERİ", &rBack, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
-				PaintDC.SelectObject(prevPen);
-				PaintDC.SelectObject(prevBrush);
-			}
-			else if (m_nLauncherAccountPage == 3)
-			{
-				PaintDC.TextOut(875, 120, "KARAKTERLERİM");
-				PaintDC.SelectObject(&smallFont);
-				PaintDC.SetTextColor(RGB(150, 157, 174));
-				PaintDC.TextOut(875, 155, "Karakterlerini ve savaş profilini görüntüle");
-
-				CString data = m_szLauncherCharacterData;
-				int tokenPos = 0;
-				int cardY = 192;
-				int shown = 0;
-				CString line = data.Tokenize("\n", tokenPos);
-
-				CFont characterNameFont;
-				characterNameFont.CreateFont(17, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0,
-					DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-					CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
-				CFont metaFont;
-				metaFont.CreateFont(13, 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0,
-					DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-					CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
-
-				while (!line.IsEmpty() && shown < 4)
-				{
-					line.Replace("\r", "");
-
-					CString characterName;
-					CString levelText;
-					CString gearText;
-					CString nationText;
-					int partPos = 0;
-					characterName = line.Tokenize("|", partPos);
-					levelText = line.Tokenize("|", partPos);
-					gearText = line.Tokenize("|", partPos);
-					nationText = line.Tokenize("|", partPos);
-
-					CRect cardRect(872, cardY, 1130, cardY + 58);
-					CBrush characterCardBrush(shown == 0 ? RGB(31, 35, 47) : RGB(25, 29, 39));
-					CPen characterCardPen(PS_SOLID, 1, shown == 0 ? RGB(225, 82, 35) : RGB(50, 56, 72));
-					CBrush* previousCardBrush = PaintDC.SelectObject(&characterCardBrush);
-					CPen* previousCardPen = PaintDC.SelectObject(&characterCardPen);
-					PaintDC.RoundRect(cardRect, CPoint(10, 10));
-
-					// Gear mark
-					CBrush gearDot(shown == 0 ? RGB(225, 82, 35) : RGB(83, 91, 111));
-					PaintDC.SelectObject(&gearDot);
-					PaintDC.Ellipse(CRect(885, cardY + 18, 901, cardY + 34));
-					PaintDC.SelectObject(&characterCardBrush);
-
-					PaintDC.SelectObject(&characterNameFont);
-					PaintDC.SetTextColor(RGB(245, 247, 251));
-					PaintDC.TextOut(912, cardY + 10, characterName);
-
-					PaintDC.SelectObject(&metaFont);
-					PaintDC.SetTextColor(RGB(150, 157, 174));
-					CString meta;
-					meta.Format("%s  •  %s", (LPCSTR)gearText, (LPCSTR)nationText);
-					PaintDC.TextOut(912, cardY + 32, meta);
-
-					PaintDC.SetTextColor(RGB(245, 132, 88));
-					CRect levelRect(1050, cardY + 10, 1118, cardY + 30);
-					PaintDC.DrawText(levelText, &levelRect, DT_RIGHT | DT_VCENTER | DT_SINGLELINE);
-
-					PaintDC.SelectObject(previousCardPen);
-					PaintDC.SelectObject(previousCardBrush);
-
-					cardY += 66;
-					++shown;
-					line = data.Tokenize("\n", tokenPos);
-				}
-
-				if (shown == 0)
-				{
-					PaintDC.SelectObject(&smallFont);
-					PaintDC.SetTextColor(RGB(170, 176, 190));
-					PaintDC.TextOut(875, 205, "Bu hesapta karakter bulunamadı.");
-				}
-
-				CBrush* prevBrush = PaintDC.SelectObject(&actionBrush);
-				CPen* prevPen = PaintDC.SelectObject(&actionPen);
-				PaintDC.RoundRect(ACETR_ACCOUNT_BACK_RECT, CPoint(10, 10));
-				PaintDC.SetTextColor(RGB(180, 186, 198));
-				CRect rBackCharacters = ACETR_ACCOUNT_BACK_RECT;
-				PaintDC.DrawText("GERİ", &rBackCharacters, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
-				PaintDC.SelectObject(prevPen);
-				PaintDC.SelectObject(prevBrush);
-			}
-			else
-			{
-				PaintDC.TextOut(875, 120, "DESTEK");
-				PaintDC.SelectObject(&smallFont);
-				PaintDC.SetTextColor(RGB(150, 157, 174));
-				PaintDC.TextOut(875, 165, "Destek sistemi de launcher içine alınacak.");
-				PaintDC.TextOut(875, 195, "Bilet oluşturma, geçmiş biletler ve");
-				PaintDC.TextOut(875, 215, "sunucu duyuruları burada görünecek.");
-
-				CBrush* prevBrush = PaintDC.SelectObject(&actionBrush);
-				CPen* prevPen = PaintDC.SelectObject(&actionPen);
-				PaintDC.RoundRect(ACETR_ACCOUNT_BACK_RECT, CPoint(10, 10));
-				PaintDC.SetTextColor(RGB(180, 186, 198));
-				CRect rBack = ACETR_ACCOUNT_BACK_RECT;
-				PaintDC.DrawText("GERİ", &rBack, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
-				PaintDC.SelectObject(prevPen);
-				PaintDC.SelectObject(prevBrush);
-			}
-
-			PaintDC.SelectObject(pf);
-			PaintDC.SelectObject(oldPen);
-			PaintDC.SelectObject(oldBrush);
-		}
-
-		CDialog::OnPaint();
+		dc.SetTextColor((hot||active)?RGB(245,252,255):RGB(174,194,207));
+		dc.DrawText(navItems[i].text,navItems[i].r,DT_LEFT|DT_VCENTER|DT_SINGLELINE);
 	}
+
+	// Main feature/news card.
+	dc.SelectObject(&panel2);
+	dc.RoundRect(CRect(280,170,925,505),CPoint(12,12));
+	dc.SelectObject(&heroFont);
+	dc.SetTextColor(RGB(76,220,255));
+	dc.TextOut(310,405,"YENI SEZON BASLIYOR!");
+	dc.SelectObject(&bodyFont);
+	dc.SetTextColor(RGB(205,218,228));
+	dc.TextOut(310,450,"Daha buyuk savaslar, yeni etkinlikler ve surpriz oduller seni bekliyor.");
+
+	// Top/right server status.
+	dc.SelectObject(&statusFont);
+	dc.SetTextColor(RGB(155,170,184));
+	dc.TextOut(985,155,"SUNUCU DURUMU:");
+	dc.SetTextColor(RGB(73,235,137));
+	dc.TextOut(1120,155,"CEVRIMICI");
+
+	dc.SetTextColor(RGB(116,211,240));
+	dc.TextOut(985,325,"SUNUCU SECIMI");
+	dc.SelectObject(&bodyFont);
+	dc.SetTextColor(RGB(205,218,228));
+	dc.TextOut(985,350,"AceTR - Ana Sunucu");
+
+	dc.SetTextColor(RGB(140,155,169));
+	dc.TextOut(985,445,"Guncellemeler tamamlandiginda");
+	dc.TextOut(985,466,"OYNA butonu aktif olarak kullanilir.");
+
+	// Bottom patch strip.
+	dc.SetTextColor(RGB(88,213,248));
+	dc.TextOut(30,665,"GUNCELLEME");
+	dc.SetTextColor(RGB(152,169,181));
+	dc.TextOut(30,687,"Dosyalar kontrol ediliyor...");
+
+	dc.SelectObject(oldFont);
+	dc.SelectObject(oldPen);
+	dc.SelectObject(oldBrush);
 }
 
-// The system calls this to obtain the cursor to display while the user drags
-//  the minimized window.
 HCURSOR CAtumLauncherDlg::OnQueryDragIcon()
 {
 	return (HCURSOR) m_hIcon;
@@ -3116,118 +2759,28 @@ void CAtumLauncherDlg::OnDestroy()
 
 void CAtumLauncherDlg::OnOk()
 {
-	// Second-stage action: after a successful launcher login the same
-	// primary button becomes OYNA and starts the already-authenticated game.
-	if (m_bLauncherLoggedIn)
+	// AceTR modern launcher: the game client owns username/password authentication.
+	// The launcher only checks that a server has been discovered and patching is idle,
+	// then starts the client directly.
+	if (!m_SelectFlag || m_ServerList == nullptr || m_ServerList->GetCount() < 1)
 	{
-		if (m_szLaunchCmdLine[0] == 0)
-		{
-			AtumMessageBox("Oyun baslatma bilgileri hazir degil.");
-			return;
-		}
-
-		if (m_szCrocessSuffix == "")
-			ExecGame(m_szLaunchCmdLine, m_szLaunchAppPath, m_szLaunchCmdParam);
-		else
-			ExecGameCrocess(m_szLaunchCmdLine);
-
-		OnCancel();
+		AtumMessageBox(STRMSG_S_ATUMLAUNCHER_0001);
 		return;
 	}
 
-	/*if (!IsRuntimeInstalled())
+	if (m_bProcessingVersionUpdate)
 	{
-		MessageBox("Please check Common directory in client! Install DirectX and VC Redistributable!", "Error", MB_OK);
-	//	ExecuteApplication("Common\\vcredist_x86_2013.exe");
-		//exit(104);
-	}*/
-	// TODO: Add your control notification handler code here
-	if(m_SelectFlag)
-	{
-		UpdateData();
-		// 7/13/2006 by dgwoo
-		if (m_ServerList->GetCurSel() == LB_ERR
-			|| m_ServerList->GetCount() < 1)
-		{
-			AtumMessageBox(STRMSG_S_ATUMLAUNCHER_0001);
-			return;
-		}
-
-		// 2007-12-27 by cmkwon, Ŕ©µµżěÁî ¸đµĺ ±â´É Ăß°ˇ -
-		CString csWDegree;
-		GetDlgItem(IDC_COMBO_WINDOW_DEGREE_LAUNCHER)->GetWindowText(csWDegree);
-		if(csWDegree.IsEmpty())
-		{
-			AtumMessageBox(STRMSG_071228_0001);
-			return;
-		}
-
-
-
-		// 2008-12-17 by ckPark ·Ż˝ĂľĆ ·±ĂÄ
-		// 2007-12-27 by cmkwon, Ŕ©µµżěÁî ¸đµĺ ±â´É Ăß°ˇ - ĂĽĹ© ąöĆ°Ŕ» Č®ŔÎ ÇŃ´Ů.		
-#if defined(SERVICE_TYPE_RUSSIAN_SERVER_1)		// ·Ż˝ĂľĆ ·±Ăł ŔÎĹÍĆäŔĚ˝ş ĽöÁ¤
-		// ·Ż˝ĂľĆ´Â ĂĽĹ©ąÚ˝ş »óĹÂ¸¦ ÄÁĆ®·ŃżˇĽ­ ľňľîżÂ´Ů
-		if(FALSE == m_ctrlCheckWindowMode.GetCheck())
-#else
-		
-		m_n64Bit = m_ctrl64Bit.GetCheck();
-
-		if(FALSE == this->IsDlgButtonChecked(IDC_CHECK_WINDOWS_MODE))
-#endif
-		// end 2008-12-17 by ckPark ·Ż˝ĂľĆ ·±ĂÄ
-
-
-		{
-			m_nWindowModeReg = GAME_MODE_WINDOW;//GAME_MODE_FULLSCREEN;
-		}
-		else
-		{
-			m_nWindowModeReg		= GAME_MODE_WINDOW;
-		}
-
-		SendLogin(LOGIN_TYPE_DIRECT);
-// 2007-03-06 by cmkwon, żĄ°ÔŔÓ ĽŇ˝ş Á¦°Ĺ·Î ÇĘżä ľřŔ˝
-//		//////////////////////////////////////////////////////////////////////
-//		// Send Login
-//#if defined(_ATUM_DEVELOP) || defined(_MASANG15_SERVER) || defined(_MASANG51_SERVER) || defined(_GLOBAL_ENG_SERVER) || defined(_VTC_VIET_SERVER) || defined(_KOREA_SERVER_2)
-//		SendLogin(LOGIN_TYPE_DIRECT);
-//#else
-//		SendLogin(LOGIN_TYPE_MGAME);
-//#endif// end_ATUM_DEVELOP
-
-//		m_nServerGroupReg = m_nServer;
-		m_szAccountName.MakeLower();
-		m_szAccountNameReg = m_szAccountName;
-		m_szPasswordReg = m_szPassword;
-// 2007-12-27 by cmkwon, Ŕ©µµżěÁî ¸đµĺ ±â´É Ăß°ˇ - ÇĘżä ľřŔ˝
-//		m_nWindowDegreeReg = m_nWindowDegree+3;		// 2007-07-24 by cmkwon, ·±ĂłżˇĽ­ 800*600 ÇŘ»óµµ »čÁ¦ - ±âÁ¸ ·ąÁö˝şĆ®¸®°ŞŔ» »çżëÇĎ±â Ŕ§ÇŘĽ­
-
-
-
-
-		// 2008-12-17 by ckPark ·Ż˝ĂľĆ ·±ĂÄ
-		// ·Ż˝ĂľĆ´Â ˝şĆ®¸µŔ» ÄÁĆ®·ŃżˇĽ­ Á÷Á˘ ľňľîżÂ´Ů
-#if defined(SERVICE_TYPE_RUSSIAN_SERVER_1)		// ·Ż˝ĂľĆ ·±Ăł ŔÎĹÍĆäŔĚ˝ş ĽöÁ¤
-		m_csWindowsResolutionReg	= reinterpret_cast<char*>(m_ctrlComboWindowDegree.GetItemData(m_ctrlComboWindowDegree.GetCurSel()));
-#else
-		m_csWindowsResolutionReg	= csWDegree;	// 2007-12-27 by cmkwon, Ŕ©µµżěÁî ¸đµĺ ±â´É Ăß°ˇ -
-#endif
-		// end 2008-12-17 by ckPark ·Ż˝ĂľĆ ·±ĂÄ
-
-
-
-
-		((CAtumLauncherApp*)AfxGetApp())->WriteProfile(*this);
-
-		// °ÔŔÓ ˝ĂŔŰ ąöĆ° ż©·Żąř ´©¸Ł´Â °Ĺ ąćÁö
-		DisableControls();
-		SetTimer(TIMERID_ENABLE_CONTROL, 2000, nullptr);
+		SetProgressGroupText("Guncelleme devam ediyor. Lutfen tamamlanmasini bekleyin.");
+		return;
 	}
-	else
-	{
-		AfxMessageBox(STRMSG_S_ATUMLAUNCHER_0001);
-	}
+
+	char cmdLine[1024];
+	MEMSET_ZERO(cmdLine, sizeof(cmdLine));
+	sprintf(cmdLine, "%s", CLIENT_EXEUTE_FILE_NAME);
+
+	SetProgressGroupText("AceTR baslatiliyor...");
+	ExecGame(cmdLine);
+	OnCancel();
 }
 
 BOOL CAtumLauncherDlg::SendLogin(BYTE i_nLoginType)
@@ -4646,23 +4199,10 @@ void CAtumLauncherDlg::Set_Cur_Percent(DWORD CurSize)
 
 void CAtumLauncherDlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	// Keep top navigation clickable instead of treating it as a drag surface.
-	if (ACETR_NAV_HOME_RECT.PtInRect(point) ||
-		ACETR_NAV_NEWS_RECT.PtInRect(point) ||
-		ACETR_NAV_EVENTS_RECT.PtInRect(point) ||
-		ACETR_NAV_WEB_RECT.PtInRect(point) ||
-		ACETR_NAV_DISCORD_RECT.PtInRect(point) ||
-		(m_bLauncherLoggedIn && ACETR_ACCOUNT_MANAGE_RECT.PtInRect(point)) ||
-		(m_bLauncherLoggedIn && ACETR_ACCOUNT_SUPPORT_RECT.PtInRect(point)) ||
-		(m_bLauncherLoggedIn && ACETR_ACCOUNT_LOGOUT_RECT.PtInRect(point)) ||
-		(m_bLauncherLoggedIn && ACETR_ACCOUNT_BACK_RECT.PtInRect(point)) ||
-		(m_bLauncherLoggedIn && ACETR_ACCOUNT_PASSWORD_RECT.PtInRect(point)) ||
-		(m_bLauncherLoggedIn && ACETR_ACCOUNT_EMAIL_RECT.PtInRect(point)) ||
-		(m_bLauncherLoggedIn && ACETR_ACCOUNT_CHARACTERS_RECT.PtInRect(point)) ||
-		(m_bLauncherLoggedIn && ACETR_ACCOUNT_SECURITY_RECT.PtInRect(point)))
-	{
+	if (ACETR_NAV_HOME_RECT.PtInRect(point) || ACETR_NAV_NEWS_RECT.PtInRect(point) ||
+		ACETR_NAV_EVENTS_RECT.PtInRect(point) || ACETR_NAV_WEB_RECT.PtInRect(point) ||
+		ACETR_NAV_DISCORD_RECT.PtInRect(point))
 		return;
-	}
 
 	CDialog::OnLButtonDown(nFlags, point);
 	PostMessage(WM_NCLBUTTONDOWN, HTCAPTION, MAKELPARAM(point.x, point.y));
@@ -4670,156 +4210,62 @@ void CAtumLauncherDlg::OnLButtonDown(UINT nFlags, CPoint point)
 
 void CAtumLauncherDlg::OnLButtonUp(UINT nFlags, CPoint point)
 {
-	if (ACETR_NAV_HOME_RECT.PtInRect(point))
-	{
-		SetLauncherMainPage(0);
-		return;
-	}
-	if (ACETR_NAV_NEWS_RECT.PtInRect(point))
-	{
-		SetLauncherMainPage(1);
-		return;
-	}
-	if (ACETR_NAV_EVENTS_RECT.PtInRect(point))
-	{
-		SetLauncherMainPage(2);
-		return;
-	}
-	if (ACETR_NAV_WEB_RECT.PtInRect(point))
-	{
-		SetLauncherMainPage(3);
-		return;
-	}
-	if (ACETR_NAV_DISCORD_RECT.PtInRect(point))
-	{
-		SetLauncherMainPage(4);
-		return;
-	}
-
-	if (m_bLauncherLoggedIn && m_nLauncherAccountPage == 0 && ACETR_ACCOUNT_MANAGE_RECT.PtInRect(point))
-	{
-		m_nLauncherAccountPage = 1;
-		InvalidateRect(CRect(850, 95, 1150, 555), FALSE);
-		return;
-	}
-	if (m_bLauncherLoggedIn && m_nLauncherAccountPage == 0 && ACETR_ACCOUNT_SUPPORT_RECT.PtInRect(point))
-	{
-		m_nLauncherAccountPage = 2;
-		InvalidateRect(CRect(850, 95, 1150, 555), FALSE);
-		return;
-	}
-	if (m_bLauncherLoggedIn && m_nLauncherAccountPage != 0 && ACETR_ACCOUNT_BACK_RECT.PtInRect(point))
-	{
-		m_nLauncherAccountPage = 0;
-		InvalidateRect(CRect(850, 95, 1150, 555), FALSE);
-		return;
-	}
-	if (m_bLauncherLoggedIn && m_nLauncherAccountPage == 1 && ACETR_ACCOUNT_PASSWORD_RECT.PtInRect(point))
-	{
-		SetProgressGroupText("Şifre değiştirme ekranı launcher içine bağlanacak.");
-		return;
-	}
-	if (m_bLauncherLoggedIn && m_nLauncherAccountPage == 1 && ACETR_ACCOUNT_EMAIL_RECT.PtInRect(point))
-	{
-		SetProgressGroupText("E-posta yönetimi launcher içine bağlanacak.");
-		return;
-	}
-	if (m_bLauncherLoggedIn && m_nLauncherAccountPage == 1 && ACETR_ACCOUNT_CHARACTERS_RECT.PtInRect(point))
-	{
-		if (LoadLauncherCharacters())
-		{
-			m_nLauncherAccountPage = 3;
-			InvalidateRect(CRect(850, 95, 1150, 555), FALSE);
-		}
-		return;
-	}
-	if (m_bLauncherLoggedIn && m_nLauncherAccountPage == 1 && ACETR_ACCOUNT_SECURITY_RECT.PtInRect(point))
-	{
-		SetProgressGroupText("Güvenlik ayarları launcher içine bağlanacak.");
-		return;
-	}
-	if (m_bLauncherLoggedIn && ACETR_ACCOUNT_LOGOUT_RECT.PtInRect(point))
-	{
-		LogoutLauncherAccount();
-		return;
-	}
-
+	if (ACETR_NAV_HOME_RECT.PtInRect(point)) { SetLauncherMainPage(0); return; }
+	if (ACETR_NAV_NEWS_RECT.PtInRect(point)) { SetLauncherMainPage(1); return; }
+	if (ACETR_NAV_EVENTS_RECT.PtInRect(point)) { SetLauncherMainPage(2); return; }
+	if (ACETR_NAV_WEB_RECT.PtInRect(point)) { SetLauncherMainPage(3); return; }
+	if (ACETR_NAV_DISCORD_RECT.PtInRect(point)) { SetLauncherMainPage(4); return; }
 	CDialog::OnLButtonUp(nFlags, point);
 }
 
 void CAtumLauncherDlg::OnMouseMove(UINT nFlags, CPoint point)
 {
-	int hover = 0;
-	if (ACETR_NAV_HOME_RECT.PtInRect(point)) hover = 1;
-	else if (ACETR_NAV_NEWS_RECT.PtInRect(point)) hover = 2;
-	else if (ACETR_NAV_EVENTS_RECT.PtInRect(point)) hover = 3;
-	else if (ACETR_NAV_WEB_RECT.PtInRect(point)) hover = 4;
-	else if (ACETR_NAV_DISCORD_RECT.PtInRect(point)) hover = 5;
-	else if (m_bLauncherLoggedIn && ACETR_ACCOUNT_MANAGE_RECT.PtInRect(point)) hover = 6;
-	else if (m_bLauncherLoggedIn && ACETR_ACCOUNT_SUPPORT_RECT.PtInRect(point)) hover = 7;
-	else if (m_bLauncherLoggedIn && m_nLauncherAccountPage == 0 && ACETR_ACCOUNT_LOGOUT_RECT.PtInRect(point)) hover = 8;
-	else if (m_bLauncherLoggedIn && m_nLauncherAccountPage == 1 && ACETR_ACCOUNT_PASSWORD_RECT.PtInRect(point)) hover = 9;
-	else if (m_bLauncherLoggedIn && m_nLauncherAccountPage == 1 && ACETR_ACCOUNT_EMAIL_RECT.PtInRect(point)) hover = 10;
-	else if (m_bLauncherLoggedIn && m_nLauncherAccountPage == 1 && ACETR_ACCOUNT_CHARACTERS_RECT.PtInRect(point)) hover = 11;
-	else if (m_bLauncherLoggedIn && m_nLauncherAccountPage == 1 && ACETR_ACCOUNT_SECURITY_RECT.PtInRect(point)) hover = 12;
-	else if (m_bLauncherLoggedIn && m_nLauncherAccountPage != 0 && ACETR_ACCOUNT_BACK_RECT.PtInRect(point)) hover = 13;
+	int hover=0;
+	if (ACETR_NAV_HOME_RECT.PtInRect(point)) hover=1;
+	else if (ACETR_NAV_NEWS_RECT.PtInRect(point)) hover=2;
+	else if (ACETR_NAV_EVENTS_RECT.PtInRect(point)) hover=3;
+	else if (ACETR_NAV_WEB_RECT.PtInRect(point)) hover=4;
+	else if (ACETR_NAV_DISCORD_RECT.PtInRect(point)) hover=5;
 
-	if (hover != m_nModernNavHover)
+	if (hover!=m_nModernNavHover)
 	{
-		m_nModernNavHover = hover;
-		InvalidateRect(CRect(470, 8, 1160, 555), FALSE);
+		m_nModernNavHover=hover;
+		InvalidateRect(CRect(10,125,245,445),FALSE);
 	}
 
 	if (!m_bModernNavTracking)
 	{
-		TRACKMOUSEEVENT tme = {0};
-		tme.cbSize = sizeof(tme);
-		tme.dwFlags = TME_LEAVE;
-		tme.hwndTrack = m_hWnd;
-		if (_TrackMouseEvent(&tme))
-			m_bModernNavTracking = TRUE;
+		TRACKMOUSEEVENT tme={0};
+		tme.cbSize=sizeof(tme);
+		tme.dwFlags=TME_LEAVE;
+		tme.hwndTrack=m_hWnd;
+		if (_TrackMouseEvent(&tme)) m_bModernNavTracking=TRUE;
 	}
-
-	CDialog::OnMouseMove(nFlags, point);
+	CDialog::OnMouseMove(nFlags,point);
 }
 
 LRESULT CAtumLauncherDlg::OnModernNavMouseLeave(WPARAM, LPARAM)
 {
-	m_bModernNavTracking = FALSE;
-	if (m_nModernNavHover != 0)
+	m_bModernNavTracking=FALSE;
+	if(m_nModernNavHover!=0)
 	{
-		m_nModernNavHover = 0;
-		InvalidateRect(CRect(470, 8, 990, 60), FALSE);
+		m_nModernNavHover=0;
+		InvalidateRect(CRect(10,125,245,445),FALSE);
 	}
 	return 0;
 }
 
 BOOL CAtumLauncherDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
-	POINT pt;
-	::GetCursorPos(&pt);
-	ScreenToClient(&pt);
-	CPoint point(pt);
-
-	if (ACETR_NAV_HOME_RECT.PtInRect(point) ||
-		ACETR_NAV_NEWS_RECT.PtInRect(point) ||
-		ACETR_NAV_EVENTS_RECT.PtInRect(point) ||
-		ACETR_NAV_WEB_RECT.PtInRect(point) ||
-		ACETR_NAV_DISCORD_RECT.PtInRect(point) ||
-		(m_bLauncherLoggedIn && ACETR_ACCOUNT_MANAGE_RECT.PtInRect(point)) ||
-		(m_bLauncherLoggedIn && ACETR_ACCOUNT_SUPPORT_RECT.PtInRect(point)) ||
-		(m_bLauncherLoggedIn && ACETR_ACCOUNT_LOGOUT_RECT.PtInRect(point)) ||
-		(m_bLauncherLoggedIn && ACETR_ACCOUNT_BACK_RECT.PtInRect(point)) ||
-		(m_bLauncherLoggedIn && ACETR_ACCOUNT_PASSWORD_RECT.PtInRect(point)) ||
-		(m_bLauncherLoggedIn && ACETR_ACCOUNT_EMAIL_RECT.PtInRect(point)) ||
-		(m_bLauncherLoggedIn && ACETR_ACCOUNT_CHARACTERS_RECT.PtInRect(point)) ||
-		(m_bLauncherLoggedIn && ACETR_ACCOUNT_SECURITY_RECT.PtInRect(point)))
+	POINT pt; ::GetCursorPos(&pt); ScreenToClient(&pt); CPoint point(pt);
+	if (ACETR_NAV_HOME_RECT.PtInRect(point) || ACETR_NAV_NEWS_RECT.PtInRect(point) ||
+		ACETR_NAV_EVENTS_RECT.PtInRect(point) || ACETR_NAV_WEB_RECT.PtInRect(point) ||
+		ACETR_NAV_DISCORD_RECT.PtInRect(point))
 	{
-		::SetCursor(::LoadCursor(NULL, IDC_HAND));
+		::SetCursor(::LoadCursor(NULL,IDC_HAND));
 		return TRUE;
 	}
-
-	return CDialog::OnSetCursor(pWnd, nHitTest, message);
+	return CDialog::OnSetCursor(pWnd,nHitTest,message);
 }
 
 UINT CAtumLauncherDlg::OnNcHitTest(CPoint point)
