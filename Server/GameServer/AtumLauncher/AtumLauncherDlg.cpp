@@ -223,11 +223,11 @@ CAtumLauncherDlg::CAtumLauncherDlg(CWnd* pParent /*=NULL*/)
 //	m_pFieldWinsocket = 0;
 	m_bControlEnabled = TRUE;
 
-	m_StaticBrushBlack.CreateSolidBrush(RGB(0, 0, 0));
-	m_StaticBrushGray.CreateSolidBrush(RGB(23, 23, 23));
+	m_StaticBrushBlack.CreateSolidBrush(RGB(22, 25, 34));
+	m_StaticBrushGray.CreateSolidBrush(RGB(27, 30, 40));
 	m_ListBrushGray.CreateSolidBrush(RGB(212, 208, 200));
 	
-	m_listBrush.CreateSolidBrush(RGB(29,29,40));
+	m_listBrush.CreateSolidBrush(RGB(22,25,34));
 
 	m_progressBk.CreateSolidBrush(RGB(79,79,79));	
 	m_progressBar.CreateSolidBrush(RGB(99, 123, 246));	
@@ -412,30 +412,30 @@ BOOL CAtumLauncherDlg::ReadNoticeFile()
 
 // AceTR modern launcher - right login panel
 #define EXE2_BG_RESOLUTION_COMBOBOX_POS_X       885
-#define EXE2_BG_RESOLUTION_COMBOBOX_POS_Y       455
+#define EXE2_BG_RESOLUTION_COMBOBOX_POS_Y       468
 #define EXE2_BG_RESOLUTION_COMBOBOX_WIDTH       245
 #define EXE2_BG_RESOLUTION_COMBOBOX_HEIGHT      180
 
 #define EXE2_BG_WINDOWSMODE_CHECKBOX_POS_X      885
-#define EXE2_BG_WINDOWSMODE_CHECKBOX_POS_Y      495
+#define EXE2_BG_WINDOWSMODE_CHECKBOX_POS_Y      515
 #define EXE2_BG_WINDOWSMODE_CHECKBOX_WIDTH      16
 #define EXE2_BG_WINDOWSMODE_CHECKBOX_HEIGHT     16
 
 #define EXE2_BG_ACCOUNTNAME_EDIT_POS_X          885
-#define EXE2_BG_ACCOUNTNAME_EDIT_POS_Y          330
+#define EXE2_BG_ACCOUNTNAME_EDIT_POS_Y          260
 #define EXE2_BG_ACCOUNTNAME_EDIT_WIDTH          245
 #define EXE2_BG_ACCOUNTNAME_EDIT_HEIGHT         32
 
 #define EXE2_BG_PASSWORD_EDIT_POS_X             885
-#define EXE2_BG_PASSWORD_EDIT_POS_Y             385
+#define EXE2_BG_PASSWORD_EDIT_POS_Y             330
 #define EXE2_BG_PASSWORD_EDIT_WIDTH              245
 #define EXE2_BG_PASSWORD_EDIT_HEIGHT             32
 
 // Server list
 #define EXE2_BG_SERVERLIST_BOX_POS_X            70
-#define EXE2_BG_SERVERLIST_BOX_POS_Y            520
+#define EXE2_BG_SERVERLIST_BOX_POS_Y            500
 #define EXE2_BG_SERVERLIST_BOX_WIDTH            650
-#define EXE2_BG_SERVERLIST_BOX_HEIGHT           88
+#define EXE2_BG_SERVERLIST_BOX_HEIGHT           92
 
 #define EXE2_BG_SERVERLIST_ITEM_BG_WIDTH        640
 #define EXE2_BG_SERVERLIST_ITEM_BG_HEIGHT       32
@@ -456,9 +456,9 @@ BOOL CAtumLauncherDlg::ReadNoticeFile()
 
 // Primary action
 #define EXE2_BG_GAMESTART_BTN_POS_X             885
-#define EXE2_BG_GAMESTART_BTN_POS_Y             555
+#define EXE2_BG_GAMESTART_BTN_POS_Y             545
 #define EXE2_BG_GAMESTART_BTN_WIDTH             245
-#define EXE2_BG_GAMESTART_BTN_HEIGHT            58
+#define EXE2_BG_GAMESTART_BTN_HEIGHT            64
 
 // Patch/update area
 #define EXE2_BG_UPDATE_PROGRESS_BAR_POS_X       70
@@ -467,23 +467,23 @@ BOOL CAtumLauncherDlg::ReadNoticeFile()
 #define EXE2_BG_UPDATE_PROGRESS_BAR_HEIGHT      10
 
 #define EXE2_BG_DOWNLOAD_FILE_STATIC_POS_X      70
-#define EXE2_BG_DOWNLOAD_FILE_STATIC_POS_Y      625
-#define EXE2_BG_DOWNLOAD_FILE_STATIC_WIDTH      1060
+#define EXE2_BG_DOWNLOAD_FILE_STATIC_POS_Y      632
+#define EXE2_BG_DOWNLOAD_FILE_STATIC_WIDTH      300
 #define EXE2_BG_DOWNLOAD_FILE_STATIC_HEIGHT     20
 #define EXE2_BG_DOWNLOAD_FILE_FONT_SIZE         15
 #define EXE2_BG_DOWNLOAD_FILE_FONT_WEIGHT       FW_NORMAL
 #define EXE2_BG_DOWNLOAD_FILE_FONT_COLOR        RGB(205,205,215)
 
-#define EXE2_BG_UPDATE_INFO_STATIC_POS_X        70
-#define EXE2_BG_UPDATE_INFO_STATIC_POS_Y        625
-#define EXE2_BG_UPDATE_INFO_STATIC_WIDTH        1060
+#define EXE2_BG_UPDATE_INFO_STATIC_POS_X        390
+#define EXE2_BG_UPDATE_INFO_STATIC_POS_Y        632
+#define EXE2_BG_UPDATE_INFO_STATIC_WIDTH        740
 #define EXE2_BG_UPDATE_INFO_STATIC_HEIGHT       20
 #define EXE2_BG_UPDATE_INFO_FONT_SIZE           15
 #define EXE2_BG_UPDATE_INFO_FONT_WEIGHT         FW_NORMAL
 #define EXE2_BG_UPDATE_INFO_FONT_COLOR          RGB(205,205,215)
 
 #define EXE2_BG_REMEMBERID_CHECKBOX_POS_X       885
-#define EXE2_BG_REMEMBERID_CHECKBOX_POS_Y       425
+#define EXE2_BG_REMEMBERID_CHECKBOX_POS_Y       395
 #define EXE2_BG_REMEMBERID_CHECKBOX_WIDTH       16
 #define EXE2_BG_REMEMBERID_CHECKBOX_HEIGHT      16
 
@@ -593,9 +593,8 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 							  CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH , SG_BOX_FONT_FACENAME);    // "System" Font´Â ´ëÇĄŔűŔÎ Fixed FontŔÓ´Ů.
     GetDlgItem(IDC_LIST)->SetFont(&m_fontServerGroupListBox);
 
-	m_KbcGO.SetBmpButtonImage(IDB_GO_VTC, RGB(0,0,255));
-
-	m_KbcGO.SetToolTipText("Game Start");
+	m_KbcGO.SetModernButton("OYNA", RGB(225, 82, 35));
+	m_KbcGO.SetToolTipText("Oyunu Baslat");
 	m_kbcBtnJoin.SetBmpButtonImage(IDB_JOINBTN, RGB(0,0,255));
 	m_kbcBtnJoin.SetToolTipText("Join");
 
@@ -606,6 +605,14 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	// AccountName Edit Box, Password Edit Box
 	GetDlgItem(IDC_EDIT_ACCOUNT)->MoveWindow(EXE2_BG_ACCOUNTNAME_EDIT_POS_X, EXE2_BG_ACCOUNTNAME_EDIT_POS_Y, EXE2_BG_ACCOUNTNAME_EDIT_WIDTH, EXE2_BG_ACCOUNTNAME_EDIT_HEIGHT);
 	GetDlgItem(IDC_EDIT_PASSWORD)->MoveWindow(EXE2_BG_PASSWORD_EDIT_POS_X, EXE2_BG_PASSWORD_EDIT_POS_Y, EXE2_BG_PASSWORD_EDIT_WIDTH, EXE2_BG_PASSWORD_EDIT_HEIGHT);
+
+	m_fontModernInput.CreateFont(18, 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0,
+		DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
+		CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
+	GetDlgItem(IDC_EDIT_ACCOUNT)->SetFont(&m_fontModernInput);
+	GetDlgItem(IDC_EDIT_PASSWORD)->SetFont(&m_fontModernInput);
+	GetDlgItem(IDC_EDIT_ACCOUNT)->SendMessage(EM_SETMARGINS, EC_LEFTMARGIN | EC_RIGHTMARGIN, MAKELPARAM(10, 10));
+	GetDlgItem(IDC_EDIT_PASSWORD)->SendMessage(EM_SETMARGINS, EC_LEFTMARGIN | EC_RIGHTMARGIN, MAKELPARAM(10, 10));
 
 #if !defined(SERVICE_TYPE_KOREAN_SERVER_2) || defined(_DEBUG)	// 2007-09-07 by cmkwon, ÇŃ±ą żąĹ¸ŔÓ¸¸ Release¸¸ ŔÔ·ÂŔĚ ľř´Ů
 	GetDlgItem(IDC_EDIT_ACCOUNT)->ShowWindow(SW_SHOW);
@@ -619,11 +626,11 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	m_ctrlServerList.SetItemIconImage(EXE2_BG_SERVERLIST_ITEM_ICON_POS_X, EXE2_BG_SERVERLIST_ITEM_ICON_POS_Y, EXE2_BG_SERVERLIST_ITEM_ICON_WIDTH, EXE2_BG_SERVERLIST_ITEM_ICON_HEIGHT);
 	m_ServerList = (CListBoxEBX *)GetDlgItem(IDC_LIST);
 
-	m_INET_CLOSE.SetToolTipText("Close");
-	m_INET_CLOSE.SetBmpButtonImage(INET_KBC_CLOSE, RGB(0, 0, 255));
+	m_INET_CLOSE.SetToolTipText("Kapat");
+	m_INET_CLOSE.SetModernButton("X", RGB(45, 48, 58));
 
-	m_INET_MINIM.SetToolTipText("Minimalize");
-	m_INET_MINIM.SetBmpButtonImage(INET_KBC_MINIM, RGB(0, 0, 255));
+	m_INET_MINIM.SetToolTipText("Kucult");
+	m_INET_MINIM.SetModernButton("-", RGB(45, 48, 58));
 
 	// Minimized Button, Cancel Button
 	GetDlgItem(IDMIN)->MoveWindow(EXE2_BG_MINIMIZED_BTN_POS_X, EXE2_BG_MINIMIZED_BTN_POS_Y, EXE2_BG_MINIMIZED_BTN_WIDTH, EXE2_BG_MINIMIZED_BTN_HEIGHT);
@@ -632,8 +639,8 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	// Game Start Button
 	GetDlgItem(IDGO)->MoveWindow(EXE2_BG_GAMESTART_BTN_POS_X, EXE2_BG_GAMESTART_BTN_POS_Y, EXE2_BG_GAMESTART_BTN_WIDTH, EXE2_BG_GAMESTART_BTN_HEIGHT);
 #ifdef _INET_CONFIGURATOR
-	m_ctlINETCfgBtn.SetToolTipText("Game Settings");
-	m_ctlINETCfgBtn.SetBmpButtonImage(IDB_SETTINGS_BUTT, RGB(0, 0, 255));
+	m_ctlINETCfgBtn.SetToolTipText("Oyun Ayarlari");
+	m_ctlINETCfgBtn.SetModernButton("*", RGB(45, 48, 58));
 
 	GetDlgItem(IDC_BTN_VIEW_INET_CFG)->MoveWindow(1088, 18, 26, 26);
 #endif	
@@ -687,14 +694,14 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 							  CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH , SG_BOX_FONT_FACENAME);    // "System" Font´Â ´ëÇĄŔűŔÎ Fixed FontŔÓ´Ů.
 	GetDlgItem(IDC_FILE_INFO)->SetFont(&m_fontFileInfo);
 
-	GetDlgItem(IDC_NOTICE2)->MoveWindow(70, 92, 700, 22);
+	GetDlgItem(IDC_NOTICE2)->MoveWindow(86, 382, 680, 62);
 	wndStyle = ::GetWindowLong(GetDlgItem(IDC_NOTICE2)->m_hWnd, GWL_STYLE);
 	::SetWindowLong(GetDlgItem(IDC_NOTICE2)->m_hWnd, GWL_STYLE, wndStyle | SS_CENTERIMAGE);	// ĂëµćÇŃ Ŕ©µµżě ĽöÁ÷ÁßľÓ(SS_CENTERIMAGE)ĽÓĽşŔ» Ăß°ˇ
 	m_fontNotice.CreateFont(13, 0, 0, 0, EXE2_BG_UPDATE_INFO_FONT_WEIGHT, 0, FALSE, FALSE, SG_BOX_FONT_CHARSET, OUT_DEFAULT_PRECIS,
 							CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH, "Verdana");    // "System" Font´Â ´ëÇĄŔűŔÎ Fixed FontŔÓ´Ů.
 	GetDlgItem(IDC_NOTICE2)->SetFont(&m_fontNotice);
 
-	GetDlgItem(IDC_PLAYER_CNT)->MoveWindow(885, 285, 245, 22);
+	GetDlgItem(IDC_PLAYER_CNT)->MoveWindow(885, 175, 245, 22);
 	wndStyle = ::GetWindowLong(GetDlgItem(IDC_PLAYER_CNT)->m_hWnd, GWL_STYLE);
 	::SetWindowLong(GetDlgItem(IDC_PLAYER_CNT)->m_hWnd, GWL_STYLE, wndStyle | SS_CENTERIMAGE);	// ĂëµćÇŃ Ŕ©µµżě ĽöÁ÷ÁßľÓ(SS_CENTERIMAGE)ĽÓĽşŔ» Ăß°ˇ
 	m_fontPlayers.CreateFont(13, 0, 0, 0, EXE2_BG_UPDATE_INFO_FONT_WEIGHT, 0, FALSE, FALSE, SG_BOX_FONT_CHARSET, OUT_DEFAULT_PRECIS,
@@ -733,7 +740,7 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 #endif
 
 	m_ctrl64Bit.ShowWindow(SW_SHOW);
-	m_ctrl64Bit.MoveWindow(EXE2_BG_REMEMBERID_CHECKBOX_POS_X+5, EXE2_BG_REMEMBERID_CHECKBOX_POS_Y-40, EXE2_BG_REMEMBERID_CHECKBOX_WIDTH, EXE2_BG_REMEMBERID_CHECKBOX_HEIGHT);
+	m_ctrl64Bit.MoveWindow(EXE2_BG_REMEMBERID_CHECKBOX_POS_X, 430, EXE2_BG_REMEMBERID_CHECKBOX_WIDTH, EXE2_BG_REMEMBERID_CHECKBOX_HEIGHT);
 	//m_ctrl64Bit.SetCheck(m_n64Bit);
 	
 	// 2008-12-23 by ckPark ŔĎş» ·±ĂÄ
@@ -832,36 +839,50 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 
 	// ąč°ć Č­¸é ±×¸®±â(Background)
 
-	// AceTR modern background. Kept in native GDI so the launcher does not
-	// depend on a new bitmap while the UI migration is in progress.
-	CBrush brushBase(RGB(14, 16, 22));
-	CBrush brushTop(RGB(22, 25, 34));
-	CBrush brushPanel(RGB(27, 30, 40));
-	CBrush brushPanel2(RGB(20, 23, 31));
+	// AceTR modern launcher shell - native GDI, no external image dependency.
+	CBrush brushBase(RGB(10, 12, 18));
+	CBrush brushTop(RGB(18, 21, 29));
+	CBrush brushPanel(RGB(24, 27, 37));
+	CBrush brushPanel2(RGB(18, 21, 29));
+	CBrush brushCard(RGB(30, 34, 46));
 	CBrush brushAccent(RGB(225, 82, 35));
-	CPen penBorder(PS_SOLID, 1, RGB(53, 58, 72));
+	CBrush brushAccentSoft(RGB(109, 48, 31));
+	CBrush brushOnline(RGB(42, 190, 108));
+	CPen penBorder(PS_SOLID, 1, RGB(52, 58, 74));
+	CPen penSoft(PS_SOLID, 1, RGB(42, 47, 61));
 
 	memDCBackGround.FillRect(CRect(0, 0, 1200, 700), &brushBase);
 	memDCBackGround.FillRect(CRect(0, 0, 1200, 64), &brushTop);
+	memDCBackGround.FillRect(CRect(0, 62, 1200, 64), &brushAccent);
 
 	CPen* pOldPen = memDCBackGround.SelectObject(&penBorder);
 	CBrush* pOldBrush = memDCBackGround.SelectObject(&brushPanel);
 
-	// Main news/banner area.
-	memDCBackGround.RoundRect(CRect(55, 82, 800, 485), CPoint(18, 18));
+	// Hero / news area
+	memDCBackGround.RoundRect(CRect(55, 82, 805, 472), CPoint(18, 18));
+	memDCBackGround.SelectObject(&brushCard);
+	memDCBackGround.RoundRect(CRect(75, 132, 785, 360), CPoint(16, 16));
 
-	// Login/server panel.
+	// Faux cinematic banner layers
+	memDCBackGround.SelectObject(&brushAccentSoft);
+	memDCBackGround.RoundRect(CRect(90, 150, 770, 344), CPoint(14, 14));
+	memDCBackGround.SelectObject(&brushCard);
+	memDCBackGround.RoundRect(CRect(110, 170, 750, 324), CPoint(12, 12));
+
+	// Login panel
 	memDCBackGround.SelectObject(&brushPanel2);
 	memDCBackGround.RoundRect(CRect(840, 82, 1160, 625), CPoint(18, 18));
 
-	// Bottom patch strip.
+	// Server status card
+	memDCBackGround.SelectObject(&brushPanel2);
+	memDCBackGround.RoundRect(CRect(55, 485, 805, 602), CPoint(16, 16));
+
+	// Bottom updater
 	memDCBackGround.SelectObject(&brushPanel2);
 	memDCBackGround.RoundRect(CRect(55, 615, 1160, 682), CPoint(14, 14));
 
-	// Accent line and simple brand text.
-	memDCBackGround.FillRect(CRect(0, 62, 1200, 64), &brushAccent);
 	memDCBackGround.SetBkMode(TRANSPARENT);
-	memDCBackGround.SetTextColor(RGB(245, 245, 248));
+	memDCBackGround.SetTextColor(RGB(245, 247, 251));
 
 	CFont brandFont;
 	brandFont.CreateFont(30, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0,
@@ -870,14 +891,65 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	CFont* pOldFont = memDCBackGround.SelectObject(&brandFont);
 	memDCBackGround.TextOut(28, 17, "AceTR");
 
+	CFont navFont;
+	navFont.CreateFont(15, 0, 0, 0, FW_SEMIBOLD, FALSE, FALSE, 0,
+		DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
+		CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
+	memDCBackGround.SelectObject(&navFont);
+	memDCBackGround.SetTextColor(RGB(174, 180, 194));
+	memDCBackGround.TextOut(500, 24, "ANA SAYFA");
+	memDCBackGround.TextOut(600, 24, "HABERLER");
+	memDCBackGround.TextOut(690, 24, "ETKINLIKLER");
+
 	CFont sectionFont;
-	sectionFont.CreateFont(18, 0, 0, 0, FW_SEMIBOLD, FALSE, FALSE, 0,
+	sectionFont.CreateFont(17, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0,
 		DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
 		CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
 	memDCBackGround.SelectObject(&sectionFont);
-	memDCBackGround.SetTextColor(RGB(205, 208, 218));
-	memDCBackGround.TextOut(70, 105, "HABERLER & ETKINLIKLER");
-	memDCBackGround.TextOut(865, 105, "SUNUCU / GIRIS");
+	memDCBackGround.SetTextColor(RGB(215, 219, 229));
+	memDCBackGround.TextOut(75, 100, "GUNCEL");
+	memDCBackGround.TextOut(865, 108, "HESABINLA GIRIS YAP");
+	memDCBackGround.TextOut(75, 492, "SUNUCU DURUMU");
+
+	CFont heroFont;
+	heroFont.CreateFont(31, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0,
+		DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
+		CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
+	memDCBackGround.SelectObject(&heroFont);
+	memDCBackGround.SetTextColor(RGB(255, 255, 255));
+	memDCBackGround.TextOut(145, 210, "ACE TR");
+
+	CFont heroSubFont;
+	heroSubFont.CreateFont(17, 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0,
+		DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
+		CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
+	memDCBackGround.SelectObject(&heroSubFont);
+	memDCBackGround.SetTextColor(RGB(220, 224, 232));
+	memDCBackGround.TextOut(146, 250, "Gokyuzundeki savas yeniden basliyor.");
+	memDCBackGround.SetTextColor(RGB(245, 132, 88));
+	memDCBackGround.TextOut(146, 285, "SEZON • ETKINLIK • NATION WAR");
+
+	CFont labelFont;
+	labelFont.CreateFont(14, 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0,
+		DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
+		CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
+	memDCBackGround.SelectObject(&labelFont);
+	memDCBackGround.SetTextColor(RGB(150, 157, 174));
+	memDCBackGround.TextOut(885, 236, "KULLANICI ADI");
+	memDCBackGround.TextOut(885, 306, "SIFRE");
+	memDCBackGround.TextOut(912, 394, "Beni hatirla");
+	memDCBackGround.TextOut(912, 429, "64-bit istemci");
+	memDCBackGround.TextOut(885, 447, "COZUNURLUK");
+	memDCBackGround.TextOut(912, 514, "Pencere modu");
+
+	memDCBackGround.SetTextColor(RGB(150, 157, 174));
+	memDCBackGround.TextOut(75, 552, "Ping ve sunucu bilgileri baglantidan sonra otomatik guncellenir.");
+
+	// Online indicator
+	memDCBackGround.SelectObject(&brushOnline);
+	memDCBackGround.Ellipse(CRect(865, 173, 875, 183));
+	memDCBackGround.SetTextColor(RGB(115, 224, 164));
+	memDCBackGround.TextOut(885, 168, "ONLINE OYUNCU");
 
 	memDCBackGround.SelectObject(pOldFont);
 	memDCBackGround.SelectObject(pOldBrush);
@@ -3911,9 +3983,9 @@ HBRUSH CAtumLauncherDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			if((GetDlgItem(IDC_EDIT_ACCOUNT)->m_hWnd == pWnd->m_hWnd)
 				|| (GetDlgItem(IDC_EDIT_PASSWORD)->m_hWnd == pWnd->m_hWnd))
 			{
-				pDC->SetBkMode(TRANSPARENT);
-				pDC->SetBkColor(RGB(0, 0, 0));
-				pDC->SetTextColor(RGB(255, 255, 255));
+				pDC->SetBkMode(OPAQUE);
+				pDC->SetBkColor(RGB(22, 25, 34));
+				pDC->SetTextColor(RGB(245, 247, 251));
 				return m_StaticBrushBlack;
 			}
 		}
