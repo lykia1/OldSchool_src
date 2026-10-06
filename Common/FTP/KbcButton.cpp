@@ -48,37 +48,49 @@ void CKbcButton::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	if (m_bModern)
 	{
 		CRect r = lpDrawItemStruct->rcItem;
-		COLORREF fill = m_clrModern;
-		COLORREF border = RGB(255, 122, 72);
-		COLORREF text = RGB(255, 255, 255);
+		const BOOL chromeButton = (m_clrModern == RGB(45, 48, 58));
+		COLORREF fill = chromeButton ? RGB(7, 20, 31) : RGB(4, 37, 58);
+		COLORREF border = chromeButton ? RGB(61, 121, 151) : RGB(0, 187, 255);
+		COLORREF innerBorder = chromeButton ? RGB(18, 61, 82) : RGB(0, 105, 160);
+		COLORREF text = chromeButton ? RGB(214, 236, 247) : RGB(255, 255, 255);
 
 		if (m_bDisable)
 		{
-			fill = RGB(58, 61, 70);
-			border = RGB(78, 81, 90);
-			text = RGB(150, 153, 160);
+			fill = RGB(18, 31, 41);
+			border = RGB(43, 65, 78);
+			innerBorder = RGB(32, 49, 59);
+			text = RGB(111, 137, 151);
 		}
 		else if (lpDrawItemStruct->itemState & ODS_SELECTED)
 		{
-			fill = RGB(191, 61, 24);
-			border = RGB(235, 93, 45);
+			fill = chromeButton ? RGB(10, 31, 45) : RGB(0, 94, 143);
+			border = RGB(65, 218, 255);
 		}
 		else if (m_bHover)
 		{
-			fill = RGB(242, 96, 45);
-			border = RGB(255, 145, 100);
+			fill = chromeButton ? RGB(10, 34, 50) : RGB(0, 80, 121);
+			border = RGB(83, 225, 255);
+			innerBorder = RGB(0, 153, 220);
 		}
 
 		CBrush brush(fill);
-		CPen pen(PS_SOLID, 1, border);
+		CPen penOuter(PS_SOLID, chromeButton ? 1 : 2, border);
 		CBrush* oldBrush = pDC->SelectObject(&brush);
-		CPen* oldPen = pDC->SelectObject(&pen);
-		pDC->RoundRect(r, CPoint(12, 12));
+		CPen* oldPen = pDC->SelectObject(&penOuter);
+		pDC->RoundRect(r, CPoint(8, 8));
+
+		CRect inner = r;
+		inner.DeflateRect(3, 3);
+		CPen penInner(PS_SOLID, 1, innerBorder);
+		pDC->SelectObject(&penInner);
+		CBrush* hollow = (CBrush*)pDC->SelectStockObject(HOLLOW_BRUSH);
+		pDC->RoundRect(inner, CPoint(6, 6));
+		pDC->SelectObject(hollow);
 
 		pDC->SetBkMode(TRANSPARENT);
 		pDC->SetTextColor(text);
 		CFont font;
-		int fontHeight = max(15, min(24, r.Height() / 2));
+		int fontHeight = chromeButton ? max(14, min(20, r.Height() / 2)) : max(17, min(25, r.Height() / 2));
 		font.CreateFont(fontHeight, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0,
 			DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
 			CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
