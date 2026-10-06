@@ -8,120 +8,120 @@
 	#define STRCMD_CS_COMMAND_MENT_0					"/ment"
 	#define STRCMD_CS_COMMAND_MENT_1					"/ment"
 	#define STRCMD_CS_COMMAND_MENT_2					"/ment"
-	#define STRCMD_CS_COMMAND_MENT_HELP					"format: /ment [|String] - Setting character's ment.  Leave blank string to cancel current ment."
+	#define STRCMD_CS_COMMAND_MENT_HELP					"kullanim: /ment [|Metin] - Karakterin ment metnini ayarlar. Mevcut menti iptal etmek icin bos birakin."
 	#define STRCMD_CS_COMMAND_MOVE						"/move"
 	#define STRCMD_CS_COMMAND_MOVE_1					"/go"
-	#define STRCMD_CS_COMMAND_MOVE_HELP					"format: /move [MapIndex] [|ChannelIndex] - Moves to the specific map & channel"
+	#define STRCMD_CS_COMMAND_MOVE_HELP					"kullanim: /move [MapIndex] [|ChannelIndex] - Belirtilen harita ve kanala tasir"
 	#define STRCMD_CS_COMMAND_COORDINATE				"/coor"
 	#define STRCMD_CS_COMMAND_COORDINATE_1				"/coordinate"
-	#define STRCMD_CS_COMMAND_COORDINATE_HELP			"format: /coordinate [X] [Y] - Moves to the specific coordinates of the map"
+	#define STRCMD_CS_COMMAND_COORDINATE_HELP			"kullanim: /coordinate [X] [Y] - Haritadaki belirtilen koordinatlara tasir"
 	#define STRCMD_CS_COMMAND_LIST						"/list"
 	#define STRCMD_CS_COMMAND_LIST_1					"/list"
-	#define STRCMD_CS_COMMAND_LIST_HELP					"format: /list - Lists the users in the present map (maximum of 20 users)"
+	#define STRCMD_CS_COMMAND_LIST_HELP					"kullanim: /list - Mevcut haritadaki kullanicilari listeler (en fazla 20 kullanici)"
 	#define STRCMD_CS_COMMAND_USERSEND					"/senduser"
 	#define STRCMD_CS_COMMAND_USERSEND_1				"/senduser"
-	#define STRCMD_CS_COMMAND_USERSEND_HELP				"format: /senduser [character name] [map name] - Moves the character into the specified map"
+	#define STRCMD_CS_COMMAND_USERSEND_HELP				"kullanim: /senduser [karakter adi] [harita adi] - Karakteri belirtilen haritaya tasir"
 	#define STRCMD_CS_COMMAND_INFObyNAME				"/info"
 	#define STRCMD_CS_COMMAND_INFObyNAME_1				"/info"
-	#define STRCMD_CS_COMMAND_INFObyNAME_HELP			"format: /info [monster name|item name] - Shows the information about monsters or items included in the string"
+	#define STRCMD_CS_COMMAND_INFObyNAME_HELP			"kullanim: /info [canavar adi|esya adi] - Metinle eslesen canavar veya esya bilgisini gosterir"
 	#define STRCMD_CS_COMMAND_QUESTINFO					"/quest"
 	#define STRCMD_CS_COMMAND_QUESTINFO_1				"/quest"
-	#define STRCMD_CS_COMMAND_QUESTINFO_HELP			"format: /quest - Shows characters quest information"
+	#define STRCMD_CS_COMMAND_QUESTINFO_HELP			"kullanim: /quest - Karakterin gorev bilgisini gosterir"
 	#define STRCMD_CS_COMMAND_QUESTDEL					"/delQuest"
 	#define STRCMD_CS_COMMAND_QUESTDEL_1				"/delQuest"
-	#define STRCMD_CS_COMMAND_QUESTDEL_HELP				"format: /delQuest [quest no.]"
+	#define STRCMD_CS_COMMAND_QUESTDEL_HELP				"kullanim: /delQuest [gorev no.]"
 	#define STRCMD_CS_COMMAND_ITEMINFObyKIND			"/itemKind"
 	#define STRCMD_CS_COMMAND_ITEMINFObyKIND_1			"/itemKind"
-	#define STRCMD_CS_COMMAND_ITEMINFObyKIND_HELP		"format: /itemKind [|item kind(0~53)] - Shows the specific types of item"
+	#define STRCMD_CS_COMMAND_ITEMINFObyKIND_HELP		"kullanim: /itemKind [|esya turu(0~53)] - Belirtilen esya turlerini gosterir"
 	#define STRCMD_CS_COMMAND_ITEMINSERTbyKIND			"/insertItemKind"
 	#define STRCMD_CS_COMMAND_ITEMINSERTbyKIND_1		"/insertItemKind"
-	#define STRCMD_CS_COMMAND_ITEMINSERTbyKIND_HELP		"format: /insertItemKind [item kind(0~53)] -  Additional specific types of items"
+	#define STRCMD_CS_COMMAND_ITEMINSERTbyKIND_HELP		"kullanim: /insertItemKind [esya turu(0~53)] - Belirtilen turde esyalar ekler"
 	#define STRCMD_CS_COMMAND_ITEMINSERTbyITEMNUMRANGE		"/insertItemNumRange"
 	#define STRCMD_CS_COMMAND_ITEMINSERTbyITEMNUMRANGE_1	"/insertItemNumRange"
-	#define STRCMD_CS_COMMAND_ITEMINSERTbyITEMNUMRANGE_HELP	"format: /insertItemNumRange [from itemnum] ~ [to itemnum] - Additional specific items"
+	#define STRCMD_CS_COMMAND_ITEMINSERTbyITEMNUMRANGE_HELP	"kullanim: /insertItemNumRange [baslangic esya no] ~ [bitis esya no] - Belirtilen esyalari ekler"
 	#define STRCMD_CS_COMMAND_STATINIT					"/initStat"
 	#define STRCMD_CS_COMMAND_STATINIT_1				"/initStatus"
 	#define STRCMD_CS_COMMAND_STATINIT_2				"/initStatus"
-	#define STRCMD_CS_COMMAND_STATINIT_HELP				"format: /initStatus - Initiates the entire status"
+	#define STRCMD_CS_COMMAND_STATINIT_HELP				"kullanim: /initStatus - Tum statlari sifirlar"
 	#define STRCMD_CS_COMMAND_PARTYINFO					"/partyInfo"
 	#define STRCMD_CS_COMMAND_PARTYINFO_1				"/partyInfo"
-	#define STRCMD_CS_COMMAND_PARTYINFO_HELP			"format: /partyInfo - Shows party information"
+	#define STRCMD_CS_COMMAND_PARTYINFO_HELP			"kullanim: /partyInfo - Formasyon bilgisini gosterir"
 	#define STRCMD_CS_COMMAND_GAMETIME					"/Time"
 	#define STRCMD_CS_COMMAND_GAMETIME_1				"/Time"
-	#define STRCMD_CS_COMMAND_GAMETIME_HELP				"format: /Time [|additional time(0~23)] - Changes present time (individual time is changed only)"
+	#define STRCMD_CS_COMMAND_GAMETIME_HELP				"kullanim: /Time [|ek sure(0~23)] - Mevcut zamani degistirir (yalnizca bireysel zaman)"
 	#define STRCMD_CS_COMMAND_STRINGLEVEL_0				"/string"
 	#define STRCMD_CS_COMMAND_STRINGLEVEL_1				"/string"
 	#define STRCMD_CS_COMMAND_STRINGLEVEL_2				"/string"
-	#define STRCMD_CS_COMMAND_STRINGLEVEL_HELP			"format: /string [0~5] - Decides levels shown by debug message"
+	#define STRCMD_CS_COMMAND_STRINGLEVEL_HELP			"kullanim: /string [0~5] - Debug mesajlarinda gosterilecek seviyeyi belirler"
 	#define STRCMD_CS_COMMAND_MONSUMMON					"/summon"
 	#define STRCMD_CS_COMMAND_MONSUMMON_1				"/summon"
-	#define STRCMD_CS_COMMAND_MONSUMMON_HELP			"format: /summon [monster number|monster name] [# of monsters] - Brings monster ('_'is used if the monster's name includes a space in between)"
+	#define STRCMD_CS_COMMAND_MONSUMMON_HELP			"kullanim: /summon [canavar numarasi|canavar adi] [canavar sayisi] - Canavar cagirir (adinda bosluk varsa '_' kullanilir)"
 	#define STRCMD_CS_COMMAND_SKILLALL					"/allSkill"
 	#define STRCMD_CS_COMMAND_SKILLALL_1				"/allSkill"
-	#define STRCMD_CS_COMMAND_SKILLALL_HELP				"format: /allSkill [level] - Inserts all the matching skills"
+	#define STRCMD_CS_COMMAND_SKILLALL_HELP				"kullanim: /allSkill [seviye] - Seviyeye uygun tum yetenekleri ekler"
 	#define STRCMD_CS_COMMAND_ITEMINSERTALL				"/allItem"
 	#define STRCMD_CS_COMMAND_ITEMINSERTALL_1			"/allItem"
-	#define STRCMD_CS_COMMAND_ITEMINSERTALL_HELP		"format: /allItem - Inserts all the specific items excluding skills and countable items"
+	#define STRCMD_CS_COMMAND_ITEMINSERTALL_HELP		"kullanim: /allItem - Yetenekler ve sayilabilir esyalar haric belirtilen tum esyalari ekler"
 	#define STRCMD_CS_COMMAND_ITEMINSERTWEAPON			"/allWeapon"
 	#define STRCMD_CS_COMMAND_ITEMINSERTWEAPON_1		"/allWeapon"
-	#define STRCMD_CS_COMMAND_ITEMINSERTWEAPON_HELP		"format: /allWeapon - Additional entire weapons suitable for the Gear"
+	#define STRCMD_CS_COMMAND_ITEMINSERTWEAPON_HELP		"kullanim: /allWeapon - GEAR'a uygun tum silahlari ekler"
 	#define STRCMD_CS_COMMAND_ITEMDELALL_0				"/delAllItem"
 	#define STRCMD_CS_COMMAND_ITEMDELALL_1				"/delAllItem"
 	#define STRCMD_CS_COMMAND_ITEMDELALL_2				"/delAllItem"
-	#define STRCMD_CS_COMMAND_ITEMDELALL_HELP			"format: /delAllItem - Eliminates all the unequipped items (excluding skills)"
+	#define STRCMD_CS_COMMAND_ITEMDELALL_HELP			"kullanim: /delAllItem - Takili olmayan tum esyalari siler (yetenekler haric)"
 	#define STRCMD_CS_COMMAND_ITEMINSERTbyITEMNUM		"/item"
 	#define STRCMD_CS_COMMAND_ITEMINSERTbyITEMNUM_1		"/item"
-	#define STRCMD_CS_COMMAND_ITEMINSERTbyITEMNUM_HELP	"format: /item [item number] [# of items] - Acquires items, treated as 1 item when [# of items] is not inputted"
+	#define STRCMD_CS_COMMAND_ITEMINSERTbyITEMNUM_HELP	"kullanim: /item [esya numarasi] [esya sayisi] - Esya verir; sayi girilmezse 1 adet kabul edilir"
 	#define STRCMD_CS_COMMAND_ITEMDROP					"/dropItem"
 	#define STRCMD_CS_COMMAND_ITEMDROP_1				"/dropItem"
-	#define STRCMD_CS_COMMAND_ITEMDROP_HELP				"format: /dropItem [item number] [|# of items] - Dropping of items in the field"
+	#define STRCMD_CS_COMMAND_ITEMDROP_HELP				"kullanim: /dropItem [esya numarasi] [|esya sayisi] - Esyayi alana birakir"
 	#define STRCMD_CS_COMMAND_USERSINFOTOTAL			"/server"
 	#define STRCMD_CS_COMMAND_USERSINFOTOTAL_1			"/server"
-	#define STRCMD_CS_COMMAND_USERSINFOTOTAL_HELP		"format: /server - Listing server information"
+	#define STRCMD_CS_COMMAND_USERSINFOTOTAL_HELP		"kullanim: /server - Sunucu bilgisini listeler"
 	#define STRCMD_CS_COMMAND_USERSINFOperMAP			"/serverMap"
 	#define STRCMD_CS_COMMAND_USERSINFOperMAP_1			"/serverMap"
-	#define STRCMD_CS_COMMAND_USERSINFOperMAP_HELP		"format: /serverMap - Shows information of all the map"
+	#define STRCMD_CS_COMMAND_USERSINFOperMAP_HELP		"kullanim: /serverMap - Tum haritalarin bilgisini gosterir"
 	#define STRCMD_CS_COMMAND_CHANNELINFO				"/channelInfo"
 	#define STRCMD_CS_COMMAND_CHANNELINFO_1				"/channelInfo"
-	#define STRCMD_CS_COMMAND_CHANNELINFO_HELP			"format: /channelInfo - Shows maps channel information on the present map"
+	#define STRCMD_CS_COMMAND_CHANNELINFO_HELP			"kullanim: /channelInfo - Mevcut haritanin kanal bilgilerini gosterir"
 	#define STRCMD_CS_COMMAND_DEBUGPRINTDBG				"/dbg"
 	#define STRCMD_CS_COMMAND_DEBUGPRINTDBG_1			"/dbg"
-	#define STRCMD_CS_COMMAND_DEBUGPRINTDBG_HELP		"format: /dbg - For test only"
+	#define STRCMD_CS_COMMAND_DEBUGPRINTDBG_HELP		"kullanim: /dbg - Yalnizca test icin"
 	#define STRCMD_CS_COMMAND_DEBUGSETPARAMF			"/testf"
 	#define STRCMD_CS_COMMAND_DEBUGSETPARAMF_HELP		"format: /testf [Param1] [Param2] [Param3]"
 	#define STRCMD_CS_COMMAND_BULLETCHARGE				"/bullet"
 	#define STRCMD_CS_COMMAND_BULLETCHARGE_1			"/chargeBullet"
-	#define STRCMD_CS_COMMAND_BULLETCHARGE_HELP			"format: /chargeBullet [|no. of 1st type bullet] [|no. of 2nd type bullet] - reloading bullets"
+	#define STRCMD_CS_COMMAND_BULLETCHARGE_HELP			"kullanim: /chargeBullet [|1. tur mermi sayisi] [|2. tur mermi sayisi] - Mermileri yeniden doldurur"
 	#define STRCMD_CS_COMMAND_REPAIRALL					"/manpi"
 	#define STRCMD_CS_COMMAND_REPAIRALL_1				"/repairAll"
-	#define STRCMD_CS_COMMAND_REPAIRALL_HELP			"format: /repairAll [|character name] - Healing Energy, Shield, SP, Fuel to 100%, Healing yourself without [character name]"
+	#define STRCMD_CS_COMMAND_REPAIRALL_HELP			"kullanim: /repairAll [|karakter adi] - Enerji, Kalkan, SP ve Yakiti %%100 yeniler; karakter adi girilmezse kendinizi yeniler"
 	#define STRCMD_CS_COMMAND_REPAIRbyPARAM				"/banpi"
 	#define STRCMD_CS_COMMAND_REPAIRbyPARAM_1			"/repairParam"
-	#define STRCMD_CS_COMMAND_REPAIRbyPARAM_HELP		"format: /repairParam [|decreasing quantity %] [|character name] - Energy, Shield, SP, and Fuel accounts for [decreasing quantity %], 50% if [decreasing quantity %] is not inputted, and if [character name] is not present it stands for the individual's character"
+	#define STRCMD_CS_COMMAND_REPAIRbyPARAM_HELP		"kullanim: /repairParam [|azalma miktari %%] [|karakter adi] - Enerji, Kalkan, SP ve Yakit icin verilen orani uygular; oran girilmezse %%50, karakter adi yoksa kendi karakteriniz kullanilir"
 	#define STRCMD_CS_COMMAND_USERNORMALIZE				"/normal"
 	#define STRCMD_CS_COMMAND_USERNORMALIZE_1			"/normal"
-	#define STRCMD_CS_COMMAND_USERNORMALIZE_HELP		"format: /normal - Change to a normal account from an admin or game master mode"
+	#define STRCMD_CS_COMMAND_USERNORMALIZE_HELP		"kullanim: /normal - Yonetici veya GM modundan normal hesaba doner"
 	#define STRCMD_CS_COMMAND_USERSPECIALIZE			"/specialize"
 	#define STRCMD_CS_COMMAND_USERSPECIALIZE_1			"/specialize"
-	#define STRCMD_CS_COMMAND_USERSPECIALIZE_HELP		"format: /specialize - Changed from a normal account to a special admin or game master account"
+	#define STRCMD_CS_COMMAND_USERSPECIALIZE_HELP		"kullanim: /specialize - Normal hesabi ozel yonetici veya GM hesabina cevirir"
 	#define STRCMD_CS_COMMAND_USERINVINCIBILITY			"/godmode"
 	#define STRCMD_CS_COMMAND_USERINVINCIBILITY_1		"/invincible"
-	#define STRCMD_CS_COMMAND_USERINVINCIBILITY_HELP	"format: /invincible - As a game master or manager mode, no damage is taken"
+	#define STRCMD_CS_COMMAND_USERINVINCIBILITY_HELP	"kullanim: /invincible - GM veya yonetici modunda hasar almaz"
 	#define STRCMD_CS_COMMAND_POWERUP					"/powerUp"
 	#define STRCMD_CS_COMMAND_POWERUP_1					"/powerUp"
-	#define STRCMD_CS_COMMAND_POWERUP_HELP				"format: /powerUp [Increased offensive power(%%)]"
+	#define STRCMD_CS_COMMAND_POWERUP_HELP				"kullanim: /powerUp [Saldiri gucu artisi(%%)]"
 	#define STRCMD_CS_COMMAND_VARIABLESET				"/setVariable"
 	#define STRCMD_CS_COMMAND_VARIABLESET_1				"/setVariable"
-	#define STRCMD_CS_COMMAND_VARIABLESET_HELP			"format: /setVariable [variable] - adjusts (normal) variables"
+	#define STRCMD_CS_COMMAND_VARIABLESET_HELP			"kullanim: /setVariable [degisken] - Normal degiskenleri ayarlar"
 	#define STRCMD_CS_COMMAND_LEVELSET					"/level"
 	#define STRCMD_CS_COMMAND_LEVELSET_1				"/level"
-	#define STRCMD_CS_COMMAND_LEVELSET_HELP				"format: /level [|level] [|percentage of exp] [|character name] - Adjusts level and percentage of exp. of a character"
+	#define STRCMD_CS_COMMAND_LEVELSET_HELP				"kullanim: /level [|seviye] [|EXP yuzdesi] [|karakter adi] - Karakterin seviye ve EXP yuzdesini ayarlar"
 	#define STRCMD_CS_COMMAND_USERINVISIABLE			"/invisible"
 	#define STRCMD_CS_COMMAND_USERINVISIABLE_1			"/hide"
-	#define STRCMD_CS_COMMAND_USERINVISIABLE_HELP		"format: /invisible -  Invisible from other characters"
+	#define STRCMD_CS_COMMAND_USERINVISIABLE_HELP		"kullanim: /invisible - Diger karakterlere gorunmez olur"
 	#define STRCMD_CS_COMMAND_DEBUGPRINTMSGF_0			"/messagef"
 	#define STRCMD_CS_COMMAND_DEBUGPRINTMSGF_1			"/msgf"
-	#define STRCMD_CS_COMMAND_DEBUGPRINTMSGF_HELP		"format: /msgf - For test only"
+	#define STRCMD_CS_COMMAND_DEBUGPRINTMSGF_HELP		"kullanim: /msgf - Yalnizca test icin"
 	#define STRCMD_CS_COMMAND_GAMEEVENT					"/event"
 	#define STRCMD_CS_COMMAND_GAMEEVENT_1				"/event"
 	#define STRCMD_CS_COMMAND_GAMEEVENT_P1EXP			"exppoint"
@@ -130,14 +130,14 @@
 	#define STRCMD_CS_COMMAND_GAMEEVENT_P1ITEM			"item"
 	#define STRCMD_CS_COMMAND_GAMEEVENT_P1RARE			"rareitem"
 	#define STRCMD_CS_COMMAND_GAMEEVENT_P2END			"finish"
-	#define STRCMD_CS_COMMAND_GAMEEVENT_HELP			"format: /event [exppoint|SPI|restoreexppoint|item|rareitem] [|rate %f|finish] [time(minute)] - event set, cancel"
+	#define STRCMD_CS_COMMAND_GAMEEVENT_HELP			"kullanim: /event [exppoint|SPI|restoreexppoint|item|rareitem] [|oran %f|finish] [sure(dakika)] - Etkinligi ayarlar veya iptal eder"
 	#define STRCMD_CS_COMMAND_PREMEUM					"/premium"
 	#define STRCMD_CS_COMMAND_PREMEUM_1					"/premium"
 	#define STRCMD_CS_COMMAND_PREMEUM_PNORMAL			"standard"
 	#define STRCMD_CS_COMMAND_PREMEUM_PSUPER			"super"
 	#define STRCMD_CS_COMMAND_PREMEUM_PUPGRADE			"upgrade"
 	#define STRCMD_CS_COMMAND_PREMEUM_PEND				"finish"
-	#define STRCMD_CS_COMMAND_PREMEUM_HELP				"format: /premium [standard|super|upgrade|finish]"
+	#define STRCMD_CS_COMMAND_PREMEUM_HELP				"kullanim: /premium [standard|super|upgrade|finish]"
 // 2008-02-14 by cmkwon,   
 //	#define STRCMD_CS_COMMAND_CITYWAR					"/citywar"
 //	#define STRCMD_CS_COMMAND_CITYWAR_1					"/citywar"
@@ -149,13 +149,13 @@
 	#define STRCMD_CS_COMMAND_STEALTH_HELP				"format: /stealth"
 	#define STRCMD_CS_COMMAND_RETURNALL					"/returnAll"
 	#define STRCMD_CS_COMMAND_RETURNALL_1				"/returnAll"
-	#define STRCMD_CS_COMMAND_RETURNALL_HELP			"format: /returnAll [MapIndex] - All the members in the map are moved to the nation capital"
+	#define STRCMD_CS_COMMAND_RETURNALL_HELP			"kullanim: /returnAll [MapIndex] - Haritadaki tum uyeleri ulus baskentine tasir"
 
-// start 2011-06-22 by hskim, ªÁº≥ º≠πˆ πÊ¡ˆ
-	#define STRCMD_CS_COMMAND_SERVERINFO				"/getserverinfo"		// º≠πˆ ¡§∫∏ ∫∏±‚
-// end 2011-06-22 by hskim, ªÁº≥ º≠πˆ πÊ¡ˆ
+// start 2011-06-22 by hskim, ÏÇ¨ÏÑ§ ÏÑúÎ≤Ñ Î∞©ÏßÄ
+	#define STRCMD_CS_COMMAND_SERVERINFO				"/getserverinfo"		// ÏÑúÎ≤Ñ Ï†ïÎ≥¥ Î≥¥Í∏∞
+// end 2011-06-22 by hskim, ÏÇ¨ÏÑ§ ÏÑúÎ≤Ñ Î∞©ÏßÄ
 			   
-// 2007-10-30 by cmkwon, ºº∑¬∫∞ «ÿ««æ∆øˆ ¿Ã∫•∆Æ ±∏«ˆ - ∏Ì∑…æÓ «¸Ωƒ ºˆ¡§µ  æ∆∑°ø°º≠ ¥ŸΩ√ ¡§¿« «‘
+// 2007-10-30 by cmkwon, ÏÑ∏Î†•Î≥Ñ Ìï¥ÌîºÏïÑÏõå Ïù¥Î≤§Ìä∏ Íµ¨ÌòÑ - Î™ÖÎ†πÏñ¥ ÌòïÏãù ÏàòÏ†ïÎê® ÏïÑÎûòÏóêÏÑú Îã§Ïãú Ï†ïÏùò Ìï®
 //	#define STRCMD_CS_COMMAND_HAPPYHOUREVENT			"/happyEvent"
 //	#define STRCMD_CS_COMMAND_HAPPYHOUREVENT_1			"/happyEvent"
 //	#define STRCMD_CS_COMMAND_HAPPYHOUREVENT_PSTART		"start"
@@ -168,40 +168,40 @@
 ///////////////////////////////////////////////////////////////////////////////
 // 2 - Command used in IMServer, some are used with the same command as the above
 	#define STRCMD_CS_COMMAND_DEBUGSETPARAMI			"/testi"
-	#define STRCMD_CS_COMMAND_DEBUGSETPARAMI_HELP		"format: /testi - IMServer for debug"
+	#define STRCMD_CS_COMMAND_DEBUGSETPARAMI_HELP		"kullanim: /testi - IMServer debug icin"
 	#define STRCMD_CS_COMMAND_WHO						"/who"
 	#define STRCMD_CS_COMMAND_WHO_1						"/who"
-	#define STRCMD_CS_COMMAND_WHO_HELP					"format: /who [|# of users] - Listing all users presently in the server (unrelated to map)"
+	#define STRCMD_CS_COMMAND_WHO_HELP					"kullanim: /who [|kullanici sayisi] - Sunucudaki tum kullanicilari listeler (haritadan bagimsiz)"
 	#define STRCMD_CS_COMMAND_REGISTERADMIN				"/registerAdmin"
 	#define STRCMD_CS_COMMAND_REGISTERADMIN_1			"/registerAdmin"
-	#define STRCMD_CS_COMMAND_REGISTERADMIN_HELP		"format: /registerAdmin - Registers the server to send a message to the admin in the process of an event"
+	#define STRCMD_CS_COMMAND_REGISTERADMIN_HELP		"kullanim: /registerAdmin - Etkinlik sirasinda yoneticiye mesaj gondermek icin sunucuyu kaydeder"
 	#define STRCMD_CS_COMMAND_DEBUGPRINTMSGI_0			"/messagei"
 	#define STRCMD_CS_COMMAND_DEBUGPRINTMSGI_1			"/msgi"
-	#define STRCMD_CS_COMMAND_DEBUGPRINTMSGI_HELP		"format: /msgi - Shows all the protocol that a client and the IM server sends and receives"
+	#define STRCMD_CS_COMMAND_DEBUGPRINTMSGI_HELP		"kullanim: /msgi - Istemci ile IM sunucusu arasindaki tum protokolleri gosterir"
 	#define STRCMD_CS_COMMAND_SERVERDOWN				"/serverDown"
 	#define STRCMD_CS_COMMAND_SERVERDOWN_1				"/serverDown"
-	#define STRCMD_CS_COMMAND_SERVERDOWN_HELP			"format: /serverDown [certified no.] - Server shutdown"
+	#define STRCMD_CS_COMMAND_SERVERDOWN_HELP			"kullanim: /serverDown [onay no.] - Sunucuyu kapatir"
 	#define STRCMD_CS_COMMAND_WHOAREYOU					"/donttrytousethiscommandorelseyouwillgetbannedohyeahwewillfindyouguyseventuallyandthisisapermaban"
 	#define STRCMD_CS_COMMAND_WHOAREYOU_1				"/donttrytousethiscommandorelseyouwillgetbannedohyeahwewillfindyouguyseventuallyandthisisapermaban"
-	#define STRCMD_CS_COMMAND_WHOAREYOU_HELP			"format: /whoareYou [character name] - Disabled"
+	#define STRCMD_CS_COMMAND_WHOAREYOU_HELP			"kullanim: /whoareYou [karakter adi] - Devre disi"
 	#define STRCMD_CS_COMMAND_GOUSER					"/go"
 	#define STRCMD_CS_COMMAND_GOUSER_1					"/go"
-	#define STRCMD_CS_COMMAND_GOUSER_HELP				"format: /go [character name] - Moves to the specific position of the character"
+	#define STRCMD_CS_COMMAND_GOUSER_HELP				"kullanim: /go [karakter adi] - Belirtilen karakterin konumuna tasir"
 	#define STRCMD_CS_COMMAND_COMEON					"/comeon"
 	#define STRCMD_CS_COMMAND_COMEON_1					"/comeon"
-	#define STRCMD_CS_COMMAND_COMEON_HELP				"format: /comeon [character name] - Summons the specific character"
+	#define STRCMD_CS_COMMAND_COMEON_HELP				"kullanim: /comeon [karakter adi] - Belirtilen karakteri yaniniza cagirir"
 	#define STRCMD_CS_COMMAND_GUILDCOMEON				"/comeonGuild"
 	#define STRCMD_CS_COMMAND_GUILDCOMEON_1				"/comeonGuild"
-	#define STRCMD_CS_COMMAND_GUILDCOMEON_HELP			"format: /comeonGuild [guild name] - Summons the whole guild"
+	#define STRCMD_CS_COMMAND_GUILDCOMEON_HELP			"kullanim: /comeonGuild [tugay adi] - Tum tugayi yaniniza cagirir"
 	#define STRCMD_CS_COMMAND_GUILDSEND					"/sendGuild"
 	#define STRCMD_CS_COMMAND_GUILDSEND_1				"/sendGuild"
-	#define STRCMD_CS_COMMAND_GUILDSEND_HELP			"format: /sendGuild [guild name] [map name] - Sends the guild into a specific map"
+	#define STRCMD_CS_COMMAND_GUILDSEND_HELP			"kullanim: /sendGuild [tugay adi] [harita adi] - Tugayi belirtilen haritaya gonderir"
 	#define STRCMD_CS_COMMAND_CHATPTOPFLAG				"/whisperChat"
 	#define STRCMD_CS_COMMAND_CHATPTOPFLAG_1			"/whisperChat"
-	#define STRCMD_CS_COMMAND_CHATPTOPFLAG_HELP			"format: /whisperChat - Toggles between blocking and allowing whispers"
+	#define STRCMD_CS_COMMAND_CHATPTOPFLAG_HELP			"kullanim: /whisperChat - Fisiltilari engelleme/izin verme durumunu degistirir"
 	#define STRCMD_CS_COMMAND_GUILDINFO					"/guildInfo"
 	#define STRCMD_CS_COMMAND_GUILDINFO_1				"/guildInfo"
-	#define STRCMD_CS_COMMAND_GUILDINFO_HELP			"format: /guildInfo - Shows guild information"
+	#define STRCMD_CS_COMMAND_GUILDINFO_HELP			"kullanim: /guildInfo - Tugay bilgisini gosterir"
 	#define STRCMD_CS_COMMAND_WEATHERSET				"/weather"
 	#define STRCMD_CS_COMMAND_WEATHERSET_1				"/weather"
 	#define STRCMD_CS_COMMAND_WEATHERSET_P1NORMAL		"standard"
@@ -213,23 +213,23 @@
 	#define STRCMD_CS_COMMAND_WEATHERSET_P2ALL			"whole"
 	#define STRCMD_CS_COMMAND_WEATHERSET_P3ON			"on"
 	#define STRCMD_CS_COMMAND_WEATHERSET_P3OFF			"off"
-	#define STRCMD_CS_COMMAND_WEATHERSET_HELP			"format: /weather [standard|clear|rain|snow|cloudy|foggy] [whole|mapname] [on|off] - Controls the weather"
+	#define STRCMD_CS_COMMAND_WEATHERSET_HELP			"kullanim: /weather [standard|clear|rain|snow|cloudy|foggy] [whole|mapname] [on|off] - Hava durumunu kontrol eder"
 	#define STRCMD_CS_COMMAND_CHATFORBID				"/mute"
 	#define STRCMD_CS_COMMAND_CHATFORBID_1				"/forbidChat"
-	#define STRCMD_CS_COMMAND_CHATFORBID_HELP			"format: /forbidChat [character name] [time(min.)] - Prohibiting chat"
+	#define STRCMD_CS_COMMAND_CHATFORBID_HELP			"kullanim: /forbidChat [karakter adi] [sure(dk.)] - Sohbeti yasaklar"
 	#define STRCMD_CS_COMMAND_CHATFORBIDRELEASE			"/unmute"
 	#define STRCMD_CS_COMMAND_CHATFORBIDRELEASE_1		"/releaseChat"
-	#define STRCMD_CS_COMMAND_CHATFORBIDRELEASE_HELP	"format: /releaseChat [time(min.)] - Cancelling prohibited chat"
+	#define STRCMD_CS_COMMAND_CHATFORBIDRELEASE_HELP	"kullanim: /releaseChat [sure(dk.)] - Sohbet yasagini kaldirir"
 	#define STRCMD_CS_COMMAND_COMMANDLIST_0				"/?"
 	#define STRCMD_CS_COMMAND_COMMANDLIST_1				"/help"
 	#define STRCMD_CS_COMMAND_COMMANDLIST_2				"/command"
-	#define STRCMD_CS_COMMAND_COMMANDLIST_HELP			"format: /? - command list is shown"
+	#define STRCMD_CS_COMMAND_COMMANDLIST_HELP			"kullanim: /? - Komut listesini gosterir"
 
 	// 2005-07-20 by cmkwon
 	#define STRCMD_CS_COMMAND_BONUSSTAT_0				"/BonusStat"
 	#define STRCMD_CS_COMMAND_BONUSSTAT_1				"/BonusStat"
 	#define STRCMD_CS_COMMAND_BONUSSTAT_2				"/BonusStat"
-	#define STRCMD_CS_COMMAND_BONUSSTAT_HELP			"format: /BonusStat [Bonus Counts] [|character name] - BonusStat increase"
+	#define STRCMD_CS_COMMAND_BONUSSTAT_HELP			"kullanim: /BonusStat [Bonus Sayisi] [|karakter adi] - BonusStat artirir"
 // 2_end
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -238,25 +238,25 @@
 // 3 - Command used in AtumMonitor, some are used with the same command as the above
 	#define STRCMD_CS_COMMAND_PASSWORDSET				"/setPassword"
 	#define STRCMD_CS_COMMAND_PASSWORDSET_1				"/setPassword"
-	#define STRCMD_CS_COMMAND_PASSWORDSET_HELP			"format: /setPassword [AccountName] [Password]"
+	#define STRCMD_CS_COMMAND_PASSWORDSET_HELP			"kullanim: /setPassword [HesapAdi] [Sifre]"
 	#define STRCMD_CS_COMMAND_PASSWORDROLLBACK			"/rollbackPassword"
 	#define STRCMD_CS_COMMAND_PASSWORDROLLBACK_1		"/rollbackPassword"
-	#define STRCMD_CS_COMMAND_PASSWORDROLLBACK_HELP		"format: /rollbackPassword [AccountName]"
+	#define STRCMD_CS_COMMAND_PASSWORDROLLBACK_HELP		"kullanim: /rollbackPassword [HesapAdi]"
 	#define STRCMD_CS_COMMAND_PASSWORDLIST				"/passwordList"
 	#define STRCMD_CS_COMMAND_PASSWORDLIST_1			"/passwordList"
-	#define STRCMD_CS_COMMAND_PASSWORDLIST_HELP			"format: /passwordList"
+	#define STRCMD_CS_COMMAND_PASSWORDLIST_HELP			"kullanim: /passwordList"
 	#define STRCMD_CS_COMMAND_PASSWORDENCRYPT			"/encrypt"
 	#define STRCMD_CS_COMMAND_PASSWORDENCRYPT_1			"/encrypt"
-	#define STRCMD_CS_COMMAND_PASSWORDENCRYPT_HELP		"format: /encrypt [string that will be encrypted]"
+	#define STRCMD_CS_COMMAND_PASSWORDENCRYPT_HELP		"kullanim: /encrypt [sifrelenecek metin]"
 	#define STRCMD_CS_COMMAND_ACCOUNTBLOCK				"/blockAccount"
 	#define STRCMD_CS_COMMAND_ACCOUNTBLOCK_1			"/blockAccount"
-	#define STRCMD_CS_COMMAND_ACCOUNTBLOCKT_HELP		"format: /blockAccount [AccountName]"
+	#define STRCMD_CS_COMMAND_ACCOUNTBLOCKT_HELP		"kullanim: /blockAccount [HesapAdi]"
 	#define STRCMD_CS_COMMAND_ACCOUNTBLOCKRELEASE		"/releaseAccount"
 	#define STRCMD_CS_COMMAND_ACCOUNTBLOCKRELEASE_1		"/releaseAccount"
-	#define STRCMD_CS_COMMAND_ACCOUNTBLOCKRELEASE_HELP	"format: /releaseAccount [AccountName]"
+	#define STRCMD_CS_COMMAND_ACCOUNTBLOCKRELEASE_HELP	"kullanim: /releaseAccount [HesapAdi]"
 	#define STRCMD_CS_COMMAND_ACCOUNTBLOCKLIST			"/blockedList"
 	#define STRCMD_CS_COMMAND_ACCOUNTBLOCKLIST_1		"/blockedList"
-	#define STRCMD_CS_COMMAND_ACCOUNTBLOCKLIST_HELP		"format: /blockedList"
+	#define STRCMD_CS_COMMAND_ACCOUNTBLOCKLIST_HELP		"kullanim: /blockedList"
 // 3_end
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -351,8 +351,8 @@
 	#define STRCMD_CS_ITEMKIND_PREVENTION_DELETE_ITEM	"Enchant Delete Prevention Card type"
 	#define STRCMD_CS_ITEMKIND_BLASTER				"Blaster type"	// 2005-08-01 by hblee : Blaster type added.
 	#define STRCMD_CS_ITEMKIND_RAILGUN				"Rail gun type"		// 2005-08-01 by hblee : Rail gun type added.
-	#define STRCMD_CS_ITEMKIND_ACCESSORY_UNLIMITED	"Unlimited Accessory"		// 2006-03-17 by cmkwon, ªÁøÎΩ√∞£¿Ã <øµø¯>¿Œ æ◊ººº≠∏Æ æ∆¿Ã≈€
-	#define STRCMD_CS_ITEMKIND_ACCESSORY_TIMELIMIT	"Time limit Accessory"		// 2006-03-17 by cmkwon, ªÁøÎΩ√∞£ø° Ω√∞£ ¡¶«—¿Ã ¿÷¥¬ æ◊ººº≠∏Æ æ∆¿Ã≈€
+	#define STRCMD_CS_ITEMKIND_ACCESSORY_UNLIMITED	"Unlimited Accessory"		// 2006-03-17 by cmkwon, ÏÇ¨Ïö©ÏãúÍ∞ÑÏù¥ <ÏòÅÏõê>Ïù∏ Ïï°ÏÑ∏ÏÑúÎ¶¨ ÏïÑÏù¥ÌÖú
+	#define STRCMD_CS_ITEMKIND_ACCESSORY_TIMELIMIT	"Time limit Accessory"		// 2006-03-17 by cmkwon, ÏÇ¨Ïö©ÏãúÍ∞ÑÏóê ÏãúÍ∞Ñ Ï†úÌïúÏù¥ ÏûàÎäî Ïï°ÏÑ∏ÏÑúÎ¶¨ ÏïÑÏù¥ÌÖú
 	#define STRCMD_CS_ITEMKIND_ALL_WEAPON			"All weapons"
 	#define STRCMD_CS_ITEMKIND_PRIMARY_WEAPON_ALL	"Standard Weapon"
 	#define STRCMD_CS_ITEMKIND_PRIMARY_WEAPON_1		"Bullet type Standard Weapon"
@@ -405,7 +405,7 @@
 	#define STRCMD_CS_AUTOSTAT_TYPE_MGEAR_SUPPORT	"Support type"
 	#define STRCMD_CS_AUTOSTAT_TYPE_UNKNOWN			"UNKNOWN_AUTOSTAT_TYPE"
 
-// 2007-10-30 by cmkwon, ºº∑¬∫∞ «ÿ««æ∆øˆ ¿Ã∫•∆Æ ±∏«ˆ - æ∆∑°ø°º≠ ¥ŸΩ√ ¡§¿« «‘
+// 2007-10-30 by cmkwon, ÏÑ∏Î†•Î≥Ñ Ìï¥ÌîºÏïÑÏõå Ïù¥Î≤§Ìä∏ Íµ¨ÌòÑ - ÏïÑÎûòÏóêÏÑú Îã§Ïãú Ï†ïÏùò Ìï®
 //	#define STRCMD_CS_INFLUENCE_TYPE_NORMAL			"Bygeniou city general army"
 //	#define STRCMD_CS_INFLUENCE_TYPE_VCN			"Bygeniou city regular army"
 //	#define STRCMD_CS_INFLUENCE_TYPE_ANI			"Arlington city regular army"
@@ -419,12 +419,12 @@
 	#define STRCMD_CS_POS_CENTER					"Armor(Center middle)"
 	#define STRCMD_CS_POS_REAR						"Engine(Bottom middle)"
 
-	// 2010-06-15 by shcho&hslee ∆ÍΩ√Ω∫≈€
-	//#define STRCMD_CS_POS_ATTACHMENT				"∫Œ¬¯π∞(»ƒπÃ øÏ√¯-ø¨∑·≈ ≈©|ƒ¡≈◊¿Ã≥ ∞Ëø≠)"
+	// 2010-06-15 by shcho&hslee Ìé´ÏãúÏä§ÌÖú
+	//#define STRCMD_CS_POS_ATTACHMENT				"Î∂ÄÏ∞©Î¨º(ÌõÑÎØ∏ Ïö∞Ï∏°-Ïó∞Î£åÌÉ±ÌÅ¨|Ïª®ÌÖåÏù¥ÎÑàÍ≥ÑÏó¥)"
 	#define STRCMD_CS_POS_ACCESSORY_UNLIMITED		"Accessory(Right side of rear-Fueltank|container type)"
 
-	// 2010-06-15 by shcho&hslee ∆ÍΩ√Ω∫≈€
-	//#define STRCMD_CS_POS_PET						"ªÁøÎæ»«‘(»ƒπÃ ¡¬√¯)"
+	// 2010-06-15 by shcho&hslee Ìé´ÏãúÏä§ÌÖú
+	//#define STRCMD_CS_POS_PET						"ÏÇ¨Ïö©ÏïàÌï®(ÌõÑÎØ∏ Ï¢åÏ∏°)"
 	#define STRCMD_CS_POS_ACCESSORY_TIME_LIMIT		"Not to use(Left side of rear)"
 
 	#define STRCMD_CS_POS_PET						"Partner"
@@ -437,23 +437,23 @@
 	// 2005-12-07 by cmkwon
 	#define STRCMD_CS_COMMAND_QUESTCOMPLETION_0		"/QuestComplete"
 	#define STRCMD_CS_COMMAND_QUESTCOMPLETION_1		"/QuestCom"
-	#define STRCMD_CS_COMMAND_QUESTCOMPLETION_HELP	"format: /QuestComplete [|QuestIndex]"
+	#define STRCMD_CS_COMMAND_QUESTCOMPLETION_HELP	"kullanim: /QuestComplete [|QuestIndex]"
 
 	// 2006-02-08 by cmkwon
 	#define STRCMD_CS_COMMAND_INFLDITRIBUTION_0		"/NationRatio"
 	#define STRCMD_CS_COMMAND_INFLDITRIBUTION_1		"/InflDist"
-	#define STRCMD_CS_COMMAND_INFLDITRIBUTION_HELP	"format: /NationRatio"
+	#define STRCMD_CS_COMMAND_INFLDITRIBUTION_HELP	"kullanim: /NationRatio"
 	#define STRCMD_CS_COMMAND_CHANGEINFL_0			"/ChangeNation"
 	#define STRCMD_CS_COMMAND_CHANGEINFL_1			"/Nation"
-	#define STRCMD_CS_COMMAND_CHANGEINFL_HELP		"format: /ChangeNation [|1(Normal)|2(BCU)|4(ANI)]"
+	#define STRCMD_CS_COMMAND_CHANGEINFL_HELP		"kullanim: /ChangeNation [|1(Normal)|2(BCU)|4(ANI)]"
 
 	// 2006-03-02 by cmkwon
 	#define STRCMD_CS_COMMAND_GOMONSTER_0			"/GoMon"
 	#define STRCMD_CS_COMMAND_GOMONSTER_1			"/GoMonster"
-	#define STRCMD_CS_COMMAND_GOMONSTER_HELP		"format: /GoMonster [MonsterName|MonsterNumber]"
+	#define STRCMD_CS_COMMAND_GOMONSTER_HELP		"kullanim: /GoMonster [CanavarAdi|CanavarNumarasi]"
 
 	//////////////////////////////////////////////////////////////////////////
-	// 2008-05-20 by dhjin, EP3 - ø©¥‹ ºˆ¡§ ªÁ«◊ - ¡÷ºÆ √≥∏Æ πÿ¿∏∑Œ ¿Ãµø
+	// 2008-05-20 by dhjin, EP3 - Ïó¨Îã® ÏàòÏ†ï ÏÇ¨Ìï≠ - Ï£ºÏÑù Ï≤òÎ¶¨ Î∞ëÏúºÎ°ú Ïù¥Îèô
 	// 2006-03-07 by cmkwon
 //	#define STRCMD_CS_GUILD_RANK_PRIVATE_NULL		"Member"
 //	#define STRCMD_CS_GUILD_RANK_COMMANDER			"Flight brigade commander"
@@ -471,10 +471,10 @@
 	// 2006-04-17 by cmkwon
 	#define STRCMD_CS_COMMAND_SIGNBOARD_0			"/Noticeboard"
 	#define STRCMD_CS_COMMAND_SIGNBOARD_1			"/Noticeboard"
-	#define STRCMD_CS_COMMAND_SIGNBOARD_HELP		"format: /Noticeboard [|Duration(unit:min) [Notice details] - Adds a notice to the public electronic notice board for a given duration."
+	#define STRCMD_CS_COMMAND_SIGNBOARD_HELP		"kullanim: /Noticeboard [|Sure(birim:dk) [Duyuru ayrintisi] - Belirtilen sure boyunca genel elektronik duyuru panosuna duyuru ekler."
 	#define STRCMD_CS_COMMAND_SIGNBOARD_DEL_0		"/DeleteNoticeboard"
 	#define STRCMD_CS_COMMAND_SIGNBOARD_DEL_1		"/DeleteNoticeboard"
-	#define STRCMD_CS_COMMAND_SIGNBOARD_DEL_HELP	"format: /DeleteNoticeboard [index of notice to be deleted] - Deletes a certain notice on the electronic notice board."
+	#define STRCMD_CS_COMMAND_SIGNBOARD_DEL_HELP	"kullanim: /DeleteNoticeboard [silinecek duyuru indeksi] - Elektronik duyuru panosundan belirtilen duyuruyu siler."
 	
 	// 2006-04-20 by cmkwon
 	#define STRCMD_CS_COMMON_RACE_INFLUENCE_LEADER	"Influence Leader"
@@ -486,49 +486,49 @@
 	// 2006-04-24 by cmkwon
 	#define STRCMD_CS_COMMAND_CONPOINT_0			"/ContributionPoint"
 	#define STRCMD_CS_COMMAND_CONPOINT_1			"/ContributionPoint"
-	#define STRCMD_CS_COMMAND_CONPOINT_HELP			"format: /ContributionPoint [Influence(2:BCU, 4:ANI)] [Increase] - Increase the contribution of a certain nation"
+	#define STRCMD_CS_COMMAND_CONPOINT_HELP			"kullanim: /ContributionPoint [Ulus(2:BCU, 4:ANI)] [Artis] - Belirtilen ulusun katki puanini artirir"
 
 	// 2006-05-08 by cmkwon
 	#define STRCMD_CS_COMMAND_CALLGM_0				"/CallGM"
 	#define STRCMD_CS_COMMAND_CALLGM_1				"/CallGM"  // Helper
 	#define STRCMD_CS_COMMAND_CALLGM_2				"/CallGM"  // Help
-	#define STRCMD_CS_COMMAND_CALLGM_HELP			"format: /CallGM  [Details of request] - Request of consultation with GM. - Disabled"
+	#define STRCMD_CS_COMMAND_CALLGM_HELP			"kullanim: /CallGM [Talep ayrintisi] - GM ile destek talebi olusturur. - Devre disi"
 	#define STRCMD_CS_COMMAND_VIEWCALLGM_0			"/ViewCallGM"
 	#define STRCMD_CS_COMMAND_VIEWCALLGM_1			"/ViewCallGM"   // See helper
 	#define STRCMD_CS_COMMAND_VIEWCALLGM_2			"/ViewCallGM"   // See help
-	#define STRCMD_CS_COMMAND_VIEWCALLGM_HELP		"format: /ViewCallGM   [|Number(1~10)] - Check number of consultation request list to GM - Disabled "
+	#define STRCMD_CS_COMMAND_VIEWCALLGM_HELP		"kullanim: /ViewCallGM [|Numara(1~10)] - GM destek talebi listesini kontrol eder - Devre disi"
 	#define STRCMD_CS_COMMAND_BRINGCALLGM_0			"/BringCallGM"
 	#define STRCMD_CS_COMMAND_BRINGCALLGM_1			"/BringCallGM"   // Bring helper
 	#define STRCMD_CS_COMMAND_BRINGCALLGM_2			"/BringCallGM"   // Bring help
-	#define STRCMD_CS_COMMAND_BRINGCALLGM_HELP		"format: /BringCallGM [|Number(1~10)] - Bring the requested number of consultation request list to GM (Deleted from the server)"
+	#define STRCMD_CS_COMMAND_BRINGCALLGM_HELP		"kullanim: /BringCallGM [|Numara(1~10)] - Belirtilen destek talebini GM'e getirir (sunucudan silinir)"
 
 	// 2006-07-18 by cmkwon
 	#define STRCMD_CS_COMMAND_COMEONINFL_0			"/ComeOnInfl"
 	#define STRCMD_CS_COMMAND_COMEONINFL_1			"/ComeOnNation"
 	#define STRCMD_CS_COMMAND_COMEONINFL_2			"/ComeOnNation"
-// 2008-09-09 by cmkwon, /ºº∑¬º“»Ø ∏Ì∑…æÓ ¿Œ¿⁄ ∏ÆΩ∫∆Æø° ±‚æÓ≈∏¿‘ √ﬂ∞° - commented
+// 2008-09-09 by cmkwon, /ÏÑ∏Î†•ÏÜåÌôò Î™ÖÎ†πÏñ¥ Ïù∏Ïûê Î¶¨Ïä§Ìä∏Ïóê Í∏∞Ïñ¥ÌÉÄÏûÖ Ï∂îÍ∞Ä - commented
 //	#define STRCMD_CS_COMMAND_COMEONINFL_HELP		"format: /ComeOnNation [1(Normal)|2(BCU)|4(ANI)|3|5|6|7] [MAX_USER] [0|Min-level] [0|Max-level] [message to users] - Summons all specified level users in nation with a message."
 
 	// 2006-07-24 by cmkwon
 	#define STRCMD_CS_COMMAND_ITEMINMAP_0			"/InsertItemInMap"
 	#define STRCMD_CS_COMMAND_ITEMINMAP_1			"/SendItem"
 	#define STRCMD_CS_COMMAND_ITEMINMAP_2			"/SendItem"
-	#define STRCMD_CS_COMMAND_ITEMINMAP_HELP		"format: /SendItem [1(Normal)|2(BCU)|4(ANI)|3|5|6|7] [Item Number] [# of items] - Gives specific item to all nation users at the current map."
+	#define STRCMD_CS_COMMAND_ITEMINMAP_HELP		"kullanim: /SendItem [1(Normal)|2(BCU)|4(ANI)|3|5|6|7] [Esya Numarasi] [esya sayisi] - Mevcut haritadaki secili ulusun tum kullanicilarina esya verir."
 
 	// 2006-07-28 by cmkwon
 	#define STRCMD_CS_ITEMKIND_COLOR_ITEM			"Color Item"
 
-	// 2006-08-03 by cmkwon, ≥™∂Û∫∞ ≥Ø¬• «•«ˆ πÊΩƒ¿Ã ¥Ÿ∏£¥Ÿ
-	// «—±π(Korea):		YYYY-MM-DD HH:MM:SS
-	// πÃ±π(English):	MM-DD-YYYY HH:MM:SS
-	// ∫£∆Æ≥≤(Vietnam):	DD-MM-YYYY HH:MM:SS
+	// 2006-08-03 by cmkwon, ÎÇòÎùºÎ≥Ñ ÎÇ†Ïßú ÌëúÌòÑ Î∞©ÏãùÏù¥ Îã§Î•¥Îã§
+	// ÌïúÍµ≠(Korea):		YYYY-MM-DD HH:MM:SS
+	// ÎØ∏Íµ≠(English):	MM-DD-YYYY HH:MM:SS
+	// Î≤†Ìä∏ÎÇ®(Vietnam):	DD-MM-YYYY HH:MM:SS
 	#define NATIONAL_ATUM_DATE_TIME_STRING_FORMAT(Y, M, D, h, m, s)				"%02d-%02d-%04d %02d:%02d:%02d", M, D, Y, h, m, s
 	#define NATIONAL_ATUM_DATE_TIME_STRING_FORMAT_EXCLUDE_SECOND(Y, M, D, h, m)	"%02d-%02d-%04d %02d:%02d", M, D, Y, h, m
 
-	// 2006-08-08 by dhjin, ∑π∫ß∫–∆˜
+	// 2006-08-08 by dhjin, Î†àÎ≤®Î∂ÑÌè¨
 	#define STRCMD_CS_COMMAND_DISTRIBUTIONLEVEL_0		"/LevelDistribution"		// 2006-08-08 by dhjin
 	#define STRCMD_CS_COMMAND_DISTRIBUTIONLEVEL_1		"/LevelDist"				// 2006-08-08 by dhjin
-	#define STRCMD_CS_COMMAND_DISTRIBUTIONLEVEL_HELP	"format: /LevelDistribution - It shows concurrent users level distribution."	// 2006-08-08 by dhjin
+	#define STRCMD_CS_COMMAND_DISTRIBUTIONLEVEL_HELP	"kullanim: /LevelDistribution - Cevrimici kullanicilarin seviye dagilimini gosterir."	// 2006-08-08 by dhjin
 
 	// 2006-08-10 by cmkwon
 	#define STRCMD_CS_ITEMKIND_RANDOMBOX				"Chance Item"
@@ -538,66 +538,66 @@
 
 	///////////////////////////////////////////////////////////////////////////////
 	// 2006-08-24 by cmkwon
-	// ≈¨∂Û¿Ãæ∆Æø°º≠∏∏ ªÁøÎ«œ¥¬ ∏Ì∑…æÓ(Just command for client)
+	// ÌÅ¥ÎùºÏù¥Ïñ∏Ìä∏ÏóêÏÑúÎßå ÏÇ¨Ïö©ÌïòÎäî Î™ÖÎ†πÏñ¥(Just command for client)
 	#define STRCMD_C_COMMAND_CALL						"/call"
-	#define STRCMD_C_COMMAND_CALL_HELP					"format: /call [CharacterName] - Request 1:1 voice chatting to specific character."
+	#define STRCMD_C_COMMAND_CALL_HELP					"kullanim: /call [KarakterAdi] - Belirtilen karaktere 1:1 sesli sohbet istegi gonderir."
 	#define STRCMD_C_COMMAND_PARTYCALL					"/formcall"
-	#define STRCMD_C_COMMAND_PARTYCALL_HELP				"format: /formcall - Start voice chatting between formation members. Only usable by the formation leader."
+	#define STRCMD_C_COMMAND_PARTYCALL_HELP				"kullanim: /formcall - Formasyon uyeleri arasinda sesli sohbet baslatir. Yalnizca formasyon lideri kullanabilir."
 	#define STRCMD_C_COMMAND_PARTYCALLEND				"/formcallend"
-	#define STRCMD_C_COMMAND_PARTYCALLEND_HELP			"foramt: /formcallend - End voice chatting between formation members. Only usable by the formation leader."
+	#define STRCMD_C_COMMAND_PARTYCALLEND_HELP			"kullanim: /formcallend - Formasyon uyeleri arasindaki sesli sohbeti bitirir. Yalnizca formasyon lideri kullanabilir."
 	#define STRCMD_C_COMMAND_GUILDCALL					"/brigcall"
-	#define STRCMD_C_COMMAND_GUILDCALL_HELP				"format: /brigcall - Start voice chatting between brigade members. Only usable by the brigade leader."
+	#define STRCMD_C_COMMAND_GUILDCALL_HELP				"kullanim: /brigcall - Tugay uyeleri arasinda sesli sohbet baslatir. Yalnizca tugay lideri kullanabilir."
 	#define STRCMD_C_COMMAND_GUILDCALLEND				"/brigcallend"
-	#define STRCMD_C_COMMAND_GUILDCALLEND_HELP			"format: /brigcallend - End voice chatting between brigade members. only usable by the brigade leader."
+	#define STRCMD_C_COMMAND_GUILDCALLEND_HELP			"kullanim: /brigcallend - Tugay uyeleri arasindaki sesli sohbeti bitirir. Yalnizca tugay lideri kullanabilir."
 	#define STRCMD_C_COMMAND_CALLEND					"/endcall"
-	#define STRCMD_C_COMMAND_CALLEND_HELP				"format: /endcall - Ends brigade, formation, or normal voice chatting."
+	#define STRCMD_C_COMMAND_CALLEND_HELP				"kullanim: /endcall - Tugay, formasyon veya normal sesli sohbeti bitirir."
 	#define STRCMD_C_COMMAND_COMBAT						"/confront"
 	#define STRCMD_C_COMMAND_BATTLE						"/fight"
-	#define STRCMD_C_COMMAND_BATTLE_HELP				"format: /fight [CharacterName] - Request PvP to specific character."
+	#define STRCMD_C_COMMAND_BATTLE_HELP				"kullanim: /fight [KarakterAdi] - Belirtilen karaktere PvP istegi gonderir."
 	#define STRCMD_C_COMMAND_SURRENDER					"/surrender"
-	#define STRCMD_C_COMMAND_SURRENDER_HELP				"format: /surrender [CharacterName] -  Surrenders a PvP battle with the specified character."
+	#define STRCMD_C_COMMAND_SURRENDER_HELP				"kullanim: /surrender [KarakterAdi] - Belirtilen karakterle PvP savasinda teslim olur."
 	#define STRCMD_C_COMMAND_PARTYBATTLE				"/formfight"
-	#define STRCMD_C_COMMAND_PARTYBATTLE_HELP			"format: /formfight [CharacterName] - Request formation PvP to specific character(formation leader). Only usable by the formation leader."
+	#define STRCMD_C_COMMAND_PARTYBATTLE_HELP			"kullanim: /formfight [KarakterAdi] - Belirtilen formasyon liderine formasyon PvP istegi gonderir. Yalnizca formasyon lideri kullanabilir."
 	#define STRCMD_C_COMMAND_PARTYCOMBAT				"/formconfront"
 	#define STRCMD_C_COMMAND_PARTYWAR					"/formbattle"
 	#define STRCMD_C_COMMAND_GUILDBATTLE				"/brigfight"
 	#define STRCMD_C_COMMAND_GUILDCOMBAT				"/brigconfront"
-	#define STRCMD_C_COMMAND_GUILDCOMBAT_HELP			"format: /brigconfront [CharacterName] -  Request brigade PvP to specific character(brigade leader). Only usable by the brigade leader."
+	#define STRCMD_C_COMMAND_GUILDCOMBAT_HELP			"kullanim: /brigconfront [KarakterAdi] - Belirtilen tugay liderine tugay PvP istegi gonderir. Yalnizca tugay lideri kullanabilir."
 	#define STRCMD_C_COMMAND_GUILDWAR					"/brigbattle"
 	#define STRCMD_C_COMMAND_GUILDSURRENDER				"/brigsurrender"
-	#define STRCMD_C_COMMAND_GUILDSURRENDER_HELP		"format: /brigsurrender -  Surrender a brigade PvP battle. Only usable by the brigade leader."
+	#define STRCMD_C_COMMAND_GUILDSURRENDER_HELP		"kullanim: /brigsurrender - Tugay PvP savasinda teslim olur. Yalnizca tugay lideri kullanabilir."
 	#define STRCMD_C_COMMAND_NAME						"/name"
-	#define STRCMD_C_COMMAND_NAME_HELP					"format: /name [CharacterName] [class(2 ~ 11)] - Change appointment class of specific character. Only usable by the brigade leader. "
+	#define STRCMD_C_COMMAND_NAME_HELP					"kullanim: /name [KarakterAdi] [sinif(2 ~ 11)] - Belirtilen karakterin gorev/rutbe sinifini degistirir. Yalnizca tugay lideri kullanabilir."
 	#define STRCMD_C_COMMAND_WARP						"/warp"
 	#define STRCMD_C_COMMAND_CANCELSKILL				"/cancelskill"
 	#define STRCMD_C_COMMAND_INITCHAT					"/initchat"
-	#define STRCMD_C_COMMAND_INITCHAT_HELP				"format: /initchat -  Resets chatting window"
+	#define STRCMD_C_COMMAND_INITCHAT_HELP				"kullanim: /initchat - Sohbet penceresini sifirlar"
 	#define STRCMD_C_COMMAND_REFUSEBATTLE				"/refusefight"
-	#define STRCMD_C_COMMAND_REFUSEBATTLE_HELP			"format: /refusefight - On/Off - Toggles PvP denial setting"
+	#define STRCMD_C_COMMAND_REFUSEBATTLE_HELP			"kullanim: /refusefight - On/Off - PvP reddetme ayarini degistirir"
 	#define STRCMD_C_COMMAND_REFUSETRADE				"/refusetrade"
-	#define STRCMD_C_COMMAND_REFUSETRADE_HELP			"format: /refusetrade - On/Off - Toggles trading denial setting"
+	#define STRCMD_C_COMMAND_REFUSETRADE_HELP			"kullanim: /refusetrade - On/Off - Ticaret reddetme ayarini degistirir"
 	#define STRMSG_C_050810_0001						"/CloseWindow"
-	#define STRMSG_C_050810_0001_HELP					"format: /Closewindow - Prevents message popups. Popup messages are automatically cancelled."
+	#define STRMSG_C_050810_0001_HELP					"kullanim: /Closewindow - Mesaj pencerelerini engeller. Acilir mesajlar otomatik olarak iptal edilir."
 	#define STRMSG_C_050810_0002						"/OpenWindow"
-	#define STRMSG_C_050810_0002_HELP					"format: /Openwindow -  Allows message popups."
+	#define STRMSG_C_050810_0002_HELP					"kullanim: /Openwindow - Mesaj pencerelerine izin verir."
 
 // 2006-09-29 by cmkwon
 #define STRCMD_CS_ITEMKIND_SKILL_SUPPORT_ITEM			"Support Skill Item"
 
-// 2010-06-15 by shcho&hslee ∆ÍΩ√Ω∫≈€ - ∆Í æ∆¿Ã≈€.
+// 2010-06-15 by shcho&hslee Ìé´ÏãúÏä§ÌÖú - Ìé´ ÏïÑÏù¥ÌÖú.
 #define STRCMD_CS_ITEMKIND_PET_ITEM						"Partner Item"
 
-// 2006-11-17 by cmkwon, ∫£∆Æ≥≤ «œ∑Á ∞‘¿” Ω√∞£ ∞¸∑√
+// 2006-11-17 by cmkwon, Î≤†Ìä∏ÎÇ® ÌïòÎ£® Í≤åÏûÑ ÏãúÍ∞Ñ Í¥ÄÎ†®
 #define STRCMD_CS_COMMAND_TIMELIMITSYSTEM_0			"/TimeLimitSystem"
 #define STRCMD_CS_COMMAND_TIMELIMITSYSTEM_1			"/TimeLimitSystem"
 #define STRCMD_CS_COMMAND_TIMELIMITSYSTEM_P2ON		"on"
 #define STRCMD_CS_COMMAND_TIMELIMITSYSTEM_P2OFF		"off"
-#define STRCMD_CS_COMMAND_TIMELIMITSYSTEM_HELP		"format: /TimeLimitSystem [on|off] - This command is to turn the time limit system turn on/off."
+#define STRCMD_CS_COMMAND_TIMELIMITSYSTEM_HELP		"kullanim: /TimeLimitSystem [on|off] - Zaman siniri sistemini acip kapatir."
 #define STRCMD_CS_COMMAND_PLAYTIME_0				"/PlayTime"
 #define STRCMD_CS_COMMAND_PLAYTIME_1				"/PlayTime"
-#define STRCMD_CS_COMMAND_PLAYTIME_HELP				"format: /PlayTime - This command shows todays played time."
+#define STRCMD_CS_COMMAND_PLAYTIME_HELP				"kullanim: /PlayTime - Bugunku oynama suresini gosterir."
 
-// 2007-10-06 by cmkwon, ∫Œ¡ˆµµ¿⁄ 2∏Ì¿« »£ƒ™¿ª ¥Ÿ∏£∞‘ º≥¡§ - æ∆∑°ø° ºº∑¬∫∞∑Œ ¥Ÿ∏£∞‘ ¡§¿««‘
+// 2007-10-06 by cmkwon, Î∂ÄÏßÄÎèÑÏûê 2Î™ÖÏùò Ìò∏Ïπ≠ÏùÑ Îã§Î•¥Í≤å ÏÑ§Ï†ï - ÏïÑÎûòÏóê ÏÑ∏Î†•Î≥ÑÎ°ú Îã§Î•¥Í≤å Ï†ïÏùòÌï®
 //// 2006-12-13 by cmkwon
 //#define STRCMD_CS_COMMON_INFLUENCE_LEADER			"Leader"
 //#define STRCMD_CS_COMMON_INFLUENCE_SUBLEADER		"Subleader"
@@ -606,15 +606,15 @@
 #define STRCMD_CS_COMMAND_BONUSSTAT_POINT_0			"/BonusStatPoint"
 #define STRCMD_CS_COMMAND_BONUSSTAT_POINT_1			"/BonusStatPoint"
 #define STRCMD_CS_COMMAND_BONUSSTAT_POINT_2			"/BonusStatPoint"
-#define STRCMD_CS_COMMAND_BONUSSTAT_POINT_HELP		"format: /BonusStatPoint [BonusStatPoint Counts] [|character name] - BonusStatPoint update to DB"
+#define STRCMD_CS_COMMAND_BONUSSTAT_POINT_HELP		"kullanim: /BonusStatPoint [BonusStatPoint Sayisi] [|karakter adi] - BonusStatPoint degerini DB'de gunceller"
 
 // 2007-01-25 by dhjin
 #define STRCMD_CS_COMMAND_PCBANGUSERCOUNT_0			"/PCBang"
 #define STRCMD_CS_COMMAND_PCBANGUSERCOUNT_1			"/PCBang"
-#define STRCMD_CS_COMMAND_PCBANGUSERCOUNT_HELP		"format: /PCBang - PCBang user counts"
+#define STRCMD_CS_COMMAND_PCBANGUSERCOUNT_HELP		"kullanim: /PCBang - PCBang kullanici sayisini gosterir"
 
-// 2007-10-06 by dhjin, ∫Œ¡ˆµµ¿⁄ º±√‚ πÊπ˝ ∫Ø∞Ê¿∏∑Œ ºˆ¡§
-// 2007-02-13 by dhjin, ∫Œ¡ˆµµ¿⁄
+// 2007-10-06 by dhjin, Î∂ÄÏßÄÎèÑÏûê ÏÑ†Ï∂ú Î∞©Î≤ï Î≥ÄÍ≤ΩÏúºÎ°ú ÏàòÏ†ï
+// 2007-02-13 by dhjin, Î∂ÄÏßÄÎèÑÏûê
 //#define STRCMD_CS_COMMAND_SUBLEADER_0				"/Subleader"
 //#define STRCMD_CS_COMMAND_SUBLEADER_1				"/Subleader"
 //#define STRCMD_CS_COMMAND_SUBLEADER_HELP			"format: /Subleader [CharacterName] - Setting subleader"
@@ -625,10 +625,10 @@
 //#define STRCMD_CS_COMMAND_SUBLEADER_RESULT_10			"%s does not exist."
 //#define STRCMD_CS_COMMAND_SUBLEADER_RESULT_20			"%s is already a subleader."
 
-// 2007-02-23 by dhjin, ∞≈¡°¡§∫∏
+// 2007-02-23 by dhjin, Í±∞Ï†êÏ†ïÎ≥¥
 #define STRCMD_CS_COMMAND_STRATEGYPOINTINFO_0			"/StrategyPointInfo"
 #define STRCMD_CS_COMMAND_STRATEGYPOINTINFO_1			"/StrategyPointInfo"
-#define STRCMD_CS_COMMAND_STRATEGYPOINTINFO_HELP		"format: /StrategyPointInfo - This shows the status of current progress on strategypoint."
+#define STRCMD_CS_COMMAND_STRATEGYPOINTINFO_HELP		"kullanim: /StrategyPointInfo - Mevcut Stratejik Nokta ilerleme durumunu gosterir."
 #define STRCMD_CS_COMMAND_STRATEGYPOINTINFO_EMPTY		"There is no strategypoint war in progress."
 #define STRCMD_CS_COMMAND_STRATEGYPOINTINFO_EXIST		"Strategypoint war is in progress."
 #define STRCMD_CS_COMMAND_STRATEGYPOINTINFO_ZONE		"Progress location"
@@ -645,22 +645,22 @@
 #define STRCMD_CS_UNITKIND_IGEAR_ALL				"I-GEAR All"
 #define STRCMD_CS_UNITKIND_GEAR_ALL					"GEAR All"
 
-// 2007-03-30 by dhjin, ø…¿˙πˆ ∏µÂ ¿Ø¿˙ µÓ∑œ
+// 2007-03-30 by dhjin, ÏòµÏ†ÄÎ≤Ñ Î™®Îìú Ïú†Ï†Ä Îì±Î°ù
 #define STRCMD_CS_COMMAND_OBSERVER_REG_START_0  		"/Observerstart"  // 2007-03-30 by dhjin, Client only
 #define STRCMD_CS_COMMAND_OBSERVER_REG_START_1  		"/Observerstart"   // 2007-03-30 by dhjin, Client only
 #define STRCMD_CS_COMMAND_OBSERVER_REG_END_0  			"/Observerend"   // 2007-03-30 by dhjin, Client only 
 #define STRCMD_CS_COMMAND_OBSERVER_REG_END_1  			"/Observerend"   // 2007-03-30 by dhjin, Client only
 #define STRCMD_CS_COMMAND_OBSERVER_REG_0   			"/Observer"
 #define STRCMD_CS_COMMAND_OBSERVER_REG_1   			"/Observer"
-#define STRCMD_CS_COMMAND_OBSERVER_REG_HELP   			"format: /Observer [n] [CharacterName] - CharacterName  save user at n number"
+#define STRCMD_CS_COMMAND_OBSERVER_REG_HELP   			"kullanim: /Observer [n] [KarakterAdi] - Karakteri n numarali gozlemci listesine kaydeder"
 
-// 2007-04-10 by cmkwon, Jamboree server ±∫ ∞¸∑√
+// 2007-04-10 by cmkwon, Jamboree server Íµ∞ Í¥ÄÎ†®
 #define STRCMD_CS_COMMAND_JAMBOREE_INIT_0   			"/InitJamboree"   
 #define STRCMD_CS_COMMAND_JAMBOREE_INIT_1   			"/InitJamboree"  
-#define STRCMD_CS_COMMAND_JAMBOREE_INIT_HELP  			"format: /InitJamboree [validation number] - Initialize jamboree server DB(atum2_db_20)."
+#define STRCMD_CS_COMMAND_JAMBOREE_INIT_HELP  			"kullanim: /InitJamboree [dogrulama numarasi] - Jamboree sunucu DB'sini (atum2_db_20) baslatir."
 #define STRCMD_CS_COMMAND_JAMBOREE_ENTRANTS_0  			"/EntrantJamboree"
 #define STRCMD_CS_COMMAND_JAMBOREE_ENTRANTS_1  			"/EntrantJamboree"  
-#define STRCMD_CS_COMMAND_JAMBOREE_ENTRANTS_HELP 		"format: /EntrantJamboree [CharacterName] - Designated character will be duplicated to jamboree server DB(atum2_db_20)."
+#define STRCMD_CS_COMMAND_JAMBOREE_ENTRANTS_HELP 		"kullanim: /EntrantJamboree [KarakterAdi] - Belirtilen karakteri jamboree sunucu DB'sine (atum2_db_20) kopyalar."
 #define STRCMD_CS_JAMBOREE_PREADD_CHARACTER_NAME_1  "1_"
 #define STRCMD_CS_JAMBOREE_PREADD_CHARACTER_NAME_2  "2_"
 #define STRCMD_CS_JAMBOREE_PREADD_CHARACTER_NAME_3  "3_"
@@ -681,7 +681,7 @@
 #define STRCMD_CS_JAMBOREE_PREADD_CHARACTER_NAME_18  "18_"
 #define STRCMD_CS_JAMBOREE_PREADD_CHARACTER_NAME_19  "19_"
 
-// 2007-04-17 by dhjin, ∑π∫ß ∑©≈©ø° ∞¸«— µÓ±ﬁ
+// 2007-04-17 by dhjin, Î†àÎ≤® Îû≠ÌÅ¨Ïóê Í¥ÄÌïú Îì±Í∏â
 #define STRCMD_CS_CHARACTER_12_LEVEL_RANK  "Trainee"
 #define STRCMD_CS_CHARACTER_22_LEVEL_RANK  "Junior"
 #define STRCMD_CS_CHARACTER_32_LEVEL_RANK  "Airman"
@@ -696,59 +696,59 @@
 #define STRMSG_VERSION_INFO_FILE_NAME				"VersionInfo.ver"
 #define STRMSG_REG_KEY_NAME_LAUNCHER_VERSION		"LauncherVersion"
 #define STRMSG_REG_KEY_NAME_CLIENT_VERSION			"ClientVersion"
-// 2007-12-27 by cmkwon, ¿©µµøÏ¡Ó ∏µÂ ±‚¥… √ﬂ∞° -
+// 2007-12-27 by cmkwon, ÏúàÎèÑÏö∞Ï¶à Î™®Îìú Í∏∞Îä• Ï∂îÍ∞Ä -
 //#define STRMSG_REG_KEY_NAME_WINDOWDEGREE			"WindowDegree"
 #define STRMSG_REG_KEY_NAME_ACCOUNT_NAME			"AccountName"
 #define STRMSG_REG_KEY_NAME_SERVER_GROUP_NAME		"ServerGroupName"
 
-// 2007-05-23 by dhjin, ARENA ∆¿ √‚∑¬ ∞¸∑√ Ω∫∆Æ∏µ
-#define STRMSG_CS_STRING_ARENA_NOT_SEARCH   "Cannot find arena team."
+// 2007-05-23 by dhjin, ARENA ÌåÄ Ï∂úÎ†• Í¥ÄÎ†® Ïä§Ìä∏ÎßÅ
+#define STRMSG_CS_STRING_ARENA_NOT_SEARCH   "Arena takimi bulunamadi."
 #define STRMSG_CS_COMMAND_ARENA_TEAM_INFO_0   "/ARENA"
 #define STRMSG_CS_COMMAND_ARENA_TEAM_INFO_1   "/ARENA"
-#define STRMSG_CS_COMMAND_ARENA_TEAM_INFO_HELP  "format: /arena [2(BCU)|4(ANI)]- Shows the present progress of arena."
+#define STRMSG_CS_COMMAND_ARENA_TEAM_INFO_HELP  "kullanim: /arena [2(BCU)|4(ANI)] - Arena'nin mevcut ilerleme durumunu gosterir."
 
-// 2010. 06. 04 by hsLee ARENA ¿Œ««¥œ∆º ∞¸∑√. - 
-// 2010. 06. 04 by hsLee ¿Œ∆º««¥œ « µÂ 2¬˜ ≥≠¿Ãµµ ¡∂¿˝. (GM ∏Ì∑…æÓ √ﬂ∞°. /nextscene(¥Ÿ¿Ω Ω√≥◊∏∂ æ¿ »£√‚.) )
+// 2010. 06. 04 by hsLee ARENA Ïù∏ÌîºÎãàÌã∞ Í¥ÄÎ†®. - 
+// 2010. 06. 04 by hsLee Ïù∏Ìã∞ÌîºÎãà ÌïÑÎìú 2Ï∞® ÎÇúÏù¥ÎèÑ Ï°∞Ï†à. (GM Î™ÖÎ†πÏñ¥ Ï∂îÍ∞Ä. /nextscene(Îã§Ïùå ÏãúÎÑ§Îßà Ïî¨ Ìò∏Ï∂ú.) )
 #define STRCMD_CS_COMMAND_INFINITY_NEXT_SCENE		"/nextscene"
-// End 2010. 06. 04 by hsLee ¿Œ∆º««¥œ « µÂ 2¬˜ ≥≠¿Ãµµ ¡∂¿˝. (GM ∏Ì∑…æÓ √ﬂ∞°. /nextscene(¥Ÿ¿Ω Ω√≥◊∏∂ æ¿ »£√‚.) )
+// End 2010. 06. 04 by hsLee Ïù∏Ìã∞ÌîºÎãà ÌïÑÎìú 2Ï∞® ÎÇúÏù¥ÎèÑ Ï°∞Ï†à. (GM Î™ÖÎ†πÏñ¥ Ï∂îÍ∞Ä. /nextscene(Îã§Ïùå ÏãúÎÑ§Îßà Ïî¨ Ìò∏Ï∂ú.) )
 
-// 2007-06-15 by dhjin, ∞¸¿¸
+// 2007-06-15 by dhjin, Í¥ÄÏ†Ñ
 #define STRMSG_CS_COMMAND_WATCH_START_INFO_0		"/WatchStart"
 #define STRMSG_CS_COMMAND_WATCH_START_INFO_1		"/WatchStart"
-#define STRMSG_CS_COMMAND_WATCH_START_INFO_HELP	"format:/WatchStart-Start the watch."
+#define STRMSG_CS_COMMAND_WATCH_START_INFO_HELP	"kullanim: /WatchStart - Izlemeyi baslatir."
 #define STRMSG_CS_COMMAND_WATCH_END_INFO_0			"/WatchEnd"
 #define STRMSG_CS_COMMAND_WATCH_END_INFO_1			"/WatchEnd"
-#define STRMSG_CS_COMMAND_WATCH_END_INFO_HELP		"format: /WatchEnd ? Ends the watch."
+#define STRMSG_CS_COMMAND_WATCH_END_INFO_HELP		"kullanim: /WatchEnd - Izlemeyi bitirir."
 
-// 2007-06-22 by dhjin, WarPoint √ﬂ∞°
+// 2007-06-22 by dhjin, WarPoint Ï∂îÍ∞Ä
 #define STRMSG_CS_COMMAND_WARPOINT_0    "/WarPoint"
 #define STRMSG_CS_COMMAND_WARPOINT_1    "/WarPoint"
-#define STRMSG_CS_COMMAND_WARPOINT_HELP    "format: /WarPoint [Number 1~1000000] [|Username] ? Adds war points."
+#define STRMSG_CS_COMMAND_WARPOINT_HELP    "kullanim: /WarPoint [Sayi 1~1000000] [|KullaniciAdi] - Savas puani ekler."
 
-// 2007-06-26 by dhjin, øˆ∆˜¿Œ∆Æ ¿Ã∫•∆Æ ∞¸∑√ √ﬂ∞°
+// 2007-06-26 by dhjin, ÏõåÌè¨Ïù∏Ìä∏ Ïù¥Î≤§Ìä∏ Í¥ÄÎ†® Ï∂îÍ∞Ä
 #define STRCMD_CS_COMMAND_GAMEEVENT_P1WARPOINT		"WarPoint"
 
 // 2007-07-11 by cmkwon, Arena block system materialization - Add command(/forbidAreana, /releaseArena)
 #define STRCMD_CS_COMMAND_ARENAFORBID_0    "/forbidArena "
 #define STRCMD_CS_COMMAND_ARENAFORBID_1    "/forbidArena"
 #define STRCMD_CS_COMMAND_ARENAFORBID_2    "/forbidArena"
-#define STRCMD_CS_COMMAND_ARENAFORBID_HELP   "format: /forbidArena [character name] [|Time(minutes)] - Forbid entering Arena"
+#define STRCMD_CS_COMMAND_ARENAFORBID_HELP   "kullanim: /forbidArena [karakter adi] [|Sure(dakika)] - Arena'ya girisi yasaklar"
 #define STRCMD_CS_COMMAND_ARENAFORBIDRelease_0  "/releaseArena "
 #define STRCMD_CS_COMMAND_ARENAFORBIDRelease_1  "/releaseArena"
 #define STRCMD_CS_COMMAND_ARENAFORBIDRelease_2  "/releaseArena"
-#define STRCMD_CS_COMMAND_ARENAFORBIDRelease_HELP "format: /releaseArena [character name] - Release prohibition of Arena"
+#define STRCMD_CS_COMMAND_ARENAFORBIDRelease_HELP "kullanim: /releaseArena [karakter adi] - Arena yasagini kaldirir"
 
 ///////////////////////////////////////////////////////////////////////////////
 // 2007-08-02 by cmkwon, Brigade mark screening system materialization - added string
-#define STRMSG_070802_0001    "Brigade mark has been successfully registered."
-#define STRMSG_070802_0002    "Registration will be completed after screening process."
-#define STRMSG_070802_0003    "Will you accept %d selected brigade mark?"
-#define STRMSG_070802_0004    "No brigade mark status"
-#define STRMSG_070802_0005    "Brigade mark in waiting status"
-#define STRMSG_070802_0006    "Brigade mark in normal status"
-#define STRMSG_070802_0007    "Brigade mark error status"
+#define STRMSG_070802_0001    "Tugay amblemi basariyla kaydedildi."
+#define STRMSG_070802_0002    "Kayit inceleme islemi tamamlandiktan sonra etkinlesecek."
+#define STRMSG_070802_0003    "Secilen %d numarali tugay amblemini kabul ediyor musunuz?"
+#define STRMSG_070802_0004    "Tugay amblemi durumu yok"
+#define STRMSG_070802_0005    "Tugay amblemi bekleme durumunda"
+#define STRMSG_070802_0006    "Tugay amblemi normal durumda"
+#define STRMSG_070802_0007    "Tugay amblemi hata durumunda"
 
-// 2007-08-24 by cmkwon, Ω∫««ƒøæ∆¿Ã≈€ ªÁøÎ ∞°¥…/±›¡ˆ º≥¡§ ±‚¥… √ﬂ∞° - ∏Ì∑…æÓ √ﬂ∞°
+// 2007-08-24 by cmkwon, Ïä§ÌîºÏª§ÏïÑÏù¥ÌÖú ÏÇ¨Ïö© Í∞ÄÎä•/Í∏àÏßÄ ÏÑ§Ï†ï Í∏∞Îä• Ï∂îÍ∞Ä - Î™ÖÎ†πÏñ¥ Ï∂îÍ∞Ä
 #define STRCMD_CS_COMMAND_UsableSpeakerItem_0			"/UseSpeaker"
 #define STRCMD_CS_COMMAND_UsableSpeakerItem_1			"/UseSpeaker"
 #define STRCMD_CS_COMMAND_UsableSpeakerItem_2			"/UseSpeaker"
@@ -764,7 +764,7 @@
 #define STRCMD_CS_COMMAND_PrepareShutdown_P1Release		"Release"
 #define STRCMD_CS_COMMAND_PrepareShutdown_HELP			"format: /[PrepareShutdown|PrepareShutdown|PrepareShutdown] [Start|Release] - Prepare server shut down, disconnect all users."
 
-// 2007-08-30 by cmkwon, »∏¿«∑Î Ω√Ω∫≈€ ±∏«ˆ - ∏Ì∑…æÓ √ﬂ∞°
+// 2007-08-30 by cmkwon, ÌöåÏùòÎ£∏ ÏãúÏä§ÌÖú Íµ¨ÌòÑ - Î™ÖÎ†πÏñ¥ Ï∂îÍ∞Ä
 #define STRCMD_CS_COMMAND_EntrancePermission_0                                     "/EntrancePermission"
 #define STRCMD_CS_COMMAND_EntrancePermission_1                                     "/EntrancePermission"
 #define STRCMD_CS_COMMAND_EntrancePermission_2                                     "/EntrancePermission"
@@ -830,14 +830,14 @@
 #define STRCMD_CS_COMMAND_ENDCALLGM_2				"/EndHelp"
 #define STRCMD_CS_COMMAND_ENDCALLGM_HELP			"format: /EndHelper - End appeal system"
 
-// 2007-12-27 by cmkwon, ¿©µµøÏ¡Ó ∏µÂ ±‚¥… √ﬂ∞° - STRMSG_REG_KEY_NAME_WINDOWDEGREE_NEW √ﬂ∞°
+// 2007-12-27 by cmkwon, ÏúàÎèÑÏö∞Ï¶à Î™®Îìú Í∏∞Îä• Ï∂îÍ∞Ä - STRMSG_REG_KEY_NAME_WINDOWDEGREE_NEW Ï∂îÍ∞Ä
 #define STRMSG_REG_KEY_NAME_WINDOWDEGREE_NEW		"WindowDegreeNew"
 
-// 2008-01-03 by cmkwon, ¿©µµøÏ∏µÂ ªÛ≈¬ ¿˙¿Â«œ±‚ - 
+// 2008-01-03 by cmkwon, ÏúàÎèÑÏö∞Î™®Îìú ÏÉÅÌÉú Ï†ÄÏû•ÌïòÍ∏∞ - 
 #define STRMSG_REG_KEY_NAME_WINDOWMODE				"WindowMode"
 #define STRMSG_REG_KEY_NAME_64BIT				"Is64Bit"
 
-// 2008-01-31 by cmkwon, ∞Ë¡§ ∫Ì∑∞/«ÿ¡¶ ∏Ì∑…æÓ∑Œ ∞°¥…«— Ω√Ω∫≈€ ±∏«ˆ - ∏Ì∑…æÓ √ﬂ∞°
+// 2008-01-31 by cmkwon, Í≥ÑÏ†ï Î∏îÎü≠/Ìï¥Ï†ú Î™ÖÎ†πÏñ¥Î°ú Í∞ÄÎä•Ìïú ÏãúÏä§ÌÖú Íµ¨ÌòÑ - Î™ÖÎ†πÏñ¥ Ï∂îÍ∞Ä
 #define STRCMD_CS_COMMAND_NEWACCOUNTBLOCK_0					"/Block"
 #define STRCMD_CS_COMMAND_NEWACCOUNTBLOCK_1					"/Block"
 #define STRCMD_CS_COMMAND_NEWACCOUNTBLOCK_2					"/Ban"
@@ -847,13 +847,13 @@
 #define STRCMD_CS_COMMAND_NEWACCOUNTUNBLOCK_2				"/Unban"
 #define STRCMD_CS_COMMAND_NEWACCOUNTUNBLOCK_HELP			"format: /Unblock [AccountName]"
 
-// 2008-02-20 by cmkwon, ∏Ì∑…æÓ√ﬂ∞°(¡¢º”¡ﬂ¿Œ¿Ø¿˙∏µŒø°∞‘æ∆¿Ã≈€¡ˆ±ﬁ- 
+// 2008-02-20 by cmkwon, Î™ÖÎ†πÏñ¥Ï∂îÍ∞Ä(Ï†ëÏÜçÏ§ëÏù∏Ïú†Ï†ÄÎ™®ÎëêÏóêÍ≤åÏïÑÏù¥ÌÖúÏßÄÍ∏â- 
 #define STRCMD_CS_COMMAND_ITEMALLUSER_0                                    "/ItemAllUser"
 #define STRCMD_CS_COMMAND_ITEMALLUSER_1                                    "/ItemAllUser"
 #define STRCMD_CS_COMMAND_ITEMALLUSER_2                                    "/ItemAllUser"
 #define STRCMD_CS_COMMAND_ITEMALLUSER_HELP                               "format: /ItemAllUser [1(Normal)|2(BCU)|4(ANI)|255(All)] [Item Number] [# of items] - Logged on user of selected nation will receive the designated item"
 
-// 2008-02-21 by dhjin, æ∆∑π≥™≈Î«’- æ∆∑π≥™√ﬂ∞°∏Ì∑…æÓ
+// 2008-02-21 by dhjin, ÏïÑÎ†àÎÇòÌÜµÌï©- ÏïÑÎ†àÎÇòÏ∂îÍ∞ÄÎ™ÖÎ†πÏñ¥
 #define STRCMD_CS_COMMAND_ARENAMOVE_0                                                         "/ArenaMove"
 #define STRCMD_CS_COMMAND_ARENAMOVE_1                                                         "/ArenaMove"
 #define STRCMD_CS_COMMAND_TEAMARENALEAVE_0                                                  "/TeamArenaLeave"
@@ -871,14 +871,14 @@
 #define STRCMD_CS_COMMAND_ARENAEVENTRELEASE_2                                    "/CancelArenaEvent"
 #define STRCMD_CS_COMMAND_ARENAEVENTRELEASE_HELP                                "format: /ArenaEventRelease [RoomNumber]"
 
-// 2008-06-03 by cmkwon, AdminTool, DBTool ªÁøÎΩ√ æ∆¿Ã≈€ ∞ÀªˆΩ√ ƒﬁ∫∏π⁄Ω∫ø°º≠ ∞Àªˆ ±‚¥… √ﬂ∞°(K0000143) - 
+// 2008-06-03 by cmkwon, AdminTool, DBTool ÏÇ¨Ïö©Ïãú ÏïÑÏù¥ÌÖú Í≤ÄÏÉâÏãú ÏΩ§Î≥¥Î∞ïÏä§ÏóêÏÑú Í≤ÄÏÉâ Í∏∞Îä• Ï∂îÍ∞Ä(K0000143) - 
 #define STRCMD_CS_ITEMKIND_ALL_ITEM							"All Kind"
 
 //////////////////////////////////////////////////////////////////////////
-// 2008-05-20 by dhjin, EP3 - ø©¥‹ ºˆ¡§ ªÁ«◊	// 2006-03-07 by cmkwon
+// 2008-05-20 by dhjin, EP3 - Ïó¨Îã® ÏàòÏ†ï ÏÇ¨Ìï≠	// 2006-03-07 by cmkwon
 #define STRCMD_CS_GUILD_RANK_PRIVATE_NULL		"Member"
 #define STRCMD_CS_GUILD_RANK_COMMANDER			"Flight Brigade Commander"
-#define STRCMD_CS_GUILD_RANK_SUBCOMMANDER		"Deputy Brigade Commander"				// 2008-05-20 by dhjin, EP3 - ø©¥‹ ºˆ¡§ ªÁ«◊
+#define STRCMD_CS_GUILD_RANK_SUBCOMMANDER		"Deputy Brigade Commander"				// 2008-05-20 by dhjin, EP3 - Ïó¨Îã® ÏàòÏ†ï ÏÇ¨Ìï≠
 #define STRCMD_CS_GUILD_RANK_SQUAD_LEADER_1		"1st Battalion Commander"
 #define STRCMD_CS_GUILD_RANK_PRIVATE_1			"1st Battalion Member"
 #define STRCMD_CS_GUILD_RANK_SQUAD_LEADER_2		"2nd Battalion Commander"
@@ -891,11 +891,11 @@
 #define STRCMD_CS_GUILD_RANK_PRIVATE_5			"5th Battalion Member"
 
 //////////////////////////////////////////////////////////////////////////
-// 2008-06-19 by dhjin, EP3 - ¿¸¿Â¡§∫∏
+// 2008-06-19 by dhjin, EP3 - Ï†ÑÏû•Ï†ïÎ≥¥
 #define STRCMD_COMMAND_WAR_OPTION_0					"/MotherShipInfoOption"
 #define STRCMD_COMMAND_WAR_OPTION_1					"/MotherShipInfoOption"
 
-// 2008-08-18 by dhjin, ºº∑¬∏∂≈©¿Ã∫•∆Æ 
+// 2008-08-18 by dhjin, ÏÑ∏Î†•ÎßàÌÅ¨Ïù¥Î≤§Ìä∏ 
 #define STRCMD_CS_COMMAND_INFLUENCEMARKEVENT_0				"/influencemarkevent"
 #define STRCMD_CS_COMMAND_INFLUENCEMARKEVENT_1				"/influencemarkevent"
 #define STRCMD_CS_COMMAND_INFLUENCEMARKEVENT_2				"/influencemarkevent"
@@ -906,43 +906,43 @@
 #define STRCMD_CS_COMMAND_INFLUENCEMARKEVENTEND_HELP		"format: /influencemarkeventend"
 
 //////////////////////////////////////////////////////////////////////////
-// 2008-08-25 by dhjin, ≈¬±π PCπÊ IP¡§∫∏ ∑Œµ˘
+// 2008-08-25 by dhjin, ÌÉúÍµ≠ PCÎ∞© IPÏ†ïÎ≥¥ Î°úÎî©
 #define STRCMD_CS_COMMAND_PCBANGRELOADTIME_0				"/PCBangReloadTime"
 #define STRCMD_CS_COMMAND_PCBANGRELOADTIME_1				"/PCBangReloadTime"
 #define STRCMD_CS_COMMAND_PCBANGRELOADTIME_HELP				"format: /PCBangreloadtime [Minute] - 10 Min ~ 1440 Min"
 
 
-// 2008-08-21 by dhjin, ¿œπ›, ∆Øºˆ ∞Ë¡§¿« ∫Œ¡ˆµµ¿⁄ ¿”∏Ì ¡¶«—
+// 2008-08-21 by dhjin, ÏùºÎ∞ò, ÌäπÏàò Í≥ÑÏ†ïÏùò Î∂ÄÏßÄÎèÑÏûê ÏûÑÎ™Ö Ï†úÌïú
 #define STRMSG_080821_0001				"Cannot appoint selected character with the rank."
 
 
-// 2008-09-09 by cmkwon, /ºº∑¬º“»Ø ∏Ì∑…æÓ ¿Œ¿⁄ ∏ÆΩ∫∆Æø° ±‚æÓ≈∏¿‘ √ﬂ∞° - 
+// 2008-09-09 by cmkwon, /ÏÑ∏Î†•ÏÜåÌôò Î™ÖÎ†πÏñ¥ Ïù∏Ïûê Î¶¨Ïä§Ìä∏Ïóê Í∏∞Ïñ¥ÌÉÄÏûÖ Ï∂îÍ∞Ä - 
 #define STRCMD_CS_COMMAND_COMEONINFL_HELP2		"format: /ComeOnInfl [1(Normal)|2(BCU)|4(ANI)|255(All)] [maximum people] [0|minimum level] [0|maximum level] [1(B)|16(M)|256(A)|4096(I)|4369(ALL)] [Message to user] - Request to certain nation, level users to move to your position."
 
-// 2008-09-09 by cmkwon, "/kick" ∏Ì∑…æÓ √ﬂ∞° - 
+// 2008-09-09 by cmkwon, "/kick" Î™ÖÎ†πÏñ¥ Ï∂îÍ∞Ä - 
 #define STRCMD_CS_COMMAND_KICK_0							"/Kick"
 #define STRCMD_CS_COMMAND_KICK_1							"/Kick"
 #define STRCMD_CS_COMMAND_KICK_HELP							"format: /Kick [CharacterName] - Terminate designated character from the game."
 
 
-// 2008-09-12 by cmkwon, "/∏Ìº∫" ∏Ì∑…æÓ √ﬂ∞° - 
+// 2008-09-12 by cmkwon, "/Î™ÖÏÑ±" Î™ÖÎ†πÏñ¥ Ï∂îÍ∞Ä - 
 #define STRCMD_CS_COMMAND_ADD_FAME_0							"/Fame"
 #define STRCMD_CS_COMMAND_ADD_FAME_1							"/Fame"
 #define STRCMD_CS_COMMAND_ADD_FAME_HELP							"format: /fame [personal fame] [brigade fame] - Raises personal and brigade fame of character."
 
-// 2008-12-30 by cmkwon, ¡ˆµµ¿⁄ √§∆√ ¡¶«— ƒ´µÂ ±∏«ˆ - 
+// 2008-12-30 by cmkwon, ÏßÄÎèÑÏûê Ï±ÑÌåÖ Ï†úÌïú Ïπ¥Îìú Íµ¨ÌòÑ - 
 #define STRCMD_CS_COMMAND_CHATFORBIDRELEASE_LEADER_0			"/ReleaseLeaderChatBlock"
 #define STRCMD_CS_COMMAND_CHATFORBIDRELEASE_LEADER_1			"/ReleaseLeaderChatBlock"
 #define STRCMD_CS_COMMAND_CHATFORBIDRELEASE_LEADER_HELP			"format: /ReleaseLeaderChatBlock [CharacterName] - Leader chat restriction is released."
 
-// 2009-10-12 by cmkwon, «¡∏ÆΩ∫ƒ´ ¡¶∞≈ πÊæ» ¿˚øÎ - 
+// 2009-10-12 by cmkwon, ÌîÑÎ¶¨Ïä§Ïπ¥ Ï†úÍ±∞ Î∞©Ïïà Ï†ÅÏö© - 
 #define STRCMD_CS_COMMAND_CHANGE_StartCityMapIndex_0                               "/StartCityMap"
 #define STRCMD_CS_COMMAND_CHANGE_StartCityMapIndex_1                               "/StartCity"
 #define STRCMD_CS_COMMAND_CHANGE_StartCityMapIndex_HELP                           "format: /StartCity [2001|2002] [|CharacterName] - Set the character`s beginning city to 2001 or 2002 when their nation is initialized."
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// 2010-01-08 by cmkwon, √÷¥Î ∑π∫ß ªÛ«‚ø° µ˚∏• √ﬂ∞° ªÁ«◊(∑π∫ß∫∞ ∞Ë±ﬁ) - ∞Ë±ﬁ∂Ê(πÈ∫Œ¿Â, ¥Î∑…, ¿Â±∫, √—µ∂, ¡§∫π¿⁄, ºˆ»£¿⁄, ¿¸º≥¿˚¿Œ)
+// 2010-01-08 by cmkwon, ÏµúÎåÄ Î†àÎ≤® ÏÉÅÌñ•Ïóê Îî∞Î•∏ Ï∂îÍ∞Ä ÏÇ¨Ìï≠(Î†àÎ≤®Î≥Ñ Í≥ÑÍ∏â) - Í≥ÑÍ∏âÎúª(Î∞±Î∂ÄÏû•, ÎåÄÎ†π, Ïû•Íµ∞, Ï¥ùÎèÖ, Ï†ïÎ≥µÏûê, ÏàòÌò∏Ïûê, Ï†ÑÏÑ§Ï†ÅÏù∏)
 #define       STRCMD_CS_CHARACTER_96_LEVEL_RANK             "Centurion"
 #define       STRCMD_CS_CHARACTER_100_LEVEL_RANK            "Colonel"
 #define       STRCMD_CS_CHARACTER_104_LEVEL_RANK            "General"
@@ -1021,14 +1021,14 @@
 #define STRMSG_C_131205_0054	"Failed to recall. Please try again. "
 #define STRMSG_C_131205_0055	"Recalled"
 #define STRMSG_C_131205_0056	"Money withdrawn"
-// END 2013-12-05 by ymjoo ∞≈∑°º“ ±∏«ˆ Ω∫∆Æ∏µ
+// END 2013-12-05 by ymjoo Í±∞ÎûòÏÜå Íµ¨ÌòÑ Ïä§Ìä∏ÎßÅ
 
-// 2013-12-05 by ymjoo ∞≈∑°º“ ±∏«ˆ Ω∫∆Æ∏µ
+// 2013-12-05 by ymjoo Í±∞ÎûòÏÜå Íµ¨ÌòÑ Ïä§Ìä∏ÎßÅ
 #define STRMSG_C_131206_0001	"You bought the item successfully.\\nThe item will be sent to your inventory. "
 
 #define STRMSG_C_131206_0002	"\\y %d of War Point has decreased."
 
-// 2013-11-29 by ssjung ∞≈∑°º“ ±∏«ˆ
+// 2013-11-29 by ssjung Í±∞ÎûòÏÜå Íµ¨ÌòÑ
 #define STRMSG_C_131217_0001	"You have exceeded the number of items to be registered."
 #define STRMSG_C_131217_0002	"It's sold out."
 #define STRMSG_C_131217_0003	"You can't buy due to insufficient funds."
@@ -1038,7 +1038,7 @@
 #define STRMSG_C_131217_0007	"You can't recall because of insufficient inventory space."
 #define STRMSG_C_131217_0008	"Recall fees : SPI(%.1f%%), WP(%.1f%%)"
 #define STRMSG_C_131217_0009	"Please update the list of items at the trade shop."
-// end 2013-11-29 by ssjung ∞≈∑°º“ ±∏«ˆ
+// end 2013-11-29 by ssjung Í±∞ÎûòÏÜå Íµ¨ÌòÑ
 
 
 #endif // end_#ifndef _STRING_DEFINE_COMMON_H_
