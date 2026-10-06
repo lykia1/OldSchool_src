@@ -1,6 +1,7 @@
 ﻿// AtumLauncherDlg.cpp : implementation file
 //
 
+#include <exdisp.h>
 #include "stdafx.h"
 #include "AtumLauncher.h"
 #include "AtumLauncherDlg.h"
@@ -83,12 +84,12 @@ constexpr auto DELFILELIST_FILE_NAME = "deletefilelist.txt";
 constexpr auto STRING_SERVER_GROUP_NAME_DELIMIT = " ";
 constexpr auto TICKGAP_NETWORK_STATE_WORST_PING_TICK = 1500;
 
-static const CRect ACETR_NAV_HOME_RECT(18, 118, 205, 166);
-static const CRect ACETR_NAV_NEWS_RECT(18, 172, 205, 220);
-static const CRect ACETR_NAV_EVENTS_RECT(18, 226, 205, 274);
-static const CRect ACETR_NAV_WEB_RECT(18, 280, 205, 328);
-static const CRect ACETR_NAV_DISCORD_RECT(18, 334, 205, 382);
-static const CRect ACETR_REMEMBER_RECT(970, 438, 1130, 466);
+static const CRect ACETR_NAV_HOME_RECT(18, 170, 210, 222);
+static const CRect ACETR_NAV_NEWS_RECT(18, 230, 210, 282);
+static const CRect ACETR_NAV_EVENTS_RECT(18, 290, 210, 342);
+static const CRect ACETR_NAV_WEB_RECT(18, 350, 210, 402);
+static const CRect ACETR_NAV_DISCORD_RECT(18, 410, 210, 462);
+static const CRect ACETR_REMEMBER_RECT(978, 451, 1128, 477);
 
 static size_t LauncherApiWriteCallback(void* contents, size_t size, size_t nmemb, void* userp)
 {
@@ -272,6 +273,7 @@ CAtumLauncherDlg::CAtumLauncherDlg(CWnd* pParent /*=NULL*/)
 	m_nModernNavHover = 0;
 	m_bModernNavTracking = FALSE;
 	m_bLauncherLoggedIn = FALSE;
+	m_pWebBrowser = NULL;
 	m_nLauncherAccountPage = 0;
 	m_nLauncherMainPage = 0;
 	m_szLauncherSessionToken.Empty();
@@ -462,8 +464,8 @@ BOOL CAtumLauncherDlg::ReadNoticeFile()
 	return TRUE;
 }
 
-	#define EXE2_LAUNCHER_BG_SIZE_X                 1280
-#define EXE2_LAUNCHER_BG_SIZE_Y                 720
+	#define EXE2_LAUNCHER_BG_SIZE_X                 1320
+#define EXE2_LAUNCHER_BG_SIZE_Y                 760
 
 #define EXE2_BG_TITLE_BAR_SIZE_X                EXE2_LAUNCHER_BG_SIZE_X
 #define EXE2_BG_TITLE_BAR_SIZE_Y                64
@@ -477,25 +479,25 @@ BOOL CAtumLauncherDlg::ReadNoticeFile()
 #define EXE2_BG_RESOLUTION_COMBOBOX_WIDTH       270
 #define EXE2_BG_RESOLUTION_COMBOBOX_HEIGHT      180
 
-#define EXE2_BG_WINDOWSMODE_CHECKBOX_POS_X      1304
-#define EXE2_BG_WINDOWSMODE_CHECKBOX_POS_Y      790
+#define EXE2_BG_WINDOWSMODE_CHECKBOX_POS_X      1215
+#define EXE2_BG_WINDOWSMODE_CHECKBOX_POS_Y      488
 #define EXE2_BG_WINDOWSMODE_CHECKBOX_WIDTH      16
 #define EXE2_BG_WINDOWSMODE_CHECKBOX_HEIGHT     16
 
-#define EXE2_BG_ACCOUNTNAME_EDIT_POS_X          974
-#define EXE2_BG_ACCOUNTNAME_EDIT_POS_Y          325
-#define EXE2_BG_ACCOUNTNAME_EDIT_WIDTH          252
+#define EXE2_BG_ACCOUNTNAME_EDIT_POS_X          1000
+#define EXE2_BG_ACCOUNTNAME_EDIT_POS_Y          350
+#define EXE2_BG_ACCOUNTNAME_EDIT_WIDTH          272
 #define EXE2_BG_ACCOUNTNAME_EDIT_HEIGHT         42
 
-#define EXE2_BG_PASSWORD_EDIT_POS_X             974
-#define EXE2_BG_PASSWORD_EDIT_POS_Y             385
-#define EXE2_BG_PASSWORD_EDIT_WIDTH              252
+#define EXE2_BG_PASSWORD_EDIT_POS_X             1000
+#define EXE2_BG_PASSWORD_EDIT_POS_Y             410
+#define EXE2_BG_PASSWORD_EDIT_WIDTH              272
 #define EXE2_BG_PASSWORD_EDIT_HEIGHT             42
 
 // Server list
-#define EXE2_BG_SERVERLIST_BOX_POS_X            972
-#define EXE2_BG_SERVERLIST_BOX_POS_Y            232
-#define EXE2_BG_SERVERLIST_BOX_WIDTH            256
+#define EXE2_BG_SERVERLIST_BOX_POS_X            994
+#define EXE2_BG_SERVERLIST_BOX_POS_Y            250
+#define EXE2_BG_SERVERLIST_BOX_WIDTH            280
 #define EXE2_BG_SERVERLIST_BOX_HEIGHT           54
 
 #define EXE2_BG_SERVERLIST_ITEM_BG_WIDTH        640
@@ -506,29 +508,29 @@ BOOL CAtumLauncherDlg::ReadNoticeFile()
 #define EXE2_BG_SERVERLIST_ITEM_ICON_HEIGHT     10
 
 // Window chrome
-#define EXE2_BG_MINIMIZED_BTN_POS_X             1188
+#define EXE2_BG_MINIMIZED_BTN_POS_X             1230
 #define EXE2_BG_MINIMIZED_BTN_POS_Y             18
 #define EXE2_BG_MINIMIZED_BTN_WIDTH             36
 #define EXE2_BG_MINIMIZED_BTN_HEIGHT            34
-#define EXE2_BG_CANCEL_BTN_POS_X                1230
+#define EXE2_BG_CANCEL_BTN_POS_X                1272
 #define EXE2_BG_CANCEL_BTN_POS_Y                18
 #define EXE2_BG_CANCEL_BTN_WIDTH                36
 #define EXE2_BG_CANCEL_BTN_HEIGHT               34
 
 // Primary action
-#define EXE2_BG_GAMESTART_BTN_POS_X             970
-#define EXE2_BG_GAMESTART_BTN_POS_Y             485
-#define EXE2_BG_GAMESTART_BTN_WIDTH             258
-#define EXE2_BG_GAMESTART_BTN_HEIGHT            62
+#define EXE2_BG_GAMESTART_BTN_POS_X             994
+#define EXE2_BG_GAMESTART_BTN_POS_Y             515
+#define EXE2_BG_GAMESTART_BTN_WIDTH             280
+#define EXE2_BG_GAMESTART_BTN_HEIGHT            64
 
 // Patch/update area
 #define EXE2_BG_UPDATE_PROGRESS_BAR_POS_X       250
-#define EXE2_BG_UPDATE_PROGRESS_BAR_POS_Y       666
-#define EXE2_BG_UPDATE_PROGRESS_BAR_WIDTH       690
+#define EXE2_BG_UPDATE_PROGRESS_BAR_POS_Y       704
+#define EXE2_BG_UPDATE_PROGRESS_BAR_WIDTH       760
 #define EXE2_BG_UPDATE_PROGRESS_BAR_HEIGHT      12
 
 #define EXE2_BG_DOWNLOAD_FILE_STATIC_POS_X      250
-#define EXE2_BG_DOWNLOAD_FILE_STATIC_POS_Y      640
+#define EXE2_BG_DOWNLOAD_FILE_STATIC_POS_Y      678
 #define EXE2_BG_DOWNLOAD_FILE_STATIC_WIDTH      350
 #define EXE2_BG_DOWNLOAD_FILE_STATIC_HEIGHT     20
 #define EXE2_BG_DOWNLOAD_FILE_FONT_SIZE         15
@@ -536,7 +538,7 @@ BOOL CAtumLauncherDlg::ReadNoticeFile()
 #define EXE2_BG_DOWNLOAD_FILE_FONT_COLOR        RGB(205,205,215)
 
 #define EXE2_BG_UPDATE_INFO_STATIC_POS_X        750
-#define EXE2_BG_UPDATE_INFO_STATIC_POS_Y        640
+#define EXE2_BG_UPDATE_INFO_STATIC_POS_Y        678
 #define EXE2_BG_UPDATE_INFO_STATIC_WIDTH        190
 #define EXE2_BG_UPDATE_INFO_STATIC_HEIGHT       20
 #define EXE2_BG_UPDATE_INFO_FONT_SIZE           15
@@ -631,7 +633,8 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 		EXE2_LAUNCHER_BG_SIZE_Y,
 		SWP_NOMOVE | SWP_NOZORDER);
 
-	this->MoveWindow2Center();	// 2007-09-07 by cmkwon, şŁĆ®ł˛ ·±Ăł ŔÎĹÍĆäŔĚ˝ş ĽöÁ¤ - Č­¸é ÁßľÓŔ¸·Î Ŕ§Äˇ
+	this->MoveWindow2Center();
+	InitLauncherWebView();	// 2007-09-07 by cmkwon, şŁĆ®ł˛ ·±Ăł ŔÎĹÍĆäŔĚ˝ş ĽöÁ¤ - Č­¸é ÁßľÓŔ¸·Î Ŕ§Äˇ
 	RECT rtBG;
 	this->GetClientRect(&rtBG);
 
@@ -671,8 +674,8 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	GetDlgItem(IDC_CHECK_WINDOWS_MODE)->MoveWindow(EXE2_BG_WINDOWSMODE_CHECKBOX_POS_X, EXE2_BG_WINDOWSMODE_CHECKBOX_POS_Y, EXE2_BG_WINDOWSMODE_CHECKBOX_WIDTH, EXE2_BG_WINDOWSMODE_CHECKBOX_HEIGHT);
 	// Approved skin keeps graphics settings behind the AYARLAR dialog.
 	GetDlgItem(IDC_COMBO_WINDOW_DEGREE_LAUNCHER)->ShowWindow(SW_HIDE);
-	GetDlgItem(IDC_CHECK_WINDOWS_MODE)->ShowWindow(SW_HIDE);
-	GetDlgItem(IDC_CHECK_64_BIT)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_CHECK_WINDOWS_MODE)->ShowWindow(SW_SHOW);
+	GetDlgItem(IDC_CHECK_64_BIT)->ShowWindow(SW_SHOW);
 	GetDlgItem(IDC_CHARACTER_NAME)->ShowWindow(SW_HIDE);
 
 	// AccountName Edit Box, Password Edit Box
@@ -716,7 +719,7 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	m_ctlINETCfgBtn.SetToolTipText("Oyun Ayarlari");
 	m_ctlINETCfgBtn.SetModernButton("AYAR", RGB(38, 42, 52));
 
-	GetDlgItem(IDC_BTN_VIEW_INET_CFG)->MoveWindow(1110, 610, 120, 44);
+	GetDlgItem(IDC_BTN_VIEW_INET_CFG)->MoveWindow(1148, 680, 120, 40);
 #endif	
 	// 2007-09-07 by cmkwon, »çżëÇĎÁö ľĘ´Â ąöĆ°ŔÓ
 	//// Join Button
@@ -1123,141 +1126,127 @@ void CAtumLauncherDlg::OnPaint()
 		CPaintDC dc(this);
 		SendMessage(WM_ICONERASEBKGND, (WPARAM)dc.GetSafeHdc(), 0);
 		CRect rect; GetClientRect(&rect);
-		dc.DrawIcon((rect.Width() - GetSystemMetrics(SM_CXICON)) / 2,
-			(rect.Height() - GetSystemMetrics(SM_CYICON)) / 2, m_hIcon);
+		dc.DrawIcon((rect.Width()-GetSystemMetrics(SM_CXICON))/2,
+			(rect.Height()-GetSystemMetrics(SM_CYICON))/2,m_hIcon);
 		return;
 	}
 
 	CPaintDC dc(this);
 	CRect client; GetClientRect(&client);
 
-	// Base shell
-	CBrush bg(RGB(6, 12, 20));
-	dc.FillRect(client, &bg);
-	CBrush top(RGB(9, 18, 29));
-	dc.FillRect(CRect(0,0,1280,72), &top);
-	CBrush side(RGB(7, 16, 26));
-	dc.FillRect(CRect(0,72,224,720), &side);
+	CBrush bg(RGB(4,10,17));
+	CBrush header(RGB(8,19,31));
+	CBrush leftPanel(RGB(7,17,28));
+	CBrush panel(RGB(9,23,36));
+	CBrush panel2(RGB(12,29,45));
+	CPen frame(PS_SOLID,1,RGB(24,68,95));
+	CPen cyan(PS_SOLID,1,RGB(0,184,255));
+	CPen soft(PS_SOLID,1,RGB(17,46,65));
+	CBrush* oldB=dc.SelectObject(&bg);
+	CPen* oldP=dc.SelectObject(&frame);
+	dc.FillRect(client,&bg);
 
-	CPen border(PS_SOLID,1,RGB(25,58,78));
-	CPen accent(PS_SOLID,1,RGB(0,174,239));
-	CBrush panel(RGB(10, 23, 36));
-	CBrush panel2(RGB(13, 29, 44));
-	CPen* oldPen=dc.SelectObject(&border);
-	CBrush* oldBrush=dc.SelectObject(&panel);
+	// top brand bar
+	dc.FillRect(CRect(0,0,1320,92),&header);
+	dc.SelectObject(&cyan); dc.MoveTo(0,91); dc.LineTo(1320,91);
+	dc.SelectObject(&frame);
 
-	// Header underline
-	dc.SelectObject(&accent);
-	dc.MoveTo(0,71); dc.LineTo(1280,71);
-	dc.SelectObject(&border);
+	// left navigation
+	dc.FillRect(CRect(0,92,230,760),&leftPanel);
+	dc.SelectObject(&panel);
+	dc.RoundRect(CRect(14,120,216,495),CPoint(10,10));
 
-	// Main hero frame
-	dc.RoundRect(CRect(238,96,936,570),CPoint(10,10));
-	// Right login panel
-	dc.RoundRect(CRect(952,96,1262,570),CPoint(10,10));
-	// Bottom patch panel
-	dc.RoundRect(CRect(238,590,1262,704),CPoint(10,10));
+	// center WebView frame
+	dc.SelectObject(&panel);
+	dc.RoundRect(CRect(244,112,968,648),CPoint(12,12));
+	dc.SelectObject(&soft);
+	dc.RoundRect(CRect(254,122,958,638),CPoint(9,9));
 
-	// Hero artwork crop from the existing AceTR bitmap resource.
-	CDC memDC;
-	memDC.CreateCompatibleDC(&dc);
-	CBitmap* oldBmp=memDC.SelectObject(&m_BackGround);
-	BITMAP bi={0}; m_BackGround.GetObject(sizeof(BITMAP),&bi);
-	if (bi.bmWidth > 1000 && bi.bmHeight > 500)
-	{
-		dc.SetStretchBltMode(HALFTONE);
-		// Crop the clean aircraft/sky artwork region from the approved image.
-		dc.StretchBlt(250,108,674,378,&memDC,292,150,960,470,SRCCOPY);
-	}
-	memDC.SelectObject(oldBmp);
-
-	// Hero lower caption plate
+	// right server/login card
+	dc.SelectObject(&panel);
+	dc.RoundRect(CRect(982,112,1302,648),CPoint(12,12));
 	dc.SelectObject(&panel2);
-	dc.RoundRect(CRect(250,488,924,558),CPoint(8,8));
+	dc.RoundRect(CRect(994,134,1290,226),CPoint(8,8));
+	dc.RoundRect(CRect(994,236,1290,586),CPoint(8,8));
 
-	// Typography
+	// bottom updater
+	dc.SelectObject(&panel);
+	dc.RoundRect(CRect(244,662,1302,744),CPoint(10,10));
+
+	// fonts
 	dc.SetBkMode(TRANSPARENT);
-	CFont brand, title, subtitle, nav, smallFont, stat;
-	brand.CreateFont(31,0,0,0,FW_BOLD,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
-	title.CreateFont(26,0,0,0,FW_BOLD,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
-	subtitle.CreateFont(15,0,0,0,FW_NORMAL,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
-	nav.CreateFont(16,0,0,0,FW_SEMIBOLD,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
-	smallFont.CreateFont(14,0,0,0,FW_NORMAL,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
-	stat.CreateFont(15,0,0,0,FW_BOLD,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
+	CFont logo, logo2, navFont, section, smallFont;
+	logo.CreateFont(33,0,0,0,FW_BOLD,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
+	logo2.CreateFont(15,0,0,0,FW_NORMAL,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
+	navFont.CreateFont(16,0,0,0,FW_SEMIBOLD,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
+	section.CreateFont(16,0,0,0,FW_BOLD,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
+	smallFont.CreateFont(13,0,0,0,FW_NORMAL,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
 
-	CFont* oldFont=dc.SelectObject(&brand);
-	dc.SetTextColor(RGB(232,246,255));
-	dc.TextOut(26,20,"ACE");
-	dc.SetTextColor(RGB(0,184,255));
-	dc.TextOut(92,20,"TR");
-	dc.SelectObject(&smallFont);
-	dc.SetTextColor(RGB(111,142,160));
-	dc.TextOut(150,30,"ACE ONLINE TURKIYE");
+	CFont* oldF=dc.SelectObject(&logo);
+	dc.SetTextColor(RGB(237,248,255)); dc.TextOut(28,23,"ACE");
+	dc.SetTextColor(RGB(0,190,255)); dc.TextOut(96,23,"TR");
+	dc.SelectObject(&logo2);
+	dc.SetTextColor(RGB(117,154,176)); dc.TextOut(168,33,"ACE ONLINE TURKIYE");
+	dc.SetTextColor(RGB(70,112,136)); dc.TextOut(1085,34,"RESMI LAUNCHER");
 
-	// Left navigation
-	const char* items[5]={"ANA SAYFA","HABERLER","SIRALAMA","MARKET","TOPLULUK"};
-	CRect navRects[5]={ACETR_NAV_HOME_RECT,ACETR_NAV_NEWS_RECT,ACETR_NAV_EVENTS_RECT,ACETR_NAV_WEB_RECT,ACETR_NAV_DISCORD_RECT};
-	dc.SelectObject(&nav);
-	for(int i=0;i<5;i++)
+	// left menu
+	const char* labels[4]={"WEB SITESI","DISCORD","FACEBOOK","DESTEK"};
+	CRect rs[4]={ACETR_NAV_HOME_RECT,ACETR_NAV_NEWS_RECT,ACETR_NAV_EVENTS_RECT,ACETR_NAV_WEB_RECT};
+	dc.SelectObject(&navFont);
+	for(int i=0;i<4;i++)
 	{
-		BOOL active=(m_nLauncherMainPage==i);
 		BOOL hover=(m_nModernNavHover==i+1);
-		if(active||hover)
+		if(hover)
 		{
-			CBrush hi(active?RGB(10,45,67):RGB(9,34,51));
-			CPen hiPen(PS_SOLID,1,active?RGB(0,174,239):RGB(22,84,116));
-			CBrush* ob=dc.SelectObject(&hi); CPen* op=dc.SelectObject(&hiPen);
-			dc.RoundRect(navRects[i],CPoint(7,7));
-			dc.SelectObject(op); dc.SelectObject(ob);
+			CBrush hb(RGB(10,43,63)); CPen hp(PS_SOLID,1,RGB(0,150,215));
+			CBrush* tb=dc.SelectObject(&hb); CPen* tp=dc.SelectObject(&hp);
+			dc.RoundRect(rs[i],CPoint(7,7));
+			dc.SelectObject(tp); dc.SelectObject(tb);
 		}
-		dc.SetTextColor(active?RGB(100,220,255):RGB(170,194,207));
-		CRect tr=navRects[i]; tr.left+=18;
-		dc.DrawText(items[i],tr,DT_LEFT|DT_VCENTER|DT_SINGLELINE);
+		dc.SetTextColor(hover?RGB(110,225,255):RGB(171,198,212));
+		CRect tr=rs[i]; tr.left+=18;
+		dc.DrawText(labels[i],tr,DT_LEFT|DT_VCENTER|DT_SINGLELINE);
 	}
 
-	// Hero copy
-	dc.SelectObject(&title);
-	dc.SetTextColor(RGB(245,250,253));
-	dc.TextOut(270,501,"Gökyüzü Yeniden Bizim");
-	dc.SelectObject(&subtitle);
-	dc.SetTextColor(RGB(137,168,184));
-	dc.TextOut(270,535,"Yeni sezon, etkinlikler ve güncellemeler AceTR'de.");
+	// center title
+	dc.SelectObject(&section);
+	dc.SetTextColor(RGB(220,238,247)); dc.TextOut(266,132,"ACE TR HABER MERKEZI");
+	dc.SelectObject(&smallFont);
+	dc.SetTextColor(RGB(92,132,153)); dc.TextOut(266,158,"Haberler, duyurular ve etkinlikler");
 
-	// Login/status panel labels
-	dc.SelectObject(&stat);
-	dc.SetTextColor(RGB(227,242,249));
-	dc.TextOut(974,120,"SUNUCU DURUMU");
-	dc.SetTextColor(RGB(50,220,133));
-	dc.TextOut(974,150,"●  ÇEVRİMİÇİ");
-	dc.SetTextColor(RGB(140,169,184));
-	dc.TextOut(974,200,"SUNUCU");
-	dc.TextOut(974,296,"KULLANICI GİRİŞİ");
-	dc.TextOut(974,310,"");
-	dc.TextOut(974,448,"Beni Hatırla");
+	// right status/login
+	dc.SelectObject(&section);
+	dc.SetTextColor(RGB(224,241,249)); dc.TextOut(1010,150,"SUNUCU DURUMU");
+	dc.SetTextColor(RGB(46,215,128)); dc.TextOut(1010,182,"●  CEVRIMICI");
+	dc.SetTextColor(RGB(224,241,249)); dc.TextOut(1010,258,"KULLANICI GIRISI");
+	dc.SelectObject(&smallFont);
+	dc.SetTextColor(RGB(103,143,164)); dc.TextOut(1010,320,"KULLANICI ADI");
+	dc.TextOut(1010,380,"SIFRE");
+	dc.TextOut(1010,458,"Beni Hatirla");
+	dc.TextOut(1165,458,"64 BIT");
+	dc.TextOut(1010,488,"PENCERE MODU");
 
-	// Native remember checkbox
-	CRect box(974,444,994,464);
-	CBrush cbBg(RGB(7,27,41)); CPen cbPen(PS_SOLID,1,RGB(0,174,239));
-	CBrush* cbOldB=dc.SelectObject(&cbBg); CPen* cbOldP=dc.SelectObject(&cbPen);
-	dc.Rectangle(box);
+	// remember checkbox visual
+	CRect cb(982,452,1000,470);
+	CBrush cbb(RGB(5,24,37)); CPen cbp(PS_SOLID,1,RGB(0,174,239));
+	CBrush* ob=dc.SelectObject(&cbb); CPen* op=dc.SelectObject(&cbp);
+	dc.Rectangle(cb);
 	if(m_ctlBtnRememberID.GetCheck()==BST_CHECKED)
 	{
-		CPen ck(PS_SOLID,2,RGB(176,242,255)); dc.SelectObject(&ck);
-		dc.MoveTo(978,454); dc.LineTo(983,459); dc.LineTo(991,449);
+		CPen ck(PS_SOLID,2,RGB(185,245,255)); dc.SelectObject(&ck);
+		dc.MoveTo(986,461); dc.LineTo(990,465); dc.LineTo(997,457);
 	}
-	dc.SelectObject(cbOldP); dc.SelectObject(cbOldB);
+	dc.SelectObject(op); dc.SelectObject(ob);
 
-	// Patch labels
-	dc.SelectObject(&stat);
-	dc.SetTextColor(RGB(228,242,248));
-	dc.TextOut(258,612,"GÜNCELLEME");
+	// update area
+	dc.SelectObject(&section);
+	dc.SetTextColor(RGB(224,241,249)); dc.TextOut(264,681,"GUNCELLEME");
 	dc.SelectObject(&smallFont);
-	dc.SetTextColor(RGB(125,153,168));
-	dc.TextOut(258,636,"Dosyalar kontrol ediliyor...");
+	dc.SetTextColor(RGB(100,140,162)); dc.TextOut(264,708,"Dosyalar kontrol ediliyor...");
 
-	dc.SelectObject(oldFont);
-	dc.SelectObject(oldBrush);
-	dc.SelectObject(oldPen);
+	dc.SelectObject(oldF);
+	dc.SelectObject(oldP);
+	dc.SelectObject(oldB);
 }
 
 HCURSOR CAtumLauncherDlg::OnQueryDragIcon()
@@ -2648,8 +2637,62 @@ LONG CAtumLauncherDlg::OnDownLoadGamefilesDone(WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
+BOOL CAtumLauncherDlg::InitLauncherWebView()
+{
+	CRect webRect(260, 176, 952, 630);
+	if (!m_wndWebView.CreateControl(CLSID_WebBrowser, NULL,
+		WS_CHILD | WS_VISIBLE, webRect, this, 6001))
+		return FALSE;
+
+	LPUNKNOWN pUnknown = m_wndWebView.GetControlUnknown();
+	if (pUnknown)
+		pUnknown->QueryInterface(IID_IWebBrowser2, (void**)&m_pWebBrowser);
+
+	if (!m_pWebBrowser)
+		return FALSE;
+
+	m_pWebBrowser->put_Silent(VARIANT_TRUE);
+	NavigateLauncherWeb("Home");
+	return TRUE;
+}
+
+void CAtumLauncherDlg::NavigateLauncherWeb(LPCSTR key)
+{
+	if (!m_pWebBrowser)
+		return;
+
+	char url[1024]={0};
+	char defaultUrl[1024]={0};
+	lstrcpyn(defaultUrl, STRMSG_S_GAMEHOMEPAGE_DOMAIN, sizeof(defaultUrl));
+	GetPrivateProfileString("LauncherLinks", key, defaultUrl, url, sizeof(url), _INI_FILE_NAME);
+	if (!url[0])
+		return;
+
+	int len=MultiByteToWideChar(CP_ACP,0,url,-1,NULL,0);
+	if (len<=0) return;
+	WCHAR* wurl=new WCHAR[len];
+	MultiByteToWideChar(CP_ACP,0,url,-1,wurl,len);
+
+	VARIANT vUrl; VariantInit(&vUrl);
+	vUrl.vt=VT_BSTR;
+	vUrl.bstrVal=SysAllocString(wurl);
+	delete [] wurl;
+
+	m_pWebBrowser->Navigate2(&vUrl,NULL,NULL,NULL,NULL);
+	VariantClear(&vUrl);
+}
+
 void CAtumLauncherDlg::OnDestroy()
 {
+	if (m_pWebBrowser)
+	{
+		m_pWebBrowser->Stop();
+		m_pWebBrowser->Release();
+		m_pWebBrowser = NULL;
+	}
+	if (m_wndWebView.GetSafeHwnd())
+		m_wndWebView.DestroyWindow();
+
 	CDialog::OnDestroy();
 
 	// TODO: Add your message handler code here
@@ -4171,8 +4214,7 @@ void CAtumLauncherDlg::Set_Cur_Percent(DWORD CurSize)
 void CAtumLauncherDlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	if (ACETR_NAV_HOME_RECT.PtInRect(point) || ACETR_NAV_NEWS_RECT.PtInRect(point) ||
-		ACETR_NAV_EVENTS_RECT.PtInRect(point) || ACETR_NAV_WEB_RECT.PtInRect(point) ||
-		ACETR_NAV_DISCORD_RECT.PtInRect(point) || ACETR_REMEMBER_RECT.PtInRect(point))
+		ACETR_NAV_EVENTS_RECT.PtInRect(point) || ACETR_NAV_WEB_RECT.PtInRect(point) || ACETR_REMEMBER_RECT.PtInRect(point))
 		return;
 
 	CDialog::OnLButtonDown(nFlags, point);
@@ -4183,15 +4225,14 @@ void CAtumLauncherDlg::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	if (ACETR_REMEMBER_RECT.PtInRect(point))
 	{
-		m_ctlBtnRememberID.SetCheck(m_ctlBtnRememberID.GetCheck() ? BST_UNCHECKED : BST_CHECKED);
-		InvalidateRect(ACETR_REMEMBER_RECT, FALSE);
+		m_ctlBtnRememberID.SetCheck(m_ctlBtnRememberID.GetCheck()?BST_UNCHECKED:BST_CHECKED);
+		InvalidateRect(ACETR_REMEMBER_RECT,FALSE);
 		return;
 	}
-	if (ACETR_NAV_HOME_RECT.PtInRect(point)) { SetLauncherMainPage(0); return; }
-	if (ACETR_NAV_NEWS_RECT.PtInRect(point)) { SetLauncherMainPage(1); return; }
-	if (ACETR_NAV_EVENTS_RECT.PtInRect(point)) { SetLauncherMainPage(2); return; }
-	if (ACETR_NAV_WEB_RECT.PtInRect(point)) { SetLauncherMainPage(3); return; }
-	if (ACETR_NAV_DISCORD_RECT.PtInRect(point)) { SetLauncherMainPage(4); return; }
+	if (ACETR_NAV_HOME_RECT.PtInRect(point)) { NavigateLauncherWeb("Home"); return; }
+	if (ACETR_NAV_NEWS_RECT.PtInRect(point)) { OpenLauncherConfiguredUrl("Discord"); return; }
+	if (ACETR_NAV_EVENTS_RECT.PtInRect(point)) { OpenLauncherConfiguredUrl("Facebook"); return; }
+	if (ACETR_NAV_WEB_RECT.PtInRect(point)) { OpenLauncherConfiguredUrl("Support"); return; }
 	CDialog::OnLButtonUp(nFlags, point);
 }
 
@@ -4202,12 +4243,11 @@ void CAtumLauncherDlg::OnMouseMove(UINT nFlags, CPoint point)
 	else if (ACETR_NAV_NEWS_RECT.PtInRect(point)) hover=2;
 	else if (ACETR_NAV_EVENTS_RECT.PtInRect(point)) hover=3;
 	else if (ACETR_NAV_WEB_RECT.PtInRect(point)) hover=4;
-	else if (ACETR_NAV_DISCORD_RECT.PtInRect(point)) hover=5;
-
+	
 	if (hover!=m_nModernNavHover)
 	{
 		m_nModernNavHover=hover;
-		InvalidateRect(CRect(0, 100, 224, 400), FALSE);
+		InvalidateRect(CRect(0, 150, 230, 470), FALSE);
 	}
 
 	if (!m_bModernNavTracking)
