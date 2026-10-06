@@ -2191,36 +2191,28 @@ LONG CAtumLauncherDlg::OnSocketNotify(WPARAM wParam, LPARAM lParam)
 							break;
 						}
 #endif
-						// Login was accepted by the server. Keep the authenticated launch
-						// parameters and switch the launcher into account-panel mode instead
-						// of immediately starting the game.
+						// AceTR: successful launcher login starts the game immediately.
+						// Keep the original authenticated command line/parameters produced
+						// by the PreServer so the client receives the exact legacy launch data.
 						STRNCPY_MEMSET(m_szLaunchCmdLine, cmdLine, sizeof(m_szLaunchCmdLine));
 						STRNCPY_MEMSET(m_szLaunchAppPath, szAppPath, sizeof(m_szLaunchAppPath));
 						STRNCPY_MEMSET(m_szLaunchCmdParam, szCmdParam, sizeof(m_szLaunchCmdParam));
 						m_bLauncherLoggedIn = TRUE;
-						m_nLauncherAccountPage = 0;
 
-						// Hide credential/settings controls; the right side becomes a profile panel.
-						GetDlgItem(IDC_EDIT_ACCOUNT)->ShowWindow(SW_HIDE);
-						GetDlgItem(IDC_EDIT_PASSWORD)->ShowWindow(SW_HIDE);
-						GetDlgItem(IDC_CHECK_REMEMBER_ID)->ShowWindow(SW_HIDE);
-						GetDlgItem(IDC_CHECK_64_BIT)->ShowWindow(SW_HIDE);
-						GetDlgItem(IDC_COMBO_WINDOW_DEGREE_LAUNCHER)->ShowWindow(SW_HIDE);
-						GetDlgItem(IDC_CHECK_WINDOWS_MODE)->ShowWindow(SW_HIDE);
-						GetDlgItem(IDC_PLAYER_CNT)->ShowWindow(SW_HIDE);
+						SetProgressGroupText("Giris basarili. Oyun baslatiliyor...");
 
-						GetDlgItem(IDGO)->EnableWindow(TRUE);
-						m_KbcGO.SetButtonEnable();
-						m_KbcGO.SetModernButton("OYNA", RGB(225, 82, 35));
-						m_KbcGO.SetToolTipText("Oyunu Baslat");
-
-						// The game launch parameters already contain the derived credential.
-						// Do not keep the plaintext password in launcher memory longer than needed.
+						// The authenticated command line already contains the derived password.
+						// Clear the plaintext UI value before launching.
 						m_szPassword.Empty();
 						GetDlgItem(IDC_EDIT_PASSWORD)->SetWindowText("");
 
-						SetProgressGroupText("Giris basarili. Oyun baslatilmaya hazir.");
-						Invalidate(FALSE);
+						if (m_szCrocessSuffix == "")
+							ExecGame(m_szLaunchCmdLine, m_szLaunchAppPath, m_szLaunchCmdParam);
+						else
+							ExecGameCrocess(m_szLaunchCmdLine);
+
+						OnCancel();
+						return 0;
 					}
 					break;
 				case T_PC_CONNECT_LAUNCHER_SESSION:
