@@ -251,6 +251,10 @@ CAtumLauncherDlg::CAtumLauncherDlg(CWnd* pParent /*=NULL*/)
 	m_bControlEnabled = TRUE;
 	m_nModernNavHover = 0;
 	m_bModernNavTracking = FALSE;
+	m_bLauncherLoggedIn = FALSE;
+	MEMSET_ZERO(m_szLaunchCmdLine, sizeof(m_szLaunchCmdLine));
+	MEMSET_ZERO(m_szLaunchAppPath, sizeof(m_szLaunchAppPath));
+	MEMSET_ZERO(m_szLaunchCmdParam, sizeof(m_szLaunchCmdParam));
 
 	m_StaticBrushBlack.CreateSolidBrush(RGB(22, 25, 34));
 	m_StaticBrushGray.CreateSolidBrush(RGB(27, 30, 40));
@@ -626,8 +630,8 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 							  CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH , SG_BOX_FONT_FACENAME);    // "System" Font´Â ´ëÇĄŔűŔÎ Fixed FontŔÓ´Ů.
     GetDlgItem(IDC_LIST)->SetFont(&m_fontServerGroupListBox);
 
-	m_KbcGO.SetModernButton("OYNA", RGB(225, 82, 35));
-	m_KbcGO.SetToolTipText("Oyunu Baslat");
+	m_KbcGO.SetModernButton("GİRİŞ YAP", RGB(225, 82, 35));
+	m_KbcGO.SetToolTipText("Giris Yap");
 	m_kbcBtnJoin.SetBmpButtonImage(IDB_JOINBTN, RGB(0,0,255));
 	m_kbcBtnJoin.SetToolTipText("Join");
 
@@ -1267,6 +1271,63 @@ void CAtumLauncherDlg::OnPaint()
 			}
 		}
 		PaintDC.SelectObject(oldFont);
+
+		if (m_bLauncherLoggedIn)
+		{
+			// Cover the login-form copy and draw the authenticated account panel.
+			CBrush panelBrush(RGB(18, 21, 29));
+			CPen panelPen(PS_SOLID, 1, RGB(52, 58, 74));
+			CBrush* oldBrush = PaintDC.SelectObject(&panelBrush);
+			CPen* oldPen = PaintDC.SelectObject(&panelPen);
+			PaintDC.RoundRect(CRect(852, 98, 1148, 535), CPoint(14, 14));
+
+			PaintDC.SetBkMode(TRANSPARENT);
+
+			CFont titleFont;
+			titleFont.CreateFont(18, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0,
+				DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
+				CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
+			CFont* pf = PaintDC.SelectObject(&titleFont);
+			PaintDC.SetTextColor(RGB(245, 247, 251));
+			PaintDC.TextOut(875, 120, "HESABIM");
+
+			CFont smallFont;
+			smallFont.CreateFont(14, 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0,
+				DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
+				CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
+			PaintDC.SelectObject(&smallFont);
+			PaintDC.SetTextColor(RGB(78, 218, 143));
+			PaintDC.TextOut(875, 158, "●  OTURUM AÇIK");
+
+			CFont nameFont;
+			nameFont.CreateFont(24, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0,
+				DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
+				CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
+			PaintDC.SelectObject(&nameFont);
+			PaintDC.SetTextColor(RGB(255, 255, 255));
+			PaintDC.TextOut(875, 195, m_szAccountName);
+
+			PaintDC.SelectObject(&smallFont);
+			PaintDC.SetTextColor(RGB(150, 157, 174));
+			PaintDC.TextOut(875, 242, "Hesap durumu");
+			PaintDC.TextOut(875, 290, "Sunucu");
+			PaintDC.TextOut(875, 338, "İstemci sürümü");
+			PaintDC.TextOut(875, 386, "Launcher oturumu");
+
+			PaintDC.SetTextColor(RGB(235, 238, 244));
+			PaintDC.TextOut(1025, 242, "Aktif");
+			PaintDC.TextOut(1025, 290, m_strServerGroupName.IsEmpty() ? "AceTR" : m_strServerGroupName);
+			PaintDC.TextOut(1025, 338, m_CurrentVersion.GetVersionString());
+			PaintDC.TextOut(1025, 386, "Doğrulandı");
+
+			PaintDC.SetTextColor(RGB(120, 127, 143));
+			PaintDC.TextOut(875, 445, "Hesap yönetimi ve karakter bilgileri");
+			PaintDC.TextOut(875, 465, "sonraki aşamada API üzerinden eklenecek.");
+
+			PaintDC.SelectObject(pf);
+			PaintDC.SelectObject(oldPen);
+			PaintDC.SelectObject(oldBrush);
+		}
 
 		CDialog::OnPaint();
 	}
@@ -2002,19 +2063,29 @@ LONG CAtumLauncherDlg::OnSocketNotify(WPARAM wParam, LPARAM lParam)
 							break;
 						}
 #endif
-						if (m_szCrocessSuffix == "")
-						{
-							// 2009-01-30 by cmkwon, ·Ż˝ĂľĆ Innova ·±Ăł ˝Ă˝şĹŰ(ÇÁ·Î˝şĆ®) ĽöÁ¤ - ľĆ·ˇżÍ °°ŔĚ ĽöÁ¤ÇÔ.
-							//ExecGame(cmdLine);
-							ExecGame(cmdLine, szAppPath, szCmdParam);
-						}
-						else
-						{
-							// Ĺ©·ÎĽĽ˝ş¸¦ ĹëÇŘ ˝ÇÇŕ
-							ExecGameCrocess(cmdLine);
-						}
+						// Login was accepted by the server. Keep the authenticated launch
+						// parameters and switch the launcher into account-panel mode instead
+						// of immediately starting the game.
+						STRNCPY_MEMSET(m_szLaunchCmdLine, cmdLine, sizeof(m_szLaunchCmdLine));
+						STRNCPY_MEMSET(m_szLaunchAppPath, szAppPath, sizeof(m_szLaunchAppPath));
+						STRNCPY_MEMSET(m_szLaunchCmdParam, szCmdParam, sizeof(m_szLaunchCmdParam));
+						m_bLauncherLoggedIn = TRUE;
 
-						OnCancel();
+						// Hide credential/settings controls; the right side becomes a profile panel.
+						GetDlgItem(IDC_EDIT_ACCOUNT)->ShowWindow(SW_HIDE);
+						GetDlgItem(IDC_EDIT_PASSWORD)->ShowWindow(SW_HIDE);
+						GetDlgItem(IDC_CHECK_REMEMBER_ID)->ShowWindow(SW_HIDE);
+						GetDlgItem(IDC_CHECK_64_BIT)->ShowWindow(SW_HIDE);
+						GetDlgItem(IDC_COMBO_WINDOW_DEGREE_LAUNCHER)->ShowWindow(SW_HIDE);
+						GetDlgItem(IDC_CHECK_WINDOWS_MODE)->ShowWindow(SW_HIDE);
+
+						GetDlgItem(IDGO)->EnableWindow(TRUE);
+						m_KbcGO.SetButtonEnable();
+						m_KbcGO.SetModernButton("OYNA", RGB(225, 82, 35));
+						m_KbcGO.SetToolTipText("Oyunu Baslat");
+
+						SetProgressGroupText("Giris basarili. Oyun baslatilmaya hazir.");
+						Invalidate(FALSE);
 					}
 					break;
 				case T_PC_CONNECT_GET_SERVER_GROUP_LIST_OK:
@@ -2663,6 +2734,25 @@ void CAtumLauncherDlg::OnDestroy()
 
 void CAtumLauncherDlg::OnOk()
 {
+	// Second-stage action: after a successful launcher login the same
+	// primary button becomes OYNA and starts the already-authenticated game.
+	if (m_bLauncherLoggedIn)
+	{
+		if (m_szLaunchCmdLine[0] == 0)
+		{
+			AtumMessageBox("Oyun baslatma bilgileri hazir degil.");
+			return;
+		}
+
+		if (m_szCrocessSuffix == "")
+			ExecGame(m_szLaunchCmdLine, m_szLaunchAppPath, m_szLaunchCmdParam);
+		else
+			ExecGameCrocess(m_szLaunchCmdLine);
+
+		OnCancel();
+		return;
+	}
+
 	/*if (!IsRuntimeInstalled())
 	{
 		MessageBox("Please check Common directory in client! Install DirectX and VC Redistributable!", "Error", MB_OK);
