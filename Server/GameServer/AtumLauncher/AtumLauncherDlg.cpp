@@ -91,6 +91,11 @@ static const CRect ACETR_NAV_DISCORD_RECT(875, 10, 980, 56);
 static const CRect ACETR_ACCOUNT_MANAGE_RECT(875, 475, 1000, 515);
 static const CRect ACETR_ACCOUNT_SUPPORT_RECT(1010, 475, 1125, 515);
 static const CRect ACETR_ACCOUNT_LOGOUT_RECT(875, 520, 1125, 548);
+static const CRect ACETR_ACCOUNT_BACK_RECT(875, 475, 1125, 510);
+static const CRect ACETR_ACCOUNT_PASSWORD_RECT(875, 205, 1125, 245);
+static const CRect ACETR_ACCOUNT_EMAIL_RECT(875, 255, 1125, 295);
+static const CRect ACETR_ACCOUNT_CHARACTERS_RECT(875, 305, 1125, 345);
+static const CRect ACETR_ACCOUNT_SECURITY_RECT(875, 355, 1125, 395);
 
 static void OpenLauncherConfiguredUrl(LPCSTR key)
 {
@@ -255,6 +260,7 @@ CAtumLauncherDlg::CAtumLauncherDlg(CWnd* pParent /*=NULL*/)
 	m_nModernNavHover = 0;
 	m_bModernNavTracking = FALSE;
 	m_bLauncherLoggedIn = FALSE;
+	m_nLauncherAccountPage = 0;
 	MEMSET_ZERO(m_szLaunchCmdLine, sizeof(m_szLaunchCmdLine));
 	MEMSET_ZERO(m_szLaunchAppPath, sizeof(m_szLaunchAppPath));
 	MEMSET_ZERO(m_szLaunchCmdParam, sizeof(m_szLaunchCmdParam));
@@ -1277,81 +1283,121 @@ void CAtumLauncherDlg::OnPaint()
 
 		if (m_bLauncherLoggedIn)
 		{
-			// Cover the login-form copy and draw the authenticated account panel.
 			CBrush panelBrush(RGB(18, 21, 29));
+			CBrush actionBrush(RGB(28, 32, 43));
+			CBrush actionHotBrush(RGB(225, 82, 35));
 			CPen panelPen(PS_SOLID, 1, RGB(52, 58, 74));
+			CPen actionPen(PS_SOLID, 1, RGB(56, 62, 78));
 			CBrush* oldBrush = PaintDC.SelectObject(&panelBrush);
 			CPen* oldPen = PaintDC.SelectObject(&panelPen);
 			PaintDC.RoundRect(CRect(852, 98, 1148, 535), CPoint(14, 14));
-
 			PaintDC.SetBkMode(TRANSPARENT);
 
 			CFont titleFont;
 			titleFont.CreateFont(18, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0,
 				DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
 				CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
-			CFont* pf = PaintDC.SelectObject(&titleFont);
-			PaintDC.SetTextColor(RGB(245, 247, 251));
-			PaintDC.TextOut(875, 120, "HESABIM");
-
 			CFont smallFont;
 			smallFont.CreateFont(14, 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0,
 				DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
 				CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
-			PaintDC.SelectObject(&smallFont);
-			PaintDC.SetTextColor(RGB(78, 218, 143));
-			PaintDC.TextOut(875, 158, "●  OTURUM AÇIK");
-
 			CFont nameFont;
 			nameFont.CreateFont(24, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0,
 				DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
 				CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
-			PaintDC.SelectObject(&nameFont);
-			PaintDC.SetTextColor(RGB(255, 255, 255));
-			PaintDC.TextOut(875, 195, m_szAccountName);
 
-			PaintDC.SelectObject(&smallFont);
-			PaintDC.SetTextColor(RGB(150, 157, 174));
-			PaintDC.TextOut(875, 242, "Hesap durumu");
-			PaintDC.TextOut(875, 290, "Sunucu");
-			PaintDC.TextOut(875, 338, "İstemci sürümü");
-			PaintDC.TextOut(875, 386, "Launcher oturumu");
+			CFont* pf = PaintDC.SelectObject(&titleFont);
+			PaintDC.SetTextColor(RGB(245, 247, 251));
 
-			PaintDC.SetTextColor(RGB(235, 238, 244));
-			PaintDC.TextOut(1025, 242, "Aktif");
-			PaintDC.TextOut(1025, 290, m_strServerGroupName.IsEmpty() ? "AceTR" : m_strServerGroupName);
-			PaintDC.TextOut(1025, 338, m_CurrentVersion.GetVersionString());
-			PaintDC.TextOut(1025, 386, "Doğrulandı");
+			if (m_nLauncherAccountPage == 0)
+			{
+				PaintDC.TextOut(875, 120, "HESABIM");
+				PaintDC.SelectObject(&smallFont);
+				PaintDC.SetTextColor(RGB(78, 218, 143));
+				PaintDC.TextOut(875, 158, "●  OTURUM AÇIK");
 
-			PaintDC.SetTextColor(RGB(120, 127, 143));
-			PaintDC.TextOut(875, 428, "Hesabını yönet veya destek merkezine git.");
+				PaintDC.SelectObject(&nameFont);
+				PaintDC.SetTextColor(RGB(255, 255, 255));
+				PaintDC.TextOut(875, 195, m_szAccountName);
 
-			// Account action buttons
-			CBrush actionBrush(RGB(28, 32, 43));
-			CBrush actionHotBrush(RGB(225, 82, 35));
-			CPen actionPen(PS_SOLID, 1, RGB(56, 62, 78));
-			CBrush* prevBrush = PaintDC.SelectObject(&actionBrush);
-			CPen* prevPen = PaintDC.SelectObject(&actionPen);
+				PaintDC.SelectObject(&smallFont);
+				PaintDC.SetTextColor(RGB(150, 157, 174));
+				PaintDC.TextOut(875, 242, "Hesap durumu");
+				PaintDC.TextOut(875, 290, "Sunucu");
+				PaintDC.TextOut(875, 338, "İstemci sürümü");
+				PaintDC.TextOut(875, 386, "Launcher oturumu");
 
-			const bool hotManage = (m_nModernNavHover == 6);
-			const bool hotSupport = (m_nModernNavHover == 7);
-			const bool hotLogout = (m_nModernNavHover == 8);
+				PaintDC.SetTextColor(RGB(235, 238, 244));
+				PaintDC.TextOut(1025, 242, "Aktif");
+				PaintDC.TextOut(1025, 290, m_strServerGroupName.IsEmpty() ? "AceTR" : m_strServerGroupName);
+				PaintDC.TextOut(1025, 338, m_CurrentVersion.GetVersionString());
+				PaintDC.TextOut(1025, 386, "Doğrulandı");
 
-			if (hotManage) PaintDC.SelectObject(&actionHotBrush);
-			PaintDC.RoundRect(ACETR_ACCOUNT_MANAGE_RECT, CPoint(10, 10));
-			PaintDC.SelectObject(&actionBrush);
-			if (hotSupport) PaintDC.SelectObject(&actionHotBrush);
-			PaintDC.RoundRect(ACETR_ACCOUNT_SUPPORT_RECT, CPoint(10, 10));
-			PaintDC.SelectObject(&actionBrush);
+				CBrush* prevBrush = PaintDC.SelectObject(&actionBrush);
+				CPen* prevPen = PaintDC.SelectObject(&actionPen);
+				if (m_nModernNavHover == 6) PaintDC.SelectObject(&actionHotBrush);
+				PaintDC.RoundRect(ACETR_ACCOUNT_MANAGE_RECT, CPoint(10, 10));
+				PaintDC.SelectObject(&actionBrush);
+				if (m_nModernNavHover == 7) PaintDC.SelectObject(&actionHotBrush);
+				PaintDC.RoundRect(ACETR_ACCOUNT_SUPPORT_RECT, CPoint(10, 10));
+				PaintDC.SelectObject(&actionBrush);
+				PaintDC.SetTextColor(RGB(238, 241, 247));
+				PaintDC.DrawText("HESAP YÖNETİMİ", ACETR_ACCOUNT_MANAGE_RECT, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+				PaintDC.DrawText("DESTEK", ACETR_ACCOUNT_SUPPORT_RECT, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+				PaintDC.SetTextColor(m_nModernNavHover == 8 ? RGB(255, 132, 95) : RGB(150, 157, 174));
+				PaintDC.DrawText("OTURUMU KAPAT", ACETR_ACCOUNT_LOGOUT_RECT, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+				PaintDC.SelectObject(prevPen);
+				PaintDC.SelectObject(prevBrush);
+			}
+			else if (m_nLauncherAccountPage == 1)
+			{
+				PaintDC.TextOut(875, 120, "HESAP YÖNETİMİ");
+				PaintDC.SelectObject(&smallFont);
+				PaintDC.SetTextColor(RGB(150, 157, 174));
+				PaintDC.TextOut(875, 155, "Tüm işlemler launcher içinde yapılacak.");
 
-			PaintDC.SetTextColor(RGB(238, 241, 247));
-			PaintDC.DrawText("HESABIM", ACETR_ACCOUNT_MANAGE_RECT, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
-			PaintDC.DrawText("DESTEK", ACETR_ACCOUNT_SUPPORT_RECT, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
-			PaintDC.SetTextColor(hotLogout ? RGB(255, 132, 95) : RGB(150, 157, 174));
-			PaintDC.DrawText("OTURUMU KAPAT", ACETR_ACCOUNT_LOGOUT_RECT, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+				struct AccountAction { CRect r; LPCSTR text; int hoverId; };
+				AccountAction actions[] = {
+					{ ACETR_ACCOUNT_PASSWORD_RECT, "ŞİFRE DEĞİŞTİR", 9 },
+					{ ACETR_ACCOUNT_EMAIL_RECT, "E-POSTA YÖNETİMİ", 10 },
+					{ ACETR_ACCOUNT_CHARACTERS_RECT, "KARAKTERLERİM", 11 },
+					{ ACETR_ACCOUNT_SECURITY_RECT, "GÜVENLİK", 12 }
+				};
 
-			PaintDC.SelectObject(prevPen);
-			PaintDC.SelectObject(prevBrush);
+				CBrush* prevBrush = PaintDC.SelectObject(&actionBrush);
+				CPen* prevPen = PaintDC.SelectObject(&actionPen);
+				for (int i = 0; i < 4; ++i)
+				{
+					PaintDC.SelectObject(m_nModernNavHover == actions[i].hoverId ? &actionHotBrush : &actionBrush);
+					PaintDC.RoundRect(actions[i].r, CPoint(10, 10));
+					PaintDC.SetTextColor(RGB(238, 241, 247));
+					PaintDC.DrawText(actions[i].text, actions[i].r, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+				}
+				PaintDC.SelectObject(&actionBrush);
+				PaintDC.RoundRect(ACETR_ACCOUNT_BACK_RECT, CPoint(10, 10));
+				PaintDC.SetTextColor(RGB(180, 186, 198));
+				PaintDC.DrawText("GERİ", ACETR_ACCOUNT_BACK_RECT, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+				PaintDC.SelectObject(prevPen);
+				PaintDC.SelectObject(prevBrush);
+			}
+			else
+			{
+				PaintDC.TextOut(875, 120, "DESTEK");
+				PaintDC.SelectObject(&smallFont);
+				PaintDC.SetTextColor(RGB(150, 157, 174));
+				PaintDC.TextOut(875, 165, "Destek sistemi de launcher içine alınacak.");
+				PaintDC.TextOut(875, 195, "Bilet oluşturma, geçmiş biletler ve");
+				PaintDC.TextOut(875, 215, "sunucu duyuruları burada görünecek.");
+
+				CBrush* prevBrush = PaintDC.SelectObject(&actionBrush);
+				CPen* prevPen = PaintDC.SelectObject(&actionPen);
+				PaintDC.RoundRect(ACETR_ACCOUNT_BACK_RECT, CPoint(10, 10));
+				PaintDC.SetTextColor(RGB(180, 186, 198));
+				PaintDC.DrawText("GERİ", ACETR_ACCOUNT_BACK_RECT, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+				PaintDC.SelectObject(prevPen);
+				PaintDC.SelectObject(prevBrush);
+			}
+
 			PaintDC.SelectObject(pf);
 			PaintDC.SelectObject(oldPen);
 			PaintDC.SelectObject(oldBrush);
@@ -2098,6 +2144,7 @@ LONG CAtumLauncherDlg::OnSocketNotify(WPARAM wParam, LPARAM lParam)
 						STRNCPY_MEMSET(m_szLaunchAppPath, szAppPath, sizeof(m_szLaunchAppPath));
 						STRNCPY_MEMSET(m_szLaunchCmdParam, szCmdParam, sizeof(m_szLaunchCmdParam));
 						m_bLauncherLoggedIn = TRUE;
+						m_nLauncherAccountPage = 0;
 
 						// Hide credential/settings controls; the right side becomes a profile panel.
 						GetDlgItem(IDC_EDIT_ACCOUNT)->ShowWindow(SW_HIDE);
@@ -3825,6 +3872,7 @@ void CAtumLauncherDlg::OnCancel()
 void CAtumLauncherDlg::LogoutLauncherAccount()
 {
 	m_bLauncherLoggedIn = FALSE;
+	m_nLauncherAccountPage = 0;
 	MEMSET_ZERO(m_szLaunchCmdLine, sizeof(m_szLaunchCmdLine));
 	MEMSET_ZERO(m_szLaunchAppPath, sizeof(m_szLaunchAppPath));
 	MEMSET_ZERO(m_szLaunchCmdParam, sizeof(m_szLaunchCmdParam));
@@ -4244,14 +4292,42 @@ void CAtumLauncherDlg::OnLButtonUp(UINT nFlags, CPoint point)
 		return;
 	}
 
-	if (m_bLauncherLoggedIn && ACETR_ACCOUNT_MANAGE_RECT.PtInRect(point))
+	if (m_bLauncherLoggedIn && m_nLauncherAccountPage == 0 && ACETR_ACCOUNT_MANAGE_RECT.PtInRect(point))
 	{
-		OpenLauncherConfiguredUrl("Account");
+		m_nLauncherAccountPage = 1;
+		InvalidateRect(CRect(850, 95, 1150, 555), FALSE);
 		return;
 	}
-	if (m_bLauncherLoggedIn && ACETR_ACCOUNT_SUPPORT_RECT.PtInRect(point))
+	if (m_bLauncherLoggedIn && m_nLauncherAccountPage == 0 && ACETR_ACCOUNT_SUPPORT_RECT.PtInRect(point))
 	{
-		OpenLauncherConfiguredUrl("Support");
+		m_nLauncherAccountPage = 2;
+		InvalidateRect(CRect(850, 95, 1150, 555), FALSE);
+		return;
+	}
+	if (m_bLauncherLoggedIn && m_nLauncherAccountPage != 0 && ACETR_ACCOUNT_BACK_RECT.PtInRect(point))
+	{
+		m_nLauncherAccountPage = 0;
+		InvalidateRect(CRect(850, 95, 1150, 555), FALSE);
+		return;
+	}
+	if (m_bLauncherLoggedIn && m_nLauncherAccountPage == 1 && ACETR_ACCOUNT_PASSWORD_RECT.PtInRect(point))
+	{
+		SetProgressGroupText("Şifre değiştirme ekranı launcher içine bağlanacak.");
+		return;
+	}
+	if (m_bLauncherLoggedIn && m_nLauncherAccountPage == 1 && ACETR_ACCOUNT_EMAIL_RECT.PtInRect(point))
+	{
+		SetProgressGroupText("E-posta yönetimi launcher içine bağlanacak.");
+		return;
+	}
+	if (m_bLauncherLoggedIn && m_nLauncherAccountPage == 1 && ACETR_ACCOUNT_CHARACTERS_RECT.PtInRect(point))
+	{
+		SetProgressGroupText("Karakter bilgileri launcher içinde gösterilecek.");
+		return;
+	}
+	if (m_bLauncherLoggedIn && m_nLauncherAccountPage == 1 && ACETR_ACCOUNT_SECURITY_RECT.PtInRect(point))
+	{
+		SetProgressGroupText("Güvenlik ayarları launcher içine bağlanacak.");
 		return;
 	}
 	if (m_bLauncherLoggedIn && ACETR_ACCOUNT_LOGOUT_RECT.PtInRect(point))
@@ -4273,7 +4349,12 @@ void CAtumLauncherDlg::OnMouseMove(UINT nFlags, CPoint point)
 	else if (ACETR_NAV_DISCORD_RECT.PtInRect(point)) hover = 5;
 	else if (m_bLauncherLoggedIn && ACETR_ACCOUNT_MANAGE_RECT.PtInRect(point)) hover = 6;
 	else if (m_bLauncherLoggedIn && ACETR_ACCOUNT_SUPPORT_RECT.PtInRect(point)) hover = 7;
-	else if (m_bLauncherLoggedIn && ACETR_ACCOUNT_LOGOUT_RECT.PtInRect(point)) hover = 8;
+	else if (m_bLauncherLoggedIn && m_nLauncherAccountPage == 0 && ACETR_ACCOUNT_LOGOUT_RECT.PtInRect(point)) hover = 8;
+	else if (m_bLauncherLoggedIn && m_nLauncherAccountPage == 1 && ACETR_ACCOUNT_PASSWORD_RECT.PtInRect(point)) hover = 9;
+	else if (m_bLauncherLoggedIn && m_nLauncherAccountPage == 1 && ACETR_ACCOUNT_EMAIL_RECT.PtInRect(point)) hover = 10;
+	else if (m_bLauncherLoggedIn && m_nLauncherAccountPage == 1 && ACETR_ACCOUNT_CHARACTERS_RECT.PtInRect(point)) hover = 11;
+	else if (m_bLauncherLoggedIn && m_nLauncherAccountPage == 1 && ACETR_ACCOUNT_SECURITY_RECT.PtInRect(point)) hover = 12;
+	else if (m_bLauncherLoggedIn && m_nLauncherAccountPage != 0 && ACETR_ACCOUNT_BACK_RECT.PtInRect(point)) hover = 13;
 
 	if (hover != m_nModernNavHover)
 	{
