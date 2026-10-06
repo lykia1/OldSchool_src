@@ -279,6 +279,8 @@ CAtumLauncherDlg::CAtumLauncherDlg(CWnd* pParent /*=NULL*/)
 	m_nModernNavHover = 0;
 	m_bModernNavTracking = FALSE;
 	m_bLauncherLoggedIn = FALSE;
+	m_bModernBridgeMode = FALSE;
+	m_bModernBridgeLoginStarted = FALSE;
 	m_pWebBrowser = NULL;
 	m_nLauncherAccountPage = 0;
 	m_nLauncherMainPage = 0;
@@ -1081,6 +1083,17 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	// ąč°ć Č­¸é ¸¸µé±â ----> End
 	///////////////////////////////////////////////////////////////////////////////
 
+
+	// AceTR Launcher Next bridge. The WPF frontend owns the visible UI while
+	// this legacy executable remains the proven update/login/game-start backend.
+	char bridgeFlag[16]={0};
+	GetEnvironmentVariable("ACETR_MODERN_LAUNCHER",bridgeFlag,sizeof(bridgeFlag));
+	m_bModernBridgeMode = (lstrcmpi(bridgeFlag,"1")==0);
+	if(m_bModernBridgeMode)
+	{
+		SetTimer(TIMERID_MODERN_BRIDGE_LOGIN,500,nullptr);
+	}
+
 	DisableControls();
 	SetPrivateIP();
 
@@ -1093,7 +1106,7 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	DeleteFile("AtumLauncher_dbg.exe");
 #endif
 
-	ShowWindow(SW_SHOW);
+	ShowWindow(m_bModernBridgeMode ? SW_HIDE : SW_SHOW);
 	this->GetPublicLocalIP(m_szLocalIP);		// 2006-05-07 by cmkwon
 	return TRUE;  // return TRUE  unless you set the focus to a control
 
@@ -4057,6 +4070,41 @@ BOOL CAtumLauncherDlg::DestroyWindow()
 void CAtumLauncherDlg::OnTimer(UINT nIDEvent)
 {
 	// TODO: Add your message handler code here and/or call default
+
+	if(nIDEvent == TIMERID_MODERN_BRIDGE_LOGIN)
+	{
+		if(m_bModernBridgeMode && !m_bModernBridgeLoginStarted &&
+			m_bControlEnabled && m_SelectFlag && m_ServerList &&
+			m_ServerList->GetCount() > 0)
+		{
+			char account[256]={0};
+			char password[256]={0};
+			char opt[16]={0};
+			GetEnvironmentVariable("ACETR_ACCOUNT",account,sizeof(account));
+			GetEnvironmentVariable("ACETR_PASSWORD",password,sizeof(password));
+
+			if(account[0] && password[0])
+			{
+				GetDlgItem(IDC_EDIT_ACCOUNT)->SetWindowText(account);
+				GetDlgItem(IDC_EDIT_PASSWORD)->SetWindowText(password);
+
+				GetEnvironmentVariable("ACETR_64BIT",opt,sizeof(opt));
+				m_ctrl64Bit.SetCheck(lstrcmpi(opt,"1")==0 ? BST_CHECKED : BST_UNCHECKED);
+
+				MEMSET_ZERO(opt,sizeof(opt));
+				GetEnvironmentVariable("ACETR_WINDOWED",opt,sizeof(opt));
+				CheckDlgButton(IDC_CHECK_WINDOWS_MODE,lstrcmpi(opt,"1")==0 ? BST_CHECKED : BST_UNCHECKED);
+
+				if(m_ServerList->GetCurSel()==LB_ERR)
+					m_ServerList->SetCurSel(0);
+
+				m_bModernBridgeLoginStarted=TRUE;
+				KillTimer(TIMERID_MODERN_BRIDGE_LOGIN);
+				OnOk();
+			}
+		}
+		return;
+	}
 
 
 	if (nIDEvent == TIMERID_CONNECT_PRESERVER)
