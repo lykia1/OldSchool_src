@@ -26,14 +26,14 @@ public:
 
 	// Process Protocol
 	ProcessResult Process_PA_ADMIN_PETITION_SET_PERIOD(const char* pPacket, int nLength, int &nBytesUsed);
-	ProcessResult Process_PA_ADMIN_SET_DBSERVER_GROUP(const char* pPacket, int nLength, int &nBytesUsed);	// 2008-04-29 by cmkwon, ¼­¹ö±º Á¤º¸ DB¿¡ Ãß°¡(½Å±Ô °èÁ¤ Ä³¸¯ÅÍ »ı¼º Á¦ÇÑ ½Ã½ºÅÛÃß°¡) - 
+	ProcessResult Process_PA_ADMIN_SET_DBSERVER_GROUP(const char* pPacket, int nLength, int &nBytesUsed);	// 2008-04-29 by cmkwon, ì„œë²„êµ° ì •ë³´ DBì— ì¶”ê°€(ì‹ ê·œ ê³„ì • ìºë¦­í„° ìƒì„± ì œí•œ ì‹œìŠ¤í…œì¶”ê°€) - 
 
-	// 2009-01-14 by cmkwon, ¿î¿µÀÚ ÀÚµ¿ °øÁö ½Ã½ºÅÛ ±¸Çö - CPreIOCPSocket::Process_PA_ADMIN_RELOAD_ADMIN_NOTICE_SYSTEM() 
+	// 2009-01-14 by cmkwon, ìš´ì˜ì ìë™ ê³µì§€ ì‹œìŠ¤í…œ êµ¬í˜„ - CPreIOCPSocket::Process_PA_ADMIN_RELOAD_ADMIN_NOTICE_SYSTEM() 
 	ProcessResult Process_PA_ADMIN_RELOAD_ADMIN_NOTICE_SYSTEM(const char* pPacket, int nLength, int &nBytesUsed);
 
-	// 2009-02-12 by cmkwon, EP3-3 ¿ùµå·©Å·½Ã½ºÅÛ ±¸Çö - 
+	// 2009-02-12 by cmkwon, EP3-3 ì›”ë“œë­í‚¹ì‹œìŠ¤í…œ êµ¬í˜„ - 
 	ProcessResult Process_PA_ADMIN_RELOAD_WORLDRANKING(const char* pPacket, int nLength, int &nBytesUsed);
-	ProcessResult Process_PA_ADMIN_RELOAD_INFLUENCERATE(const char* pPacket, int nLength, int &nBytesUsed);	// 2009-09-16 by cmkwon, ¼¼·Â ÃÊ±âÈ­½Ã ¾îºäÂ¡ ¹æÁö ±¸Çö - 
+	ProcessResult Process_PA_ADMIN_RELOAD_INFLUENCERATE(const char* pPacket, int nLength, int &nBytesUsed);	// 2009-09-16 by cmkwon, ì„¸ë ¥ ì´ˆê¸°í™”ì‹œ ì–´ë·°ì§• ë°©ì§€ êµ¬í˜„ - 
 #ifdef _INET_MAC_ADDRESS_CHECKER
 	ProcessResult Process_PC_CONNECT_SEND_GET_BLOCKED_MAC_ADDR(const char* pPacket, int nLength, int &nBytesUsed);
 #endif
@@ -44,14 +44,14 @@ public:
 	ProcessResult Process_PC_CONNECT_GET_SERVER_GROUP_LIST(const char* pPacket, int nLength, int &nBytesUsed);
 	ProcessResult Process_PC_DEFAULT_NEW_UPDATE_LAUNCHER_VERSION(const char* pPacket, int nLength, int &nBytesUsed);
 	ProcessResult Process_PC_CONNECT_GET_GAME_SERVER_GROUP_LIST(const char* pPacket, int nLength, int &nBytesUsed);
-	ProcessResult Process_PC_CONNECT_NETWORK_CHECK(const char* pPacket, int nLength, int &nBytesUsed);		// 2007-06-18 by cmkwon, ³×Æ®¿öÅ© »óÅÂ Ã¼Å©
-	ProcessResult Process_PC_CONNECT_GET_NEW_GAME_SERVER_GROUP_LIST(const char* pPacket, int nLength, int &nBytesUsed);	// 2007-09-05 by cmkwon, EXE_1¿¡ ·Î±×ÀÎ ¼­¹ö ¼±ÅÃ ÀÎÅÍÆäÀÌ½º ¼öÁ¤ - Ãß°¡µÈ ÇÁ·ÎÅäÄİ Ã³¸®ÇÔ¼ö
+	ProcessResult Process_PC_CONNECT_NETWORK_CHECK(const char* pPacket, int nLength, int &nBytesUsed);		// 2007-06-18 by cmkwon, ë„¤íŠ¸ì›Œí¬ ìƒíƒœ ì²´í¬
+	ProcessResult Process_PC_CONNECT_GET_NEW_GAME_SERVER_GROUP_LIST(const char* pPacket, int nLength, int &nBytesUsed);	// 2007-09-05 by cmkwon, EXE_1ì— ë¡œê·¸ì¸ ì„œë²„ ì„ íƒ ì¸í„°í˜ì´ìŠ¤ ìˆ˜ì • - ì¶”ê°€ëœ í”„ë¡œí† ì½œ ì²˜ë¦¬í•¨ìˆ˜
 
 	ProcessResult Process_FP_CONNECT_AUTH_USER(const char* pPacket, int nLength, int &nBytesUsed);
 	ProcessResult Process_FP_CONNECT_FIELD_CONNECT(const char* pPacket, int nLength, int &nBytesUsed);
 	ProcessResult Process_FP_CONNECT_NOTIFY_FIELDSERVER_CHANGE(const char* pPacket, int nLength, int &nBytesUsed);
 	ProcessResult Process_FP_CONNECT_NOTIFY_CLOSE(const char* pPacket, int nLength, int &nBytesUsed);
-	ProcessResult Process_FP_CONNECT_CHECK_CONNECTABLE_ACCOUNT_OK(const char* pPacket, int nLength, int &nBytesUsed);	// 2008-04-29 by cmkwon, ¼­¹ö±º Á¤º¸ DB¿¡ Ãß°¡(½Å±Ô °èÁ¤ Ä³¸¯ÅÍ »ı¼º Á¦ÇÑ ½Ã½ºÅÛÃß°¡) - 
+	ProcessResult Process_FP_CONNECT_CHECK_CONNECTABLE_ACCOUNT_OK(const char* pPacket, int nLength, int &nBytesUsed);	// 2008-04-29 by cmkwon, ì„œë²„êµ° ì •ë³´ DBì— ì¶”ê°€(ì‹ ê·œ ê³„ì • ìºë¦­í„° ìƒì„± ì œí•œ ì‹œìŠ¤í…œì¶”ê°€) - 
 
 	ProcessResult Process_FP_EVENT_NOTIFY_WARP(const char* pPacket, int nLength, int &nBytesUsed);
 	ProcessResult Process_FP_EVENT_ENTER_SELECT_SCREEN(const char* pPacket, int nLength, int &nBytesUsed);
@@ -59,8 +59,8 @@ public:
 	ProcessResult Process_FP_EVENT_MAP_CHANGED(const char* pPacket, int nLength, int &nBytesUsed);
 	
 	ProcessResult Process_FP_CASH_CHANGE_CHARACTERNAME(const char* pPacket, int nLength, int &nBytesUsed);
-	ProcessResult Process_FP_ADMIN_BLOCKACCOUNT(const char* pPacket, int nLength, int &nBytesUsed);		// 2008-01-31 by cmkwon, °èÁ¤ ºí·°/ÇØÁ¦ ¸í·É¾î·Î °¡´ÉÇÑ ½Ã½ºÅÛ ±¸Çö - 
-	ProcessResult Process_FP_ADMIN_UNBLOCKACCOUNT(const char* pPacket, int nLength, int &nBytesUsed);	// 2008-01-31 by cmkwon, °èÁ¤ ºí·°/ÇØÁ¦ ¸í·É¾î·Î °¡´ÉÇÑ ½Ã½ºÅÛ ±¸Çö - 
+	ProcessResult Process_FP_ADMIN_BLOCKACCOUNT(const char* pPacket, int nLength, int &nBytesUsed);		// 2008-01-31 by cmkwon, ê³„ì • ë¸”ëŸ­/í•´ì œ ëª…ë ¹ì–´ë¡œ ê°€ëŠ¥í•œ ì‹œìŠ¤í…œ êµ¬í˜„ - 
+	ProcessResult Process_FP_ADMIN_UNBLOCKACCOUNT(const char* pPacket, int nLength, int &nBytesUsed);	// 2008-01-31 by cmkwon, ê³„ì • ë¸”ëŸ­/í•´ì œ ëª…ë ¹ì–´ë¡œ ê°€ëŠ¥í•œ ì‹œìŠ¤í…œ êµ¬í˜„ - 
 
 	ProcessResult Process_IP_CONNECT_IM_CONNECT(const char* pPacket, int nLength, int &nBytesUsed);
 	ProcessResult Process_IP_GET_SERVER_GROUP_INFO_ACK(const char* pPacket, int nLength, int &nBytesUsed);
@@ -70,16 +70,17 @@ public:
 	ProcessResult Process_PM_RELOAD_VERSION_INFO_LIST(const char* pPacket, int nLength, int &nBytesUsed);
 	ProcessResult Process_PM_RELOAD_VERSION_INFO_DONE(const char* pPacket, int nLength, int &nBytesUsed);
 
-	// start 2011-06-22 by hskim, »ç¼³ ¼­¹ö ¹æÁö
+	// start 2011-06-22 by hskim, ì‚¬ì„¤ ì„œë²„ ë°©ì§€
 	ProcessResult Process_IP_AUTHENTICATION_SHUTDOWN(const char* pPacket, int nLength, int &nBytesUsed);
 	ProcessResult Process_FP_AUTHENTICATION_SHUTDOWN(const char* pPacket, int nLength, int &nBytesUsed);
-	// end 2011-06-22 by hskim, »ç¼³ ¼­¹ö ¹æÁö
+	// end 2011-06-22 by hskim, ì‚¬ì„¤ ì„œë²„ ë°©ì§€
 
-	// 2008-02-22 by cmkwon, ServerPreServer->MasangPreServer ·Î ¼­ºñ½º Á¤º¸ Àü¼Û ½Ã½ºÅÛ Ãß°¡ - 
+	// 2008-02-22 by cmkwon, ServerPreServer->MasangPreServer ë¡œ ì„œë¹„ìŠ¤ ì •ë³´ ì „ì†¡ ì‹œìŠ¤í…œ ì¶”ê°€ - 
 	ProcessResult Process_PP_CONNECT(const char* pPacket, int nLength, int &nBytesUsed);
 
 	// Process DB Query Result
 	BOOL ResPreLogin(MSG_PC_CONNECT_LOGIN *pRecvMsgLogin, CAccountInfo *i_pAccInfo, Err_t nErr);
+	void SendLauncherSessionToken(const char* accountName);
 
 	void SendErrorMessage(MessageType_t msgType, Err_t err, int errParam1 = 0, int errParam2 = 0, char* errMsg = NULL, BOOL bCloseConnection = FALSE);
 
@@ -91,11 +92,11 @@ public:
 private:
 	CP_State			m_CPClientState;
 	char				m_szConnectedServerGroupName[SIZE_MAX_SERVER_NAME];
-	char				m_szAdminAccountName[SIZE_MAX_ACCOUNT_NAME];			// 2007-06-20 by cmkwon, °èÁ¤ ºí·°Á¤º¸ ½Ã½ºÅÛ ·Î±×¿¡ Ãß°¡
+	char				m_szAdminAccountName[SIZE_MAX_ACCOUNT_NAME];			// 2007-06-20 by cmkwon, ê³„ì • ë¸”ëŸ­ì •ë³´ ì‹œìŠ¤í…œ ë¡œê·¸ì— ì¶”ê°€
 	vector<char*> checker;
 	static CPreIOCP		*ms_pPreIOCP;
 
-	eCONNECT_PUBLISHER	m_eOtherPublisherConncect;				// 2010-11 by dhjin, ¾Æ¶ó¸®¿À Ã¤³Î¸µ ·Î±×ÀÎ.
+	eCONNECT_PUBLISHER	m_eOtherPublisherConncect;				// 2010-11 by dhjin, ì•„ë¼ë¦¬ì˜¤ ì±„ë„ë§ ë¡œê·¸ì¸.
 #ifdef _BERGI_MAC_CHECK
 	bool				m_bHasSubmitMac;
 #endif
