@@ -5,6 +5,7 @@ using System.Net.NetworkInformation;
 using System.Text.Json;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
 namespace AceTRLauncher;
@@ -18,6 +19,7 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         _config = LoadConfig();
+        LoadSkin();
         RestoreRememberedAccount();
 
         _timer.Tick += async (_, _) => await RefreshServerStateAsync();
@@ -37,14 +39,36 @@ public partial class MainWindow : Window
         catch { return new LauncherConfig(); }
     }
 
+    private void LoadSkin()
+    {
+        var skinPath = Path.Combine(AppContext.BaseDirectory, "Assets", "launcher_master.jpg");
+        if (!File.Exists(skinPath))
+        {
+            ShowToast("Assets\\launcher_master.jpg bulunamadı.");
+            return;
+        }
+
+        var image = new BitmapImage();
+        image.BeginInit();
+        image.CacheOption = BitmapCacheOption.OnLoad;
+        image.UriSource = new Uri(skinPath, UriKind.Absolute);
+        image.EndInit();
+        image.Freeze();
+        SkinImage.Source = image;
+    }
+
     private void RestoreRememberedAccount()
     {
-        var remembered = Properties.Settings.Default.RememberedAccount;
-        if (!string.IsNullOrWhiteSpace(remembered))
+        try
         {
+            var path = Path.Combine(AppContext.BaseDirectory, "remembered-account.txt");
+            if (!File.Exists(path)) return;
+            var remembered = File.ReadAllText(path).Trim();
+            if (remembered.Length == 0) return;
             AccountBox.Text = remembered;
             RememberCheck.IsChecked = true;
         }
+        catch { }
     }
 
     private async Task RefreshServerStateAsync()
@@ -115,8 +139,15 @@ public partial class MainWindow : Window
             return;
         }
 
-        Properties.Settings.Default.RememberedAccount = RememberCheck.IsChecked == true ? account : "";
-        Properties.Settings.Default.Save();
+        try
+        {
+            var rememberPath = Path.Combine(AppContext.BaseDirectory, "remembered-account.txt");
+            if (RememberCheck.IsChecked == true)
+                File.WriteAllText(rememberPath, account);
+            else if (File.Exists(rememberPath))
+                File.Delete(rememberPath);
+        }
+        catch { }
 
         var backend = Path.IsPathRooted(_config.BackendExecutable)
             ? _config.BackendExecutable
