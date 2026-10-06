@@ -481,13 +481,13 @@ BOOL CAtumLauncherDlg::ReadNoticeFile()
 #define EXE2_BG_WINDOWSMODE_CHECKBOX_WIDTH      16
 #define EXE2_BG_WINDOWSMODE_CHECKBOX_HEIGHT     16
 
-#define EXE2_BG_ACCOUNTNAME_EDIT_POS_X          885
+#define EXE2_BG_ACCOUNTNAME_EDIT_POS_X          985
 #define EXE2_BG_ACCOUNTNAME_EDIT_POS_Y          260
 #define EXE2_BG_ACCOUNTNAME_EDIT_WIDTH          245
 #define EXE2_BG_ACCOUNTNAME_EDIT_HEIGHT         34
 
-#define EXE2_BG_PASSWORD_EDIT_POS_X             885
-#define EXE2_BG_PASSWORD_EDIT_POS_Y             330
+#define EXE2_BG_PASSWORD_EDIT_POS_X             985
+#define EXE2_BG_PASSWORD_EDIT_POS_Y             322
 #define EXE2_BG_PASSWORD_EDIT_WIDTH              245
 #define EXE2_BG_PASSWORD_EDIT_HEIGHT             34
 
@@ -542,8 +542,8 @@ BOOL CAtumLauncherDlg::ReadNoticeFile()
 #define EXE2_BG_UPDATE_INFO_FONT_WEIGHT         FW_NORMAL
 #define EXE2_BG_UPDATE_INFO_FONT_COLOR          RGB(205,205,215)
 
-#define EXE2_BG_REMEMBERID_CHECKBOX_POS_X       885
-#define EXE2_BG_REMEMBERID_CHECKBOX_POS_Y       395
+#define EXE2_BG_REMEMBERID_CHECKBOX_POS_X       985
+#define EXE2_BG_REMEMBERID_CHECKBOX_POS_Y       374
 #define EXE2_BG_REMEMBERID_CHECKBOX_WIDTH       16
 #define EXE2_BG_REMEMBERID_CHECKBOX_HEIGHT      16
 
@@ -653,8 +653,8 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 							  CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH , SG_BOX_FONT_FACENAME);    // "System" Font´Â ´ëÇĄŔűŔÎ Fixed FontŔÓ´Ů.
     GetDlgItem(IDC_LIST)->SetFont(&m_fontServerGroupListBox);
 
-	m_KbcGO.SetModernButton("OYNA", RGB(225, 82, 35));
-	m_KbcGO.SetToolTipText("Oyunu Baslat");
+	m_KbcGO.SetModernButton("GİRİŞ YAP", RGB(47, 211, 255));
+	m_KbcGO.SetToolTipText("Giris Yap");
 	m_kbcBtnJoin.SetBmpButtonImage(IDB_JOINBTN, RGB(0,0,255));
 	m_kbcBtnJoin.SetToolTipText("Join");
 
@@ -668,9 +668,9 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	m_ctlBtnRememberID.SetFont(&m_fontModernSmall);
 	m_ctrl64Bit.SetFont(&m_fontModernSmall);
 	GetDlgItem(IDC_CHECK_WINDOWS_MODE)->MoveWindow(EXE2_BG_WINDOWSMODE_CHECKBOX_POS_X, EXE2_BG_WINDOWSMODE_CHECKBOX_POS_Y, EXE2_BG_WINDOWSMODE_CHECKBOX_WIDTH, EXE2_BG_WINDOWSMODE_CHECKBOX_HEIGHT);
-	GetDlgItem(IDC_COMBO_WINDOW_DEGREE_LAUNCHER)->ShowWindow(SW_HIDE);
-	GetDlgItem(IDC_CHECK_WINDOWS_MODE)->ShowWindow(SW_HIDE);
-	GetDlgItem(IDC_CHECK_64_BIT)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_COMBO_WINDOW_DEGREE_LAUNCHER)->ShowWindow(SW_SHOW);
+	GetDlgItem(IDC_CHECK_WINDOWS_MODE)->ShowWindow(SW_SHOW);
+	GetDlgItem(IDC_CHECK_64_BIT)->ShowWindow(SW_SHOW);
 	GetDlgItem(IDC_CHARACTER_NAME)->ShowWindow(SW_HIDE);
 
 	// AccountName Edit Box, Password Edit Box
@@ -685,10 +685,11 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	GetDlgItem(IDC_EDIT_ACCOUNT)->SendMessage(EM_SETMARGINS, EC_LEFTMARGIN | EC_RIGHTMARGIN, MAKELPARAM(10, 10));
 	GetDlgItem(IDC_EDIT_PASSWORD)->SendMessage(EM_SETMARGINS, EC_LEFTMARGIN | EC_RIGHTMARGIN, MAKELPARAM(10, 10));
 
-// AceTR: account login is handled by the game client, not the launcher.
-	GetDlgItem(IDC_EDIT_ACCOUNT)->ShowWindow(SW_HIDE);
-	GetDlgItem(IDC_EDIT_PASSWORD)->ShowWindow(SW_HIDE);
-	GetDlgItem(IDC_CHECK_REMEMBER_ID)->ShowWindow(SW_HIDE);
+#if !defined(SERVICE_TYPE_KOREAN_SERVER_2) || defined(_DEBUG)
+	GetDlgItem(IDC_EDIT_ACCOUNT)->ShowWindow(SW_SHOW);
+	GetDlgItem(IDC_EDIT_PASSWORD)->ShowWindow(SW_SHOW);
+#endif
+	GetDlgItem(IDC_CHECK_REMEMBER_ID)->ShowWindow(SW_SHOW);
 
 	GetDlgItem(IDC_LIST)->MoveWindow(EXE2_BG_SERVERLIST_BOX_POS_X, EXE2_BG_SERVERLIST_BOX_POS_Y, EXE2_BG_SERVERLIST_BOX_WIDTH, EXE2_BG_SERVERLIST_BOX_HEIGHT);
 	GetDlgItem(IDC_LIST)->ShowWindow(SW_SHOW);		
@@ -1418,31 +1419,36 @@ void CAtumLauncherDlg::OnPaint()
 
 	dc.SelectObject(&sectionFont);
 	dc.SetTextColor(RGB(74,215,255));
-	dc.TextOut(986,302,"SUNUCU SECIMI");
+	dc.TextOut(986,214,"HESAP GIRISI");
 	dc.SelectObject(&card);
-	dc.RoundRect(CRect(982,330,1238,378),CPoint(8,8));
+	dc.RoundRect(CRect(982,238,1238,386),CPoint(8,8));
 	dc.SelectObject(&bodyFont);
 	dc.SetTextColor(RGB(224,239,246));
-	dc.TextOut(1000,346,"AceTR - Ana Sunucu");
+	dc.TextOut(1000,246,"Kullanici Adi");
+	dc.TextOut(1000,308,"Sifre");
 
 	dc.SelectObject(&tinyFont);
 	dc.SetTextColor(RGB(132,155,170));
-	dc.TextOut(986,427,"OYUN DURUMU");
+	dc.TextOut(986,410,"SUNUCU");
 	dc.SetTextColor(RGB(218,235,243));
-	dc.TextOut(1080,427,"Hazir");
+	dc.TextOut(1080,410,"AceTR");
 	dc.SetTextColor(RGB(132,155,170));
-	dc.TextOut(986,451,"DOSYALAR");
+	dc.TextOut(986,437,"OYUN DURUMU");
 	dc.SetTextColor(RGB(218,235,243));
-	dc.TextOut(1080,451,"Kontrol edildi");
+	dc.TextOut(1080,437,"Hazir");
 	dc.SetTextColor(RGB(132,155,170));
-	dc.TextOut(986,475,"BOLGE");
+	dc.TextOut(986,461,"DOSYALAR");
 	dc.SetTextColor(RGB(218,235,243));
-	dc.TextOut(1080,475,"Turkiye");
+	dc.TextOut(1080,461,"Kontrol edildi");
+	dc.SetTextColor(RGB(132,155,170));
+	dc.TextOut(986,485,"BOLGE");
+	dc.SetTextColor(RGB(218,235,243));
+	dc.TextOut(1080,485,"Turkiye");
 
 	// Text directly above the real owner-draw OYNA button.
 	dc.SelectObject(&tinyFont);
 	dc.SetTextColor(RGB(111,145,164));
-	dc.DrawText("OYUNU BASLATMAK ICIN",CRect(982,514,1238,536),DT_CENTER|DT_VCENTER|DT_SINGLELINE);
+	dc.DrawText("GIRIS SONRASI OYNA BUTONUNA DONUSUR",CRect(982,514,1238,536),DT_CENTER|DT_VCENTER|DT_SINGLELINE);
 
 	// Patch strip.
 	dc.SelectObject(&smallFont);
@@ -2873,28 +2879,90 @@ void CAtumLauncherDlg::OnDestroy()
 
 void CAtumLauncherDlg::OnOk()
 {
-	// AceTR modern launcher: the game client owns username/password authentication.
-	// The launcher only checks that a server has been discovered and patching is idle,
-	// then starts the client directly.
-	if (!m_SelectFlag || m_ServerList == nullptr || m_ServerList->GetCount() < 1)
+	// TODO: Add your control notification handler code here
+	if(m_SelectFlag)
 	{
-		AtumMessageBox(STRMSG_S_ATUMLAUNCHER_0001);
-		return;
-	}
+		UpdateData();
+		// 7/13/2006 by dgwoo
+		if (m_ServerList->GetCurSel() == LB_ERR
+			|| m_ServerList->GetCount() < 1)
+		{
+			AtumMessageBox(STRMSG_S_ATUMLAUNCHER_0001);
+			return;
+		}
 
-	if (m_bProcessingVersionUpdate)
+		// 2007-12-27 by cmkwon, Ŕ©µµżěÁî ¸đµĺ ±â´É Ăß°ˇ -
+		CString csWDegree;
+		GetDlgItem(IDC_COMBO_WINDOW_DEGREE_LAUNCHER)->GetWindowText(csWDegree);
+		if(csWDegree.IsEmpty())
+		{
+			AtumMessageBox(STRMSG_071228_0001);
+			return;
+		}
+
+
+
+		// 2008-12-17 by ckPark ·Ż˝ĂľĆ ·±ĂÄ
+		// 2007-12-27 by cmkwon, Ŕ©µµżěÁî ¸đµĺ ±â´É Ăß°ˇ - ĂĽĹ© ąöĆ°Ŕ» Č®ŔÎ ÇŃ´Ů.		
+#if defined(SERVICE_TYPE_RUSSIAN_SERVER_1)		// ·Ż˝ĂľĆ ·±Ăł ŔÎĹÍĆäŔĚ˝ş ĽöÁ¤
+		// ·Ż˝ĂľĆ´Â ĂĽĹ©ąÚ˝ş »óĹÂ¸¦ ÄÁĆ®·ŃżˇĽ­ ľňľîżÂ´Ů
+		if(FALSE == m_ctrlCheckWindowMode.GetCheck())
+#else
+		if(FALSE == this->IsDlgButtonChecked(IDC_CHECK_WINDOWS_MODE))
+#endif
+		// end 2008-12-17 by ckPark ·Ż˝ĂľĆ ·±ĂÄ
+
+
+		{
+			m_nWindowModeReg		= GAME_MODE_FULLSCREEN;
+		}
+		else
+		{
+			m_nWindowModeReg		= GAME_MODE_WINDOW;
+		}
+
+		SendLogin(LOGIN_TYPE_DIRECT);
+// 2007-03-06 by cmkwon, żĄ°ÔŔÓ ĽŇ˝ş Á¦°Ĺ·Î ÇĘżä ľřŔ˝
+//		//////////////////////////////////////////////////////////////////////
+//		// Send Login
+//#if defined(_ATUM_DEVELOP) || defined(_MASANG15_SERVER) || defined(_MASANG51_SERVER) || defined(_GLOBAL_ENG_SERVER) || defined(_VTC_VIET_SERVER) || defined(_KOREA_SERVER_2)
+//		SendLogin(LOGIN_TYPE_DIRECT);
+//#else
+//		SendLogin(LOGIN_TYPE_MGAME);
+//#endif// end_ATUM_DEVELOP
+
+//		m_nServerGroupReg = m_nServer;
+		m_szAccountName.MakeLower();
+		m_szAccountNameReg = m_szAccountName;
+		m_szPasswordReg = m_szPassword;
+// 2007-12-27 by cmkwon, Ŕ©µµżěÁî ¸đµĺ ±â´É Ăß°ˇ - ÇĘżä ľřŔ˝
+//		m_nWindowDegreeReg = m_nWindowDegree+3;		// 2007-07-24 by cmkwon, ·±ĂłżˇĽ­ 800*600 ÇŘ»óµµ »čÁ¦ - ±âÁ¸ ·ąÁö˝şĆ®¸®°ŞŔ» »çżëÇĎ±â Ŕ§ÇŘĽ­
+
+
+
+
+		// 2008-12-17 by ckPark ·Ż˝ĂľĆ ·±ĂÄ
+		// ·Ż˝ĂľĆ´Â ˝şĆ®¸µŔ» ÄÁĆ®·ŃżˇĽ­ Á÷Á˘ ľňľîżÂ´Ů
+#if defined(SERVICE_TYPE_RUSSIAN_SERVER_1)		// ·Ż˝ĂľĆ ·±Ăł ŔÎĹÍĆäŔĚ˝ş ĽöÁ¤
+		m_csWindowsResolutionReg	= reinterpret_cast<char*>(m_ctrlComboWindowDegree.GetItemData(m_ctrlComboWindowDegree.GetCurSel()));
+#else
+		m_csWindowsResolutionReg	= csWDegree;	// 2007-12-27 by cmkwon, Ŕ©µµżěÁî ¸đµĺ ±â´É Ăß°ˇ -
+#endif
+		// end 2008-12-17 by ckPark ·Ż˝ĂľĆ ·±ĂÄ
+
+
+
+
+		((CAtumLauncherApp*)AfxGetApp())->WriteProfile();
+
+		// °ÔŔÓ ˝ĂŔŰ ąöĆ° ż©·Żąř ´©¸Ł´Â °Ĺ ąćÁö
+		DisableControls();
+		SetTimer(TIMERID_ENABLE_CONTROL, 2000, NULL);
+	}
+	else
 	{
-		SetProgressGroupText("Guncelleme devam ediyor. Lutfen tamamlanmasini bekleyin.");
-		return;
+		AfxMessageBox(STRMSG_S_ATUMLAUNCHER_0001);
 	}
-
-	char cmdLine[1024];
-	MEMSET_ZERO(cmdLine, sizeof(cmdLine));
-	sprintf(cmdLine, "%s", CLIENT_EXEUTE_FILE_NAME);
-
-	SetProgressGroupText("AceTR baslatiliyor...");
-	ExecGame(cmdLine);
-	OnCancel();
 }
 
 BOOL CAtumLauncherDlg::SendLogin(BYTE i_nLoginType)
