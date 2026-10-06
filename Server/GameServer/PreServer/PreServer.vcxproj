@@ -4906,7 +4906,10 @@
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
       <IgnoreSpecificDefaultLibraries>libci.lib</IgnoreSpecificDefaultLibraries>
     </Link>
-  </ItemDefinitionGroup>
+
+    <PostBuildEvent>
+      <Command>if exist "$(ProjectDir)launcher_api_secret.txt" copy /Y "$(ProjectDir)launcher_api_secret.txt" "$(OutDir)launcher_api_secret.txt"</Command>
+    </PostBuildEvent>  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='R_Wikigames_Eng|x64'">
     <ClCompile>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
