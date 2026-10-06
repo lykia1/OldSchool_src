@@ -354,6 +354,10 @@ public:
 	CFont				m_fontModernSmall;
 	int					m_nModernNavHover;
 	BOOL				m_bModernNavTracking;
+	BOOL				m_bLauncherLoggedIn;
+	char				m_szLaunchCmdLine[2048];
+	char				m_szLaunchAppPath[1024];
+	char				m_szLaunchCmdParam[2048];
 
 // Dialog Data
 	//{{AFX_DATA(CAtumLauncherDlg)
