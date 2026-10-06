@@ -587,7 +587,7 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 			return FALSE;
 		}
 		this->m_bGuardAgreementReg	= TRUE;
-		((CAtumLauncherApp*)AfxGetApp())->WriteProfile();
+		((CAtumLauncherApp*)AfxGetApp())->WriteProfile(*this);
 	}
 #endif
 #ifdef _INET_CONFIGURATOR
