@@ -836,6 +836,10 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 
 	// Update Progress Bar
 	m_progressCtrl.MoveWindow(EXE2_BG_UPDATE_PROGRESS_BAR_POS_X, EXE2_BG_UPDATE_PROGRESS_BAR_POS_Y, EXE2_BG_UPDATE_PROGRESS_BAR_WIDTH, EXE2_BG_UPDATE_PROGRESS_BAR_HEIGHT);
+	// AceTR final updater skin: override all legacy regional color schemes.
+	m_progressCtrl.SetBkColor(RGB(5, 22, 34));
+	m_progressCtrl.SetGradientColors(RGB(0, 205, 255), RGB(0, 128, 210));
+	m_progressCtrl.SetBarColor(RGB(0, 174, 239));
 	GetDlgItem(IDC_PLAYER_CNT)->MoveWindow(974, 170, 240, 22);
 	GetDlgItem(IDC_PLAYER_CNT)->ShowWindow(SW_HIDE);
 
@@ -873,6 +877,8 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	m_fontDownloadFileNum.CreateFont(EXE2_BG_DOWNLOAD_FILE_FONT_SIZE, 0, 0, 0, EXE2_BG_DOWNLOAD_FILE_FONT_WEIGHT, 0, FALSE, FALSE, SG_BOX_FONT_CHARSET, OUT_DEFAULT_PRECIS,
 							  CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH , SG_BOX_FONT_FACENAME);    // "System" Font´Â ´ëÇĄŔűŔÎ Fixed FontŔÓ´Ů.
 	GetDlgItem(IDC_DOWNLOAD_FILENUM)->SetFont(&m_fontDownloadFileNum);
+	GetDlgItem(IDC_DOWNLOAD_FILENUM)->SetWindowText("");
+	GetDlgItem(IDC_DOWNLOAD_FILENUM)->ShowWindow(SW_HIDE);
 
 	// Download File Info
 	GetDlgItem(IDC_FILE_INFO)->MoveWindow(EXE2_BG_UPDATE_INFO_STATIC_POS_X, EXE2_BG_UPDATE_INFO_STATIC_POS_Y, EXE2_BG_UPDATE_INFO_STATIC_WIDTH, EXE2_BG_UPDATE_INFO_STATIC_HEIGHT);
@@ -881,6 +887,8 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	m_fontFileInfo.CreateFont(EXE2_BG_UPDATE_INFO_FONT_SIZE, 0, 0, 0, EXE2_BG_UPDATE_INFO_FONT_WEIGHT, 0, FALSE, FALSE, SG_BOX_FONT_CHARSET, OUT_DEFAULT_PRECIS,
 							  CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH , SG_BOX_FONT_FACENAME);    // "System" Font´Â ´ëÇĄŔűŔÎ Fixed FontŔÓ´Ů.
 	GetDlgItem(IDC_FILE_INFO)->SetFont(&m_fontFileInfo);
+	GetDlgItem(IDC_FILE_INFO)->SetWindowText("");
+	GetDlgItem(IDC_FILE_INFO)->ShowWindow(SW_HIDE);
 
 	GetDlgItem(IDC_NOTICE2)->MoveWindow(108, 405, 180, 34);
 	wndStyle = ::GetWindowLong(GetDlgItem(IDC_NOTICE2)->m_hWnd, GWL_STYLE);
@@ -888,6 +896,8 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	m_fontNotice.CreateFont(13, 0, 0, 0, EXE2_BG_UPDATE_INFO_FONT_WEIGHT, 0, FALSE, FALSE, SG_BOX_FONT_CHARSET, OUT_DEFAULT_PRECIS,
 							CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH, "Verdana");    // "System" Font´Â ´ëÇĄŔűŔÎ Fixed FontŔÓ´Ů.
 	GetDlgItem(IDC_NOTICE2)->SetFont(&m_fontNotice);
+	GetDlgItem(IDC_NOTICE2)->SetWindowText("");
+	GetDlgItem(IDC_NOTICE2)->ShowWindow(SW_HIDE);
 
 	GetDlgItem(IDC_PLAYER_CNT)->MoveWindow(898, 178, 220, 22);
 	wndStyle = ::GetWindowLong(GetDlgItem(IDC_PLAYER_CNT)->m_hWnd, GWL_STYLE);
@@ -916,7 +926,7 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 #if defined(SERVICE_TYPE_KOREAN_SERVER_1) || defined(SERVICE_TYPE_THAI_SERVER_1) || defined(SERVICE_TYPE_ENGLISH_SERVER_2) || defined(SERVICE_TYPE_GERMAN_SERVER_1) || defined(SERVICE_TYPE_TURKISH_SERVER_1) || defined(SERVICE_TYPE_FRENCH_SERVER_1) || defined(SERVICE_TYPE_ITALIAN_SERVER_1) || defined(SERVICE_TYPE_POLISH_SERVER_1) || defined(SERVICE_TYPE_SPANISH_SERVER_1) || defined(SERVICE_TYPE_ARGENTINA_SERVER_1) || defined(SERVICE_TYPE_SINGAPORE_1) || defined(SERVICE_TYPE_INDONESIA_SERVER_1) || defined (SERVICE_TYPE_VIETNAMESE_SERVER_1)  || defined(SERVICE_TYPE_ENGLISH_SERVER_1)
 	///////////////////////////////////////////////////////////////////////////////
 	// 2008-06-17 by cmkwon, WinnerOnline_Tha LauncherżˇĽ­ ŔĚŔü Á˘ĽÓ °čÁ¤ ±âľďÇĎ±â(K0000243) - 
-	m_ctlBtnRememberID.ShowWindow(SW_SHOW);	
+	m_ctlBtnRememberID.ShowWindow(SW_HIDE);	
 	m_ctlBtnRememberID.MoveWindow(EXE2_BG_REMEMBERID_CHECKBOX_POS_X, EXE2_BG_REMEMBERID_CHECKBOX_POS_Y, EXE2_BG_REMEMBERID_CHECKBOX_WIDTH, EXE2_BG_REMEMBERID_CHECKBOX_HEIGHT);
 	
 
@@ -1245,6 +1255,19 @@ void CAtumLauncherDlg::OnPaint()
 	CBrush bg(RGB(3,9,16)); dc.FillRect(client,&bg);
 	CBrush header(RGB(6,18,31)); dc.FillRect(CRect(0,0,1360,112),&header);
 
+	// Premium header artwork from the approved AceTR skin resource.
+	CDC headerDC;
+	headerDC.CreateCompatibleDC(&dc);
+	CBitmap* oldHeaderBmp=headerDC.SelectObject(&m_BackGround);
+	BITMAP headerInfo={0}; m_BackGround.GetObject(sizeof(BITMAP),&headerInfo);
+	if(headerInfo.bmWidth>0 && headerInfo.bmHeight>0)
+	{
+		dc.SetStretchBltMode(HALFTONE);
+		dc.StretchBlt(0,0,1360,112,&headerDC,0,0,headerInfo.bmWidth,
+			min(headerInfo.bmHeight,140),SRCCOPY);
+	}
+	headerDC.SelectObject(oldHeaderBmp);
+
 	// star-field / scan-line ambience
 	CPen starPen(PS_SOLID,1,RGB(22,64,88)); CPen* oldP=dc.SelectObject(&starPen);
 	for(int x=18;x<1360;x+=73) { dc.SetPixel(x,(x*17)%90+8,RGB(30,86,116)); }
@@ -1263,17 +1286,7 @@ void CAtumLauncherDlg::OnPaint()
 	AceDrawLinkCard(dc,ACETR_NAV_EVENTS_RECT,"FACEBOOK","Bizi sosyal medyada takip et",2,m_nModernNavHover==3);
 	AceDrawLinkCard(dc,ACETR_NAV_WEB_RECT,"DESTEK","Yardım ve destek merkezi",3,m_nModernNavHover==4);
 
-	// Top premium logo band
-	AceDrawWingMark(dc,312,24);
-	CFont logoA,logoB,tag;
-	logoA.CreateFont(54,0,0,0,FW_BOLD,TRUE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
-	logoB.CreateFont(18,0,0,0,FW_BOLD,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
-	tag.CreateFont(14,0,0,0,FW_NORMAL,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
-	dc.SelectObject(&logoA); dc.SetTextColor(RGB(236,248,255)); dc.TextOut(430,18,"ACE");
-	dc.SetTextColor(RGB(0,193,255)); dc.TextOut(565,18,"TR");
-	dc.SelectObject(&logoB); dc.SetTextColor(RGB(138,194,218)); dc.TextOut(490,76,"ACE ONLINE TÜRKİYE");
-	AceDrawTurkishFlag(dc,760,28,60,36);
-	dc.SelectObject(&tag); dc.SetTextColor(RGB(92,152,180)); dc.TextOut(840,37,"EFSANE YENİDEN DOĞUYOR");
+	// Header identity is supplied by the premium artwork above.
 
 	// center webview shell
 	AceDrawTechPanel(dc,CRect(262,128,1026,674),RGB(5,16,27),RGB(18,86,118),RGB(0,112,162));
@@ -2710,6 +2723,21 @@ LONG CAtumLauncherDlg::OnDownLoadGamefilesDone(WPARAM wParam, LPARAM lParam)
 
 BOOL CAtumLauncherDlg::InitLauncherWebView()
 {
+	// Force the legacy WebBrowser ActiveX into IE11 standards mode.
+	char exePath[MAX_PATH]={0};
+	GetModuleFileName(NULL,exePath,MAX_PATH);
+	char* exeName=strrchr(exePath,'\\');
+	exeName=exeName?exeName+1:exePath;
+	HKEY hKey=NULL;
+	if(RegCreateKeyEx(HKEY_CURRENT_USER,
+		"Software\\Microsoft\\Internet Explorer\\Main\\FeatureControl\\FEATURE_BROWSER_EMULATION",
+		0,NULL,0,KEY_SET_VALUE,NULL,&hKey,NULL)==ERROR_SUCCESS)
+	{
+		DWORD mode=11001;
+		RegSetValueEx(hKey,exeName,0,REG_DWORD,(const BYTE*)&mode,sizeof(mode));
+		RegCloseKey(hKey);
+	}
+
 	CRect webRect(282, 188, 1010, 650);
 	if (!m_wndWebView.CreateControl(CLSID_WebBrowser, NULL,
 		WS_CHILD | WS_VISIBLE, webRect, this, 6001))
@@ -2723,6 +2751,10 @@ BOOL CAtumLauncherDlg::InitLauncherWebView()
 		return FALSE;
 
 	m_pWebBrowser->put_Silent(VARIANT_TRUE);
+	m_pWebBrowser->put_MenuBar(VARIANT_FALSE);
+	m_pWebBrowser->put_StatusBar(VARIANT_FALSE);
+	m_pWebBrowser->put_ToolBar(VARIANT_FALSE);
+	m_pWebBrowser->put_AddressBar(VARIANT_FALSE);
 	NavigateLauncherWeb("Home");
 	return TRUE;
 }
@@ -3752,22 +3784,13 @@ void CAtumLauncherDlg::SetPlayerCntTxt(const char* str)
 }
 void CAtumLauncherDlg::SetNoticeTxt(const char* str)
 {
-	CWnd* pWndStatus = GetDlgItem(IDC_NOTICE2);
-	InvalidateRect(CRect(EXE2_BG_UPDATE_INFO_STATIC_POS_X + PLAYERCNT1_X, EXE2_BG_UPDATE_INFO_STATIC_POS_Y + PLAYERCNT1_Y, EXE2_BG_UPDATE_INFO_STATIC_POS_X + PLAYERCNT1_X + EXE2_BG_UPDATE_INFO_STATIC_WIDTH, EXE2_BG_UPDATE_INFO_STATIC_POS_Y + PLAYERCNT1_Y + EXE2_BG_UPDATE_INFO_STATIC_HEIGHT), true);
-
-	CPaintDC dc(this);
-	CBitmap* oldbitmap;
-	CDC memDC;
-	memDC.CreateCompatibleDC(&dc);
-	oldbitmap = (CBitmap*)memDC.SelectObject(&m_BackGround);
-	dc.BitBlt(EXE2_BG_UPDATE_INFO_STATIC_POS_X + PLAYERCNT1_X, EXE2_BG_UPDATE_INFO_STATIC_POS_Y + PLAYERCNT1_Y, EXE2_BG_UPDATE_INFO_STATIC_WIDTH, EXE2_BG_UPDATE_INFO_STATIC_HEIGHT, &memDC, EXE2_BG_UPDATE_INFO_STATIC_POS_X + PLAYERCNT1_X, EXE2_BG_UPDATE_INFO_STATIC_POS_Y + PLAYERCNT1_Y, SRCCOPY);
-	memDC.SelectObject(oldbitmap);
-	memDC.DeleteDC();
-
-	WCHAR wcText[1024];
-	MEMSET_ZERO(wcText, sizeof(wcText));
-	MultiByteToWideChar(CODE_PAGE, 0, str, strlen(str) + 1, wcText, sizeof(wcText) / sizeof(wcText[0]));
-	::SetWindowTextW(pWndStatus->GetSafeHwnd(), wcText);
+	// Notice content is shown inside the center WebView in the modern launcher.
+	// Keep the legacy static hidden so it never overlaps the navigation cards.
+	if(GetDlgItem(IDC_NOTICE2))
+	{
+		GetDlgItem(IDC_NOTICE2)->SetWindowText("");
+		GetDlgItem(IDC_NOTICE2)->ShowWindow(SW_HIDE);
+	}
 }
 void CAtumLauncherDlg::SetProgressGroupText(const char* str)
 {
