@@ -2,6 +2,7 @@ $ErrorActionPreference = "Stop"
 
 $repoRoot = Resolve-Path (Join-Path $PSScriptRoot "..\..")
 $preServerDir = Join-Path $repoRoot "Server\GameServer\PreServer"
+$preServerOutputDir = Join-Path $repoRoot "BuildResult\Server\Release"
 $secretPath = Join-Path $preServerDir "launcher_api_secret.txt"
 $appSettingsPath = Join-Path $PSScriptRoot "appsettings.json"
 $appSettingsExample = Join-Path $PSScriptRoot "appsettings.example.json"
@@ -21,6 +22,13 @@ if ([string]::IsNullOrWhiteSpace($secret)) {
 }
 
 $env:ACETR_LAUNCHER_API_SECRET = $secret
+
+if (-not (Test-Path $preServerOutputDir)) {
+    New-Item -ItemType Directory -Path $preServerOutputDir -Force | Out-Null
+}
+$outputSecretPath = Join-Path $preServerOutputDir "launcher_api_secret.txt"
+Copy-Item $secretPath $outputSecretPath -Force
+Write-Host "Synced launcher API secret beside PreServer output."
 
 if (-not (Test-Path $appSettingsPath)) {
     Copy-Item $appSettingsExample $appSettingsPath
