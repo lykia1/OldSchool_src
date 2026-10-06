@@ -3983,7 +3983,9 @@ BOOL CAtumLauncherDlg::LoadLauncherCharacters()
 
 	if (code != CURLE_OK)
 	{
-		SetProgressGroupText("Hesap servisine ulasilamadi.");
+		CString err;
+		err.Format("Hesap servisine ulaşılamadı: %s", curl_easy_strerror(code));
+		SetProgressGroupText(err);
 		return FALSE;
 	}
 
