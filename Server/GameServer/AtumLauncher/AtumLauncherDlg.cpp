@@ -246,7 +246,7 @@ CAtumLauncherDlg::CAtumLauncherDlg(CWnd* pParent /*=NULL*/)
 	m_StaticBrushGray.CreateSolidBrush(RGB(27, 30, 40));
 	m_ListBrushGray.CreateSolidBrush(RGB(212, 208, 200));
 	
-	m_listBrush.CreateSolidBrush(RGB(22,25,34));
+	m_listBrush.CreateSolidBrush(RGB(17,20,27));
 
 	m_progressBk.CreateSolidBrush(RGB(79,79,79));	
 	m_progressBar.CreateSolidBrush(RGB(99, 123, 246));	
@@ -441,24 +441,24 @@ BOOL CAtumLauncherDlg::ReadNoticeFile()
 
 #define EXE2_BG_WINDOWSMODE_CHECKBOX_POS_X      885
 #define EXE2_BG_WINDOWSMODE_CHECKBOX_POS_Y      515
-#define EXE2_BG_WINDOWSMODE_CHECKBOX_WIDTH      130
-#define EXE2_BG_WINDOWSMODE_CHECKBOX_HEIGHT     22
+#define EXE2_BG_WINDOWSMODE_CHECKBOX_WIDTH      16
+#define EXE2_BG_WINDOWSMODE_CHECKBOX_HEIGHT     16
 
 #define EXE2_BG_ACCOUNTNAME_EDIT_POS_X          885
 #define EXE2_BG_ACCOUNTNAME_EDIT_POS_Y          260
 #define EXE2_BG_ACCOUNTNAME_EDIT_WIDTH          245
-#define EXE2_BG_ACCOUNTNAME_EDIT_HEIGHT         32
+#define EXE2_BG_ACCOUNTNAME_EDIT_HEIGHT         34
 
 #define EXE2_BG_PASSWORD_EDIT_POS_X             885
 #define EXE2_BG_PASSWORD_EDIT_POS_Y             330
 #define EXE2_BG_PASSWORD_EDIT_WIDTH              245
-#define EXE2_BG_PASSWORD_EDIT_HEIGHT             32
+#define EXE2_BG_PASSWORD_EDIT_HEIGHT             34
 
 // Server list
-#define EXE2_BG_SERVERLIST_BOX_POS_X            82
-#define EXE2_BG_SERVERLIST_BOX_POS_Y            522
-#define EXE2_BG_SERVERLIST_BOX_WIDTH            690
-#define EXE2_BG_SERVERLIST_BOX_HEIGHT           56
+#define EXE2_BG_SERVERLIST_BOX_POS_X            80
+#define EXE2_BG_SERVERLIST_BOX_POS_Y            530
+#define EXE2_BG_SERVERLIST_BOX_WIDTH            700
+#define EXE2_BG_SERVERLIST_BOX_HEIGHT           38
 
 #define EXE2_BG_SERVERLIST_ITEM_BG_WIDTH        640
 #define EXE2_BG_SERVERLIST_ITEM_BG_HEIGHT       32
@@ -479,9 +479,9 @@ BOOL CAtumLauncherDlg::ReadNoticeFile()
 
 // Primary action
 #define EXE2_BG_GAMESTART_BTN_POS_X             885
-#define EXE2_BG_GAMESTART_BTN_POS_Y             545
+#define EXE2_BG_GAMESTART_BTN_POS_Y             548
 #define EXE2_BG_GAMESTART_BTN_WIDTH             245
-#define EXE2_BG_GAMESTART_BTN_HEIGHT            64
+#define EXE2_BG_GAMESTART_BTN_HEIGHT            62
 
 // Patch/update area
 #define EXE2_BG_UPDATE_PROGRESS_BAR_POS_X       70
@@ -507,8 +507,8 @@ BOOL CAtumLauncherDlg::ReadNoticeFile()
 
 #define EXE2_BG_REMEMBERID_CHECKBOX_POS_X       885
 #define EXE2_BG_REMEMBERID_CHECKBOX_POS_Y       395
-#define EXE2_BG_REMEMBERID_CHECKBOX_WIDTH       130
-#define EXE2_BG_REMEMBERID_CHECKBOX_HEIGHT      22
+#define EXE2_BG_REMEMBERID_CHECKBOX_WIDTH       16
+#define EXE2_BG_REMEMBERID_CHECKBOX_HEIGHT      16
 
 #define PLAYERCNT_Y 0
 #define PLAYERCNT_X 0
@@ -671,7 +671,7 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	GetDlgItem(IDGO)->MoveWindow(EXE2_BG_GAMESTART_BTN_POS_X, EXE2_BG_GAMESTART_BTN_POS_Y, EXE2_BG_GAMESTART_BTN_WIDTH, EXE2_BG_GAMESTART_BTN_HEIGHT);
 #ifdef _INET_CONFIGURATOR
 	m_ctlINETCfgBtn.SetToolTipText("Oyun Ayarlari");
-	m_ctlINETCfgBtn.SetModernButton("AYAR", RGB(45, 48, 58));
+	m_ctlINETCfgBtn.SetModernButton("AYAR", RGB(38, 42, 52));
 
 	GetDlgItem(IDC_BTN_VIEW_INET_CFG)->MoveWindow(1054, 18, 58, 26);
 #endif	
@@ -771,7 +771,7 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 #endif
 
 	m_ctrl64Bit.ShowWindow(SW_SHOW);
-	m_ctrl64Bit.MoveWindow(EXE2_BG_REMEMBERID_CHECKBOX_POS_X, 430, 130, 22);
+	m_ctrl64Bit.MoveWindow(EXE2_BG_REMEMBERID_CHECKBOX_POS_X, 430, 16, 16);
 	//m_ctrl64Bit.SetCheck(m_n64Bit);
 	
 	// 2008-12-23 by ckPark ŔĎş» ·±ĂÄ
@@ -928,7 +928,6 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 		CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
 	memDCBackGround.SelectObject(&navFont);
 	memDCBackGround.SetTextColor(RGB(174, 180, 194));
-	memDCBackGround.TextOut(820, 24, "ACE TR LAUNCHER");
 
 	CFont sectionFont;
 	sectionFont.CreateFont(17, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0,
@@ -937,8 +936,8 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	memDCBackGround.SelectObject(&sectionFont);
 	memDCBackGround.SetTextColor(RGB(215, 219, 229));
 	memDCBackGround.TextOut(75, 100, "GUNCEL");
-	memDCBackGround.TextOut(865, 108, "HESABINLA GIRIS YAP");
-	memDCBackGround.TextOut(75, 492, "SUNUCU DURUMU");
+	memDCBackGround.TextOut(865, 108, "HESABINLA GİRİŞ YAP");
+	memDCBackGround.TextOut(75, 494, "SUNUCU DURUMU");
 
 	CFont heroFont;
 	heroFont.CreateFont(31, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0,
@@ -947,6 +946,8 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	memDCBackGround.SelectObject(&heroFont);
 	memDCBackGround.SetTextColor(RGB(255, 255, 255));
 	memDCBackGround.TextOut(145, 210, "ACE TR");
+	memDCBackGround.SetTextColor(RGB(245, 132, 88));
+	memDCBackGround.TextOut(145, 182, "REKABETCI HAVA SAVASI");
 
 	CFont heroSubFont;
 	heroSubFont.CreateFont(17, 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0,
@@ -954,9 +955,9 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 		CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
 	memDCBackGround.SelectObject(&heroSubFont);
 	memDCBackGround.SetTextColor(RGB(220, 224, 232));
-	memDCBackGround.TextOut(146, 250, "Gokyuzundeki savas yeniden basliyor.");
+	memDCBackGround.TextOut(146, 250, "Gökyüzündeki savaş yeniden başlıyor.");
 	memDCBackGround.SetTextColor(RGB(245, 132, 88));
-	memDCBackGround.TextOut(146, 285, "SEZON • ETKINLIK • NATION WAR");
+	memDCBackGround.TextOut(146, 285, "SEZON • ETKİNLİK • NATION WAR");
 	memDCBackGround.SetTextColor(RGB(255, 255, 255));
 	memDCBackGround.TextOut(620, 285, "ACE TR");
 
@@ -967,16 +968,16 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	memDCBackGround.SelectObject(&labelFont);
 	memDCBackGround.SetTextColor(RGB(150, 157, 174));
 	memDCBackGround.TextOut(885, 236, "KULLANICI ADI");
-	memDCBackGround.TextOut(885, 306, "SIFRE");
-	memDCBackGround.TextOut(912, 396, "Beni hatirla");
-	memDCBackGround.TextOut(912, 431, "64-bit istemci");
-	memDCBackGround.TextOut(885, 447, "COZUNURLUK");
-	memDCBackGround.TextOut(912, 516, "Pencere modu");
+	memDCBackGround.TextOut(885, 306, "ŞİFRE");
+	memDCBackGround.TextOut(910, 392, "Beni hatirla");
+	memDCBackGround.TextOut(910, 427, "64-bit istemci");
+	memDCBackGround.TextOut(885, 447, "ÇÖZÜNÜRLÜK");
+	memDCBackGround.TextOut(910, 512, "Pencere modu");
 
 	memDCBackGround.SetTextColor(RGB(150, 157, 174));
-	memDCBackGround.TextOut(82, 508, "Sunucu secimi ve baglanti gecikmesi");
+	memDCBackGround.TextOut(82, 512, "Sunucu baglantisi ve gecikme bilgisi");
 	memDCBackGround.SetTextColor(RGB(108, 115, 132));
-	memDCBackGround.TextOut(82, 585, "Hazir oldugunda OYNA butonuna bas.");
+	memDCBackGround.TextOut(82, 580, "Baglanti hazir oldugunda OYNA aktif olur.");
 
 	// Online indicator
 	memDCBackGround.SelectObject(&brushOnline);
@@ -1208,7 +1209,7 @@ void CAtumLauncherDlg::OnPaint()
 		NavItem navItems[] = {
 			{ ACETR_NAV_HOME_RECT, "ANA SAYFA", 1 },
 			{ ACETR_NAV_NEWS_RECT, "HABERLER", 2 },
-			{ ACETR_NAV_EVENTS_RECT, "ETKINLIKLER", 3 }
+			{ ACETR_NAV_EVENTS_RECT, "ETKİNLİKLER", 3 }
 		};
 
 		for (int i = 0; i < 3; ++i)
