@@ -355,8 +355,8 @@ void PrintExchangeMsg(BYTE SendOrRecv, MessageType_t nType, char *peerIP, ENServ
 #define T1_PC_CONNECT_NETWORK_CHECK						0x22		// 2007-06-18 by cmkwon, C->P, // 2007-06-18 by cmkwon, 네트워크 상태 체크 
 #define T1_PC_CONNECT_NETWORK_CHECK_OK					0x23		// 2007-06-18 by cmkwon, P->C, // 2007-06-18 by cmkwon, 네트워크 상태 체크 
 #define T1_PC_CONNECT_GET_NEW_GAME_SERVER_GROUP_LIST		0x24	// 2007-09-05 by cmkwon, EXE_1에 로그인 서버 선택 인터페이스 수정 - C->P
-#define T1_PC_CONNECT_GET_NEW_GAME_SERVER_GROUP_LIST_OK		0x25
-#define T1_PC_CONNECT_LAUNCHER_SESSION				0x26	// P->Launcher, authenticated account-management session	// 2007-09-05 by cmkwon, EXE_1에 로그인 서버 선택 인터페이스 수정 - P->C
+#define T1_PC_CONNECT_GET_NEW_GAME_SERVER_GROUP_LIST_OK		0x25	// 2007-09-05 by cmkwon, EXE_1에 로그인 서버 선택 인터페이스 수정 - P->C
+#define T1_PC_CONNECT_LAUNCHER_SESSION				0x26	// P->Launcher, authenticated account-management session
 #ifdef _INET_MAC_ADDRESS_CHECKER
 #define T1_PC_CONNECT_SEND_GET_BLOCKED_MAC_ADDR			0xF1		// 2016-03-06 by inet - for send to p-server mac address
 #define T1_PC_CONNECT_SEND_GET_BLOCKED_MAC_ADDR_OK		0xF2		// 2016-03-06 by inet - for send to p-server mac address
@@ -10005,3 +10005,5219 @@ typedef struct
 // FC_CLIENT_REPORT
 typedef struct
 {
+	char			ClientPrivateIP[SIZE_MAX_IPADDRESS];	// 사설망인 경우 private ip
+	char			CharacterName[SIZE_MAX_CHARACTER_NAME];
+	char			Message[SIZE_MAX_CLIENT_REPORT];
+} MSG_FC_CLIENT_REPORT;		// C -> F
+
+///////////////////////////////////////////////////////////////////////////////
+// STRING128 - DEBUG Message
+typedef struct
+{
+	BYTE			PrintType;		// STR128_PRINT_TYPE_XXX
+	char			String[128];
+	WORD			SecurityNumber;		// 2011-06-22 by hskim, 사설 서버 방지
+} MSG_FC_STRING_128;
+typedef struct
+{
+	BYTE			PrintType;		// STR128_PRINT_TYPE_XXX
+	char			String[256];
+	WORD			SecurityNumber;		// 2011-06-22 by hskim, 사설 서버 방지
+} MSG_FC_STRING_256;
+typedef struct
+{
+	BYTE			PrintType;		// STR128_PRINT_TYPE_XXX
+	char			String[512];
+	WORD			SecurityNumber;		// 2011-06-22 by hskim, 사설 서버 방지
+} MSG_FC_STRING_512;
+
+#define STR128_PRINT_TYPE_CHAT		(BYTE)0x00	// 채팅창에 출력
+#define STR128_PRINT_TYPE_STATIC	(BYTE)0x01	// 고정 text로 출력
+
+typedef MSG_FC_STRING_128	MSG_IC_STRING_128;
+typedef MSG_FC_STRING_256	MSG_IC_STRING_256;
+typedef MSG_FC_STRING_512	MSG_IC_STRING_512;
+
+///////////////////////////////////////////////////////////////////////////////
+// FI_ADMIN
+typedef struct
+{
+	BYTE	Type;			// see below
+	UID32_t	AdminCharacterUniqueNumber;
+	UID32_t	CharacterUniqueNumber;
+} MSG_FI_ADMIN_GET_CHARACTER_INFO;
+
+#define ADMIN_GET_CHARAC_TYPE_SEND	 (BYTE)0	// 그냥 전송용
+#define ADMIN_GET_CHARAC_TYPE_MOVETO (BYTE)1	// 워프용
+
+typedef struct
+{
+	BYTE		Type;		// see above
+	UID32_t		AdminCharacterUniqueNumber;
+	char		AccountName[SIZE_MAX_ACCOUNT_NAME];
+	char		CharacterName[SIZE_MAX_CHARACTER_NAME];
+	MAP_CHANNEL_INDEX	MapChannelIndex;
+	AVECTOR3	Position;
+	BYTE		Level;
+} MSG_FI_ADMIN_GET_CHARACTER_INFO_OK;
+
+typedef struct
+{
+	UID32_t			CharacterUniqueNumber;
+	MAP_CHANNEL_INDEX	MapChannelIndex;			// admin의 맵이름
+	AVECTOR3		Position;						// admin의 좌표
+} MSG_FI_ADMIN_CALL_CHARACTER;	// I -> F
+
+typedef struct
+{
+	UID32_t			AdminCharacterUniqueNumber;
+	MAP_CHANNEL_INDEX	MapChannelIndex;			// Target의 맵이름
+	AVECTOR3		Position;						// Target의 좌표
+} MSG_FI_ADMIN_MOVETO_CHARACTER;
+
+typedef struct
+{
+	MapIndex_t		MapIndex;		// MAP_INDEX_ALL 이면 모든 맵 의미
+	BitFlag16_t		MapWeather;
+	BOOL			OnOff;
+} MSG_FI_ADMIN_CHANGE_WEATHER;
+
+///////////////////////////////////////////////////////////////////////////////
+// IC_ADMIN
+typedef struct
+{
+	char				CharacterName[SIZE_MAX_CHARACTER_NAME];
+	MAP_CHANNEL_INDEX	MapChannelIndex;				// admin의 맵이름
+	AVECTOR3			Position;						// admin의 좌표
+} MSG_IC_ADMIN_CALL_CHARACTER;	// I -> C
+
+typedef struct
+{
+	INT					TotalUserCount;				// 서버군 전체의 사용자 수
+} MSG_IC_ADMIN_GET_SERVER_STAT_OK;					// I -> C
+
+typedef struct
+{
+	char				GuildName[SIZE_MAX_GUILD_NAME];
+	MAP_CHANNEL_INDEX	MapChannelIndex;				// admin의 맵이름
+	AVECTOR3			Position;						// admin의 좌표
+} MSG_IC_ADMIN_CALL_GUILD;	// I -> C
+
+struct MSG_IC_ADMIN_CALLGM_INFO_OK		// 2006-05-08 by cmkwon
+{
+	int		nCallGMTotalCount;
+};
+
+#define SIZE_MAX_CALLGM_LIST					1000			// 2006-05-08 by cmkwon
+#define SIZE_MAX_CALLGM_BRING_COUNT				10				// 2006-05-08 by cmkwon
+struct SCALLGM			// 2006-05-08 by cmkwon
+{
+	UID32_t			CallerCharacterUID;
+	BYTE			CallerInflTy;			// 2007-11-19 by cmkwon, 진정시스템 업데이트 - SCALLGM 구조체에 세력 필드 추가
+	char			szCallerCharacterName[SIZE_MAX_CHARACTER_NAME];
+	ATUM_DATE_TIME	atimeCallTime;
+	char			szCallGMDescription[SIZE_MAX_CHAT_MESSAGE];
+};
+struct MSG_IC_ADMIN_CALLGM_VIEW_OK		// 2006-05-08 by cmkwon
+{
+	int		nCallGMCount;
+	ARRAY_(SCALLGM);
+};
+typedef MSG_IC_ADMIN_CALLGM_VIEW_OK		 MSG_IC_ADMIN_CALLGM_BRING_OK;		// 2006-05-08 by cmkwon
+
+
+///////////////////////////////////////////////////////////////////////////////
+// FC_ADMIN
+typedef struct
+{
+	MAP_CHANNEL_INDEX	CurrentMapChannelIndex;		// 현재 맵
+	INT					CurrentUserCount;			// 현재 맵의 사용자 수
+} MSG_FC_ADMIN_GET_SERVER_STAT_OK;					// F -> C
+
+///////////////////////////////////////////////////////////////////////////////
+// ERROR
+typedef struct
+{
+	MessageType_t	MsgType;	// 에러가 일어났을 때 처리중이었던 Message Type
+	Err_t			ErrorCode;			// 2 bytes
+	BOOL			CloseConnection;	// Client에서 연결을 끊을지에 대한 여부
+	INT				ErrParam1;			// general-purpose err parameter 1
+	INT				ErrParam2;			// general-purpose err parameter 2
+	USHORT			StringLength;		// 2 bytes
+	//char*	String;				// error string
+} MSG_ERROR;
+
+///////////////////////////////////////////////////////////////////////////////
+// Log Server Protocol (T0: 0x20~)
+///////////////////////////////////////////////////////////////////////////////
+/*
+- Item:		습득(거래,줍는경우), 아이템창->창고,창고->아이템창, 소유권분실(거래시 상대정보, 바닥에 떨어뜨릴 경우 좌표)
+- Skill:	습득, 소유권 분실
+- Level:	Up(n), down(-n)
+- Exp:		Up(n), down(-n)
+- Stat:		6개(AttackPart, DefensePart, FuelPart, SoulPart, ShieldPart, DodgePart), type,n
+- EndGame:	접속시간, 종료시간, IP, PlayTime, 좌표
+*/
+
+
+// 2010-04-20 by cmkwon, 신규 러키 머신 구현 - 
+// enum EN_ENCHANT_LOGTYPE
+// {
+// 	ENCHANT_LOGTYPE_FAIL		= 0,
+// 	ENCHANT_LOGTYPE_SUCCESS		= 1,
+// 	ENCHANT_LOGTYPE_TARGETITEM	= 2,
+// 	ENCHANT_LOGTYPE_ATTACHITEM	= 3,
+// 	ENCHANT_LOGTYPE_INCREASE_PROBABILITY = 4		// 2009-01-19 by dhjin, 인첸트 확률 증가, 10인첸 파방 카드
+// };
+///////////////////////////////////////////////////////////////////////////////
+// 2010-04-20 by cmkwon, 신규 러키 머신 구현 - 
+enum EN_ENCHANT_LOGTYPE
+{
+	ENCHANT_LOGTYPE_UNKNOWN						= 0,		// 
+	ENCHANT_LOGTYPE_ENCHANT_FAIL				= 100,		// 인챈트 실패
+	ENCHANT_LOGTYPE_ENCHANT_SUCCESS				= 101,		// 인챈트 성공
+	ENCHANT_LOGTYPE_ENCHANT_INIT_FAIL			= 110,		// 인챈트 초기화 성공
+	ENCHANT_LOGTYPE_ENCHANT_INIT_SUCCESS		= 111,
+	ENCHANT_LOGTYPE_GAMBLE_PREFIX_FAIL			= 120,		// 접두 겜블 성공
+	ENCHANT_LOGTYPE_GAMBLE_PREFIX_SUCCESS		= 121,
+	ENCHANT_LOGTYPE_GAMBLE_SUFFIX_FAIL			= 122,		// 접미 겜블 성공
+	ENCHANT_LOGTYPE_GAMBLE_SUFFIX_SUCCESS		= 123,
+	ENCHANT_LOGTYPE_GAMBLE_PREFIX_INIT_FAIL		= 130,		// 접두 겜블 초기화 성공
+	ENCHANT_LOGTYPE_GAMBLE_PREFIX_INIT_SUCCESS	= 131,
+	ENCHANT_LOGTYPE_GAMBLE_SUFFIX_INIT_FAIL		= 132,		// 접미 겜블 초기화 성공
+	ENCHANT_LOGTYPE_GAMBLE_SUFFIX_INIT_SUCCESS	= 133
+};
+char *GetEnchatLogTypeString(int i_nEnchantLogTy);		// 2010-04-20 by cmkwon, 신규 러키 머신 구현 - 
+int GetEnchantLogType(ITEM *i_pEnchantItemInfo, BOOL i_bSuccessFlag);
+
+// CONNECTION LOG(0x00~)
+#define T1_FL_LOG_LOGIN							0x00	// 0 - 로그인
+#define T1_FL_LOG_LOGOUT						0x01	// 1 - 로그아웃
+// USER LOG(0x10~)
+#define T1_FL_LOG_LEVEL							0x10	// 16 - 레벨 변화
+#define T1_FL_LOG_EXP							0x11	// 17 - 경험치 변화
+#define T1_FL_LOG_STAT							0x12	// 18 - 스탯 사용
+#define T1_FL_LOG_GAME_START					0x13	// 19 - 게임 시작
+#define T1_FL_LOG_GAME_END						0x14	// 20 - 게임 종료
+#define T1_FL_LOG_QUEST_COMPLETION				0x15	// 21 - 퀘스트 완료
+#define T1_FL_LOG_PKWIN							0x16	// 22 - 1:1 결투 승리
+#define T1_FL_LOG_PKLOSS						0x17	// 23 - 1:1 결투 패배
+#define T1_FL_LOG_DEAD							0x18	// 24 - 기체 폭파
+#define T1_FL_LOG_WARP							0x19	// 25 - 워프
+#define T1_FL_LOG_SPEED_HACK					0x1A	// 26 - 스피드 핵
+#define T1_FL_LOG_CREATE_CHARACTER				0x1B	// 27 - 캐릭터 생성
+#define T1_FL_LOG_DELETE_CHARACTER				0x1C	// 28 - 캐릭터 삭제
+#define T1_FL_LOG_MEMORY_HACK					0x1D	// 29 - 메모리핵, 2005-12-20 by cmkwon
+#define T1_FL_LOG_PvEWIN						0x1E	// 30 - 세력전에서 상대 세력 캐릭터를 죽임, 2006-03-06 by cmkwon
+#define T1_FL_LOG_PvELOSS						0x1F	// 31 - 세력전에서 상대 세력에 의해 죽음, 2006-03-06 by cmkwon
+// ITEM LOG(0x20~)
+#define T1_FL_LOG_ITEM_CHARACTER_ITEM			0x20	// 32 - 모든 소유 아이템 저장
+#define T1_FL_LOG_ITEM_GET_ITEM					0x21	// 33 - Drop Item 습득
+#define T1_FL_LOG_ITEM_TRADE_SEND				0x22	// 34 - 아이템 거래: 주기
+#define T1_FL_LOG_ITEM_TRADE_RECV				0x23	// 35 - 아이템 거래: 받기
+#define T1_FL_LOG_ITEM_THROWAWAY_ITEM			0x24	// 36 - 아이템 버리기
+#define T1_FL_LOG_ITEM_BUY_ITEM					0x25	// 37 - 아이템 구매
+#define T1_FL_LOG_ITEM_SELL_ITEM				0x26	// 38 - 아이템 판매
+#define T1_FL_LOG_ITEM_USE_ITEM					0x27	// 39 - 아이템 사용
+#define T1_FL_LOG_ITEM_USE_ENERGY				0x28	// 40 - 에너지류 아이템 사용
+#define T1_FL_LOG_ITEM_USE_ENCHANT				0x29	// 41 - 인챈트류 아이템 사용
+#define T1_FL_LOG_ITEM_ADD_ITEM_BY_ADMIN		0x2A	// 42 - 운영툴에 의한 습득
+#define T1_FL_LOG_ITEM_DEL_ITEM_BY_ADMIN		0x2B	// 43 - 운영툴에 의한 제거
+#define T1_FL_LOG_ITEM_ADD_ITEM_BY_COMMAND		0x2C	// 44 - 명령어에 의한 습득
+#define T1_FL_LOG_ITEM_INSERT_TO_STORE			0x2D	// 45 - 창고에 삽입
+#define T1_FL_LOG_ITEM_DRAW_FROM_STORE			0x2E	// 46 - 창고에서 꺼내기
+#define T1_FL_LOG_ITEM_STORE_ITEM				0x2F	// 47 - 창고 소유 아이템 저장, 창고 시작 아이템
+#define T1_FL_LOG_ITEM_USE_MIX					0x30	// 48 - 조합
+#define T1_FL_LOG_ITEM_USE_CHANGE_CHARACTER_NAME_ORIGIN	0x31	// 49 - 캐릭명 변경시 오리지날 캐릭명
+#define T1_FL_LOG_ITEM_USE_CHANGE_CHARACTER_NAME_NEW	0x32	// 50 - 캐릭명 변경시 새로운 캐릭명
+#define T1_FL_LOG_ITEM_BAZAAR_SEND				0x33	// 51 - 개인상점 거래: 주기, 2006-07-27 by cmkwon
+#define T1_FL_LOG_ITEM_BAZAAR_RECV				0x34	// 52 - 개인상점 거래: 받기, 2006-07-27 by cmkwon
+#define T1_FL_LOG_ITEM_INSERT_TO_GUILDSTORE		0x35	// 53 - 여단 창고에 삽입, 2006-09-27 by dhjin
+#define T1_FL_LOG_ITEM_DRAW_FROM_GUILDSTORE		0x36	// 54 - 여단 창고에서 꺼내기, 2006-09-27 by dhjin
+#define T1_FL_LOG_ITEM_SPI						0x37	// 55 - 캐릭터 죽을때 다운 SPI Log, 2006-10-27 by cmkwon
+#define T1_FL_LOG_ITEM_GET_ITEM_BY_ITEMEVENT	0x38	// 56 - ItemEvent에 의한 아이템 추가, 2007-01-11 by cmkwon
+#define T1_FL_LOG_QUEST_COMPENSATION			0x39	// 57 - 퀘스트 보상, 2007-01-16 by dhjin
+#define T1_FL_LOG_WARPOINT						0x3A	// 58 - WarPoint 변경, 2007-05-15 by dhjin
+#define T1_FL_LOG_ARENA_TEAM_MATCH				0x3B	// 59 - Arena 팀 매칭, 2007-06-11 by dhjin
+#define T1_FL_LOG_TUTORIAL_COMPLETION			0x3C	// 60 - Tutorial, 2007-07-06 by dhjin
+#define T1_FL_LOG_OUTPOST_START					0x3D	// 61 - OutPost시작 로그, 2007-10-02 by dhjin
+#define T1_FL_LOG_OUTPOST_END					0x3E	// 62 - OutPost종료 로그, 2007-10-02 by dhjin
+#define T1_FL_LOG_EXPEDIENCYFUND				0x3F	// 63 - 판공비 증/감 로그, 2007-10-02 by dhjin
+
+
+// ETC LOG(0x40~)
+#define T1_FL_LOG_SERVER_INFO_MAP				0x40	// 64 - 맵별 동접수
+#define T1_FL_LOG_SERVER_INFO_TOTAL				0x41	// 65 - 
+#define T1_FL_LOG_HACKING_LOG					0x42	// 66 - 
+#define T1_FL_LOG_LIVE_DELETED_CHARACTER		0x43	// 67 - 복구된 케릭터, 2007-02-22 by dhjin
+#define T1_FL_LOG_EVENT_PARTICIPATION_RATE		0x44	// 68 - // 2010-06-01 by shcho, GLogDB 관련 -
+
+// MONSTER LOG(0x50~)
+#define T1_FL_LOG_MONSTER_BOSS					0x50	// 80 - 보스급 몬스터
+#define T1_FL_LOG_MS_WAR						0x51	// 81 - // 2008-04-01 by dhjin, 모선전, 거점전 정보창 기획안 - 
+#define T1_FL_LOG_SP_WAR						0x52	// 82 - // 2008-04-01 by dhjin, 모선전, 거점전 정보창 기획안 - 
+#define T1_FL_LOG_WAR_CONTRIBUTION				0x53	// 83 - // 2008-12-23 by dhjin, 전쟁 보상 추가안
+#define T1_FL_LOG_WAR_CONTRIBUTION_GEAR			0x54	// 84 - // 2008-12-23 by dhjin, 전쟁 보상 추가안
+#define T1_FL_LOG_MARKET_REGISTRATION			0x55	// 85 - 등록
+#define T1_FL_LOG_MARKET_BUY					0x56	// 86 - 구매
+#define T1_FL_LOG_MARKET_GET					0x57	// 87 - 회수
+//
+#define T1_FL_LOG_SERVER_INTEGRAION							0x80	// 128 - 서버 통합 관련 - 캐릭터 이전 처리 함
+#define T1_FL_LOG_SERVER_INTEGRAION_GUILD_STORE_ITEMS		0x81	// 129 - 서버 통합 관련 - 여단 창고 아이템 이전 처리함, // 2007-02-15 by cmkwon
+#define T1_FL_LOG_SERVER_INTEGRAION_ONLY_CASH_STORE_ITEMS	0x82	// 130 - 서버 통합 관련 - 캐쉬 아이템만 통합서버군 DB 로 이동, // 2008-02-28 by cmkwon, 예당 서버군 통합 캐쉬 아이템만 이동하는 프로시저
+
+#define T1_FL_LOG_INFLWAR_START							0x90	// 144 - // 2007-10-16 by cmkwon, 로그 추가 - 세력전 로그
+#define T1_FL_LOG_INFLWAR_END							0x91	// 145 - // 2007-10-16 by cmkwon, 로그 추가 - 세력전 로그
+#define T1_FL_LOG_OUTPOSTWAR_RESET_START				0x95	// 149 - // 2007-10-16 by cmkwon, 로그 추가 - 전진기지전 로그
+#define T1_FL_LOG_OUTPOSTWAR_RESET_DESTROY				0x96	// 150 - // 2007-10-16 by cmkwon, 로그 추가 - 전진기지전 로그
+#define T1_FL_LOG_OUTPOSTWAR_RESET_COMPLETE				0x97	// 151 - // 2007-10-16 by cmkwon, 로그 추가 - 전진기지전 로그
+#define T1_FL_LOG_OUTPOSTWAR_PROTECTOR_DESTROY			0x98	// 152 - // 2007-10-16 by cmkwon, 로그 추가 - 전진기지전 로그
+#define T1_FL_LOG_OUTPOSTWAR_SET_NEXTTIME				0x99	// 153 - // 2007-10-16 by cmkwon, 로그 추가 - 전진기지전 로그
+
+#define T1_FL_LOG_POLL_VOTE								0xA0	// 160 - // 2007-11-08 by dhjin, 투표 로그 
+#define T1_FL_LOG_POLL_DELETE_LEADERCANDIDATE			0xA1	// 161 - // 2007-11-08 by dhjin, 지도자 출마 탈퇴 로그
+
+#define T1_FL_LOG_DISMEMBER_GUILD						0xA2	// 162 - // 2007-11-09 by dhjin
+#define T1_FL_LOG_NOTIFY_MSG_DELETE						0xA3	// 163 - // 2007-11-28 by cmkwon, 통지시스템 구현 -
+#define T1_FL_LOG_USE_COUPON							0xA4	// 164 - // 2008-01-23 by cmkwon, S_F, S_L: 쿠폰 사용 게임 로그에 추가 - 쿠폰 사용된 로그
+
+#define T1_FL_LOG_ITEM_GIFT_SEND						0xB0	// 176 - // 2007-11-13 by cmkwon, 선물하기 기능 추가 - 선물하기 : 주기
+#define T1_FL_LOG_ITEM_GIFT_RECV						0xB1	// 177 - // 2007-11-13 by cmkwon, 선물하기 기능 추가 - 선물하기 : 받기
+#define T1_FL_LOG_ITEM_REARRANGE_DELETE_ITEM			0xB2	// 178 - // 2007-11-29 by cmkwon, 카운터블아이템 합쳐지는 게임 로그 남기기 - 지워진 아이템
+#define T1_FL_LOG_ITEM_REARRANGE_ITEM					0xB3	// 179 - // 2007-11-29 by cmkwon, 카운터블아이템 합쳐지는 게임 로그 남기기 - 합쳐진 아이템
+#define T1_FL_LOG_ITEM_ATTACH_ITEM						0xB4	// 180 - // 2008-01-23 by cmkwon, S_F, S_L: 장착/장착해제 게임 로그에 추가 - 장착
+#define T1_FL_LOG_ITEM_DETACH_ITEM						0xB5	// 181 - // 2008-01-23 by cmkwon, S_F, S_L: 장착/장착해제 게임 로그에 추가 - 장착해제
+#define T1_FL_LOG_ITEM_DELETE							0xB6	// 182 - // 2008-01-23 by cmkwon, S_F, S_L: 장착/장착해제 게임 로그에 추가 - 아이템 삭제됨(유효시간 경과)
+
+#define T1_FL_LOG_LUCKY_DROP							0xC0	// 192 - // 2009-03-31 by dhjin, 럭키머신 로그
+#define T1_FL_LOG_INFINITY_START						0xC1	// 193 - // 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 게임로그 추가, 시작 관련 정보 
+#define T1_FL_LOG_INFINITY_START_ITEM					0xC2	// 194 - // 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 게임로그 추가, 시작시 아이템 복사 정보
+#define T1_FL_LOG_INFINITY_CINEMA						0xC3	// 195 - // 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 게임로그 추가, 연출 로그
+#define T1_FL_LOG_MONSTER_SKILL							0xC4	// 196 - // 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 게임로그 추가, 몬스터 스킬 사용시
+#define T1_FL_LOG_HPACTION_TALK							0xC5	// 197 - // 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 게임로그 추가, 몬스터 대화 사용시
+#define T1_FL_LOG_INFINITY_FIN							0xC6	// 198 - // 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 게임로그 추가, 종료 관련 정보 
+#define T1_FL_LOG_INFINITY_FIN_ITEM						0xC7	// 199 - // 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 게임로그 추가, 종료시 아이템 복사 정보
+#define T1_FL_LOG_INFINITY_FIN_ALIVE_KEY_MONSTER		0xC8	// 200 - // 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 게임로그 추가, 종료시 살아있는 몬스터 정보
+#define T1_FL_LOG_INFINITY_LEAVE_ITEM					0xC9	// 201 - // 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 게임로그 추가, 인피 탈퇴시 아이템 복사 정보
+
+#define T1_FL_LOG_BLOCK_ACCOUNT							0xD0	// 208 - // 2008-01-30 by cmkwon, 계정 블럭 로그 남기기 구현 - 계정 블럭
+#define T1_FL_LOG_UNBLOCK_ACCOUNT						0xD1	// 209 - // 2008-01-30 by cmkwon, 계정 블럭 로그 남기기 구현 - 계정 블럭 해제
+
+#define T1_FL_LOG_START_FIELD_SERVER			0xFF	// 255 - FieldServer Start
+
+#ifdef _INET_ENCHANT_CHANCE
+	#define T1_FC_INFO_GET_ENCHANT_CHANCE					0xE5
+	#define T1_FC_INFO_GET_ENCHANT_CHANCE_OK				0xE6
+#endif
+
+#define T_FL_LOG_LOGIN					(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_LOGIN)				// 로그인
+#define T_FL_LOG_LOGOUT					(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_LOGOUT)			// 로그아웃
+#define T_FL_LOG_LEVEL					(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_LEVEL)				// 레벨 변화
+#define T_FL_LOG_EXP					(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_EXP)				// 경험치 변화
+#define T_FL_LOG_STAT					(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_STAT)				// 스탯 사용
+#define T_FL_LOG_GAME_START				(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_GAME_START)		// 게임 시작
+#define T_FL_LOG_GAME_END				(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_GAME_END)			// 게임 종료
+#define T_FL_LOG_QUEST_COMPLETION		(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_QUEST_COMPLETION)	// 퀘스트 완료
+#define T_FL_LOG_QUEST_COMPENSATION		(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_QUEST_COMPENSATION)// 퀘스트 보상
+#define T_FL_LOG_PKWIN					(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_PKWIN)				// 1:1 결투 승리
+#define T_FL_LOG_PKLOSS					(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_PKLOSS)			// 1:1 결투 패배
+#define T_FL_LOG_DEAD					(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_DEAD)				// 기체 폭파
+#define T_FL_LOG_WARP					(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_WARP)				// 워프
+#define T_FL_LOG_SPEED_HACK				(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_SPEED_HACK)		// 스피드 핵
+#define T_FL_LOG_CREATE_CHARACTER		(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_CREATE_CHARACTER)	// 캐릭터 생성
+#define T_FL_LOG_DELETE_CHARACTER		(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_DELETE_CHARACTER)	// 캐릭터 삭제
+#define T_FL_LOG_MEMORY_HACK			(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_MEMORY_HACK)		// 29 - 메모리핵, 2005-12-20 by cmkwon
+#define T_FL_LOG_PvEWIN					(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_PvEWIN)			// 30 - 세력전에서 상대 세력 캐릭터를 죽임, 2006-03-06 by cmkwon
+#define T_FL_LOG_PvELOSS				(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_PvELOSS)			// 31 - 세력전에서 상대 세력에 의해 죽음, 2006-03-06 by cmkwon
+
+#define T_FL_LOG_ITEM_CHARACTER_ITEM	(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_ITEM_CHARACTER_ITEM)	// 모든 소유 아이템 저장
+#define T_FL_LOG_ITEM_GET_ITEM			(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_ITEM_GET_ITEM)		// Drop Item 습득
+#define T_FL_LOG_ITEM_TRADE_SEND		(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_ITEM_TRADE_SEND)	// 아이템 거래: 주기
+#define T_FL_LOG_ITEM_TRADE_RECV		(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_ITEM_TRADE_RECV)	// 아이템 거래: 받기
+#define T_FL_LOG_ITEM_THROWAWAY_ITEM	(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_ITEM_THROWAWAY_ITEM)	// 아이템 버리기
+#define T_FL_LOG_ITEM_BUY_ITEM			(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_ITEM_BUY_ITEM)		// 아이템 구매
+#define T_FL_LOG_ITEM_SELL_ITEM			(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_ITEM_SELL_ITEM)	// 아이템 판매
+#define T_FL_LOG_ITEM_USE_ITEM			(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_ITEM_USE_ITEM)		// 아이템 사용
+#define T_FL_LOG_ITEM_USE_ENERGY		(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_ITEM_USE_ENERGY)	// 에너지류 아이템 사용
+#define T_FL_LOG_ITEM_USE_ENCHANT		(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_ITEM_USE_ENCHANT)	// 인챈트류 아이템 사용
+#define T_FL_LOG_ITEM_ADD_ITEM_BY_ADMIN	(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_ITEM_ADD_ITEM_BY_ADMIN)		// 운영툴에 의한 습득
+#define T_FL_LOG_ITEM_DEL_ITEM_BY_ADMIN	(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_ITEM_DEL_ITEM_BY_ADMIN)		// 운영툴에 의한 제거
+#define T_FL_LOG_ITEM_ADD_ITEM_BY_COMMAND	(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_ITEM_ADD_ITEM_BY_COMMAND)	// 명령어에 의한 습득
+#define T_FL_LOG_ITEM_INSERT_TO_STORE	(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_ITEM_INSERT_TO_STORE)	// 창고에 삽입
+#define T_FL_LOG_ITEM_DRAW_FROM_STORE	(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_ITEM_DRAW_FROM_STORE)	// 창고에서 꺼내기
+#define T_FL_LOG_ITEM_STORE_ITEM		(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_ITEM_STORE_ITEM)		// 창고 소유 아이템 저장, 창고 시작 아이템
+#define T_FL_LOG_ITEM_USE_MIX			(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_ITEM_USE_MIX)			// 조합
+#define T_FL_LOG_ITEM_USE_CHANGE_CHARACTER_NAME_ORIGIN		(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_ITEM_USE_CHANGE_CHARACTER_NAME_ORIGIN)	// 캐릭명변경
+#define T_FL_LOG_ITEM_BAZAAR_SEND		(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_ITEM_BAZAAR_SEND)	// 개인상점 거래: 주기
+#define T_FL_LOG_ITEM_BAZAAR_RECV		(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_ITEM_BAZAAR_RECV)	// 개인상점 거래: 받기
+#define T_FL_LOG_ITEM_INSERT_TO_GUILDSTORE			(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_ITEM_INSERT_TO_GUILDSTORE)		// 2006-09-27 by dhjin, 여단 창고 로그 남기기
+#define T_FL_LOG_ITEM_DRAW_FROM_GUILDSTORE			(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_ITEM_DRAW_FROM_GUILDSTORE)		// 2006-09-27 by dhjin, 여단 창고 로그 남기기
+#define T_FL_LOG_ITEM_SPI							(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_ITEM_SPI)							// 55 - SPI Log, 2006-10-27 by cmkwon
+#define T_FL_LOG_ITEM_GET_ITEM_BY_ITEMEVENT			(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_ITEM_GET_ITEM_BY_ITEMEVENT)		// 56 - ItemEvent에 의한 아이템 추가, 2007-01-11 by cmkwon
+#define T_FL_LOG_WARPOINT							(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_WARPOINT)						// 58 - WarPoint 변경, 2007-05-15 by dhjin
+#define T_FL_LOG_ARENA_TEAM_MATCH					(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_ARENA_TEAM_MATCH)				// 59 - Arena 팀 매칭, 2007-06-11 by dhjin
+#define T_FL_LOG_TUTORIAL_COMPLETION				(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_TUTORIAL_COMPLETION)			// 60 - Tutorial, 2007-07-06 by dhjin
+#define T_FL_LOG_OUTPOST_START			(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_OUTPOST_START)				// 61 - OutPost시작 로그, 2007-10-02 by dhjin
+#define T_FL_LOG_OUTPOST_END			(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_OUTPOST_END)				// 62 - OutPost종료 로그, 2007-10-02 by dhjin
+#define T_FL_LOG_EXPEDIENCYFUND			(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_EXPEDIENCYFUND)			// 63 - 판공비 증/감 로그, 2007-10-02 by dhjin
+
+#define T_FL_LOG_SERVER_INFO_MAP		(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_SERVER_INFO_MAP)
+#define T_FL_LOG_SERVER_INFO_TOTAL		(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_SERVER_INFO_TOTAL)
+#define T_FL_LOG_HACKING_LOG			(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_HACKING_LOG)
+
+#define T_FL_LOG_MONSTER_BOSS			(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_MONSTER_BOSS)			// 보스급 몬스터
+#define T_FL_LOG_MS_WAR					(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_MS_WAR)			// 81 - // 2008-04-01 by dhjin, 모선전, 거점전 정보창 기획안 - 
+#define T_FL_LOG_SP_WAR					(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_SP_WAR)			// 82 - // 2008-04-01 by dhjin, 모선전, 거점전 정보창 기획안 - 
+#define T_FL_LOG_WAR_CONTRIBUTION		(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_WAR_CONTRIBUTION)			// 83  - // 2008-12-23 by dhjin, 전쟁 보상 추가안
+#define T_FL_LOG_WAR_CONTRIBUTION_GEAR	(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_WAR_CONTRIBUTION_GEAR)		// 84  - // 2008-12-23 by dhjin, 전쟁 보상 추가안
+#define T_FL_LOG_MARKET_REGISTRATION	(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_MARKET_REGISTRATION)		// 85 - 등록
+#define T_FL_LOG_MARKET_BUY				(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_MARKET_BUY)				// 86 - 구매
+#define T_FL_LOG_MARKET_GET				(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_MARKET_GET)				// 87 - 회수
+#define T_FL_LOG_INFLWAR_START					(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_INFLWAR_START)					// 144 - // 2007-10-16 by cmkwon, 로그 추가 - 세력전 로그
+#define T_FL_LOG_INFLWAR_END					(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_INFLWAR_END)					// 145 - // 2007-10-16 by cmkwon, 로그 추가 - 세력전 로그
+#define T_FL_LOG_OUTPOSTWAR_RESET_START			(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_OUTPOSTWAR_RESET_START)		// 151 - // 2007-10-16 by cmkwon, 로그 추가 - 전진기지전 로그
+#define T_FL_LOG_OUTPOSTWAR_RESET_DESTROY		(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_OUTPOSTWAR_RESET_DESTROY)		// 154 - // 2007-10-16 by cmkwon, 로그 추가 - 전진기지전 로그
+#define T_FL_LOG_OUTPOSTWAR_RESET_COMPLETE		(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_OUTPOSTWAR_RESET_COMPLETE)		// 152 - // 2007-10-16 by cmkwon, 로그 추가 - 전진기지전 로그
+#define T_FL_LOG_OUTPOSTWAR_PROTECTOR_DESTROY	(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_OUTPOSTWAR_PROTECTOR_DESTROY)	// 153 - // 2007-10-16 by cmkwon, 로그 추가 - 전진기지전 로그
+#define T_FL_LOG_OUTPOSTWAR_SET_NEXTTIME		(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_OUTPOSTWAR_SET_NEXTTIME)		// 156 - // 2007-10-16 by cmkwon, 로그 추가 - 전진기지전 로그
+
+#define T_FL_LOG_POLL_VOTE						(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_POLL_VOTE)						// 160 - // 2007-11-08 by dhjin, 투표 로그
+#define T_FL_LOG_POLL_DELETE_LEADERCANDIDATE	(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_POLL_DELETE_LEADERCANDIDATE)	// 161 - // 2007-11-08 by dhjin, 지도자 출마 탈퇴 로그
+
+#define T_FL_LOG_DISMEMBER_GUILD				(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_DISMEMBER_GUILD)		// 162 - // 2007-11-09 by dhjin, 여단 해체로그
+#define T_FL_LOG_NOTIFY_MSG_DELETE				(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_NOTIFY_MSG_DELETE)		// 163 - // 2007-11-28 by cmkwon, 통지시스템 구현 -
+#define T_FL_LOG_USE_COUPON						(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_USE_COUPON)			// 164 - // 2008-01-23 by cmkwon, S_F, S_L: 쿠폰 사용 게임 로그에 추가 - 쿠폰 사용된 로그
+
+#define T_FL_LOG_ITEM_ATTACH_ITEM				(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_ITEM_ATTACH_ITEM)		// 180 - // 2008-01-23 by cmkwon, S_F, S_L: 장착/장착해제 게임 로그에 추가 - 장착
+#define T_FL_LOG_ITEM_DETACH_ITEM				(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_ITEM_DETACH_ITEM)		// 181 - // 2008-01-23 by cmkwon, S_F, S_L: 장착/장착해제 게임 로그에 추가 - 장착해제
+#define T_FL_LOG_ITEM_DELETE					(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_ITEM_DELETE)			// 182 - // 2008-01-23 by cmkwon, S_F, S_L: 장착/장착해제 게임 로그에 추가 - 삭제됨
+
+#define T_FL_LOG_LUCKY_DROP						(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_LUCKY_DROP)			// 192 - // 2009-03-31 by dhjin, 럭키머신 로그
+
+#define T_FL_LOG_INFINITY_START					(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_INFINITY_START)			// 193 - // 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 게임로그 추가, 시작 관련 정보 
+#define T_FL_LOG_INFINITY_START_ITEM			(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_INFINITY_START_ITEM)		// 194 - // 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 게임로그 추가, 시작시 아이템 복사 정보
+#define T_FL_LOG_INFINITY_CINEMA				(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_INFINITY_CINEMA)			// 195 - // 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 게임로그 추가, 연출 로그
+#define T_FL_LOG_MONSTER_SKILL					(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_MONSTER_SKILL)				// 196 - // 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 게임로그 추가, 몬스터 스킬 사용시
+#define T_FL_LOG_HPACTION_TALK					(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_HPACTION_TALK)				// 197 - // 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 게임로그 추가, 몬스터 대화 사용시
+#define T_FL_LOG_INFINITY_FIN					(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_INFINITY_FIN)				// 198 - // 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 게임로그 추가, 종료 관련 정보 
+#define T_FL_LOG_INFINITY_FIN_ITEM				(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_INFINITY_FIN_ITEM)			// 199 - // 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 게임로그 추가, 종료시 아이템 복사 정보
+#define T_FL_LOG_INFINITY_FIN_ALIVE_KEY_MONSTER		(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_INFINITY_FIN_ALIVE_KEY_MONSTER)	// 200 - // 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 게임로그 추가, 종료시 살아있는 몬스터 정보
+#define T_FL_LOG_INFINITY_LEAVE_ITEM			(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_INFINITY_LEAVE_ITEM)		// 201 - // 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 게임로그 추가, 인피 탈퇴시 아이템 복사 정보
+
+#define T_FL_LOG_START_FIELD_SERVER		(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_START_FIELD_SERVER)	// FieldServer Start
+
+////////////////////////////////
+// CONNECTION LOG(0x00~)
+struct MSG_FL_LOG_LOGIN
+{
+	UID32_t	AccountUniqueNumber;
+	CHAR	AccountName[SIZE_MAX_ACCOUNT_NAME];
+	BYTE	IPAddress[4];
+	CHAR	ServerGroupName[SIZE_MAX_SERVER_NAME];
+#ifdef S_ARARIO_HSSON
+	CHAR	PublisherName[SIZE_MAX_GAME_PUBLISHER_NAME];				// 2010-11 by dhjin, 아라리오 채널링 로그인.
+#endif
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		sprintf(o_szLogString, "%s|%u|%s|%d.%d.%d.%d|%s\r\n", GetGameLogTypeString(i_nLogType), AccountUniqueNumber, AccountName
+			, IPAddress[0], IPAddress[1], IPAddress[2], IPAddress[3], ServerGroupName);
+		return o_szLogString;
+	}
+};					// 로그인
+
+struct MSG_FL_LOG_LOGOUT
+{
+	UID32_t	AccountUniqueNumber;
+	CHAR	AccountName[SIZE_MAX_ACCOUNT_NAME];
+	BYTE	IPAddress[4];
+	CHAR	ServerGroupName[SIZE_MAX_SERVER_NAME];
+#ifdef S_ARARIO_HSSON
+	CHAR	PublisherName[SIZE_MAX_GAME_PUBLISHER_NAME];				// 2010-11 by dhjin, 아라리오 채널링 로그인.
+#endif
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		sprintf(o_szLogString, "%s|%u|%s|%d.%d.%d.%d|%s\r\n", GetGameLogTypeString(i_nLogType), AccountUniqueNumber, AccountName
+			, IPAddress[0], IPAddress[1], IPAddress[2], IPAddress[3], ServerGroupName);
+		return o_szLogString;
+	}
+};				// 로그아웃
+
+////////////////////////////////
+// USER LOG(0x10~)
+struct FL_USER_LOG_BASE
+{
+	UID32_t		CharacterUniqueNumber;
+	MapIndex_t	CurrentMapIndex;
+	ChannelIndex_t	CurrentChannIdx;		// 2007-11-30 by cmkwon, 같은맵에 채널이 다를 경우도 워프 처리 - FL_USER_LOG_BASE 에 필드 추가
+	AVECTOR3	CurrentPosition;
+	char *GetLogBaseString(char *o_szLogString)
+	{
+		// 2007-11-30 by cmkwon, 같은맵에 채널이 다를 경우도 워프 처리 - 게임 로그 내용 수정
+		sprintf(o_szLogString, "%d|%d|%d|(%d, %d, %d)", CharacterUniqueNumber, CurrentMapIndex, CurrentChannIdx, CurrentPosition.x, CurrentPosition.y, CurrentPosition.z);
+		return o_szLogString;
+	}
+};
+
+struct MSG_FL_LOG_LEVEL: public FL_USER_LOG_BASE
+{
+	BYTE		FromLevel;
+	BYTE		ToLevel;
+	LONGLONG	TotalPlayTime;
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024];
+		sprintf(o_szLogString, "%s|%s|%d|%d|%I64d\r\n", GetGameLogTypeString(i_nLogType), GetLogBaseString(szTemp), FromLevel, ToLevel, TotalPlayTime);
+		return o_szLogString;
+	}
+};					// 레벨 변화
+
+struct MSG_FL_LOG_EXP: public FL_USER_LOG_BASE
+{
+	float		AcquiredExperience;	// 습득 경험치
+	LONGLONG	CharacterExperiece;	// 최종 경험치, Experience_t이나 DB에는 BIGINT로 저장
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024];
+		sprintf(o_szLogString, "%s|%s|%.0f|%I64d\r\n", GetGameLogTypeString(i_nLogType), GetLogBaseString(szTemp), AcquiredExperience, CharacterExperiece);
+		return o_szLogString;
+	}
+};					// 경험치 변화
+
+struct MSG_FL_LOG_STAT: public FL_USER_LOG_BASE
+{
+	BYTE	StatKind;				// STAT_XXX, 스탯의 종류
+	BYTE	RemainedBonusStat;		// 쓰고 남은 보너스 스탯
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024];
+		sprintf(o_szLogString, "%s|%s|%d|%d|0\r\n", GetGameLogTypeString(i_nLogType), GetLogBaseString(szTemp), StatKind, RemainedBonusStat);
+		return o_szLogString;
+	}
+} ;					// 스탯 사용
+
+struct MSG_FL_LOG_GAME_START: public FL_USER_LOG_BASE
+{
+	CHAR	CharacterName[SIZE_MAX_CHARACTER_NAME];
+	UID32_t	AccountUniqueNumber;
+	CHAR	AccountName[SIZE_MAX_ACCOUNT_NAME];
+	LONGLONG	TotalPlayTime;		// 총 게임 시간
+	UID32_t		PCBangUID;			// 2007-01-22 by dhjin, 가맹 PCBang UID
+	INT			GameContinueTimeOfToday;	// 2007-11-07 by cmkwon, 오늘게임지속시간 게임로그에 추가 - 필드 추가
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024];
+		// 2007-11-07 by cmkwon, 오늘게임지속시간 게임로그에 추가 - GameContinueTimeOfToday 추가
+		sprintf(o_szLogString, "%s|%s|%s|%u|%s|0|%I64d|%u|%d\r\n", GetGameLogTypeString(i_nLogType), GetLogBaseString(szTemp), CharacterName
+			, AccountUniqueNumber, AccountName, TotalPlayTime, PCBangUID, GameContinueTimeOfToday);
+		return o_szLogString;
+	}
+};			// 게임 시작
+
+struct MSG_FL_LOG_GAME_END: public FL_USER_LOG_BASE
+{
+	CHAR	CharacterName[SIZE_MAX_CHARACTER_NAME];
+	UID32_t	AccountUniqueNumber;
+	CHAR	AccountName[SIZE_MAX_ACCOUNT_NAME];
+	UINT	PlayTime;				// 이전 게임 시작 후 게임 시간
+	LONGLONG	TotalPlayTime;		// 총 게임 시간
+	UINT		PCBangPlayTime;		// 2006-12-18 by cmkwon, 가맹 PCBang에서 게임시간
+	UID32_t		PCBangUID;			// 2007-01-22 by dhjin, 가맹 PCBang UID
+	INT			GameContinueTimeOfToday;	// 2007-11-07 by cmkwon, 오늘게임지속시간 게임로그에 추가 - 필드 추가
+	ATUM_DATE_TIME	LoginDate;								// 2010-06-01 by shcho, GLogDB 관련 -		
+	CHAR			CharacterRace[SIZE_MAX_GLOG_CHARACTER_RACE_NAME];		// 2010-06-01 by shcho, GLogDB 관련 -
+	CHAR			CharacterClass[SIZE_MAX_GLOG_CHARACTER_CLASS_NAME];		// 2010-06-01 by shcho, GLogDB 관련 -
+	Experience_t	PlayExp;											// 2010-06-01 by shcho, GLogDB 관련 -
+	Experience_t	TotalExp;											// 2010-06-01 by shcho, GLogDB 관련 -
+	Lv_t			CharacterLevel;										// 2010-06-01 by shcho, GLogDB 관련 -
+	CHAR			MostStayedInZoneName[SIZE_MAX_MAP_NAME];			// 2010-06-01 by shcho, GLogDB 관련 -	
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024];
+		// 2007-11-07 by cmkwon, 오늘게임지속시간 게임로그에 추가 - GameContinueTimeOfToday 추가
+		sprintf(o_szLogString, "%s|%s|%s|%u|%s|%u|%I64d|%u|%u|%d\r\n", GetGameLogTypeString(i_nLogType), GetLogBaseString(szTemp), CharacterName
+			, AccountUniqueNumber, AccountName, PlayTime, TotalPlayTime, PCBangPlayTime, PCBangUID, GameContinueTimeOfToday);
+		return o_szLogString;
+	}
+};				// 게임 종료
+
+struct MSG_FL_LOG_QUEST_COMPLETION: public FL_USER_LOG_BASE
+{
+	INT		QuestIndex;				// 퀘스트 인덱스
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024];
+		sprintf(o_szLogString, "%s|%s|%d\r\n", GetGameLogTypeString(i_nLogType), GetLogBaseString(szTemp), QuestIndex);
+		return o_szLogString;
+	}
+};		// 퀘스트 완료
+
+
+struct MSG_FL_LOG_QUEST_COMPENSATION: public FL_USER_LOG_BASE		// 2007-04-18 by cmkwon
+{
+	INT					QuestIndex;				// 2007-04-18 by cmkwon
+	INT					ExpOfCompensation;
+	INT					BonusStatOfCompensation;
+	INT					LenOfCompensation;		// 보상 아이템 수 (경험치, SPI제외)
+	ARRAY_(char);								// 보상 아이템
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString, char *i_szCompensationItemList)
+	{
+		char szTemp[1024];
+		sprintf(o_szLogString, "%s|%s|%d|%d|%d|%s\r\n", GetGameLogTypeString(i_nLogType), GetLogBaseString(szTemp), QuestIndex, ExpOfCompensation, BonusStatOfCompensation, i_szCompensationItemList);
+		return o_szLogString;
+	}
+};	// 2007-01-16 by dhjin, 보상 아이템 로그
+
+
+struct MSG_FL_LOG_PKWIN: public FL_USER_LOG_BASE
+{
+	UID32_t	PeerCharacterUniqueNumber;	// 상대 캐릭터
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024];
+		sprintf(o_szLogString, "%s|%s|%u\r\n", GetGameLogTypeString(i_nLogType), GetLogBaseString(szTemp), PeerCharacterUniqueNumber);
+		return o_szLogString;
+	}
+};						// 1:1 결투 승리
+
+struct MSG_FL_LOG_PKLOSS: public FL_USER_LOG_BASE
+{
+	UID32_t	PeerCharacterUniqueNumber;	// 상대 캐릭터
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024];
+		sprintf(o_szLogString, "%s|%s|%u\r\n", GetGameLogTypeString(i_nLogType), GetLogBaseString(szTemp), PeerCharacterUniqueNumber);
+		return o_szLogString;
+	}
+};					// 1:1 결투 패배
+
+// DAMAGE_BY_XXX
+#define DAMAGE_BY_COLLISION		((BYTE)0)
+#define DAMAGE_BY_MONSTER		((BYTE)1)
+#define DAMAGE_BY_PK			((BYTE)2)
+#define DAMAGE_BY_FUEL_ALLIN	((BYTE)3)
+#define DAMAGE_BY_NA			((BYTE)10)	// 알 수 없거나 불필요한 경우
+
+struct MSG_FL_LOG_DEAD: public FL_USER_LOG_BASE
+{
+	INT			DamageKind;			// DAMAGE_BY_XXX, 최종 데미지 종류(PK, 충돌, 몬스터 공격 등)
+	ItemNum_t	ItemNum;			// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 게임로그 추가, 무기 아이템 정보
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024];
+		sprintf(o_szLogString, "%s|%s|%d|%d\r\n", GetGameLogTypeString(i_nLogType), GetLogBaseString(szTemp), DamageKind, ItemNum);
+		return o_szLogString;
+	}
+};					// 기체 폭파
+
+struct MSG_FL_LOG_WARP: public FL_USER_LOG_BASE
+{
+	MapIndex_t	TargetMapIndex;		// 워프할 맵
+	ChannelIndex_t	TargetChannIdx;		// 2007-11-30 by cmkwon, 같은맵에 채널이 다를 경우도 워프 처리 - MSG_FL_LOG_WARP 에 필드 추가
+	AVECTOR3	TargetPosition;		// 워프할 맵의 위치
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024];
+		// 2007-11-30 by cmkwon, 같은맵에 채널이 다를 경우도 워프 처리 - 게임 로그 수정
+		sprintf(o_szLogString, "%s|%s|%d|%d|(%d,%d,%d)\r\n", GetGameLogTypeString(i_nLogType), GetLogBaseString(szTemp), TargetMapIndex, TargetChannIdx, TargetPosition.x, TargetPosition.y, TargetPosition.z);
+		return o_szLogString;
+	}
+};					// 워프, 워프 시작 시 로그 남김
+
+enum SPEEDHACK_CHECK_TYPE
+{
+	SPEEDHACK_CHECK_TYPE_BY_SERVER		= 0,
+	SPEEDHACK_CHECK_TYPE_BY_CLIENT		= 1
+};
+
+struct MSG_FL_LOG_SPEED_HACK: public FL_USER_LOG_BASE
+{
+	BYTE	CheckType;
+	INT 	ReceivedMoveCounts;
+	INT		EngineItemNum;
+	INT		ServerPastTime;
+	INT		ClientPastTime;
+	INT		PastDistance;	
+	INT		CurrentSpeed;
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024];
+		sprintf(o_szLogString, "%s|%s|%d|%d|%d|%d|%d|%d|%d\r\n", GetGameLogTypeString(i_nLogType), GetLogBaseString(szTemp), CheckType, ReceivedMoveCounts
+			, EngineItemNum, ServerPastTime, ClientPastTime, PastDistance, CurrentSpeed);
+		return o_szLogString;
+	}
+};
+
+struct MSG_FL_LOG_CREATE_CHARACTER: public FL_USER_LOG_BASE
+{
+	CHAR	CharacterName[SIZE_MAX_CHARACTER_NAME];
+	UID32_t	AccountUniqueNumber;
+	CHAR	AccountName[SIZE_MAX_ACCOUNT_NAME];
+	USHORT	UnitKind;
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024];
+		sprintf(o_szLogString, "%s|%s|%s|%u|%s|%d|1\r\n", GetGameLogTypeString(i_nLogType), GetLogBaseString(szTemp), CharacterName, AccountUniqueNumber
+			, AccountName, UnitKind);
+		return o_szLogString;
+	}
+};		// 캐릭터 생성
+
+struct MSG_FL_LOG_DELETE_CHARACTER: public FL_USER_LOG_BASE
+{
+	CHAR	CharacterName[SIZE_MAX_CHARACTER_NAME];
+	UID32_t	AccountUniqueNumber;
+	CHAR	AccountName[SIZE_MAX_ACCOUNT_NAME];
+	USHORT	UnitKind;
+	USHORT	Level;
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024];
+		sprintf(o_szLogString, "%s|%s|%s|%u|%s|%d|%d\r\n", GetGameLogTypeString(i_nLogType), GetLogBaseString(szTemp), CharacterName, AccountUniqueNumber
+			, AccountName, UnitKind, Level);
+		return o_szLogString;
+	}
+};		// 캐릭터 삭제
+
+struct MSG_FL_LOG_MEMORY_HACK: public FL_USER_LOG_BASE		// 2005-12-20 by cmkwon
+{
+	int		nItemKind;			// 체크 아이템 종류(1형무기, 2형무기, 엔진, 아머)
+	int		nItemNum0;			// ItemNum
+	UID64_t	uid64ItemUID;		// Item UniqueNumber
+	int		nMemHackCheckType;	// 체크 타입(CHECK_TYPE_XXXXXX)
+	float	fValidValue;		// 유효한 값
+	float	fCurrentValue;		// 현재 값
+	int		nParam1;			// 체크 타입에 따라 의미가 다르다
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024];
+		sprintf(o_szLogString, "%s|%s|%d|%d|%I64d|%d|%5.2f|%5.2f|%d\r\n", GetGameLogTypeString(i_nLogType), GetLogBaseString(szTemp), nItemKind, nItemNum0
+			, uid64ItemUID, nMemHackCheckType, fValidValue, fCurrentValue, nParam1);
+		return o_szLogString;
+	}
+};
+
+struct MSG_FL_LOG_PvEWIN: public FL_USER_LOG_BASE		// 2006-03-06 by cmkwon
+{
+	UID32_t	PeerCharacterUniqueNumber;	// 상대 캐릭터
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024];
+		sprintf(o_szLogString, "%s|%s|%u\r\n", GetGameLogTypeString(i_nLogType), GetLogBaseString(szTemp), PeerCharacterUniqueNumber);
+		return o_szLogString;
+	}
+};						// 1:1 결투 승리
+
+struct MSG_FL_LOG_PvELOSS: public FL_USER_LOG_BASE		// 2006-03-06 by cmkwon
+{
+	UID32_t	PeerCharacterUniqueNumber;	// 상대 캐릭터
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024];
+		sprintf(o_szLogString, "%s|%s|%u\r\n", GetGameLogTypeString(i_nLogType), GetLogBaseString(szTemp), PeerCharacterUniqueNumber);
+		return o_szLogString;
+	}
+};					// 1:1 결투 패배
+
+
+///////////////////////////////////////////////////////////////////////////////
+// ITEM LOG(0x20~)
+struct FL_ITEM_LOG_BASE
+{
+	UID32_t		CharacterUniqueNumber;
+	MapIndex_t	CurrentMapIndex;
+	char *GetLogItemBaseString(char *o_szLogString)
+	{
+		sprintf(o_szLogString, "%u|%d", CharacterUniqueNumber, CurrentMapIndex);
+		return o_szLogString;
+	}
+};
+
+struct ITEM_FOR_LOG
+{
+	UID64_t		ItemUniqueNumber;
+	INT			ItemNum;
+	INT			CurrentCount;
+	char *GetLogItemString(char *o_szLogString)
+	{
+		sprintf(o_szLogString, "%I64d|%d|%d", ItemUniqueNumber, ItemNum, CurrentCount);
+		return o_szLogString;
+	}
+
+#ifdef _ATUM_SERVER
+	// operator overloading
+	ITEM_FOR_LOG& operator=(const ITEM_GENERAL& rhs)
+	{
+		this->ItemUniqueNumber	= rhs.UniqueNumber;
+		this->ItemNum			= rhs.ItemNum;
+		this->CurrentCount		= rhs.CurrentCount;
+
+		return *this;
+	}
+#endif // _ATUM_SERVER
+};
+
+struct MSG_FL_LOG_ITEM_CHARACTER_ITEM: public FL_ITEM_LOG_BASE
+{
+	ITEM_FOR_LOG	Item4Log;
+	INT				ChangeCount;	// 변경 개수, 			// 2008-02-15 by cmkwon, 인벤<->창고 이동 로그 수정 - MSG_FL_LOG_ITEM_STORE_ITEM 에 필드 추가
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024], szItem[1024];
+// 2008-02-15 by cmkwon, 인벤<->창고 이동 로그 수정 - 
+//		sprintf(o_szLogString, "%s|%s|%s|-1\r\n", GetGameLogTypeString(i_nLogType), GetLogItemBaseString(szTemp), Item4Log.GetLogItemString(szItem));
+		sprintf(o_szLogString, "%s|%s|%s|%d\r\n", GetGameLogTypeString(i_nLogType), GetLogItemBaseString(szTemp), Item4Log.GetLogItemString(szItem), ChangeCount);
+		return o_szLogString;
+	}
+};	// 2008-02-15 by cmkwon, 인벤<->창고 이동 로그 수정 - 창고-->인벤 으로 카운터블 아이템 이동시 인벤에 해당 아이템 추가 및 개수 변경시 저장, // (게임 시작 시 등에)모든 소유 아이템 저장
+
+struct MSG_FL_LOG_ITEM_GET_ITEM: public FL_ITEM_LOG_BASE
+{
+	ITEM_FOR_LOG	Item4Log;
+	UID32_t			StoreCharacterUID;			// 2006-11-01 by cmkwon
+	INT				ChangeCount;
+	BYTE			ItemUpdateType;				// 2008-09-26 by cmkwon, 조합시 GameLog 수정 - IUT_XXX
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024], szItem[1024];
+		// 2008-09-26 by cmkwon, 조합시 GameLog 수정 - 
+		//sprintf(o_szLogString, "%s|%s|%d|%s|%d\r\n", GetGameLogTypeString(i_nLogType), GetLogItemBaseString(szTemp), StoreCharacterUID, Item4Log.GetLogItemString(szItem), ChangeCount);
+		sprintf(o_szLogString, "%s|%s|%d|%s|%d|%s\r\n", GetGameLogTypeString(i_nLogType), GetLogItemBaseString(szTemp), StoreCharacterUID, Item4Log.GetLogItemString(szItem), ChangeCount, GetItemUpdateTypeString(ItemUpdateType));
+		return o_szLogString;
+	}
+} ;			// Drop Item 습득
+
+struct MSG_FL_LOG_ITEM_GET_ITEM_2: public FL_ITEM_LOG_BASE		// 2008-09-26 by cmkwon, 조합시 GameLog 수정 - 새로 추가함
+{
+	ITEM_FOR_LOG	Item4Log;
+	UID32_t			StoreCharacterUID;			// 2006-11-01 by cmkwon
+	INT				ChangeCount;
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024], szItem[1024];
+		sprintf(o_szLogString, "%s|%s|%d|%s|%d\r\n", GetGameLogTypeString(i_nLogType), GetLogItemBaseString(szTemp), StoreCharacterUID, Item4Log.GetLogItemString(szItem), ChangeCount);
+		return o_szLogString;
+	}
+};
+
+// 2008-09-26 by cmkwon, 조합시 GameLog 수정 - 아래와 같이 MSG_FL_LOG_ITEM_GET_ITEM_2 로 재정의 함.
+//typedef MSG_FL_LOG_ITEM_GET_ITEM		MSG_FL_LOG_ITEM_ADD_ITEM_BY_ADMIN;		// 운영툴에 의한 습득
+//typedef MSG_FL_LOG_ITEM_GET_ITEM		MSG_FL_LOG_ITEM_DEL_ITEM_BY_ADMIN;		// 운영툴에 의한 제거
+//typedef MSG_FL_LOG_ITEM_GET_ITEM		MSG_FL_LOG_ITEM_ADD_ITEM_BY_COMMAND;	// 명령어에 의한 습득
+//typedef MSG_FL_LOG_ITEM_GET_ITEM		MSG_FL_LOG_ITEM_INSERT_TO_STORE;		// 창고에 삽입
+//typedef MSG_FL_LOG_ITEM_GET_ITEM		MSG_FL_LOG_ITEM_DRAW_FROM_STORE;		// 창고에서 꺼내기
+typedef MSG_FL_LOG_ITEM_GET_ITEM_2		MSG_FL_LOG_ITEM_ADD_ITEM_BY_ADMIN;		// 운영툴에 의한 습득
+typedef MSG_FL_LOG_ITEM_GET_ITEM_2		MSG_FL_LOG_ITEM_DEL_ITEM_BY_ADMIN;		// 운영툴에 의한 제거
+typedef MSG_FL_LOG_ITEM_GET_ITEM_2		MSG_FL_LOG_ITEM_ADD_ITEM_BY_COMMAND;	// 명령어에 의한 습득
+typedef MSG_FL_LOG_ITEM_GET_ITEM_2		MSG_FL_LOG_ITEM_INSERT_TO_STORE;		// 창고에 삽입
+typedef MSG_FL_LOG_ITEM_GET_ITEM_2		MSG_FL_LOG_ITEM_DRAW_FROM_STORE;		// 창고에서 꺼내기
+
+struct MSG_FL_LOG_ITEM_TRADE_SEND: public FL_ITEM_LOG_BASE
+{
+	UID32_t			PeerCharacterUniqueNumber;	// 거래 상대
+	char			PeerCharacterName[SIZE_MAX_CHARACTER_NAME];	// 거래 상대
+	ITEM_FOR_LOG	Item4Log;					// 거래 아이템
+	INT				ChangeCount;				// 거래 개수
+	BYTE			bGiftItem;					// 2007-11-13 by cmkwon, 선물하기 기능 추가 - 선물하기 로그 플래그 변수
+	BYTE			bRearrangeItem;				// 2007-11-29 by cmkwon, 카운터블아이템 합쳐지는 게임 로그 남기기 - 
+	BYTE			bStoreItem;					// 2007-11-29 by cmkwon, 카운터블아이템 합쳐지는 게임 로그 남기기 - FALSE 이면 인벤, FALSE 가 아니면 캐릭터창고
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024], szItem[1024];
+		// 2007-11-13 by cmkwon, 선물하기 기능 추가 - 선물하기 로그 플래그 변수
+		// 2007-11-29 by cmkwon, 카운터블아이템 합쳐지는 게임 로그 남기기 - 
+		sprintf(o_szLogString, "%s|%s|%u|%s|%s|%d|%d|%d|%d\r\n", GetGameLogTypeString(i_nLogType), GetLogItemBaseString(szTemp), PeerCharacterUniqueNumber
+			, PeerCharacterName, Item4Log.GetLogItemString(szItem), ChangeCount, bGiftItem, bRearrangeItem, bStoreItem);
+		return o_szLogString;
+	}
+};					// 아이템 거래: 주기
+
+struct MSG_FL_LOG_ITEM_TRADE_RECV: public FL_ITEM_LOG_BASE
+{
+	UID32_t			PeerCharacterUniqueNumber;	// 거래 상대
+	char			PeerCharacterName[SIZE_MAX_CHARACTER_NAME];	// 거래 상대
+	ITEM_FOR_LOG	Item4Log;					// 아이템
+	INT				ChangeCount;				// 거래 개수
+	BYTE			bGiftItem;					// 2007-11-13 by cmkwon, 선물하기 기능 추가 - 선물하기 로그 플래그 변수
+	BYTE			bRearrangeItem;				// 2007-11-29 by cmkwon, 카운터블아이템 합쳐지는 게임 로그 남기기 - 
+	BYTE			bStoreItem;					// 2007-11-29 by cmkwon, 카운터블아이템 합쳐지는 게임 로그 남기기 - FALSE 이면 인벤, FALSE 가 아니면 캐릭터창고
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024], szItem[1024];
+		// 2007-11-13 by cmkwon, 선물하기 기능 추가 - 선물하기 로그 플래그 변수
+		// 2007-11-29 by cmkwon, 카운터블아이템 합쳐지는 게임 로그 남기기 - 
+		sprintf(o_szLogString, "%s|%s|%u|%s|%s|%d|%d|%d|%d\r\n", GetGameLogTypeString(i_nLogType), GetLogItemBaseString(szTemp), PeerCharacterUniqueNumber
+			, PeerCharacterName, Item4Log.GetLogItemString(szItem), ChangeCount, bGiftItem, bRearrangeItem, bStoreItem);
+		return o_szLogString;
+	}
+};					// 아이템 거래: 받기
+
+// 2007-06-05 by cmkwon, 레어정보/인챈트정보도 저장하기
+struct MSG_FL_LOG_ITEM_THROWAWAY_ITEM: public FL_ITEM_LOG_BASE
+{
+	ITEM_FOR_LOG	Item4Log;
+	INT				ChangeCount;	// 거래 개수
+	INT				PrefixCodeNum;			// 2007-06-05 by cmkwon
+	INT				SuffixCodeNum;			// 2007-06-05 by cmkwon
+	INT				EnchatItemNumCount;		// 2007-06-05 by cmkwon, EnchantItemNum List Count
+	_ARRAY(INT);							// 2007-06-05 by cmkwon, EnchantItemNum List
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024], szItem[1024];
+		sprintf(o_szLogString, "%s|%s|%s|%d|%d|%d", GetGameLogTypeString(i_nLogType), GetLogItemBaseString(szTemp), Item4Log.GetLogItemString(szItem), ChangeCount
+			, PrefixCodeNum, SuffixCodeNum);
+		return o_szLogString;
+	}
+} ;	// 아이템 버리기
+
+struct MSG_FL_LOG_ITEM_BUY_ITEM: public FL_ITEM_LOG_BASE
+{
+	ITEM_FOR_LOG	Item4Log;
+	INT				ChangeCount;	// 거래 개수
+	INT				RemainedMoney;	// 남은 돈
+	BOOL			IsCashItem;		// 2006-06-21 by cmkwon, 유료 아이템
+	INT				nRemainCountForLimitedEdition;		// 2010-01-26 by cmkwon, 캐쉬 아이템 한정판매 시스템 구현 - 
+	INT				CashItemPrice;							// 2010-06-01 by shcho, GLogDB 관련 -
+	CHAR			AccountName[SIZE_MAX_ACCOUNT_NAME];		// 2010-06-01 by shcho, GLogDB 관련 -
+	CHAR			CharacterName[SIZE_MAX_CHARACTER_NAME]; // 2010-06-01 by shcho, GLogDB 관련 -
+	INT				CharacterLevel;							// 2010-06-01 by shcho, GLogDB 관련 - GLogDB필드가 int 형이므로 Int로 받는다.
+	CHAR			ItemName[SIZE_MAX_ITEM_NAME];			// 2010-06-01 by shcho, GLogDB 관련 -
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024], szItem[1024];
+		sprintf(o_szLogString, "%s|%s|%s|%d|%d|%d|%d\r\n", GetGameLogTypeString(i_nLogType), GetLogItemBaseString(szTemp), Item4Log.GetLogItemString(szItem)
+			, ChangeCount, RemainedMoney,IsCashItem, nRemainCountForLimitedEdition);
+		return o_szLogString;
+	}
+};			// 아이템 구매
+
+struct MSG_FL_LOG_ITEM_SELL_ITEM: public FL_ITEM_LOG_BASE
+{
+	ITEM_FOR_LOG	Item4Log;
+	INT				ChangeCount;	// 거래 개수
+	INT				RemainedMoney;	// 남은 돈
+	INT				PrefixCodeNum;			// 2007-07-20 by cmkwon, 판매아이템 로그 추가 - 접두
+	INT				SuffixCodeNum;			// 2007-07-20 by cmkwon, 판매아이템 로그 추가 - 접미
+	INT				EnchatItemNumCount;		// 2007-07-20 by cmkwon, 판매아이템 로그 추가 - EnchantItemNum List Count
+	_ARRAY(INT);							// 2007-07-20 by cmkwon, 판매아이템 로그 추가 - EnchantItemNum List
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024], szItem[1024];
+		// 2007-07-20 by cmkwon, 판매아이템 로그 추가 - 접두/접미 추가
+		sprintf(o_szLogString, "%s|%s|%s|%d|%d|%d|%d", GetGameLogTypeString(i_nLogType), GetLogItemBaseString(szTemp), Item4Log.GetLogItemString(szItem)
+			, ChangeCount, RemainedMoney, PrefixCodeNum, SuffixCodeNum);
+		return o_szLogString;
+	}
+};		// 아이템 판매
+
+struct MSG_FL_LOG_ITEM_USE_ITEM: public FL_ITEM_LOG_BASE
+{
+	ITEM_FOR_LOG	Item4Log;
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024], szItem[1024];
+		sprintf(o_szLogString, "%s|%s|%s|-1\r\n", GetGameLogTypeString(i_nLogType), GetLogItemBaseString(szTemp), Item4Log.GetLogItemString(szItem));
+		return o_szLogString;
+	}
+};			// 아이템 사용
+
+struct MSG_FL_LOG_ITEM_USE_ENERGY: public FL_ITEM_LOG_BASE
+{
+	ITEM_FOR_LOG	Item4Log;
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024], szItem[1024];
+		sprintf(o_szLogString, "%s|%s|%s|-1\r\n", GetGameLogTypeString(i_nLogType), GetLogItemBaseString(szTemp), Item4Log.GetLogItemString(szItem));
+		return o_szLogString;
+	}
+};		// 에너지류 아이템 사용
+
+struct MSG_FL_LOG_ITEM_USE_ENCHANT: public FL_ITEM_LOG_BASE
+{
+	ITEM_FOR_LOG	Item4Log;
+	INT				EnchantLogType;	// ENCHANT_LOGTYPE_FAIL, ENCHANT_LOGTYPE_SUCCESS, ENCHANT_LOGTYPE_TARGETITEM, ENCHANT_LOGTYPE_ATTACHITEM
+	INT				nTargetItemPrefixCodeNum;	// 2007-07-30 by cmkwon, 갬블/인챈트 로그에 접두/접미 정보 저장 - 필드추가
+	INT				nTargetItemSuffixCodeNum;	// 2007-07-30 by cmkwon, 갬블/인챈트 로그에 접두/접미 정보 저장 - 필드추가
+	INT				nTargetItemEnchantCnt;		// 2010-04-20 by cmkwon, 신규 러키 머신 구현 - 
+	INT				nEnchantItemKind;			// 인챈트 아이템의 ItemKind // 2010-04-20 by cmkwon, 신규 러키 머신 구현 - 
+	INT				nEnchantItemNum;			// 인챈트 아이템의 ItemNum // 2010-04-20 by cmkwon, 신규 러키 머신 구현 - 
+	BOOL			bSuccessFlag;				// 2010-04-20 by cmkwon, 신규 러키 머신 구현 - 
+	UID64_t			arrAddedItemUID[2];			// 2010-04-20 by cmkwon, 신규 러키 머신 구현 - (추가 수정) - 
+	INT				arrAddedItemNum[2];			// 2010-04-20 by cmkwon, 신규 러키 머신 구현 - (추가 수정) - 
+	
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024], szItem[1024];
+
+		// 2007-07-30 by cmkwon, 갬블/인챈트 로그에 접두/접미 정보 저장 - 게임 로그 수정됨
+		// 2010-04-20 by cmkwon, 신규 러키 머신 구현 - 
+		//sprintf(o_szLogString, "%s|%s|%s|%d|%d|%d\r\n"
+		//	, GetGameLogTypeString(i_nLogType), GetLogItemBaseString(szTemp), Item4Log.GetLogItemString(szItem)
+		//	, EnchantLogType, nTargetItemPrefixCodeNum, nTargetItemSuffixCodeNum);
+		///////////////////////////////////////////////////////////////////////////////
+		// 2010-04-20 by cmkwon, 신규 러키 머신 구현 - 
+		// 2010-04-20 by cmkwon, 신규 러키 머신 구현 - (추가 수정) - 
+		sprintf(o_szLogString, "%s|%s|%s|%s|%d|%d|%d|%d|%d|%d|%I64d|%d|%I64d|%d\r\n"
+			, GetGameLogTypeString(i_nLogType), GetLogItemBaseString(szTemp), Item4Log.GetLogItemString(szItem)
+			, GetEnchatLogTypeString(EnchantLogType), nTargetItemPrefixCodeNum, nTargetItemSuffixCodeNum, nTargetItemEnchantCnt, nEnchantItemKind, nEnchantItemNum, bSuccessFlag
+			, arrAddedItemUID[0], arrAddedItemNum[0], arrAddedItemUID[1], arrAddedItemNum[1]);
+		return o_szLogString;
+	}
+};		// 인챈트류 아이템 사용
+
+struct MSG_FL_LOG_ITEM_STORE_ITEM: public FL_ITEM_LOG_BASE
+{
+	ITEM_FOR_LOG	Item4Log;
+	INT				ChangeCount;	// 변경 개수, 			// 2008-02-15 by cmkwon, 인벤<->창고 이동 로그 수정 - MSG_FL_LOG_ITEM_STORE_ITEM 에 필드 추가
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024], szItem[1024];
+// 2008-02-15 by cmkwon, 인벤<->창고 이동 로그 수정 - 
+//		sprintf(o_szLogString, "%s|%s|%s|-1\r\n", GetGameLogTypeString(i_nLogType), GetLogItemBaseString(szTemp), Item4Log.GetLogItemString(szItem));
+		sprintf(o_szLogString, "%s|%s|%s|%d\r\n", GetGameLogTypeString(i_nLogType), GetLogItemBaseString(szTemp), Item4Log.GetLogItemString(szItem), ChangeCount);
+		return o_szLogString;
+	}
+};		// 2008-02-15 by cmkwon, 인벤<->창고 이동 로그 수정 - 인벤-->창고 로 카운터블 아이템 이동시 창고에 해당 아이템 추가 및 개수 변경시 저장, // 창고 소유 아이템 저장, 창고 시작 아이템
+
+
+struct MSG_FL_LOG_ITEM_USE_MIX: public FL_ITEM_LOG_BASE
+{
+	ITEM_FOR_LOG	Item4Log;
+	BOOL						IsSuccess;										// 2008-09-26 by cmkwon, 조합시 GameLog 수정 - 
+	ITEM_UID_W_ITEMNUM_COUNT	arrSourceItemList[COUNT_ITEM_MIXING_SOURCE];	// 2008-09-26 by cmkwon, 조합시 GameLog 수정 - 
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024], szItem[1024];
+		// 2008-09-26 by cmkwon, 조합시 GameLog 수정 - 아래와 같이 수정 함
+		//sprintf(o_szLogString, "%s|%s|%s|-1\r\n", GetGameLogTypeString(i_nLogType), GetLogItemBaseString(szTemp), Item4Log.GetLogItemString(szItem));
+		sprintf(o_szLogString, "%s|%s|%d|%s|%I64d|%d|%d|%I64d|%d|%d|%I64d|%d|%d|%I64d|%d|%d|%I64d|%d|%d\r\n", GetGameLogTypeString(i_nLogType), GetLogItemBaseString(szTemp), IsSuccess, Item4Log.GetLogItemString(szItem)
+			, arrSourceItemList[0].ItemUID, arrSourceItemList[0].ItemNum, arrSourceItemList[0].Count, arrSourceItemList[1].ItemUID, arrSourceItemList[1].ItemNum, arrSourceItemList[1].Count
+			, arrSourceItemList[2].ItemUID, arrSourceItemList[2].ItemNum, arrSourceItemList[2].Count, arrSourceItemList[3].ItemUID, arrSourceItemList[3].ItemNum, arrSourceItemList[3].Count
+			, arrSourceItemList[4].ItemUID, arrSourceItemList[4].ItemNum, arrSourceItemList[4].Count);
+		return o_szLogString;
+	}
+};			// 조합 정보, CurrentCount( 0이면 실패 1이면 성공)
+
+struct MSG_FL_LOG_ITEM_USE_CHANGE_CHARACTER_NAME_ORIGIN: public FL_ITEM_LOG_BASE
+{
+	ITEM_FOR_LOG	Item4Log;
+	char			szOriginCharName[SIZE_MAX_CHARACTER_NAME];
+	char			szNewCharName[SIZE_MAX_CHARACTER_NAME];
+	DWORD			Padding;		// 2011-07-21 by hskim, 인증 서버 구현 - 기존 서버와 호환 안되도록 구조체 크기 바꿈
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024], szItem[1024];
+		sprintf(o_szLogString, "%s|%s|%s|%s|%s\r\n", GetGameLogTypeString(i_nLogType), GetLogItemBaseString(szTemp), Item4Log.GetLogItemString(szItem)
+			, szOriginCharName, szNewCharName);
+		return o_szLogString;
+	}
+};
+
+typedef MSG_FL_LOG_ITEM_TRADE_SEND		MSG_FL_LOG_ITEM_BAZAAR_SEND;		// 2006-07-28 by cmkwon
+typedef MSG_FL_LOG_ITEM_TRADE_RECV		MSG_FL_LOG_ITEM_BAZAAR_RECV;		// 2006-07-28 by cmkwon
+
+struct MSG_FL_LOG_ITEM_SPI: public FL_ITEM_LOG_BASE			// 2006-10-27 by cmkwon
+{
+	ITEM_FOR_LOG	Item4Log;
+	BYTE			ItemUpdateType;	// 2006-10-27 by cmkwon, IUT_XXXX
+	INT				ChangeCount;	// 변경 개수
+	INT				RemainedMoney;	// 남은 돈
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024], szItem[1024];
+		sprintf(o_szLogString, "%s|%s|%s|%s|%d|%d\r\n", GetGameLogTypeString(i_nLogType), GetLogItemBaseString(szTemp), Item4Log.GetLogItemString(szItem)
+			, GetItemUpdateTypeString(ItemUpdateType), ChangeCount, RemainedMoney);
+		return o_szLogString;
+	}
+};
+
+// 2008-09-26 by cmkwon, 조합시 GameLog 수정 - 
+//typedef MSG_FL_LOG_ITEM_GET_ITEM		MSG_FL_LOG_ITEM_GET_ITEM_BY_ITEMEVENT;		// 56 - ItemEvent에 의한 아이템 추가, 2007-01-11 by cmkwon
+typedef MSG_FL_LOG_ITEM_GET_ITEM_2		MSG_FL_LOG_ITEM_GET_ITEM_BY_ITEMEVENT;		// 56 - ItemEvent에 의한 아이템 추가, 2007-01-11 by cmkwon
+
+struct MSG_FL_LOG_WARPOINT																						
+{// 58 - WarPoint 변경, 2007-05-15 by dhjin
+	UID32_t			AccountUID;
+	CHAR			AccountName[SIZE_MAX_ACCOUNT_NAME];
+	UID32_t			CharacterUID;
+	CHAR			CharacterName[SIZE_MAX_CHARACTER_NAME];
+	INT				ChangeWarPoint;
+	INT				TotalWarPoint;
+	INT				CumulativeWarPoint;
+	BYTE			WPUpdateType;				// 2009-01-22 by cmkwon, 전쟁 관련 게임 로그 수정 - MSG_FL_LOG_WARPOINT에 추가
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		// 2009-01-22 by cmkwon, 전쟁 관련 게임 로그 수정 - 아래와 같이 추가함.
+		//sprintf(o_szLogString, "%s|%d|%s|%d|%s|%d|%d|%d\r\n"
+		//	, GetGameLogTypeString(i_nLogType), AccountUID, AccountName, CharacterUID, CharacterName, ChangeWarPoint, TotalWarPoint, CumulativeWarPoint);
+		sprintf(o_szLogString, "%s|%d|%s|%d|%s|%d|%d|%d|%s\r\n"
+			, GetGameLogTypeString(i_nLogType), AccountUID, AccountName, CharacterUID, CharacterName, ChangeWarPoint, TotalWarPoint, CumulativeWarPoint, GetWPUTString(WPUpdateType));
+		return o_szLogString;
+	}
+};
+
+struct MSG_FL_LOG_ARENA_TEAM_MATCH																				
+{// 59 - Arena 팀 매칭, 2007-06-11 by dhjin
+	BYTE			TeamMode;
+	BYTE			TeamSize;
+	BYTE			StartLevel;
+	BYTE			EndLevel;
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		sprintf(o_szLogString, "%s|%d|%d|%d~%d\r\n"
+			, GetGameLogTypeString(i_nLogType), TeamMode, TeamSize, StartLevel, EndLevel);
+		return o_szLogString;
+	}
+};
+
+struct MSG_FL_LOG_TUTORIAL_COMPLETION																				
+{// 60 - Tutorial, 2007-07-06 by dhjin
+	UID32_t			AccountUID;
+	CHAR			AccountName[SIZE_MAX_ACCOUNT_NAME];
+	UID32_t			CharacterUID;
+	CHAR			CharacterName[SIZE_MAX_CHARACTER_NAME];
+	INT				TutorialNum;
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		sprintf(o_szLogString, "%s|%d|%s|%d|%s|%d\r\n"
+			, GetGameLogTypeString(i_nLogType), AccountUID, AccountName, CharacterUID, CharacterName, TutorialNum);
+		return o_szLogString;
+	}
+};
+
+struct MSG_FL_LOG_GUILD_STORE
+{// 2006-09-27 by dhjin, 여단 창고 로그 남기는 구조체
+	UID32_t			GuildUID;
+	CHAR			GuildName[SIZE_MAX_GUILD_NAME];
+	UID32_t			AccountUID;
+	CHAR			AccountName[SIZE_MAX_ACCOUNT_NAME];
+	UID32_t			CharacterUID;
+	CHAR			CharacterName[SIZE_MAX_CHARACTER_NAME];
+	UID64_t			ItemUID;
+	INT				ItemNum;
+	INT				PrefixCodeNum;
+	INT				SuffixCodeNum;
+	INT				ItemResultCount;
+	INT				ItemChangeCount;
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		sprintf(o_szLogString, "%s|%d|%s|%d|%s|%d|%s|%I64d|%d|%d|%d|%d|%d\r\n"
+			, GetGameLogTypeString(i_nLogType), GuildUID, GuildName, AccountUID, AccountName, CharacterUID, CharacterName
+			, ItemUID, ItemNum, PrefixCodeNum, SuffixCodeNum, ItemResultCount, ItemChangeCount);
+		return o_szLogString;
+	}
+};
+
+struct MSG_FL_LOG_OUTPOST_START																				
+{// 61 - OutPost시작 로그, 2007-10-02 by dhjin
+	MapIndex_t			OutPostMapIdx;
+	BYTE				PossessInflTy;
+	UID32_t				PossessGuildUID;
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{		
+		sprintf(o_szLogString, "%s|%d|%d|%u\r\n", GetGameLogTypeString(i_nLogType), OutPostMapIdx, PossessInflTy, PossessGuildUID);
+		return o_szLogString;
+	}
+};
+
+struct MSG_FL_LOG_OUTPOST_END																				
+{// 62 - OutPost종료 로그, 2007-10-02 by dhjin
+	MapIndex_t			OutPostMapIdx;
+	BYTE				PossessInflTy;
+	UID32_t				PossessGuildUID;
+	CHAR				PossessGuildName[SIZE_MAX_GUILD_NAME];
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		sprintf(o_szLogString, "%s|%d|%d|%u|%s\r\n"
+			, GetGameLogTypeString(i_nLogType), OutPostMapIdx, PossessInflTy, PossessGuildUID, PossessGuildName);
+		return o_szLogString;
+	}
+};
+
+struct MSG_FL_LOG_EXPEDIENCYFUND																				
+{// 63 - 판공비 증/감 로그, 2007-10-02 by dhjin
+	MapIndex_t		MapIndex;
+	UID32_t			CharacterUID;	// 2007-10-16 by cmkwon, 로그 추가 - 추가
+	UID32_t			GuildUID;		// 2007-10-16 by cmkwon, 로그 추가 - 추가
+	BOOL			Increase;		// FALSE : 감소, TRUE : 증가
+	INT				Count;
+	INT				ExpediencyFundVRate;	// 2007-10-16 by cmkwon, 로그 추가 - EXPEDIENCYFUND_RATE_VALUE 로 나눈것이 실제 징수율
+	INT				TotalCount;
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		// 2007-10-16 by cmkwon, 로그 추가 - 수정함
+		sprintf(o_szLogString, "%s|%d|%u|%u|%d|%d|%.3f|%d\r\n"
+			, GetGameLogTypeString(i_nLogType), MapIndex, CharacterUID, GuildUID, Increase, Count, ((float)ExpediencyFundVRate)/EXPEDIENCYFUND_RATE_VALUE, TotalCount);
+		return o_szLogString;
+	}
+};
+
+////////////////////////////////
+// ETC LOG(0x40~)
+typedef struct _MSG_FL_LOG_SERVER_INFO_MAP
+{
+	MapIndex_t		MapIndex;
+	ChannelIndex_t	ChannelIndex;
+	INT				ClientCount;
+	INT				MonsterCount;
+	char			MapName[SIZE_MAX_MAP_NAME];						// 2010-06-01 by shcho, GLogDB 관련 -
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{		
+		sprintf(o_szLogString, "%s|%d|%d|%d|%d\r\n", GetGameLogTypeString(i_nLogType), MapIndex, ChannelIndex, ClientCount, MonsterCount);
+		return o_szLogString;
+	}
+} MSG_FL_LOG_SERVER_INFO_MAP;
+
+typedef struct _MSG_FL_LOG_SERVER_INFO_TOTAL
+{
+	INT				ClientCount;
+	INT				MonsterCount;
+	BOOL			bGlogUpdate;		// 2010-06-01 by shcho, GLogDB 관련 -
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{		
+		sprintf(o_szLogString, "%s|0|0|%d|%d\r\n", GetGameLogTypeString(i_nLogType), ClientCount, MonsterCount);
+		return o_szLogString;
+	}
+} MSG_FL_LOG_SERVER_INFO_TOTAL;
+
+struct MSG_FL_LOG_HACKING_LOG: public FL_USER_LOG_BASE
+{
+	char			AccountName0[SIZE_MAX_ACCOUNT_NAME];
+	long			hackingCode;
+	char			szErrString[SIZE_STRING_128];			// 2006-10-20 by cmkwon, 추가함(해킹 프로그램명)
+	char			IPAddress[SIZE_MAX_IPADDRESS];
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024];
+		sprintf(o_szLogString, "%s|%s|%s|%d|%s|%s\r\n", GetGameLogTypeString(i_nLogType), AccountName0, GetLogBaseString(szTemp), hackingCode, IPAddress, szErrString);
+		return o_szLogString;
+	}
+};
+
+////////////////////////////////
+// MONSTER LOG(0x50~)
+typedef struct _MSG_FL_LOG_MONSTER_BOSS
+{
+	MAP_CHANNEL_INDEX	MapChannel;
+ 	INT					MonsterUnitKind;
+ 	ATUM_DATE_TIME		CreatedTime;
+ 	ATUM_DATE_TIME		DeadTime;
+ 	char				AttackUser[SIZE_MAX_USERLIST_ON_BOSS_MONSTER_DEAD][SIZE_MAX_CHARACTER_NAME];
+ 	INT					LenOfDropItemList;		// Drop Item List string의 길이
+	ARRAY_(char);								// Drop Item List string
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString, char *i_szDropItemList)
+	{		
+		sprintf(o_szLogString, "%s|%d|%d|%d|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s\r\n", GetGameLogTypeString(i_nLogType), MapChannel.MapIndex, MapChannel.ChannelIndex, MonsterUnitKind
+			, CreatedTime.GetDateTimeString(STRNBUF(SIZE_MAX_SQL_DATETIME_STRING)), DeadTime.GetDateTimeString(STRNBUF(SIZE_MAX_SQL_DATETIME_STRING))
+			, AttackUser[0], AttackUser[1], AttackUser[2], AttackUser[3], AttackUser[4], AttackUser[5]
+			, AttackUser[6], AttackUser[7], AttackUser[8], AttackUser[9], i_szDropItemList);
+		return o_szLogString;
+	}
+} MSG_FL_LOG_MONSTER_BOSS;	// 보스급 몬스터
+
+
+
+struct MSG_FL_LOG_INFLWAR_START
+{// 2007-10-16 by cmkwon, 로그 추가 -
+	MapIndex_t			MothershipCreatedMapIdx;
+	BYTE				InfluenceType2;
+	INT					MonsterUnitKind;
+	BYTE				MonBell;
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{		
+		sprintf(o_szLogString, "%s|%d|%d|%d|%d\r\n", GetGameLogTypeString(i_nLogType), MothershipCreatedMapIdx, InfluenceType2, MonsterUnitKind, MonBell);
+		return o_szLogString;
+	}
+};
+struct MSG_FL_LOG_INFLWAR_END
+{// 2007-10-16 by cmkwon, 로그 추가 -
+	MapIndex_t			MothershipCreatedMapIdx;
+	BYTE				InfluenceType2;
+	INT					MonsterUnitKind;
+	BYTE				MonBell;
+	BOOL				DeadFlag;
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{		
+		sprintf(o_szLogString, "%s|%d|%d|%d|%d|%d\r\n", GetGameLogTypeString(i_nLogType), MothershipCreatedMapIdx, InfluenceType2, MonsterUnitKind, MonBell, DeadFlag);
+		return o_szLogString;
+	}
+};
+struct MSG_FL_LOG_OUTPOSTWAR_RESET_START
+{// 2007-10-16 by cmkwon, 로그 추가 -
+	MapIndex_t			OutPostMapIdx;
+	BYTE				PossessInflTy;
+	UID32_t				PossessGuildUID;
+	BYTE				InflTy4Reset;
+	UID32_t				GuildUID4Reset;
+	UID32_t				ResetUserGuildUID;
+	UID32_t				ResetUserCharacterUID;
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{		
+		sprintf(o_szLogString, "%s|%d|%d|%u|%d|%u|%u|%u\r\n", GetGameLogTypeString(i_nLogType), OutPostMapIdx, PossessInflTy, PossessGuildUID, InflTy4Reset, GuildUID4Reset, ResetUserGuildUID, ResetUserCharacterUID);
+		return o_szLogString;
+	}
+};
+struct MSG_FL_LOG_OUTPOSTWAR_RESET_DESTROY
+{// 2007-10-16 by cmkwon, 로그 추가 -
+	MapIndex_t			OutPostMapIdx;
+	BYTE				PossessInflTy;
+	UID32_t				PossessGuildUID;
+	BYTE				InflTy4Reset;
+	UID32_t				GuildUID4Reset;
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{		
+		sprintf(o_szLogString, "%s|%d|%d|%u|%d|%u\r\n", GetGameLogTypeString(i_nLogType), OutPostMapIdx, PossessInflTy, PossessGuildUID, InflTy4Reset, GuildUID4Reset);
+		return o_szLogString;
+	}
+};
+struct MSG_FL_LOG_OUTPOSTWAR_RESET_COMPLETE
+{// 2007-10-16 by cmkwon, 로그 추가 -
+	MapIndex_t			OutPostMapIdx;
+	BYTE				PossessInflTy;
+	UID32_t				PossessGuildUID;
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{		
+		sprintf(o_szLogString, "%s|%d|%d|%u\r\n", GetGameLogTypeString(i_nLogType), OutPostMapIdx, PossessInflTy, PossessGuildUID);
+		return o_szLogString;
+	}
+};
+
+#define SIZE_MAX_OUTPOSTWAR_DAMAGELIST			10		// 2007-10-16 by cmkwon, 로그 추가 - 
+struct MSG_FL_LOG_OUTPOSTWAR_PROTECTOR_DESTROY
+{// 2007-10-16 by cmkwon, 로그 추가 -
+	MapIndex_t			OutPostMapIdx;
+	BYTE				PossessInflTy;
+	UID32_t				PossessGuildUID;
+	BYTE				InflTy4Reset;
+	UID32_t				GuildUID4Reset;
+	UID32_t				ArrGuildUID[SIZE_MAX_OUTPOSTWAR_DAMAGELIST];
+	float				ArrDamage[SIZE_MAX_OUTPOSTWAR_DAMAGELIST];
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		// 2007-10-16 by cmkwon, 데미지 리스트를 외부에서 만들어 이어서 붙인다
+		sprintf(o_szLogString, "%s|%d|%d|%u|%d|%u", GetGameLogTypeString(i_nLogType), OutPostMapIdx, PossessInflTy, PossessGuildUID, InflTy4Reset, GuildUID4Reset);
+		return o_szLogString;
+	}
+};
+struct MSG_FL_LOG_OUTPOSTWAR_SET_NEXTTIME
+{// 2007-10-16 by cmkwon, 로그 추가 -
+	MapIndex_t			OutPostMapIdx;
+	BYTE				PossessInflTy;
+	UID32_t				PossessGuildUID;
+	UID32_t				UserGuildUID;
+	UID32_t				UserCharacterUID;
+	ATUM_DATE_TIME		NextTime;
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{		
+		sprintf(o_szLogString, "%s|%d|%d|%u|%u|%u|%s\r\n", GetGameLogTypeString(i_nLogType), OutPostMapIdx, PossessInflTy, PossessGuildUID, UserGuildUID, UserCharacterUID, NextTime.GetDateTimeString(STRNBUF(SIZE_MAX_ATUM_DATE_TIME_STRING)));
+		return o_szLogString;
+	}	
+};
+
+struct MSG_FL_LOG_POLL_VOTE
+{// 2007-11-08 by dhjin
+	UID32_t				VoteCharacterUID;
+	UID32_t				CharacterUID;
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{		
+		sprintf(o_szLogString, "%s|%d|%d\r\n", GetGameLogTypeString(i_nLogType), VoteCharacterUID, CharacterUID);
+		return o_szLogString;
+	}	
+};
+
+struct MSG_FL_LOG_POLL_DELETE_LEADERCANDIDATE
+{// 2007-11-08 by dhjin
+	UID32_t				CharacterUID;
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{		
+		sprintf(o_szLogString, "%s|%d\r\n", GetGameLogTypeString(i_nLogType), CharacterUID);
+		return o_szLogString;
+	}	
+};
+
+struct MSG_FL_LOG_DISMEMBER_GUILD
+{// 2007-11-09 by dhjin
+	UID32_t				GuildUID;
+	char				GuildName[SIZE_MAX_GUILD_NAME];
+	UID32_t				GuildCommanderUID;
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{		
+		sprintf(o_szLogString, "%s|%d|%s|%d\r\n", GetGameLogTypeString(i_nLogType), GuildUID, GuildName, GuildCommanderUID);
+		return o_szLogString;
+	}	
+};
+
+struct MSG_FL_LOG_NOTIFY_MSG_DELETE: public SNOTIFY_MSG		// 2007-11-28 by cmkwon, 통지시스템 구현 -
+{
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{		
+		sprintf(o_szLogString, "%s|%I64d|%u|%d|%s|%u|%s|%s\r\n", GetGameLogTypeString(i_nLogType), NotifyMsgUID, CharacterUID, NotifyMsgType, NotifyMsgString, SenderCharacterUID, SenderCharacterName, CreateTime.GetDateTimeString(STRNBUF(SIZE_MAX_ATUM_DATE_TIME_STRING)));
+		return o_szLogString;
+	}	
+};
+struct MSG_FL_LOG_USE_COUPON: public FL_USER_LOG_BASE		// 2008-01-23 by cmkwon, S_F, S_L: 쿠폰 사용 게임 로그에 추가 - 
+{
+	char AccountName[SIZE_MAX_ACCOUNT_NAME];
+	char CouponNumber[SIZE_MAX_COUPON_NUMBER];
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{
+		char szTemp[1024];
+		sprintf(o_szLogString, "%s|%s|%s|%s\r\n", GetGameLogTypeString(i_nLogType), GetLogBaseString(szTemp), AccountName, CouponNumber);
+		return o_szLogString;
+	}
+};
+
+struct MSG_FL_LOG_ITEM_ATTACH_ITEM: public FL_ITEM_LOG_BASE		// 2008-01-23 by cmkwon, S_F, S_L: 장착/장착해제 게임 로그에 추가 - 
+{
+	ITEM_FOR_LOG	Item4Log;
+	INT				ReaminTimeSec;
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{		
+		char szTemp[1024], szItem[1024];
+		sprintf(o_szLogString, "%s|%s|%s|%d\r\n", GetGameLogTypeString(i_nLogType), GetLogItemBaseString(szTemp), Item4Log.GetLogItemString(szItem)
+			, ReaminTimeSec);
+		return o_szLogString;
+	}	
+};
+struct MSG_FL_LOG_ITEM_DETACH_ITEM: public FL_ITEM_LOG_BASE		// 2008-01-23 by cmkwon, S_F, S_L: 장착/장착해제 게임 로그에 추가 - 
+{
+	ITEM_FOR_LOG	Item4Log;
+	INT				ReaminTimeSec;
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{		
+		char szTemp[1024], szItem[1024];
+		sprintf(o_szLogString, "%s|%s|%s|%d\r\n", GetGameLogTypeString(i_nLogType), GetLogItemBaseString(szTemp), Item4Log.GetLogItemString(szItem)
+			, ReaminTimeSec);
+		return o_szLogString;
+	}
+};
+struct MSG_FL_LOG_ITEM_DELETE: public FL_ITEM_LOG_BASE		// 2008-01-23 by cmkwon, S_F, S_L: 장착/장착해제 게임 로그에 추가 - 
+{
+	ITEM_FOR_LOG	Item4Log;
+	INT				ItemDeleteType;
+	ATUM_DATE_TIME	atCreatedTime;			// 2009-11-17 by cmkwon, 시작제한 관련 아이템 삭제시 로그 정보 추가 - MSG_FL_LOG_ITEM_DELETE
+	INT				nUsedTime;				// 2009-11-17 by cmkwon, 시작제한 관련 아이템 삭제시 로그 정보 추가 - MSG_FL_LOG_ITEM_DELETE
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{		
+		// 2009-11-17 by cmkwon, 시작제한 관련 아이템 삭제시 로그 정보 추가 - 
+		char szTemp[1024], szItem[1024];
+		sprintf(o_szLogString, "%s|%s|%s|%s|%s|%d\r\n", GetGameLogTypeString(i_nLogType), GetLogItemBaseString(szTemp), Item4Log.GetLogItemString(szItem)
+			, GetItemDeleteTypeString(ItemDeleteType), atCreatedTime.GetDateTimeString(STRNBUF(SIZE_MAX_SQL_DATETIME_STRING)), nUsedTime);
+		return o_szLogString;
+	}		
+};
+
+//////////////////////////////////////////////////////////////////////////
+// 2008-04-01 by dhjin, 모선전, 거점전 정보창 기획안 - 
+struct MSG_FL_LOG_MS_WAR
+{
+	BYTE			AttInfluence;
+	INT				MonsterUID;
+	INT				ContributionPoint;
+	ATUM_DATE_TIME	MSWarStartTime;
+	BYTE			WinInfluence;	
+
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{		
+		sprintf(o_szLogString, "%s|%d|%d|%d|%s|%d\r\n", GetGameLogTypeString(i_nLogType), AttInfluence, MonsterUID, ContributionPoint, MSWarStartTime.GetDateTimeString(STRNBUF(SIZE_MAX_ATUM_DATE_TIME_STRING)), WinInfluence);
+		return o_szLogString;
+	}	
+};
+
+struct MSG_FL_LOG_SP_WAR
+{
+	BYTE			AttInfluence;
+	INT				SPSummonMapIndex;
+	ATUM_DATE_TIME	SPWarStartTime;
+	BYTE			WinInfluence;	
+
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{		
+		sprintf(o_szLogString, "%s|%d|%d|%s|%d\r\n", GetGameLogTypeString(i_nLogType), AttInfluence, SPSummonMapIndex, SPWarStartTime.GetDateTimeString(STRNBUF(SIZE_MAX_ATUM_DATE_TIME_STRING)), WinInfluence);
+		return o_szLogString;
+	}	
+};
+
+struct MSG_FL_LOG_WAR_CONTRIBUTION
+{
+	UID32_t		CharacterUID;
+	MapIndex_t	nMapIndex;
+	UID64_t		nContribution;
+	INT			nPay;
+	BYTE		byPayType;
+
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{		
+		sprintf(o_szLogString, "%s|%d|%d|%I64d|%d|%d\r\n", GetGameLogTypeString(i_nLogType), CharacterUID, nMapIndex, nContribution, nPay, byPayType);
+		return o_szLogString;
+	}	
+};
+
+struct MSG_FL_LOG_WAR_CONTRIBUTION_GEAR
+{
+	UID64_t			nTotalBGearContribution;
+	UID64_t			nTotalIGearContribution;
+	UID64_t			nTotalAGearContribution;
+	UID64_t			nTotalMGearContribution;
+	INT				nBGearCount;
+	INT				nIGearCount;
+	INT				nAGearCount;
+	INT				nMGearCount;
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{		
+		sprintf(o_szLogString, "%s|%I64d|%I64d|%I64d|%I64d|%d|%d|%d|%d\r\n", GetGameLogTypeString(i_nLogType)
+			, nTotalBGearContribution, nTotalIGearContribution, nTotalAGearContribution, nTotalMGearContribution
+			, nBGearCount, nIGearCount, nAGearCount, nMGearCount);
+		return o_szLogString;
+	}
+};
+
+struct MSG_FL_LOG_LUCKY_DROP
+{// 2009-03-31 by dhjin, 럭키머신 로그
+	INT				MysteryItemDropNum;				
+	INT				DropItemNum;
+	ATUM_DATE_TIME	Starttime;				// 럭키머신 시작 시간, 2008-11-04 by dhjin, 럭키머신
+	ATUM_DATE_TIME	Endtime;				// 럭키머신 종료 시간, 2008-11-04 by dhjin, 럭키머신
+	INT				CountPerPeriod;			// 기간동안 드랍될 최대 아이템 수, 2008-11-04 by dhjin, 럭키머신
+	INT				DropCount;				// 기간동안 현재 드랍된 아이템 수, 2008-11-04 by dhjin, 럭키머신
+	
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString)
+	{		
+		sprintf(o_szLogString, "%s|%d|%d|%s|%s|%d|%d\r\n", GetGameLogTypeString(i_nLogType)
+			, MysteryItemDropNum, DropItemNum, Starttime.GetDateTimeString(STRNBUF(SIZE_MAX_SQL_DATETIME_STRING)), Endtime.GetDateTimeString(STRNBUF(SIZE_MAX_SQL_DATETIME_STRING))
+			, CountPerPeriod, DropCount);
+		return o_szLogString;
+	}
+};
+
+struct MSG_FL_LOG_INFINITY_START {
+	// 193 - // 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 게임로그 추가, 시작 관련 정보 
+	InfinityCreateUID_t		InfinityCreateUID;		// 해당 방의 고유 번호
+	USHORT					MainServerID;			// 입장한 캐릭터의 서버
+	BYTE					InfluenceType;			// 입장한 캐릭터의 세력
+	char					CharacterName[SIZE_MAX_CHARACTER_NAME];		//	캐릭터명
+	UID32_t					CharacterUID;			// (캐릭터 UID)
+	Lv_t					Level;					// 입장한 캐릭터의 레벨
+	USHORT					UnitKind;				// 입장한 캐릭터의 기어종류
+	Experience_t			Experience;				// 경험치량
+	float					CurrentHP;				// HP
+	float					CurrentDP;				// DP
+	SHORT					CurrentSP;				// SP
+	
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString) {		
+		sprintf(o_szLogString, "%s|%I64d|%d|%d|%s(%d)|%d|%d|%f|%f|%f|%d\r\n", GetGameLogTypeString(i_nLogType)
+			, InfinityCreateUID, MainServerID, InfluenceType, CharacterName, CharacterUID, Level, UnitKind, Experience, CurrentHP, CurrentDP, CurrentSP);
+		return o_szLogString;
+	}
+};
+
+struct MSG_FL_LOG_INFINITY_START_ITEM : public FL_ITEM_LOG_BASE	{
+	// 194 - // 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 게임로그 추가, 시작시 아이템 복사 정보
+	ITEM_FOR_LOG	Item4Log;
+	INT				ReaminTimeMSec;
+	UID64_t			MainSvrItemUID;
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString) {		
+		char szTemp[1024], szItem[1024];
+		sprintf(o_szLogString, "%s|%s|%s|%d|%I64d\r\n", GetGameLogTypeString(i_nLogType), GetLogItemBaseString(szTemp), Item4Log.GetLogItemString(szItem)
+			, ReaminTimeMSec, MainSvrItemUID);
+		return o_szLogString;
+	}
+};
+
+struct MSG_FL_LOG_INFINITY_CINEMA {
+	// 195 - // 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 게임로그 추가, 연출 로그
+	InfinityCreateUID_t		InfinityCreateUID;		// 해당 방의 고유 번호
+	MSec_t					StartTime;	
+	EffectIdx_t				EffectIdx;
+	ObjectIdx_t				ObjectIdx;	
+	ObjectNum_t				ChangeObjectIdx;
+	MonIdx_t				MonsterIdx;
+	MSec_t					CameraTremble;
+	CinemaTalk_t			CinemaTalk[SIZE_MAX_CINEMATALK_DESCRIPTION];
+	QuestIndex_t			QuestIndex;		// 2011-03-09 by hskim, 인피니티 3차 - 시네마 퀘스트 인덱스 설정 추가 -
+	
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString) {		
+		sprintf(o_szLogString, "%s|%I64d|%d|%d|%d|%d|%d|%d|%s|%d\r\n", GetGameLogTypeString(i_nLogType)
+			, InfinityCreateUID, StartTime, EffectIdx, ObjectIdx, ChangeObjectIdx, MonsterIdx, CameraTremble, CinemaTalk, QuestIndex);		// 2011-03-09 by hskim, 인피니티 3차 - 시네마 퀘스트 인덱스 설정 추가
+		return o_szLogString;
+	}
+};
+
+struct MSG_FL_LOG_MONSTER_SKILL	{
+	// 196 - // 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 게임로그 추가, 몬스터 스킬 사용시
+	MonIdx_t				MonsterIdx;
+	ItemNum_t				MonsterSkillNum;
+
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString) {		
+		sprintf(o_szLogString, "%s|%d|%d\r\n", GetGameLogTypeString(i_nLogType)
+			, MonsterIdx, MonsterSkillNum);
+		return o_szLogString;
+	}
+};
+
+struct MSG_FL_LOG_HPACTION_TALK {
+	// 197 - // 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 게임로그 추가, 몬스터 대화 사용시
+	MonIdx_t				MonsterIdx;
+	HPTalk_t				HPTalk[SIZE_MAX_HPTALK_DESCRIPTION];
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString) {		
+		sprintf(o_szLogString, "%s|%d|%s\r\n", GetGameLogTypeString(i_nLogType)
+			, MonsterIdx, HPTalk);
+		return o_szLogString;
+	}
+};
+
+struct MSG_FL_LOG_INFINITY_FIN {
+	// 198 - // 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 게임로그 추가, 종료 관련 정보 
+	InfinityCreateUID_t		InfinityCreateUID;		// 해당 방의 고유 번호
+	USHORT					MainServerID;			// 입장한 캐릭터의 서버
+	BYTE					InfluenceType;			// 입장한 캐릭터의 세력
+	char					CharacterName[SIZE_MAX_CHARACTER_NAME];		//	캐릭터명
+	UID32_t					CharacterUID;			// (캐릭터 UID)
+	Lv_t					Level;					// 입장한 캐릭터의 레벨
+	USHORT					UnitKind;				// 입장한 캐릭터의 기어종류
+	Experience_t			Experience;				// 경험치량
+	float					CurrentHP;				// HP
+	float					CurrentDP;				// DP
+	SHORT					CurrentSP;				// SP
+	BOOL					Clear;					// 인피니티 필드 클리어 유무
+	KillCnt_t				KillCount;				// 몬스터 사망을 하게한 수(막타 횟수)
+	DeathCnt_t				DeathCount;				// 클리어 하기까지 사망 횟수
+		
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString) {		
+		sprintf(o_szLogString, "%s|%I64d|%d|%d|%s(%d)|%d|%d|%f|%f|%f|%d|%d|%d|%d\r\n", GetGameLogTypeString(i_nLogType)
+			, InfinityCreateUID, MainServerID, InfluenceType, CharacterName, CharacterUID, Level, UnitKind, Experience, CurrentHP, CurrentDP, CurrentSP, Clear, KillCount, DeathCount);
+		return o_szLogString;
+	}
+};
+
+struct MSG_FL_LOG_INFINITY_FIN_ITEM : public FL_ITEM_LOG_BASE	{
+	// 199 - // 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 게임로그 추가, 종료시 아이템 복사 정보 
+	ITEM_FOR_LOG	Item4Log;
+	INT				ReaminTimeMSec;
+	UID64_t			MainSvrItemUID;
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString) {		
+		char szTemp[1024], szItem[1024];
+		sprintf(o_szLogString, "%s|%s|%s|%d|%I64d\r\n", GetGameLogTypeString(i_nLogType), GetLogItemBaseString(szTemp), Item4Log.GetLogItemString(szItem)
+			, ReaminTimeMSec, MainSvrItemUID);
+		return o_szLogString;
+	}
+};
+
+struct MSG_FL_LOG_INFINITY_FIN_ALIVE_KEY_MONSTER	{
+	// 200 - // 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 게임로그 추가, 종료시 살아있는 몬스터 정보
+	MonIdx_t				MonsterIdx;
+	
+	char *GetWriteLogString(int i_nLogType, char *o_szLogString) {		
+		sprintf(o_szLogString, "%s|%d\r\n", GetGameLogTypeString(i_nLogType)
+			, MonsterIdx);
+		return o_szLogString;
+	}	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Monitor Server Protocol (T0: 0x30~)
+///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////
+// T0_FM_MONITOR - Field Server Monitor
+#define T1_FM_GET_NUM_CLIENTS			0x00	// No Body
+#define T1_FM_GET_NUM_CLIENTS_OK		0x01
+#define T1_FM_SHUTDOWN					0x02	// No Body
+#define T1_FM_SHUTDOWN_OK				0x03	// No Body
+#define T1_FM_PING						0x04	// No Body
+#define T1_FM_PING_OK					0x05	// No Body
+#define T1_FM_PRINTMAP					0x06	// No Body
+#define T1_FM_SAVE_MAPBLOCK_INFO		0x07	// No Body
+#define T1_FM_PRINT_DEBUG_MSG			0x08	// No Body
+#define T1_FM_SEND_CHANNEL_INFO			0x09	// F->M
+#define T1_FM_CHANGE_BANDWIDTH_FLAG		0x0A	// No Body
+#define T1_FM_CHANGE_BANDWIDTH_FLAG_OK	0x0B	// 변경된 플래그값
+#define T1_FM_SET_MSG_PRINT_LEVEL		0x0C
+#define T1_FM_GET_CHARACTER_INFO		0x0D
+#define T1_FM_GET_CHARACTER_INFO_OK		0x0E
+#define T1_FM_GET_MAP_USER_COUNTS		0x0F	// No Body
+#define T1_FM_GET_MAP_USER_COUNTS_ACK	0x10
+#define T1_FM_RELOAD_ITEM_INFO			0x11	// No Body
+#define T1_FM_RELOAD_ITEM_INFO_OK		0x12	// No Body
+#define T1_FM_RESET_NPC_SERVER			0x13	// No Body
+#define T1_FM_RESET_NPC_SERVER_OK		0x14	// No Body
+#define T1_FM_SERVER_THREAD_STATUS		0x15
+#define T1_FM_SET_SERVICE_STATE			0x16
+#define T1_FM_SET_SERVICE_STATE_OK		0x17	// No Body
+#define T1_FM_RELOAD_SERVER_INFO		0x18
+#define T1_FM_RELOAD_SERVER_INFO_OK		0x19	// No Body
+#define T1_FM_INCREASE_CHANNEL			0x1A	// M->F, Channel 수 증가
+#define T1_FM_INCREASE_CHANNEL_OK		0x1B	// F->M, Channel 수 증가 결과
+#define T1_FM_SET_CHANNEL_STATE			0x1C	// M->F, Channel Enable/Disable
+#define T1_FM_SET_CHANNEL_STATE_OK		0x1D	// F->M, Channel Enable/Disable 결과
+#define T1_FM_CITYWAR_CHANGE_WAR_TIME		0x20		// M->F
+#define T1_FM_CITYWAR_CHANGED_OCCUPY_INFO	0x21	// F->M
+
+#ifdef _INET_DISCORD_BOT_PACKETS
+#define T1_FM_SP_CREATED					0x22
+#define T1_FM_MS_CREATED					0x23
+#define T1_FM_AB_CREATED					0x24
+#define T1_FM_SP_DESTROYED					0x25
+#define T1_FM_SP_END						0x26
+#define T1_FM_MS_END						0x27
+#define T1_FM_AB_END						0x28
+
+#define T_FM_SP_CREATED						(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_SP_CREATED)
+#define T_FM_MS_CREATED						(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_MS_CREATED)
+#define T_FM_AB_CREATED						(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_AB_CREATED)
+#define T_FM_SP_DESTROYED					(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_SP_DESTROYED)
+#define T_FM_SP_END							(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_SP_END)
+#define T_FM_MS_END							(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_MS_END)
+#define T_FM_AB_END							(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_AB_END)
+
+struct MSG_FM_BOT_DATA
+{
+	MAP_CHANNEL_INDEX	MapChannIdx;
+};
+struct MSG_FM_MS_BOT_DATA
+{
+	INT					SummonMonsterUnitkind;
+	INT					RemainMinute;
+};
+#endif
+
+#define T_FM_GET_NUM_CLIENTS			(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_GET_NUM_CLIENTS)
+#define T_FM_GET_NUM_CLIENTS_OK			(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_GET_NUM_CLIENTS_OK)
+#define T_FM_SHUTDOWN					(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_SHUTDOWN)
+#define T_FM_SHUTDOWN_OK				(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_SHUTDOWN_OK)
+#define T_FM_PING						(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_PING)
+#define T_FM_PING_OK					(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_PING_OK)
+#define T_FM_PRINTMAP					(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_PRINTMAP)
+#define T_FM_SAVE_MAPBLOCK_INFO			(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_SAVE_MAPBLOCK_INFO)
+#define T_FM_PRINT_DEBUG_MSG			(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_PRINT_DEBUG_MSG)
+#define T_FM_SEND_CHANNEL_INFO			(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_SEND_CHANNEL_INFO)		// F->M
+#define T_FM_CHANGE_BANDWIDTH_FLAG		(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_CHANGE_BANDWIDTH_FLAG)
+#define T_FM_CHANGE_BANDWIDTH_FLAG_OK	(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_CHANGE_BANDWIDTH_FLAG_OK)
+#define T_FM_SET_MSG_PRINT_LEVEL		(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_SET_MSG_PRINT_LEVEL)
+#define T_FM_GET_CHARACTER_INFO			(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_GET_CHARACTER_INFO)
+#define T_FM_GET_CHARACTER_INFO_OK		(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_GET_CHARACTER_INFO_OK)
+#define T_FM_GET_MAP_USER_COUNTS		(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_GET_MAP_USER_COUNTS)
+#define T_FM_GET_MAP_USER_COUNTS_ACK	(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_GET_MAP_USER_COUNTS_ACK)
+#define T_FM_RELOAD_ITEM_INFO			(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_RELOAD_ITEM_INFO)
+#define T_FM_RELOAD_ITEM_INFO_OK		(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_RELOAD_ITEM_INFO_OK)
+#define T_FM_RESET_NPC_SERVER			(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_RESET_NPC_SERVER)
+#define T_FM_RESET_NPC_SERVER_OK		(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_RESET_NPC_SERVER_OK)
+#define T_FM_SERVER_THREAD_STATUS		(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_SERVER_THREAD_STATUS)
+#define T_FM_SET_SERVICE_STATE			(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_SET_SERVICE_STATE)
+#define T_FM_SET_SERVICE_STATE_OK		(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_SET_SERVICE_STATE_OK)	// No Body
+#define T_FM_RELOAD_SERVER_INFO			(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_RELOAD_SERVER_INFO)
+#define T_FM_RELOAD_SERVER_INFO_OK		(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_RELOAD_SERVER_INFO_OK)	// No Body
+#define T_FM_INCREASE_CHANNEL			(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_INCREASE_CHANNEL)		// M->F, Channel 수 증가
+#define T_FM_INCREASE_CHANNEL_OK		(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_INCREASE_CHANNEL_OK)	// F->M, Channel 수 증가 결과
+#define T_FM_SET_CHANNEL_STATE			(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_SET_CHANNEL_STATE)		// M->F, Channel Enable/Disable
+#define T_FM_SET_CHANNEL_STATE_OK		(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_SET_CHANNEL_STATE_OK)	// F->M, Channel Enable/Disable 결과
+#define T_FM_CITYWAR_CHANGE_WAR_TIME		(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_CITYWAR_CHANGE_WAR_TIME)		// M->F
+#define T_FM_CITYWAR_CHANGED_OCCUPY_INFO	(MessageType_t)((T0_FM_MONITOR<<8)|T1_FM_CITYWAR_CHANGED_OCCUPY_INFO)	// F->M
+
+
+typedef struct
+{
+	USHORT	NumOfClients;
+} MSG_FM_GET_NUM_CLIENTS_OK;
+typedef MSG_FM_GET_NUM_CLIENTS_OK		MSG_PM_GET_NUM_CLIENTS_OK;
+typedef MSG_FM_GET_NUM_CLIENTS_OK		MSG_IM_GET_NUM_CLIENTS_OK;
+
+typedef struct
+{
+	USHORT	LauncherVersion[4];
+	USHORT	DeleteFileListVersion[4];
+	USHORT	NoticeVersion[4];
+	INT		NumOfClientVersions;
+	ARRAY_(USHORT[8]);
+} MSG_PM_RELOAD_VERSION_INFO;
+
+typedef struct
+{
+	MAP_CHANNEL_INDEX		MapChannelIndex;
+} MSG_FM_PRINTMAP;
+
+typedef MSG_FM_PRINTMAP		MSG_NM_PRINTMAP;
+
+typedef struct
+{
+	MAP_CHANNEL_INDEX		MapChannelIndex;
+} MSG_FM_SAVE_MAPBLOCK_INFO, *PMSG_FM_SAVE_MAPBLOCK_INFO;
+
+typedef MSG_FM_SAVE_MAPBLOCK_INFO		MSG_NM_SAVE_MAPBLOCK_INFO;
+
+typedef struct
+{
+	int		IntParam1;
+	int		IntParam2;
+	float	FloatParam1;
+	float	FloatParam2;
+	char	StringParam[100];
+} MSG_FM_PRINT_DEBUG_MSG;
+typedef MSG_FM_PRINT_DEBUG_MSG		MSG_IM_PRINT_DEBUG_MSG;
+
+#ifndef _ATUM_CLIENT
+
+typedef struct
+{
+	PROJECTINFO			projectInfo;
+	BOOL				bCityWarMap;
+	SCITY_OCCUPY_INFO	cityWarOccupyInfo;
+	ChannelIndex_t		ChannelIndex;	// 채널의 인덱스
+	BOOL				IsEnabled;		// 채널의 활성화 여부에 대한 정보
+} MSG_FM_SEND_CHANNEL_INFO;			// F->M
+
+typedef struct
+{
+	PROJECTINFO		projectInfo;
+	ChannelIndex_t	ChannelIndex;	// 채널의 인덱스
+	BOOL			IsEnabled;		// 채널의 활성화 여부에 대한 정보
+	UINT			LimitMonsterCount;
+} MSG_NM_SEND_CHANNEL_INFO;
+
+#endif // _ATUM_CLIENT
+
+typedef struct
+{
+	BOOL	bChagedFlag;
+} MSG_FM_CHANGE_BANDWIDTH_FLAG_OK, *PMSG_FM_CHANGE_BANDWIDTH_FLAG_OK;
+typedef MSG_FM_CHANGE_BANDWIDTH_FLAG_OK		MSG_PM_CHANGE_BANDWIDTH_FLAG_OK;
+typedef MSG_FM_CHANGE_BANDWIDTH_FLAG_OK		MSG_NM_CHANGE_BANDWIDTH_FLAG_OK;
+typedef MSG_FM_CHANGE_BANDWIDTH_FLAG_OK		MSG_IM_CHANGE_BANDWIDTH_FLAG_OK;
+
+typedef struct
+{
+	BYTE	Level;
+} MSG_FM_SET_MSG_PRINT_LEVEL;
+typedef MSG_FM_SET_MSG_PRINT_LEVEL		MSG_PM_SET_MSG_PRINT_LEVEL;
+typedef MSG_FM_SET_MSG_PRINT_LEVEL		MSG_NM_SET_MSG_PRINT_LEVEL;
+typedef MSG_FM_SET_MSG_PRINT_LEVEL		MSG_IM_SET_MSG_PRINT_LEVEL;
+
+typedef struct
+{
+	char			CharacterName[SIZE_MAX_CHARACTER_NAME];
+	UID32_t			CharacterUniqueNumber;
+	ClientIndex_t	ClientIndex;
+} MSG_FM_GET_CHARACTER_INFO;
+
+typedef struct
+{
+	CHARACTER		CharacterInfo;
+} MSG_FM_GET_CHARACTER_INFO_OK;
+
+typedef struct
+{
+	MAP_CHANNEL_INDEX	MapChannIndex;
+} MSG_FM_GET_MAP_USER_COUNTS;
+
+typedef struct
+{
+	MAP_CHANNEL_INDEX	MapChannIndex;
+	UINT		AccumulatedUserCounts;
+	UINT		CurrentUserCounts;
+	UINT		MaxUserCounts;
+	UINT		AccumulatedMonsterCounts;
+	UINT		CurrentMonsterCounts;
+} MSG_FM_GET_MAP_USER_COUNTS_ACK;
+
+typedef struct
+{
+	DWORD	dwThreadId;
+	char	szThreadComment[SIZE_MAX_THREAD_COMMENT];
+	DWORD	dwTimeGap;
+} MSG_FM_SERVER_THREAD_STATUS;
+
+// SERVER_SERVICE_TYPE_XXX
+#define SERVER_SERVICE_TYPE_QUEST		((BYTE)0)	// 퀘스트 서비스
+
+typedef struct
+{
+	BYTE	ServiceType;	// SERVER_SERVICE_TYPE_XXX
+	BOOL	ServiceState;	// TRUE: Start Service, FALSE: Stop Service
+} MSG_FM_SET_SERVICE_STATE;
+
+// SERVER_INFO_TYPE_XXX
+#define SERVER_INFO_TYPE_QUEST			((BYTE)0)	// 퀘스트
+
+typedef struct
+{
+	BYTE	InfoType;		// SERVER_INFO_TYPE_XXX
+} MSG_FM_RELOAD_SERVER_INFO;
+
+typedef struct
+{
+	MapIndex_t	MapIndex;
+} MSG_FM_INCREASE_CHANNEL;	// M->F, Channel 수 증가
+
+typedef struct
+{
+	MapIndex_t	MapIndex;
+	INT			TotalChannelCount;
+} MSG_FM_INCREASE_CHANNEL_OK;	// F->M, Channel 수 증가 결과
+
+typedef struct
+{
+	MAP_CHANNEL_INDEX	MapChannelIndex;
+	BOOL				EnableChannel;		// TRUE: Enable, FALSE: Disable
+} MSG_FM_SET_CHANNEL_STATE;		// M->F, Channel Enable/Disable
+
+typedef struct
+{
+	MAP_CHANNEL_INDEX	MapChannelIndex;
+	BOOL				IsEnabled;			// TRUE: Enable, FALSE: Disable
+} MSG_FM_SET_CHANNEL_STATE_OK;	// F->M, Channel Enable/Disable 결과
+struct MSG_FM_CITYWAR_CHANGE_WAR_TIME
+{
+	MAP_CHANNEL_INDEX	MapChannelIndex;
+	ATUM_DATE_TIME		CityWarATimeDefault;
+	ATUM_DATE_TIME		CityWarATimeSetting;
+};
+struct MSG_FM_CITYWAR_CHANGED_OCCUPY_INFO
+{
+	MAP_CHANNEL_INDEX	MapChannelIndex;
+	SCITY_OCCUPY_INFO	cityWarOccupyInfo;
+};
+///////////////////////////////////////////////////////////////////////////////
+// PRE Server Monitor
+#define T1_PM_GET_NUM_CLIENTS			0x00	// No Body
+#define T1_PM_GET_NUM_CLIENTS_OK		0x01	// # of client
+#define T1_PM_SHUTDOWN					0x02	// No Body
+#define T1_PM_SHUTDOWN_OK				0x03	// No Body
+#define T1_PM_CLOSE						0x04	// No Body
+#define T1_PM_CLOSE_OK					0x05	// No Body
+#define T1_PM_PING						0x06	// No Body
+#define T1_PM_PING_OK					0x07	// No Body
+#define T1_PM_RELOAD_VERSION_INFO		0x08	// M->P
+#define T1_PM_RELOAD_VERSION_INFO_OK	0x09	// No Body
+#define T1_PM_CHANGE_BANDWIDTH_FLAG		0x0A	// No Body
+#define T1_PM_CHANGE_BANDWIDTH_FLAG_OK	0x0B	// 변경된 플래그값
+#define T1_PM_SET_MSG_PRINT_LEVEL		0x0C
+#define T1_PM_PAUSE_SERVICE				0x0D
+#define T1_PM_PAUSE_SERVICE_OK			0x0E
+#define T1_PM_START_SERVICE				0x0F
+#define T1_PM_START_SERVICE_OK			0x10
+#define T1_PM_GET_SERVER_GROUP_INFO		0x11
+#define T1_PM_GET_SERVER_GROUP_INFO_ACK	0x12
+#define T1_PM_SET_LIMIT_GROUP_USER_COUNTS	0x13
+#define T1_PM_SERVER_THREAD_STATUS			0x14
+#define T1_PM_RELOAD_BLOCKED_ACCOUNTS		0x15	// No Body
+#define T1_PM_RELOAD_BLOCKED_ACCOUNTS_OK	0x16	// No Body
+#define T1_PM_SET_MGAME_EVENT_TYPE			0x17
+#define T1_PM_CHANGE_ENABLE_SERVER_GROUP	0x18
+#define T1_PM_PREPARE_SHUTDOWN				0x19	// 2006-08-04 by cmkwon, 
+
+#define T1_PM_AUTO_UPDATE_FTP_SERVER_SETTING		0x20	// 2007-01-06 by cmkwon
+#define T1_PM_AUTO_UPDATE_HTTP_SERVER_SETTING		0x21	// 2007-01-06 by cmkwon
+#define T1_PM_RELOAD_VERSION_INFO_HEADER			0x22	// M->P
+#define T1_PM_RELOAD_VERSION_INFO_LIST				0x23	// M->P
+#define T1_PM_RELOAD_VERSION_INFO_DONE				0x24	// M->P
+
+
+#define T_PM_GET_NUM_CLIENTS			(MessageType_t)((T0_PM_MONITOR<<8)|T1_PM_GET_NUM_CLIENTS)			// No Body
+#define T_PM_GET_NUM_CLIENTS_OK			(MessageType_t)((T0_PM_MONITOR<<8)|T1_PM_GET_NUM_CLIENTS_OK)
+#define T_PM_SHUTDOWN					(MessageType_t)((T0_PM_MONITOR<<8)|T1_PM_SHUTDOWN)					// No Body
+#define T_PM_SHUTDOWN_OK				(MessageType_t)((T0_PM_MONITOR<<8)|T1_PM_SHUTDOWN_OK)				// No Body
+#define T_PM_CLOSE						(MessageType_t)((T0_PM_MONITOR<<8)|T1_PM_CLOSE)						// No Body
+#define T_PM_CLOSE_OK					(MessageType_t)((T0_PM_MONITOR<<8)|T1_PM_CLOSE_OK)					// No Body
+#define T_PM_PING						(MessageType_t)((T0_PM_MONITOR<<8)|T1_PM_PING)						// No Body
+#define T_PM_PING_OK					(MessageType_t)((T0_PM_MONITOR<<8)|T1_PM_PING_OK)					// No Body
+#define T_PM_RELOAD_VERSION_INFO		(MessageType_t)((T0_PM_MONITOR<<8)|T1_PM_RELOAD_VERSION_INFO)		// M->P
+#define T_PM_RELOAD_VERSION_INFO_OK		(MessageType_t)((T0_PM_MONITOR<<8)|T1_PM_RELOAD_VERSION_INFO_OK)	// No Body
+#define T_PM_CHANGE_BANDWIDTH_FLAG		(MessageType_t)((T0_PM_MONITOR<<8)|T1_PM_CHANGE_BANDWIDTH_FLAG)		// No Body
+#define T_PM_CHANGE_BANDWIDTH_FLAG_OK	(MessageType_t)((T0_PM_MONITOR<<8)|T1_PM_CHANGE_BANDWIDTH_FLAG_OK)
+#define T_PM_SET_MSG_PRINT_LEVEL		(MessageType_t)((T0_PM_MONITOR<<8)|T1_PM_SET_MSG_PRINT_LEVEL)
+#define T_PM_PAUSE_SERVICE				(MessageType_t)((T0_PM_MONITOR<<8)|T1_PM_PAUSE_SERVICE)
+#define T_PM_PAUSE_SERVICE_OK			(MessageType_t)((T0_PM_MONITOR<<8)|T1_PM_PAUSE_SERVICE_OK)
+#define T_PM_START_SERVICE				(MessageType_t)((T0_PM_MONITOR<<8)|T1_PM_START_SERVICE)
+#define T_PM_START_SERVICE_OK			(MessageType_t)((T0_PM_MONITOR<<8)|T1_PM_START_SERVICE_OK)
+#define T_PM_GET_SERVER_GROUP_INFO		(MessageType_t)((T0_PM_MONITOR<<8)|T1_PM_GET_SERVER_GROUP_INFO)
+#define T_PM_GET_SERVER_GROUP_INFO_ACK	(MessageType_t)((T0_PM_MONITOR<<8)|T1_PM_GET_SERVER_GROUP_INFO_ACK)
+#define T_PM_SET_LIMIT_GROUP_USER_COUNTS	(MessageType_t)((T0_PM_MONITOR<<8)|T1_PM_SET_LIMIT_GROUP_USER_COUNTS)
+#define T_PM_SERVER_THREAD_STATUS		(MessageType_t)((T0_PM_MONITOR<<8)|T1_PM_SERVER_THREAD_STATUS)
+#define T_PM_RELOAD_BLOCKED_ACCOUNTS	(MessageType_t)((T0_PM_MONITOR<<8)|T1_PM_RELOAD_BLOCKED_ACCOUNTS)		// No Body
+#define T_PM_RELOAD_BLOCKED_ACCOUNTS_OK	(MessageType_t)((T0_PM_MONITOR<<8)|T1_PM_RELOAD_BLOCKED_ACCOUNTS_OK)	// No Body
+#define T_PM_SET_MGAME_EVENT_TYPE		(MessageType_t)((T0_PM_MONITOR<<8)|T1_PM_SET_MGAME_EVENT_TYPE)
+#define T_PM_CHANGE_ENABLE_SERVER_GROUP	(MessageType_t)((T0_PM_MONITOR<<8)|T1_PM_CHANGE_ENABLE_SERVER_GROUP)
+#define T_PM_PREPARE_SHUTDOWN			(MessageType_t)((T0_PM_MONITOR<<8)|T1_PM_PREPARE_SHUTDOWN)		// 2006-08-04 by cmkwon
+
+#define T_PM_AUTO_UPDATE_FTP_SERVER_SETTING			(MessageType_t)((T0_PM_MONITOR<<8)|T1_PM_AUTO_UPDATE_FTP_SERVER_SETTING)	// 2007-01-06 by cmkwon, P->M
+#define T_PM_AUTO_UPDATE_HTTP_SERVER_SETTING		(MessageType_t)((T0_PM_MONITOR<<8)|T1_PM_AUTO_UPDATE_HTTP_SERVER_SETTING)	// 2007-01-06 by cmkwon, P->M
+#define T_PM_RELOAD_VERSION_INFO_HEADER				(MessageType_t)((T0_PM_MONITOR<<8)|T1_PM_RELOAD_VERSION_INFO_HEADER)		// 2007-01-09 by cmkwon, M->P
+#define T_PM_RELOAD_VERSION_INFO_LIST				(MessageType_t)((T0_PM_MONITOR<<8)|T1_PM_RELOAD_VERSION_INFO_LIST)			// 2007-01-09 by cmkwon, M->P
+#define T_PM_RELOAD_VERSION_INFO_DONE				(MessageType_t)((T0_PM_MONITOR<<8)|T1_PM_RELOAD_VERSION_INFO_DONE)			// 2007-01-09 by cmkwon, M->P
+
+typedef struct
+{
+	char		ServerGroupName[SIZE_MAX_SERVER_NAME];
+} MSG_PM_GET_SERVER_GROUP_INFO;
+
+typedef struct
+{
+	char		ServerGroupName[SIZE_MAX_SERVER_NAME];
+	BOOL		bEnableServerGroup;
+	SERVER_ID	IMServerID;
+	UINT		AccumulatedGroupUserCounts;
+	UINT		CurrentGroupUserCounts;
+	UINT		MaxGroupUserCounts;
+	UINT		LimitGroupUserCounts;
+} MSG_PM_GET_SERVER_GROUP_INFO_ACK;
+
+typedef struct
+{
+	char		ServerGroupName[SIZE_MAX_SERVER_NAME];
+	UINT		LimitGroupUserCounts;
+} MSG_PM_SET_LIMIT_GROUP_USER_COUNTS;
+
+typedef MSG_FM_SERVER_THREAD_STATUS MSG_PM_SERVER_THREAD_STATUS;
+
+typedef struct
+{
+	MGAME_EVENT_t		enMGameEvent;
+} MSG_PM_SET_MGAME_EVENT_TYPE;
+
+typedef struct
+{
+	char	ServerGroupName[SIZE_MAX_SERVER_NAME];
+	BOOL	bEnableServerGroup;
+} MSG_PM_CHANGE_ENABLE_SERVER_GROUP;
+
+struct MSG_PM_PREPARE_SHUTDOWN				// 2006-08-04 by cmkwon
+{
+	char	ServerGroupName[SIZE_MAX_SERVER_NAME];
+};
+
+struct MSG_PM_AUTO_UPDATE_FTP_SERVER_SETTING		// 2007-01-06 by cmkwon, FTP Auto Update server 
+{
+	int			nAutoUpdateServerType;							// 2007-01-06 by cmkwon, AU_SERVER_TYPE_XXX
+	char		FtpIP[SIZE_MAX_FTP_URL];
+	USHORT		FtpPort;
+	char		FtpAccountName[SIZE_MAX_ACCOUNT_NAME];
+	char		FtpPassword[SIZE_MAX_PASSWORD];
+	char		ClientFTPUpdateUploadDir[SIZE_MAX_FTP_FILE_PATH];
+	char		LauncherFileUploadPath[SIZE_MAX_FTP_FILE_PATH];
+	char		DeleteFileListUploadPath[SIZE_MAX_FTP_FILE_PATH];
+	char		NoticeFileUploadPath[SIZE_MAX_FTP_FILE_PATH];
+	char		szVersionListFileUploadPath[SIZE_MAX_FTP_FILE_PATH];		// 2007-01-08 by cmkwon, 추가함
+};
+
+struct MSG_PM_AUTO_UPDATE_HTTP_SERVER_SETTING		// 2007-01-06 by cmkwon, Http Auto Update server 구현 추가
+{
+	int			nAutoUpdateServerType;							// 2007-01-06 by cmkwon, AU_SERVER_TYPE_XXX
+	char		szDownloadHttpServerIP[SIZE_MAX_FTP_URL];
+	USHORT		nDownloadHttpServerPort;
+	char		szDownloadHttpServerAccountName[SIZE_MAX_ACCOUNT_NAME];
+	char		szDownloadHttpServerPassword[SIZE_MAX_PASSWORD];
+	char		szClientHttpUpdateDownloadDir[SIZE_MAX_FTP_FILE_PATH];
+	char		szLauncherFileDownloadHttpPath[SIZE_MAX_FTP_FILE_PATH];
+	char		szDeleteFileListDownloadHttpPath[SIZE_MAX_FTP_FILE_PATH];
+	char		szNoticeFileDownloadHttpPath[SIZE_MAX_FTP_FILE_PATH];
+	char		szVersionListFileDownloadHttpPath[SIZE_MAX_FTP_FILE_PATH];
+};
+
+struct MSG_PM_RELOAD_VERSION_INFO_HEADER			// 2007-01-09 by cmkwon
+{
+	USHORT	LauncherVersion[4];
+	USHORT	DeleteFileListVersion[4];
+	USHORT	NoticeVersion[4];
+	INT		TotalNumOfClientVersions;
+};
+
+struct MSG_PM_RELOAD_VERSION_INFO_LIST				// 2007-01-09 by cmkwon
+{
+	INT		NumOfClientVersions;
+	ARRAY_(USHORT[8]);
+};
+
+
+//////////////////////////////////
+// NPC Server Monitor
+#define T1_NM_GET_NUM_MONSTERS				0x00	// No Body
+#define T1_NM_GET_NUM_MONSTERS_OK			0x01
+#define T1_NM_SHUTDOWN						0x02	// No Body
+#define T1_NM_SHUTDOWN_OK					0x03	// No Body
+#define T1_NM_PING							0x04	// No Body
+#define T1_NM_PING_OK						0x05	// No Body
+#define T1_NM_PRINTMAP						0x06	// No Body
+#define T1_NM_SAVE_MAPBLOCK_INFO			0x07	// No Body
+#define T1_NM_SEND_CHANNEL_INFO				0x08	//
+#define T1_NM_CHANGE_BANDWIDTH_FLAG			0x0A	// No Body
+#define T1_NM_CHANGE_BANDWIDTH_FLAG_OK		0x0B	// 변경된 플래그값
+#define T1_NM_SET_MSG_PRINT_LEVEL			0x0C
+#define T1_NM_GET_MAP_USER_COUNTS			0x0D	// No Body
+#define T1_NM_GET_MAP_USER_COUNTS_ACK		0x0E
+#define T1_NM_SET_LIMIT_MONSTER_COUNT		0x0F
+#define T1_NM_SET_LIMIT_MONSTER_COUNT_ACK	0x10
+#define T1_NM_SERVER_THREAD_STATUS			0x11
+#define T1_NM_SET_CHANNEL_STATE_OK			0x12	// N->M, Channel Enable/Disable 결과
+
+#define T_NM_GET_NUM_MONSTERS				(MessageType_t)((T0_NM_MONITOR<<8)|T1_NM_GET_NUM_MONSTERS)
+#define T_NM_GET_NUM_MONSTERS_OK			(MessageType_t)((T0_NM_MONITOR<<8)|T1_NM_GET_NUM_MONSTERS_OK)
+#define T_NM_SHUTDOWN						(MessageType_t)((T0_NM_MONITOR<<8)|T1_NM_SHUTDOWN)
+#define T_NM_SHUTDOWN_OK					(MessageType_t)((T0_NM_MONITOR<<8)|T1_NM_SHUTDOWN_OK)
+#define T_NM_PING							(MessageType_t)((T0_NM_MONITOR<<8)|T1_NM_PING)
+#define T_NM_PING_OK						(MessageType_t)((T0_NM_MONITOR<<8)|T1_NM_PING_OK)
+#define T_NM_PRINTMAP						(MessageType_t)((T0_NM_MONITOR<<8)|T1_NM_PRINTMAP)
+#define T_NM_SAVE_MAPBLOCK_INFO				(MessageType_t)((T0_NM_MONITOR<<8)|T1_NM_SAVE_MAPBLOCK_INFO)
+#define T_NM_SEND_CHANNEL_INFO				(MessageType_t)((T0_NM_MONITOR<<8)|T1_NM_SEND_CHANNEL_INFO)
+#define T_NM_CHANGE_BANDWIDTH_FLAG			(MessageType_t)((T0_NM_MONITOR<<8)|T1_NM_CHANGE_BANDWIDTH_FLAG)
+#define T_NM_CHANGE_BANDWIDTH_FLAG_OK		(MessageType_t)((T0_NM_MONITOR<<8)|T1_NM_CHANGE_BANDWIDTH_FLAG_OK)
+#define T_NM_SET_MSG_PRINT_LEVEL			(MessageType_t)((T0_NM_MONITOR<<8)|T1_NM_SET_MSG_PRINT_LEVEL)
+#define T_NM_GET_MAP_USER_COUNTS			(MessageType_t)((T0_NM_MONITOR<<8)|T1_NM_GET_MAP_USER_COUNTS)
+#define T_NM_GET_MAP_USER_COUNTS_ACK		(MessageType_t)((T0_NM_MONITOR<<8)|T1_NM_GET_MAP_USER_COUNTS_ACK)
+#define T_NM_SET_LIMIT_MONSTER_COUNT		(MessageType_t)((T0_NM_MONITOR<<8)|T1_NM_SET_LIMIT_MONSTER_COUNT)
+#define T_NM_SET_LIMIT_MONSTER_COUNT_ACK	(MessageType_t)((T0_NM_MONITOR<<8)|T1_NM_SET_LIMIT_MONSTER_COUNT_ACK)
+#define T_NM_SERVER_THREAD_STATUS			(MessageType_t)((T0_NM_MONITOR<<8)|T1_NM_SERVER_THREAD_STATUS)
+#define T_NM_SET_CHANNEL_STATE_OK			(MessageType_t)((T0_NM_MONITOR<<8)|T1_NM_SET_CHANNEL_STATE_OK)	// N->M, Channel Enable/Disable 결과
+
+typedef struct
+{
+	USHORT	NumOfMonsters;
+} MSG_NM_GET_NUM_MONSTERS_OK;
+
+typedef MSG_FM_GET_MAP_USER_COUNTS			MSG_NM_GET_MAP_USER_COUNTS;
+
+typedef MSG_FM_GET_MAP_USER_COUNTS_ACK		MSG_NM_GET_MAP_USER_COUNTS_ACK;
+
+typedef struct
+{
+	MAP_CHANNEL_INDEX	MapChannelIndex;
+	UINT		SetLimitMonsterCount;
+} MSG_NM_SET_LIMIT_MONSTER_COUNT;
+
+typedef MSG_NM_SET_LIMIT_MONSTER_COUNT		MSG_NM_SET_LIMIT_MONSTER_COUNT_ACK;
+typedef MSG_FM_SERVER_THREAD_STATUS			MSG_NM_SERVER_THREAD_STATUS;
+typedef MSG_FM_SET_CHANNEL_STATE_OK			MSG_NM_SET_CHANNEL_STATE_OK;
+
+//////////////////////////////////////////////////////////////////////////
+// IM Server Monitor
+#define T1_IM_GET_NUM_CLIENTS			0x00	// No Body
+#define T1_IM_GET_NUM_CLIENTS_OK		0x01
+#define T1_IM_SHUTDOWN					0x02	// No Body
+#define T1_IM_SHUTDOWN_OK				0x03	// No Body
+#define T1_IM_PING						0x04	// No Body
+#define T1_IM_PING_OK					0x05	// No Body
+#define T1_IM_PRINTMAP					0x06	// No Body
+#define T1_IM_PRINT_DEBUG_MSG			0x08	// No Body
+#define T1_IM_CHANGE_BANDWIDTH_FLAG		0x0A	// No Body
+#define T1_IM_CHANGE_BANDWIDTH_FLAG_OK	0x0B	// 변경된 플래그값
+#define T1_IM_SET_MSG_PRINT_LEVEL		0x0C
+#define T1_IM_GET_TOTAL_USER_COUNTS		0x0D	// No Body
+#define T1_IM_GET_TOTAL_USER_COUNTS_ACK	0x0E
+#define T1_IM_SERVER_THREAD_STATUS		0x0F
+
+#define T_IM_GET_NUM_CLIENTS			(MessageType_t)((T0_IM_MONITOR<<8)|T1_IM_GET_NUM_CLIENTS)
+#define T_IM_GET_NUM_CLIENTS_OK			(MessageType_t)((T0_IM_MONITOR<<8)|T1_IM_GET_NUM_CLIENTS_OK)
+#define T_IM_SHUTDOWN					(MessageType_t)((T0_IM_MONITOR<<8)|T1_IM_SHUTDOWN)
+#define T_IM_SHUTDOWN_OK				(MessageType_t)((T0_IM_MONITOR<<8)|T1_IM_SHUTDOWN_OK)
+#define T_IM_PING						(MessageType_t)((T0_IM_MONITOR<<8)|T1_IM_PING)
+#define T_IM_PING_OK					(MessageType_t)((T0_IM_MONITOR<<8)|T1_IM_PING_OK)
+#define T_IM_PRINTMAP					(MessageType_t)((T0_IM_MONITOR<<8)|T1_IM_PRINTMAP)
+#define T_IM_PRINT_DEBUG_MSG			(MessageType_t)((T0_IM_MONITOR<<8)|T1_IM_PRINT_DEBUG_MSG)
+#define T_IM_CHANGE_BANDWIDTH_FLAG		(MessageType_t)((T0_IM_MONITOR<<8)|T1_IM_CHANGE_BANDWIDTH_FLAG)
+#define T_IM_CHANGE_BANDWIDTH_FLAG_OK	(MessageType_t)((T0_IM_MONITOR<<8)|T1_IM_CHANGE_BANDWIDTH_FLAG_OK)
+#define T_IM_SET_MSG_PRINT_LEVEL		(MessageType_t)((T0_IM_MONITOR<<8)|T1_IM_SET_MSG_PRINT_LEVEL)
+#define T_IM_GET_TOTAL_USER_COUNTS		(MessageType_t)((T0_IM_MONITOR<<8)|T1_IM_GET_TOTAL_USER_COUNTS)
+#define T_IM_GET_TOTAL_USER_COUNTS_ACK	(MessageType_t)((T0_IM_MONITOR<<8)|T1_IM_GET_TOTAL_USER_COUNTS_ACK)
+#define T_IM_SERVER_THREAD_STATUS		(MessageType_t)((T0_IM_MONITOR<<8)|T1_IM_SERVER_THREAD_STATUS)
+
+typedef struct
+{
+	char	FieldIP[SIZE_MAX_IPADDRESS];
+	USHORT	FieldListenPort;
+	UINT	AccumulatedFieldUserCounts;
+	UINT	CurrentFieldUserCounts;
+	UINT	MaxFieldUserCounts;
+	UINT	AccumulatedFieldMonsterCounts;
+	UINT	CurrentFieldMonsterCounts;
+} MSG_FIELDSERVER_USERCOUNTS;
+
+typedef struct
+{
+	UINT	AccumulatedTotalUserCounts;
+	UINT	CurrentTotalUserCounts;
+	UINT	MaxTotalUserCounts;
+} MSG_IM_GET_TOTAL_USER_COUNTS_ACK;
+
+typedef MSG_FM_SERVER_THREAD_STATUS MSG_IM_SERVER_THREAD_STATUS;
+
+//////////////////////////////////////////////////////////////////////////
+// PreServer <-> admin tool 
+#define T1_PA_ADMIN_CONNECT				0x00
+#define T1_PA_ADMIN_CONNECT_OK			0x01
+#define T1_PA_ADMIN_CHANGE_SERVER_STATE	0x02
+#define T1_PA_ADMIN_GET_ACCOUNT_INFO	0x03
+#define T1_PA_ADMIN_GET_ACCOUNT_INFO_OK	0x04
+#define T1_PA_ADMIN_DISCONNECT_USER		0x05
+#define T1_PA_ADMIN_DISCONNECT_USER_OK	0x06
+#define T1_PA_ADMIN_BLOCK_ACCOUNT		0x07
+#define T1_PA_ADMIN_BLOCK_ACCOUNT_OK	0x08
+#define T1_PA_ADMIN_UNBLOCK_ACCOUNT		0x09
+#define T1_PA_ADMIN_UNBLOCK_ACCOUNT_OK	0x0A
+#define T1_PA_ADMIN_GET_SERVER_INFO		0x0B
+#define T1_PA_ADMIN_GET_SERVER_INFO_OK	0x0C
+#define T1_PA_ADMIN_GET_ACCOUNT_LIST	0x0D
+#define T1_PA_ADMIN_GET_ACCOUNT_LIST_OK	0x0E
+#define T1_PA_ADMIN_RELOAD_HAPPYEV		0x0F		// A->P, No body, 2006-08-28 by cmkwon
+#define T1_PA_ADMIN_RELOAD_ITEMEV		0x10		// A->P, No body, 2006-08-31 by dhjin
+#define T1_PA_ADMIN_UPDATE_PCBANGLIST	0x11		// A->P, No body, 2007-01-22 by dhjin
+#define T1_PA_ADMIN_UPDATE_STRATEGYPOINT_NOTSUMMONTIME	0x12		// A->P, No body, 2007-03-06 by dhjin
+#define T1_PA_ADMIN_PETITION_SET_PERIOD	0x13			// 2007-11-19 by cmkwon, 진정시스템 업데이트 - A->P
+#define T1_PA_ADMIN_SET_DBSERVER_GROUP		0x14			// 2008-04-29 by cmkwon, 서버군 정보 DB에 추가(신규 계정 캐릭터 생성 제한 시스템추가) - A->P
+#define T1_PA_ADMIN_SET_DBSERVER_GROUP_OK	0x15			// 2008-04-29 by cmkwon, 서버군 정보 DB에 추가(신규 계정 캐릭터 생성 제한 시스템추가) - P->A
+#define T1_PA_ADMIN_RELOAD_ADMIN_NOTICE_SYSTEM	0x16		// 2009-01-14 by cmkwon, 운영자 자동 공지 시스템 구현 - A->P, 각 서버군 자동 공지 리로드
+#define T1_PA_ADMIN_RELOAD_WORLDRANKING			0x17		// 2009-02-12 by cmkwon, EP3-3 월드랭킹시스템 구현 - A->P, 
+#define T1_PA_ADMIN_RELOAD_INFLUENCERATE		0x18		// A->P // 2009-09-16 by cmkwon, 세력 초기화시 어뷰징 방지 구현 - 
+#define T1_PA_ADMIN_STRATRGYPOINT_INFO_CHANGE						0x1D
+
+#define T_PA_ADMIN_CONNECT				(MessageType_t)((T0_PA_ADMIN<<8)|T1_PA_ADMIN_CONNECT)				// A->P
+#define T_PA_ADMIN_CONNECT_OK			(MessageType_t)((T0_PA_ADMIN<<8)|T1_PA_ADMIN_CONNECT_OK)			// P->A
+#define T_PA_ADMIN_CHANGE_SERVER_STATE	(MessageType_t)((T0_PA_ADMIN<<8)|T1_PA_ADMIN_CHANGE_SERVER_STATE)	// P->A
+#define T_PA_ADMIN_GET_ACCOUNT_INFO		(MessageType_t)((T0_PA_ADMIN<<8)|T1_PA_ADMIN_GET_ACCOUNT_INFO)		// A->P
+#define T_PA_ADMIN_GET_ACCOUNT_INFO_OK	(MessageType_t)((T0_PA_ADMIN<<8)|T1_PA_ADMIN_GET_ACCOUNT_INFO_OK)	// P->A
+#define T_PA_ADMIN_DISCONNECT_USER		(MessageType_t)((T0_PA_ADMIN<<8)|T1_PA_ADMIN_DISCONNECT_USER)		// A->P
+#define T_PA_ADMIN_DISCONNECT_USER_OK	(MessageType_t)((T0_PA_ADMIN<<8)|T1_PA_ADMIN_DISCONNECT_USER_OK)	// P->A
+#define T_PA_ADMIN_BLOCK_ACCOUNT		(MessageType_t)((T0_PA_ADMIN<<8)|T1_PA_ADMIN_BLOCK_ACCOUNT)			// A->P
+#define T_PA_ADMIN_BLOCK_ACCOUNT_OK		(MessageType_t)((T0_PA_ADMIN<<8)|T1_PA_ADMIN_BLOCK_ACCOUNT_OK)		// P->A
+#define T_PA_ADMIN_UNBLOCK_ACCOUNT		(MessageType_t)((T0_PA_ADMIN<<8)|T1_PA_ADMIN_UNBLOCK_ACCOUNT)		// A->P
+#define T_PA_ADMIN_UNBLOCK_ACCOUNT_OK	(MessageType_t)((T0_PA_ADMIN<<8)|T1_PA_ADMIN_UNBLOCK_ACCOUNT_OK)	// P->A
+#define T_PA_ADMIN_GET_SERVER_INFO		(MessageType_t)((T0_PA_ADMIN<<8)|T1_PA_ADMIN_GET_SERVER_INFO)		// A->P, no body
+#define T_PA_ADMIN_GET_SERVER_INFO_OK	(MessageType_t)((T0_PA_ADMIN<<8)|T1_PA_ADMIN_GET_SERVER_INFO_OK)	// P->A
+#define T_PA_ADMIN_GET_ACCOUNT_LIST		(MessageType_t)((T0_PA_ADMIN<<8)|T1_PA_ADMIN_GET_ACCOUNT_LIST)		// A->P
+#define T_PA_ADMIN_GET_ACCOUNT_LIST_OK	(MessageType_t)((T0_PA_ADMIN<<8)|T1_PA_ADMIN_GET_ACCOUNT_LIST_OK)	// P->A
+#define T_PA_ADMIN_RELOAD_HAPPYEV		(MessageType_t)((T0_PA_ADMIN<<8)|T1_PA_ADMIN_RELOAD_HAPPYEV)		// A->P, No body, 2006-08-28 by cmkwon
+#define T_PA_ADMIN_RELOAD_ITEMEV		(MessageType_t)((T0_PA_ADMIN<<8)|T1_PA_ADMIN_RELOAD_ITEMEV)			// A->P, No body, 2006-08-31 by dhjin
+#define T_PA_ADMIN_UPDATE_PCBANGLIST	(MessageType_t)((T0_PA_ADMIN<<8)|T1_PA_ADMIN_UPDATE_PCBANGLIST)		// A->P, No body, 2007-01-22 by dhjin
+#define T_PA_ADMIN_UPDATE_STRATEGYPOINT_NOTSUMMONTIME	(MessageType_t)((T0_PA_ADMIN<<8)|T1_PA_ADMIN_UPDATE_STRATEGYPOINT_NOTSUMMONTIME)		// A->P, No body, 2007-01-22 by dhjin
+#define T_PA_ADMIN_PETITION_SET_PERIOD	(MessageType_t)((T0_PA_ADMIN<<8)|T1_PA_ADMIN_PETITION_SET_PERIOD)	// 2007-11-19 by cmkwon, 진정시스템 업데이트 - A->P
+#define T_PA_ADMIN_SET_DBSERVER_GROUP		(MessageType_t)((T0_PA_ADMIN<<8)|T1_PA_ADMIN_SET_DBSERVER_GROUP)	// 2008-04-29 by cmkwon, 서버군 정보 DB에 추가(신규 계정 캐릭터 생성 제한 시스템추가) - A->P
+#define T_PA_ADMIN_SET_DBSERVER_GROUP_OK	(MessageType_t)((T0_PA_ADMIN<<8)|T1_PA_ADMIN_SET_DBSERVER_GROUP_OK)	// 2008-04-29 by cmkwon, 서버군 정보 DB에 추가(신규 계정 캐릭터 생성 제한 시스템추가) - P->A
+#define T_PA_ADMIN_RELOAD_ADMIN_NOTICE_SYSTEM	(MessageType_t)((T0_PA_ADMIN<<8)|T1_PA_ADMIN_RELOAD_ADMIN_NOTICE_SYSTEM)	// 2009-01-14 by cmkwon, 운영자 자동 공지 시스템 구현 - A->P, 각 서버군 자동 공지 리로드
+#define T_PA_ADMIN_RELOAD_WORLDRANKING			(MessageType_t)((T0_PA_ADMIN<<8)|T1_PA_ADMIN_RELOAD_WORLDRANKING)			// 2009-02-12 by cmkwon, EP3-3 월드랭킹시스템 구현 - A->P, 
+#define T_PA_ADMIN_RELOAD_INFLUENCERATE			(MessageType_t)((T0_PA_ADMIN<<8)|T1_PA_ADMIN_RELOAD_INFLUENCERATE)		// A->P // 2009-09-16 by cmkwon, 세력 초기화시 어뷰징 방지 구현 - 
+#define T_PA_ADMIN_STRATRGYPOINT_INFO_CHANGE				(MessageType_t)((T0_PA_ADMIN<<8)|T1_PA_ADMIN_STRATRGYPOINT_INFO_CHANGE)
+typedef struct
+{
+	char	UID[SIZE_MAX_ACCOUNT_NAME];
+	char	PWD[SIZE_MAX_PASSWORD];
+	DWORD	Padding;		// 2011-07-21 by hskim, 인증 서버 구현 - 기존 서버와 호환 안되도록 구조체 크기 바꿈
+} MSG_PA_ADMIN_CONNECT;
+
+typedef struct
+{
+// 2006-04-15 by cmkwon, 필드 변경
+//	BYTE	AuthOK;				// 0: FALSE, 1:TRUE
+	USHORT	AccountType0;		// 계정 권한
+	DWORD	Padding;		// 2011-07-21 by hskim, 인증 서버 구현 - 기존 서버와 호환 안되도록 구조체 크기 바꿈
+} MSG_PA_ADMIN_CONNECT_OK;
+
+typedef struct
+{
+	SERVER_ID	ServerID;
+	INT			ServerType;		// ENServerType, ST_XXX
+	BYTE		ServerState;	// SERVER_STATE_XXX
+} MSG_PA_ADMIN_CHANGE_SERVER_STATE;
+
+typedef struct
+{
+	char	AccountName[SIZE_MAX_ACCOUNT_NAME];
+	char	CharacterName[SIZE_MAX_CHARACTER_NAME];
+} MSG_PA_ADMIN_GET_ACCOUNT_INFO;
+
+class CAccountInfo;
+
+struct MEX_ACCOUNT_INFO_PRE_SERVER
+{
+	MEX_ACCOUNT_INFO_PRE_SERVER()
+	{
+		memset(this, 0x00, sizeof(MEX_ACCOUNT_INFO_PRE_SERVER));
+	}
+
+	char				AccountName[SIZE_MAX_ACCOUNT_NAME];
+	UID32_t				AccountUniqueNumber;
+	char				PublicClientIP[SIZE_MAX_IPADDRESS];
+	char				PrivateClientIP[SIZE_MAX_IPADDRESS];
+	char				CurrentCharacterName[SIZE_MAX_CHARACTER_NAME];
+	UID32_t				CurrentCharacterUniqueNumber;
+	char				CurrentServerGroup[SIZE_MAX_SERVER_NAME];
+	SERVER_ID			CurrentFieldServerID;
+	MAP_CHANNEL_INDEX	CurrentMapChannel;
+	INT					ClientState;
+
+#ifdef _ATUM_PRE_SERVER
+	// operator overloading
+	MEX_ACCOUNT_INFO_PRE_SERVER& operator=(const CAccountInfo& rhs);
+#endif // _ATUM_IM_SERVER
+};
+
+typedef struct
+{
+	BYTE	IsOnline;			// 0: FALSE, 1:TRUE
+	BYTE	IsBlocked;			// 0: FALSE, 1:TRUE
+	SBLOCKED_ACCOUNT_INFO		BlockedAccountInfo;
+	MEX_ACCOUNT_INFO_PRE_SERVER	AccountInfo;
+} MSG_PA_ADMIN_GET_ACCOUNT_INFO_OK;
+
+typedef struct
+{
+	char	AccountName[SIZE_MAX_ACCOUNT_NAME];
+	char	CharacterName[SIZE_MAX_CHARACTER_NAME];
+} MSG_PA_ADMIN_DISCONNECT_USER;
+
+typedef struct
+{
+	char	AccountName[SIZE_MAX_ACCOUNT_NAME];
+} MSG_PA_ADMIN_DISCONNECT_USER_OK;
+
+typedef SBLOCKED_ACCOUNT_INFO		MSG_PA_ADMIN_BLOCK_ACCOUNT;
+
+typedef SBLOCKED_ACCOUNT_INFO		MSG_PA_ADMIN_BLOCK_ACCOUNT_OK;
+
+
+// typedef struct
+// {
+// 	char	AccountName[SIZE_MAX_ACCOUNT_NAME];
+// } MSG_PA_ADMIN_UNBLOCK_ACCOUNT;
+typedef SBLOCKED_ACCOUNT_INFO		MSG_PA_ADMIN_UNBLOCK_ACCOUNT;	// 2008-01-30 by cmkwon, 계정 블럭 로그 남기기 구현 - 
+
+typedef struct
+{
+	char	AccountName[SIZE_MAX_ACCOUNT_NAME];
+} MSG_PA_ADMIN_UNBLOCK_ACCOUNT_OK;
+
+//typedef struct
+//{
+//} MSG_PA_ADMIN_GET_SERVER_INFO;
+
+#define SERVER_STATE_NOT_ACTIVE	((BYTE)0)
+#define SERVER_STATE_NORMAL		((BYTE)1)
+#define SERVER_STATE_ABNORMAL	((BYTE)2)
+
+// 2008-04-29 by cmkwon, 서버군 정보 DB에 추가(신규 계정 캐릭터 생성 제한 시스템추가) - MEX_SERVER_GROUP_INFO_FOR_ADMIN 로 대체 함
+// struct MEX_SERVER_INFO_FOR_ADMIN
+// {
+// 	char		ServerName[SIZE_MAX_SERVER_NAME];
+// 	INT			ServerType;							// ENServerType, ST_XXX
+// 	SERVER_ID	ServerID;
+// 	INT			UserCount;						
+// 	BYTE		ServerState;						// SERVER_STATE_XXX
+// };
+
+struct MEX_SERVER_GROUP_INFO_FOR_ADMIN				// 2008-04-29 by cmkwon, 서버군 정보 DB에 추가(신규 계정 캐릭터 생성 제한 시스템추가) - 
+{
+	char		ServerName[SIZE_MAX_SERVER_NAME];
+	SERVER_ID	IMServerID;
+	INT			UserCount;						
+	BYTE		IMServerState;						// SERVER_STATE_XXX
+	SERVER_ID	FieldServerID;
+	BYTE		FieldServerState;					// SERVER_STATE_XXX
+	int			ServerGroupID;						// 2008-04-29 by cmkwon, 서버군 정보 DB에 추가(신규 계정 캐릭터 생성 제한 시스템추가) - 
+	int			LimitUserCount;						// 2008-04-29 by cmkwon, 서버군 정보 DB에 추가(신규 계정 캐릭터 생성 제한 시스템추가) - 
+	BOOL		LockCreateCharacterForNewAccount;	// 2008-04-29 by cmkwon, 서버군 정보 DB에 추가(신규 계정 캐릭터 생성 제한 시스템추가) - 
+};
+
+typedef struct
+{
+// 2008-04-29 by cmkwon, 서버군 정보 DB에 추가(신규 계정 캐릭터 생성 제한 시스템추가) - 
+//	INT		NumOfServers;
+//	ARRAY_(MEX_SERVER_INFO_FOR_ADMIN);
+	INT		NumOfServerGroups;						// 2008-04-29 by cmkwon, 서버군 정보 DB에 추가(신규 계정 캐릭터 생성 제한 시스템추가) - 
+	ARRAY_(MEX_SERVER_GROUP_INFO_FOR_ADMIN);		// 2008-04-29 by cmkwon, 서버군 정보 DB에 추가(신규 계정 캐릭터 생성 제한 시스템추가) - 
+} MSG_PA_ADMIN_GET_SERVER_INFO_OK;
+
+typedef struct
+{
+	char	ServerName[SIZE_MAX_SERVER_NAME];
+} MSG_PA_ADMIN_GET_ACCOUNT_LIST;
+
+struct MEX_SIMPLE_ACCOUNT_INFO_FOR_ADMIN
+{
+	char	AccountName[SIZE_MAX_ACCOUNT_NAME];
+	char	CharacterName[SIZE_MAX_CHARACTER_NAME];
+};
+
+typedef struct
+{
+	INT		NumOfAccounts;
+	ARRAY_(MEX_SIMPLE_ACCOUNT_INFO_FOR_ADMIN);
+} MSG_PA_ADMIN_GET_ACCOUNT_LIST_OK;
+
+
+typedef MSG_IP_ADMIN_PETITION_SET_PERIOD		MSG_PA_ADMIN_PETITION_SET_PERIOD;	// 2007-11-19 by cmkwon, 진정시스템 업데이트 - 
+
+struct MSG_PA_ADMIN_SET_DBSERVER_GROUP		// 2008-04-29 by cmkwon, 서버군 정보 DB에 추가(신규 계정 캐릭터 생성 제한 시스템추가) - 
+{
+	char		ServerGroupName[SIZE_MAX_SERVER_NAME];
+	int			LimitUserCount;
+	BOOL		LockCreateCharacterForNewAccount;
+};
+
+typedef MSG_PA_ADMIN_SET_DBSERVER_GROUP		MSG_PA_ADMIN_SET_DBSERVER_GROUP_OK;		// 2008-04-29 by cmkwon, 서버군 정보 DB에 추가(신규 계정 캐릭터 생성 제한 시스템추가) - 
+
+struct MSG_PA_ADMIN_RELOAD_INFLUENCERATE	// 2009-09-16 by cmkwon, 세력 초기화시 어뷰징 방지 구현 - 
+{
+	char		ServerGroupName[SIZE_MAX_SERVER_NAME];
+};
+
+//////////////////////////////////////////////////////////////////////////
+// IMServer <-> admin tool 
+#define T1_IA_ADMIN_CONNECT				0x00
+#define T1_IA_ADMIN_CONNECT_OK			0x01
+#define T1_IA_ADMIN_CHANGE_SERVER_STATE	0x02
+#define T1_IA_ADMIN_GET_CHARACTER		0x03
+#define T1_IA_ADMIN_GET_CHARACTER_OK	0x04
+#define T1_IA_ADMIN_CHAT_ALL			0x05
+#define T1_IA_ADMIN_GET_SERVER_INFO		0x06
+#define T1_IA_ADMIN_GET_SERVER_INFO_OK	0x07
+
+#define T_IA_ADMIN_CONNECT				(MessageType_t)((T0_IA_ADMIN<<8)|T1_IA_ADMIN_CONNECT)				// A->I
+#define T_IA_ADMIN_CONNECT_OK			(MessageType_t)((T0_IA_ADMIN<<8)|T1_IA_ADMIN_CONNECT_OK)			// I->A
+#define T_IA_ADMIN_CHANGE_SERVER_STATE	(MessageType_t)((T0_IA_ADMIN<<8)|T1_IA_ADMIN_CHANGE_SERVER_STATE)	// I->A
+#define T_IA_ADMIN_GET_CHARACTER		(MessageType_t)((T0_IA_ADMIN<<8)|T1_IA_ADMIN_GET_CHARACTER)			// A->I
+#define T_IA_ADMIN_GET_CHARACTER_OK		(MessageType_t)((T0_IA_ADMIN<<8)|T1_IA_ADMIN_GET_CHARACTER_OK)		// I->A
+#define T_IA_ADMIN_CHAT_ALL				(MessageType_t)((T0_IA_ADMIN<<8)|T1_IA_ADMIN_CHAT_ALL)				// A->I
+#define T_IA_ADMIN_GET_SERVER_INFO		(MessageType_t)((T0_IA_ADMIN<<8)|T1_IA_ADMIN_GET_SERVER_INFO)		// A->I, No Body
+#define T_IA_ADMIN_GET_SERVER_INFO_OK	(MessageType_t)((T0_IA_ADMIN<<8)|T1_IA_ADMIN_GET_SERVER_INFO_OK)	// I->A
+
+typedef struct
+{
+	char	UID[SIZE_MAX_ACCOUNT_NAME];
+	char	PWD[SIZE_MAX_PASSWORD];
+} MSG_IA_ADMIN_CONNECT;
+
+typedef struct
+{
+// 2006-04-15 by cmkwon, 필드 변경
+//	BYTE	AuthOK;				// 0: FALSE, 1:TRUE
+	USHORT	AccountType0;		// 계정 권한
+} MSG_IA_ADMIN_CONNECT_OK;
+
+typedef MSG_PA_ADMIN_CHANGE_SERVER_STATE	MSG_IA_ADMIN_CHANGE_SERVER_STATE;
+
+typedef struct
+{
+	char	CharacterName[SIZE_MAX_CHARACTER_NAME];
+} MSG_IA_ADMIN_GET_CHARACTER;
+
+typedef struct
+{
+	BYTE	IsOnline;			// 0: FALSE, 1:TRUE
+} MSG_IA_ADMIN_GET_CHARACTER_OK;
+
+typedef MSG_IC_CHAT_ALL				MSG_IA_ADMIN_CHAT_ALL;
+
+typedef struct
+{
+	INT			UserCount;						
+	BYTE		ServerState;	// SERVER_STATE_XXX
+} MSG_IA_ADMIN_GET_SERVER_INFO_OK;
+
+//////////////////////////////////////////////////////////////////////////
+// FieldServer <-> admin tool 
+#define T1_FA_ADMIN_CONNECT				0x00
+#define T1_FA_ADMIN_CONNECT_OK			0x01
+#define T1_FA_ADMIN_CHANGE_SERVER_STATE	0x02
+
+#define T_FA_ADMIN_CONNECT				(MessageType_t)((T0_FA_ADMIN<<8)|T1_FA_ADMIN_CONNECT)			// A->F
+#define T_FA_ADMIN_CONNECT_OK			(MessageType_t)((T0_FA_ADMIN<<8)|T1_FA_ADMIN_CONNECT_OK)		// F->A
+#define T_FA_ADMIN_CHANGE_SERVER_STATE	(MessageType_t)((T0_FA_ADMIN<<8)|T1_FA_ADMIN_CHANGE_SERVER_STATE)	// F->A
+
+typedef struct
+{
+	char	UID[SIZE_MAX_ACCOUNT_NAME];
+	char	PWD[SIZE_MAX_PASSWORD];
+} MSG_FA_ADMIN_CONNECT;
+
+typedef struct
+{
+// 2006-04-15 by cmkwon, 필드 변경
+//	BYTE	AuthOK;				// 0: FALSE, 1:TRUE
+	USHORT	AccountType0;		// 계정 권한
+} MSG_FA_ADMIN_CONNECT_OK;
+
+typedef MSG_PA_ADMIN_CHANGE_SERVER_STATE	MSG_FA_ADMIN_CHANGE_SERVER_STATE;
+
+// IMServer -> Client
+typedef MSG_FC_COUNTDOWN_START				MSG_IC_COUNTDOWN_START;
+
+// Client -> IMServer
+typedef MSG_FC_COUNTDOWN_DONE				MSG_IC_COUNTDOWN_DONE;
+
+struct MSG_IC_VOIP_SET
+{// 2008-06-17 by dhjin, EP3 VOIP - 설정
+	EN_CHECK_TYPE	VoipType;
+};
+
+struct MSG_IC_VOIP_SET_OK
+{// 2008-06-17 by dhjin, EP3 VOIP - 설정
+	UID32_t	CharacterUID;
+	EN_CHECK_TYPE	VoipType;
+};
+
+//////////////////////////////////////////////////////////////////////////
+// 2008-06-16 by dhjin, EP3 채팅방 -
+struct MSG_IC_CHATROOM_CREATE
+{// 2008-06-16 by dhjin, EP3 채팅방 - 채팅방 생성
+	CHAR	ChatRoomName[SIZE_MAX_CHATROOM_NAME];
+	BOOL	ChatRoomLock;
+	CHAR	ChatRoomPW[SIZE_MAX_TEAM_PW];
+	BYTE	ChatRoomMaxCount;
+};
+
+struct MSG_IC_CHATROOM_CREATE_OK
+{// 2008-06-16 by dhjin, EP3 채팅방 - 채팅방 생성
+	INT			ChatRoomNum;
+};
+
+struct MSG_IC_CHATROOM_LIST_INFO
+{// 2008-06-16 by dhjin, EP3 채팅방 - 채팅방 리스트 
+	INT			StartNum;
+};
+
+struct SCHATROOM_LIST_INFO
+{// 2008-06-16 by dhjin, EP3 채팅방 - 채팅방 리스트  OK
+	INT			ChatRoomNum;
+	CHAR		ChatRoomName[SIZE_MAX_CHATROOM_NAME];
+	BOOL		ChatRoomLock;
+	CHAR		ChatRoomMasterName[SIZE_MAX_CHARACTER_NAME];
+	BYTE		Membercount;
+	BYTE		MaxMembercount;
+};
+
+struct MSG_IC_CHATROOM_LIST_INFO_OK
+{// 2008-06-16 by dhjin, EP3 채팅방 - 채팅방 리스트  OK
+	INT			ChatRoomInfoTotalCount;	// 2008-06-17 by dhjin, 채팅방 최대 목록
+	INT			ChatRoomInfoListCount;		// 2008-06-17 by dhjin,
+	_ARRAY(SCHATROOM_LIST_INFO);
+};
+
+struct MSG_IC_CHATROOM_REQUEST_INVITE
+{// 2008-06-17 by dhjin, EP3 채팅방 - 채팅방 초대 
+	INT		ChatRoomNum;
+	char	InviteeCharacterName[SIZE_MAX_CHARACTER_NAME];		// 초대할 상대방 아이디
+};
+
+struct MSG_IC_CHATROOM_REQUEST_INVITE_QUESTION
+{// 2008-06-17 by dhjin, EP3 채팅방 - 채팅방 초대자에게 정보 전송
+	INT		ChatRoomNum;
+	char	ChatRoomMasterName[SIZE_MAX_CHARACTER_NAME];
+};
+
+struct MSG_IC_CHATROOM_ACCEPT_INVITE
+{// 2008-06-17 by dhjin, EP3 채팅방 - 채팅방 초대 승락
+	INT		ChatRoomNum; 
+};
+
+struct MSG_IC_CHATROOM_ACCEPT_INVITE_OK
+{// 2008-06-17 by dhjin, EP3 채팅방 - 채팅방 초대 승락 유저 정보 전송
+	UID32_t	CharacterUID;
+	char	CharacterName[SIZE_MAX_CHARACTER_NAME];
+};
+
+struct MSG_IC_CHATROOM_JOIN
+{// 2008-06-18 by dhjin, EP3 채팅방 - 채팅방 자유 참여
+	INT		ChatRoomNum;
+	BOOL    ChatRoomLock;
+	char	ChatRoomPW[SIZE_MAX_TEAM_PW];
+};
+
+struct MSG_IC_CHATROOM_REJECT_INVITE
+{// 2008-06-18 by dhjin, EP3 채팅방 - 채팅방 초대 취소
+	INT		ChatRoomNum;
+};
+
+struct MSG_IC_CHATROOM_LEAVE
+{// 2008-06-18 by dhjin, EP3 채팅방 - 채팅방 나가기
+	INT		ChatRoomNum;
+	char	LeaveCharacterName[SIZE_MAX_CHARACTER_NAME];
+};
+
+struct MSG_IC_CHATROOM_LEAVE_OK
+{// 2008-06-18 by dhjin, EP3 채팅방 - 채팅방 나가기
+	UID32_t	CharacterUID;
+	char	LeaveCharacterName[SIZE_MAX_CHARACTER_NAME];
+};
+
+struct MSG_IC_CHATROOM_BAN
+{// 2008-06-18 by dhjin, EP3 채팅방 - 채팅방 추방 
+	INT		ChatRoomNum;
+	UID32_t	BanCharacterUID;
+	char	BanCharacterName[SIZE_MAX_CHARACTER_NAME];
+};
+
+struct MSG_IC_CHATROOM_BAN_OK
+{// 2008-06-18 by dhjin, EP3 채팅방 - 채팅방 추방 
+	UID32_t	BanCharacterUID;
+	char	BanCharacterName[SIZE_MAX_CHARACTER_NAME];
+};
+
+struct MSG_IC_CHATROOM_CHANGE_NAME
+{// 2008-06-18 by dhjin, EP3 채팅방 - 채팅방 이름 변경 
+	INT		ChatRoomNum;
+	char	ChatRoomName[SIZE_MAX_CHATROOM_NAME];
+};
+
+struct MSG_IC_CHATROOM_CHANGE_NAME_OK
+{// 2008-06-18 by dhjin, EP3 채팅방 - 채팅방 이름 변경 
+	char	ChatRoomName[SIZE_MAX_CHATROOM_NAME];
+};
+
+struct MSG_IC_CHATROOM_CHANGE_MASTER
+{// 2008-06-18 by dhjin, EP3 채팅방 - 채팅방 방장 변경
+	INT		ChatRoomNum;
+	UID32_t	NewCharacterUID;
+};
+
+struct MSG_IC_CHATROOM_CHANGE_MASTER_OK
+{// 2008-06-18 by dhjin, EP3 채팅방 - 채팅방 방장 변경
+	UID32_t	NewCharacterUID;
+	char	CharacterName[SIZE_MAX_CHARACTER_NAME];
+};
+
+struct MSG_IC_CHATROOM_CHANGE_LOCK_PW
+{// 2008-06-18 by dhjin, EP3 채팅방 - 채팅방 잠금 변경 
+	INT		ChatRoomNum;
+	BOOL    ChatRoomLock;
+	char	ChatRoomPW[SIZE_MAX_TEAM_PW];
+};
+
+struct MSG_IC_CHATROOM_CHANGE_LOCK_PW_OK
+{// 2008-06-18 by dhjin, EP3 채팅방 - 채팅방 잠금 변경
+	BOOL    ChatRoomLock;
+};
+
+struct MSG_IC_CHATROOM_CHANGE_MAX_MEMBER
+{// 2008-06-18 by dhjin, EP3 채팅방 - 채팅방 최대 인원수 변경
+	INT		ChatRoomNum;
+	BYTE	ChatRoomMaxMember;
+};
+
+struct MSG_IC_CHATROOM_CHANGE_MAX_MEMBER_OK
+{// 2008-06-18 by dhjin, EP3 채팅방 - 채팅방 최대 인원수 변경
+	BYTE	ChatRoomMaxMember;
+};
+
+struct MSG_IC_CHATROOM_MEMBER_INFO
+{// 2008-06-25 by dhjin, EP3 채팅방 - 채팅방 맴버 정보
+	INT		ChatRoomNum;
+};
+
+struct SCHATROOM_MEMBER_INFO
+{/// 2008-06-25 by dhjin, EP3 채팅방 - 채팅방 맴버 정보
+	UID32_t		CharacterUID;
+	char		CharacterName[SIZE_MAX_CHARACTER_NAME];
+};
+
+struct MSG_IC_CHATROOM_MEMBER_INFO_OK
+{/// 2008-06-25 by dhjin, EP3 채팅방 - 채팅방 맴버 정보
+	INT			ChatRoomNum;
+	INT			ChatRoomInfoListCount;
+	UID32_t		MasterCharacterUID;
+	char		ChatRoomName[SIZE_MAX_CHATROOM_NAME];
+	BOOL		ChatRoomLock;
+	char		ChatRoomPW[SIZE_MAX_TEAM_PW];
+	INT			ChatRoomMaxCount;
+	_ARRAY(SCHATROOM_MEMBER_INFO);
+};
+
+
+///////////////////////////////////////////////////////////////////////////////
+// T0_FC_RACING
+typedef struct
+{
+	BYTE		byRacingListCounts;
+	ARRAY_(MAP_CHANNEL_INDEX);
+} MSG_FC_RACING_RACINGLIST_REQUEST_ACK;
+
+typedef struct
+{
+	MAP_CHANNEL_INDEX	mapChannIdx;
+} MSG_FC_RACING_RACINGINFO_REQUEST;
+
+typedef struct
+{
+	MAP_CHANNEL_INDEX	mapChannelIndex;
+	BYTE				byMaxUserCounts;				// 최대 참가자수
+	BYTE				byMinUserCounts;				// 최소 참가자수
+	BYTE				byRacingGameNumber;				// 진행되는 게임 넘버
+	int					nEntryFee;						// 참가비(단위:spi)
+	int					nLimitTimeForRacing;			// Racing이 진행되는 제한시간(단위:초)
+	int					nRamainTimeForJoinRacing;		// 참가 가능 시간까지 남은 시간(단위:초)	
+} MSG_FC_RACING_RACINGINFO_REQUEST_ACK;
+
+typedef struct
+{
+	MAP_CHANNEL_INDEX	mapChannIdx;
+	DWORD				dwRamainTimeForJoinRacing;		// 참가 가능 시간까지 남은 시간(단위:초)
+} MSG_FC_RACING_RACINGNOTIFY;
+
+typedef struct
+{
+	MAP_CHANNEL_INDEX	mapChannIdx;
+} MSG_FC_RACING_JOIN_ENABLE;
+
+typedef struct
+{
+	MAP_CHANNEL_INDEX	mapChannIdx;
+} MSG_FC_RACING_JOIN_REQUEST;
+
+typedef struct
+{
+	BYTE				byJoinedFlag:1;					// 1 bit 사용, 레이싱에 참여 되었는지의 플래그
+	BYTE				byJoinedOrder:7;				// 7 bit 사용, 레이싱에 참여된 순서(ex, 8명이면 1부터 8까지)
+	MAP_CHANNEL_INDEX	mapChannIdx;	
+} MSG_FC_RACING_JOIN_REQUEST_ACK;
+
+typedef struct
+{
+	BYTE				byCountDowns;
+} MSG_FC_RACING_COUNTDOWN;
+
+typedef struct
+{
+	BYTE				byCheckPointIndex;
+	DWORD				dwObjectType;
+	AVECTOR3			PositionAVector3;
+} MSG_FC_RACING_CHECKPOINT_CHECK;
+
+typedef struct
+{
+	BYTE				byCheckedFlag:1;
+	BYTE				byCheckPointIndex:7;	
+	BYTE				byRanking;
+} MSG_FC_RACING_CHECKPOINT_CHECK_ACK;
+
+typedef struct
+{
+	 BYTE				byRanking;
+} MSG_FC_RACING_FINISHED;
+
+typedef struct
+{
+	char				szCharacterName[SIZE_MAX_CHARACTER_NAME];
+	BYTE				byRanking;
+} MSG_FC_RACING_OTHER_FINISHED;
+
+typedef struct
+{
+	char				szCharacterName[SIZE_MAX_CHARACTER_NAME];
+	BYTE				byRanking;
+	DWORD				dwElapsedTime;
+} RankingInfo;
+
+typedef struct
+{
+	BYTE				byRankingInfoCounts;		// Ranking 정보 카운트
+	ARRAY_(RankingInfo);
+} MSG_FC_RACING_FINALRANKING;
+
+//////////////////////////////////////////////////////////////////////////
+// 2007-04-17 by dhjin
+// T0_FC_ARENA
+#define T_FC_ARENA_REQUEST_TEAM				(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_REQUEST_TEAM)					// C->F
+#define T_FC_ARENA_REQUEST_TEAM_OK			(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_REQUEST_TEAM_OK)				// F->C
+#define T_FC_ARENA_CREATE_TEAM				(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_CREATE_TEAM)					// C->F
+#define T_FC_ARENA_CREATE_TEAM_OK			(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_CREATE_TEAM_OK)				// F->C
+#define T_FC_ARENA_ENTER_TEAM				(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_ENTER_TEAM)					// C->F
+#define T_FC_ARENA_ENTER_TEAM_OK			(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_ENTER_TEAM_OK)					// F->C
+#define T_FC_ARENA_TEAM_MEMBER_LIST			(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_TEAM_MEMBER_LIST)				// F->C(n)
+#define T_FC_ARENA_REAVE_TEAM				(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_REAVE_TEAM)					// C->F
+#define T_FC_ARENA_REAVE_TEAM_OK			(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_REAVE_TEAM_OK)					// F->C
+#define T_FC_ARENA_TEAM_READY				(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_TEAM_READY)					// F->C(n)
+#define T_FC_ARENA_TEAM_READY_FINISH		(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_TEAM_READY_FINISH)				// C->F
+#define T_FC_ARENA_TEAM_READY_FINISH_CANCEL	(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_TEAM_READY_FINISH_CANCEL)		// C->F
+#define T_FC_ARENA_TEAM_MATCHING			(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_TEAM_MATCHING)					// F->C(n)
+#define T_FC_ARENA_ENTER_ROOM				(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_ENTER_ROOM)					// F->C(n)
+#define T_FC_ARENA_ENTER_ROOM_WARP			(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_ENTER_ROOM_WARP)				// C->F
+#define T_FC_ARENA_ROOM_WAR_START			(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_ROOM_WAR_START)				// F->C(n)
+#define T_FC_ARENA_ROOM_WAR_INFO			(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_ROOM_WAR_INFO)					// F->C(n)	
+#define T_FC_ARENA_ROOM_WAR_FINISH_HEADER	(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_ROOM_WAR_FINISH_HEADER)		// F->C(n)
+#define T_FC_ARENA_ROOM_WAR_FINISH			(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_ROOM_WAR_FINISH)				// F->C(n)
+#define T_FC_ARENA_ROOM_WAR_FINISH_DONE		(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_ROOM_WAR_FINISH_DONE)			// F->C(n)
+#define T_FC_ARENA_ROOM_WAR_FINISH_DRAW		(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_ROOM_WAR_FINISH_DRAW)				// F->C(n)
+#define T_FC_ARENA_FINISH_WARP				(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_FINISH_WARP)					// C->F
+#define T_FC_ARENA_FINISH_WARP_OK			(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_FINISH_WARP_OK)				// F->C(n)
+#define T_FC_ARENA_REQUEST_CREATE_TEAMINFO  (MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_REQUEST_CREATE_TEAMINFO)		// C->F
+#define T_FC_ARENA_REQUEST_CREATE_TEAMINFO_OK  (MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_REQUEST_CREATE_TEAMINFO_OK)	// F->C
+#define T_FC_ARENA_BEFORE_ROOM_WAR_FINISH	(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_BEFORE_ROOM_WAR_FINISH)		// F->C
+#define T_FC_ARENA_REQUEST_OTHER_TEAM_INFO  (MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_REQUEST_OTHER_TEAM_INFO)	// C->F
+#define T_FC_ARENA_REQUEST_OTHER_TEAM_INFO_OK	(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_REQUEST_OTHER_TEAM_INFO_OK)	// F->C
+#define T_FC_ARENA_GM_COMMAND_INFO_HEADER	(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_GM_COMMAND_INFO_HEADER)	// F->C
+#define T_FC_ARENA_GM_COMMAND_INFO			(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_GM_COMMAND_INFO)	// F->C
+#define T_FC_ARENA_GM_COMMAND_INFO_DONE		(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_GM_COMMAND_INFO_DONE)	// F->C
+#define T_FC_ARENA_QUICK_ENTER_TEAM			(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_QUICK_ENTER_TEAM)	// C->F
+#define T_FC_ARENA_WATCH_READY				(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_WATCH_READY)		// F->C
+#define T_FC_ARENA_WATCH_START				(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_WATCH_START)		// F->C
+#define T_FC_ARENA_WATCH_END				(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_WATCH_END)			// F->C
+#define T_FC_ARENA_WATCH_REMOVE_USER		(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_WATCH_REMOVE_USER)			// F->C
+// 2008-01-08 by dhjin, 아레나 통합 - 
+#define T_FC_ARENA_POSSIBLE_GAMESTART		(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_POSSIBLE_GAMESTART)			// F->C
+#define T_FC_ARENA_CHARACTER_GAMESTART		(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_CHARACTER_GAMESTART)			// C->F
+#define T_FC_ARENA_USE_CITYWARPITEM			(MessageType_t)((T0_FC_ARENA<<8)|T1_FC_ARENA_USE_CITYWARPITEM)				// F->C
+
+
+
+struct MSG_FC_ARENA_REQUEST_TEAM
+{
+	BYTE				ArenaMode;			// 2007-04-17 by dhjin, 아레나 방식   1 : DeathMatch, 2 : Round, so on..
+	BYTE				RequestTeamState;	// 2007-06-05 by dhjin, 팀 정보 요청 플래그 1 : 모두 보기, 2 : 대기팀. 3 : 상대팀 보기
+	ClientIndex_t		ClientIndex;		// 2007-04-17 by dhjin, 요청한 클라이언트
+	INT					StartTeamNum;		// 2007-04-27 by dhjin, 한 번에 요청하여 보내주는 팀 시작 번호 ex)11 => 11번째 방부터 ARENA_MAX_REQUEST_TEAM까지 전송
+};
+
+struct SARENA_TEAM_INFO
+{
+	BOOL			TeamLock;				// 2007-04-17 by dhjin, 팀 공개 여부  0 : 공개, 1: 비공개 
+	BOOL			TeamEvent;				// 2008-03-10 by dhjin, 아레나 통합 - 이벤트팀인지 0: 일반팀 1: 이벤트팀
+	BYTE			TeamSize;				// 2007-04-17 by dhjin, 팀 인원 제한 
+	BYTE			CurrentTeamSize;		// 2007-04-25 by dhjin, 현재 팀 인원
+	BYTE			ArenaMode;				// 2007-04-17 by dhjin, 아레나 방식   1 : DeathMatch, 2 : Round, so on..
+	BYTE			ArenaState;				// 2007-06-05 by dhjin, 팀의 아레나 상태
+	BYTE			TeamStartLevel;			// 2007-06-05 by dhjin, 팀의 시작 레벨
+	BYTE			TeamEndLevel;			// 2007-06-05 by dhjin, 팀의 끝 레벨
+	INT				TeamNum;				// 2007-04-17 by dhjin, 팀 번호
+	CHAR			CharacterName[SIZE_MAX_CHARACTER_NAME];		// 2007-04-17 by dhjin, 방장 이름
+};
+
+struct MSG_FC_ARENA_REQUEST_TEAM_OK
+{
+	INT				ArenaTeamInfoTotalCount;	// 2007-04-27 by dhjin, 팀 최대 목록
+	INT				ArenaTeamInfoListCount;		// 2007-04-19 by dhjin,
+	BYTE			RequetTeamState;			// 2007-06-07 by dhjin, 팀 정보 요청 플래그 1 : 모두 보기, 2 : 대기팀. 3 : 상대팀 보기 
+	_ARRAY(SARENA_TEAM_INFO);
+};
+
+struct MSG_FC_ARENA_CREATE_TEAM
+{
+	BOOL			TeamLock;				// 2007-04-17 by dhjin, 팀 공개 여부 0 : 공개, 1: 비공개
+	BYTE			ArenaMode;				// 2007-04-17 by dhjin, 아레나 방식   1 : DeathMatch, 2 : Round, so on..
+	BYTE			TeamSize;				// 2007-04-17 by dhjin, 팀 인원 제한 
+	ClientIndex_t	ClientIndex;			// 2007-04-17 by dhjin, 요청한 클라이언트
+	CHAR			TeamPW[SIZE_MAX_TEAM_PW];	// 2007-04-17 by dhjin, 팀 비밀 번호
+};
+
+struct MSG_FC_ARENA_CREATE_TEAM_OK
+{
+	BYTE			ArenaMode;				// 2007-04-17 by dhjin, 아레나 방식   1 : DeathMatch, 2 : Round, so on..
+	BYTE			TeamSize;				// 2007-04-17 by dhjin, 팀 인원 제한 
+	INT				TeamNum;				// 2007-04-17 by dhjin, 생성된 팀 번호
+};
+
+struct MSG_FC_ARENA_ENTER_TEAM
+{
+	BYTE			ArenaMode;				// 2007-04-17 by dhjin, 아레나 방식   1 : DeathMatch, 2 : Round, so on..
+	ClientIndex_t	ClientIndex;			// 2007-04-17 by dhjin, 요청한 클라이언트
+	CHAR			TeamPW[SIZE_MAX_TEAM_PW];	// 2007-04-17 by dhjin, 팀 비밀 번호
+	INT				TeamNum;				// 2007-04-17 by dhjin, 입장하려는 팀 번호	
+};
+
+struct MSG_FC_ARENA_ENTER_TEAM_OK
+{
+	BYTE			ArenaMode;				// 2007-04-17 by dhjin, 아레나 방식   1 : DeathMatch, 2 : Round, so on..
+	BYTE			TeamSize;				// 2007-04-17 by dhjin, 팀 인원 제한 
+	INT				TeamNum;				// 2007-04-17 by dhjin, 생성된 팀 번호
+};
+
+struct SARENA_TEAM_CHARACTERINFO
+{
+	BYTE			ArenaState;				// 2007-04-17 by dhjin, 팀의 아레나 상태
+	ClientIndex_t	ClientIndex;
+	CHAR			CharacterName[SIZE_MAX_CHARACTER_NAME];	// 2007-04-17 by dhjin, 팀원들의 이름
+};
+
+struct MSG_FC_ARENA_TEAM_MEMBER_LIST
+{
+	BYTE			ArenaTeamState;						// 2007-05-07 by dhjin, 아레나 팀 상태
+	BYTE			ArenaTeamCharacterNameListCount;	// 2007-04-19 by dhjin
+	_ARRAY(SARENA_TEAM_CHARACTERINFO);
+};
+
+struct MSG_FC_ARENA_REAVE_TEAM
+{
+	BYTE			ArenaMode;				// 2007-04-17 by dhjin, 아레나 방식   1 : DeathMatch, 2 : Round, so on..
+	ClientIndex_t	ClientIndex;			// 2007-04-17 by dhjin, 요청한 클라이언트
+	INT				TeamNum;				// 2007-04-17 by dhjin, 탈퇴하려는 팀 번호
+};
+
+struct MSG_FC_ARENA_TEAM_READY
+{
+	BYTE			ArenaMode;
+	BYTE			ArenaState;				// 2007-04-17 by dhjin, 팀의 아레나 상태, 2 : ARENA_STATE_READY
+	INT				TeamNum;				// 2007-04-17 by dhjin, 팀 번호
+};
+
+struct MSG_FC_ARENA_ENTER_ROOM
+{
+	BYTE			ArenaMode;
+	BYTE			ArenaState;				// 2007-04-17 by dhjin, 팀의 아레나 상태, 3 : ARENA_STATE_WARREADY
+	BYTE			VCNDeathCount;			// 2007-04-17 by dhjin, 바이제니유 데스매치 포인트
+	BYTE			ANIDeathCount;			// 2007-04-17 by dhjin, 알링턴 데스매치 포인트
+	BYTE			PlayLimitedTime;		// 2007-05-04 by dhjin, 경기 제한 시간
+	INT				TeamNum;				// 2007-04-17 by dhjin, 팀 번호
+	ATUM_DATE_TIME	StartRoomTime;			// 2007-04-17 by dhjin, 방 생성 시간
+	ATUM_DATE_TIME	ArenaServerTime;		// 2009-09-10 by jwlee, 아레나 서버 시간 오차 버그 수정 - 
+};
+
+struct MSG_FC_ARENA_ENTER_ROOM_WARP
+{// 2008-02-21 by dhjin, 아레나 통합 - 
+	BOOL			CheckCommand;			// 2008-02-21 by dhjin, '/아레나이동' 명령어 사용인지 체크
+};
+
+struct MSG_FC_ARENA_ROOM_WAR_START
+{
+	BYTE			ArenaMode;
+	BYTE			ArenaState;				// 2007-04-17 by dhjin, 팀의 아레나 상태, 4 : ARENA_STATE_WARING
+	ATUM_DATE_TIME	Time;					// 2007-04-17 by dhjin, 대전 시작 시간
+};
+
+struct MSG_FC_ARENA_ROOM_WAR_INFO
+{
+	BYTE			ArenaMode;
+	BYTE			VCNDeathCount;			// 2007-04-17 by dhjin, 바이제니유 데스매치 포인트
+	BYTE			ANIDeathCount;			// 2007-04-17 by dhjin, 알링턴 데스매치 포인트
+//	ATUM_DATE_TIME	Time;					// 2007-04-17 by dhjin, 대전 남은 시간
+};
+
+struct MSG_FC_ARENA_ROOM_WAR_FINISH
+{
+	BYTE			Influence;				// 2007-04-17 by dhjin, 세력 
+	BYTE 			ShootingDown;			// 2007-04-17 by dhjin, 격추수 
+	BYTE 			SufferingAttack;		// 2007-04-17 by dhjin, 피격수 
+	BYTE			LostPoint;				// 2007-06-01 by dhjin, LostPoint
+	USHORT			UnitKind;				// 2007-04-17 by dhjin, 기어 종류 
+	CHAR			CharacterLevelRank[SIZE_MAX_LEVELRANK];	// 2007-04-17 by dhjin, 유저 레벨 등급
+	CHAR			CharacterName[SIZE_MAX_CHARACTER_NAME];	// 2007-04-17 by dhjin, 유저 이름
+};
+
+struct MSG_FC_ARENA_ROOM_WAR_FINISH_HEADER
+{
+	BYTE			ArenaMode;
+	BYTE			ArenaState;				// 2007-04-17 by dhjin, 팀의 아레나 상태, 5 : ARENA_STATE_WARFINISH
+	ATUM_DATE_TIME	FinishTime;				// 2007-04-17 by dhjin, 대전 종료 시간
+};
+
+struct MSG_FC_ARENA_ROOM_WAR_FINISH_DONE
+{
+	BYTE			Issue;					// 2007-04-20 by dhjin, 아레나 승패 여부, 1 : ARENA_ISSUE_WIN, 2 : ARENA_ISSUE_LOSE, 3 : ARENA_ISSUE_DRAW
+	BYTE			EndState;				// 2007-05-16 by dhjin, 아레나 종료 타입, 1 : ARENA_END_TYPE_POINT, 2 : ARENA_END_TYPE_TIME, 3 : ARENA_END_TYPE_GIVEUP
+	INT				InflPoint;				// 2007-04-17 by dhjin, 세력 포인트 보상값
+	INT				WarPoint;				// 2007-04-17 by dhjin, WarPoint 보상값
+	INT				TotalWarPoint;			// 2007-05-28 by dhjin, WP
+	INT				CumulativeWarPoint;		// 2007-05-28 by dhjin, CumulativeWP
+	INT				ArenaWin;				// 2007-06-07 by dhjin, 아레나 승패 전적 승
+	INT				ArenaLose;				// 2007-06-07 by dhjin, 아레나 승패 전적 패
+};
+
+struct MSG_FC_ARENA_ROOM_WAR_FINISH_DRAW
+{
+	BYTE			ArenaMode;
+	BYTE			ArenaState;				// 2007-04-17 by dhjin, 팀의 아레나 상태, 5 : ARENA_STATE_WARFINISH
+	BYTE			Issue;					// 2007-04-20 by dhjin, 아레나 승패 여부, 1 : ARENA_ISSUE_WIN, 2 : ARENA_ISSUE_LOSE, 3 : ARENA_ISSUE_DRAW
+	BYTE			EndState;				// 2007-05-16 by dhjin, 아레나 종료 타입, 1 : ARENA_END_TYPE_POINT, 2 : ARENA_END_TYPE_TIME, 3 : ARENA_END_TYPE_GIVEUP
+	INT				InflPoint;				// 2007-04-17 by dhjin, 세력 포인트 보상값
+	INT				WarPoint;				// 2007-04-17 by dhjin, WarPoint 보상값
+	ATUM_DATE_TIME	FinishTime;				// 2007-04-17 by dhjin, 대전 종료 시간
+};
+
+//struct SARENA_ROOM_FINISH_INFO
+//{
+//	BYTE			Influence;				// 2007-04-17 by dhjin, 세력 
+//// 	BYTE			Rank;					// 2007-04-17 by dhjin, 격추수에 의한 랭킹
+//	BYTE 			ShootingDown;			// 2007-04-17 by dhjin, 격추수 
+//	BYTE 			SufferingAttack;		// 2007-04-17 by dhjin, 피격수 
+//	USHORT			UnitKind;				// 2007-04-17 by dhjin, 기어 종류 
+//	CHAR			CharacterLevelRank[SIZE_MAX_LEVELRANK];	// 2007-04-17 by dhjin, 유저 레벨 등급
+//	CHAR			CharacterName[SIZE_MAX_CHARACTER_NAME];	// 2007-04-17 by dhjin, 유저 이름
+//};
+//
+//struct MSG_FC_ARENA_ROOM_WAR_FINISH
+//{
+//	BYTE			ArenaMode;
+//	BYTE			ArenaState;				// 2007-04-17 by dhjin, 팀의 아레나 상태, 5 : ARENA_STATE_WARFINISH
+//	BYTE			Issue;					// 2007-04-20 by dhjin, 아레나 승패 여부, 1 : ARENA_ISSUE_WIN, 2 : ARENA_ISSUE_LOSE, 3 : ARENA_ISSUE_DRAW
+//	INT				InflPoint;				// 2007-04-17 by dhjin, 세력 포인트 보상값
+//	INT				WarPoint;				// 2007-04-17 by dhjin, WarPoint 보상값
+//	ATUM_DATE_TIME	FinishTime;				// 2007-04-17 by dhjin, 대전 종료 시간
+//	BYTE			ArenaRoomFinishInfoDeathMatchListCount; // 2007-04-19 by dhjin
+//	ARRAY_(SARENA_ROOM_FINISH_INFO);
+//};
+
+struct MSG_FC_ARENA_FINISH_WARP_OK
+{
+	MAP_CHANNEL_INDEX	MapChannelIndex;	// 2007-04-17 by dhjin, 맵 채널 정보
+};
+
+struct SARENA_REQUEST_CREATE_TEAMINFO
+{
+	BYTE 	ArenaMode;				// 아레나 모드 1 : DeathMatch, 2 : Round
+	BYTE 	ReqMemberNum; 			// 팀 인원 제한
+};
+
+struct MSG_FC_ARENA_REQUEST_CREATE_TEAMINFO_OK
+{
+	BYTE	ArenaRequetCreateTeamInfoListCount; // 2007-04-26 by dhjin
+	_ARRAY(SARENA_REQUEST_CREATE_TEAMINFO);	
+};
+
+// 2007-05-23 by dhjin, 상대 팀 정보 전송
+struct SARENA_REQUEST_OTHER_TEAM_INFO_OK
+{
+	BYTE	MemberCount;			// 팀 인원수
+	INT		TeamCount;				// 팀 수
+};
+
+struct MSG_FC_ARENA_REQUEST_OTHER_TEAM_INFO_OK
+{
+	BYTE 	ArenaMode;				// 아레나 모드 1 : DeathMatch, 2 : Round
+	BYTE	ArenaOtherTeamListCount;
+	_ARRAY(SARENA_REQUEST_OTHER_TEAM_INFO_OK);
+};
+
+// 2007-05-25 by dhjin, GM명령어 출력을 위한 구조체
+struct SARENA_GM_COMMAND_INFO
+{
+	BYTE 	ArenaMode;							// 아레나 모드 1 : DeathMatch, 2 : Round
+	BYTE	Level;								// 팀 레벨
+	BYTE	MemberCount;						// 팀 인원수
+	INT		TeamCount;							// 팀 수
+};
+typedef SARENA_GM_COMMAND_INFO			MSG_FC_ARENA_GM_COMMAND_INFO;
+
+struct MSG_FC_ARENA_GM_COMMAND_INFO_DONE
+{
+	INT	ReadyUserTotalCount;
+	INT	MatchIngUserTotalCount;
+	INT	ArenaFightIngUserTotalCount;
+};
+
+struct MSG_FC_ARENA_WATCH_READY
+{
+	BYTE			ArenaState;			// 2007-06-18 by dhjin, 팀의 아레나 상태
+};
+
+struct SARENA_WATCH_START_USER_INFO
+{
+	SHORT			HP;
+	float			CurrentHP;
+	SHORT			DP;
+	float			CurrentDP;
+	BYTE			Influence;
+	ClientIndex_t	ClientIndex;
+	CHAR			CharacterName[SIZE_MAX_CHARACTER_NAME];		// 2007-06-15 by dhjin, 유저 이름
+};
+
+struct MSG_FC_ARENA_WATCH_START
+{
+	BYTE			VCNDeathCount;			// 2007-06-18 by dhjin, 바이제니유 데스매치 포인트
+	BYTE			ANIDeathCount;			// 2007-06-18 by dhjin, 알링턴 데스매치 포인트
+	INT				Time;					// 2007-06-18 by dhjin, 대전 남은 시간 (초)
+	INT				ArenaWatchStartUserInfoListCount;		// 2007-06-15 by dhjin,
+	_ARRAY(SARENA_WATCH_START_USER_INFO);
+};
+
+struct MSG_FC_ARENA_WATCH_REMOVE_USER
+{
+	ClientIndex_t	ClientIndex;			// 2007-06-18 by dhjin, 아레나에서 나간 유저
+};
+
+// 2008-01-08 by dhjin, 아레나 통합 - 
+struct MSG_FC_ARENA_POSSIBLE_GAMESTART
+{// 2008-01-08 by dhjin, 아레나 케릭터 정보를 전송한다.
+	BitFlag16_t		MapWeather;
+	CHARACTER		AFSCharacter;
+	char			ServerGroupName0[SIZE_MAX_SERVER_NAME];
+	char			MainORTestServerName[SIZE_MAX_SERVER_NAME];
+	char			GamePublisher[SIZE_MAX_GAME_PUBLISHER_NAME];
+	BOOL			IsPCBangUser;			// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 
+};
+
+struct MSG_FC_CHARACTER_READY_GAMESTART_FROM_ARENA_TO_MAINSERVER_OK
+{// 2008-01-15 by dhjin, 아레나 경기 종료 후 필드 서버 게임 시 미리 필요한 정보를 여기서 전송한다.
+	BitFlag16_t		MapWeather;
+	BYTE			CharacterMode0;
+	BOOL			bMemberPCBang;
+	CHARACTER		Character;
+	char			ServerGroupName0[SIZE_MAX_SERVER_NAME];
+	char			MainORTestServerName[SIZE_MAX_SERVER_NAME];
+	char			GamePublisher[SIZE_MAX_GAME_PUBLISHER_NAME];
+	BYTE			bIsLockSecondPW;			// 2008-08-26 by cmkwon, 베트남 VTC-Intecom_Viet 2차 패스워드 시스템 버그 수정 - 2차 패스워드 설정 정보
+};
+
+//////////////////////////////////////////////////////////////////////////
+// 2007-07-06 by dhjin, Tutorial
+#define T_FC_TUTORIAL_START				(MessageType_t)((T0_FC_TUTORIAL<<8)|T1_FC_TUTORIAL_START)			// C->F
+#define T_FC_TUTORIAL_START_OK			(MessageType_t)((T0_FC_TUTORIAL<<8)|T1_FC_TUTORIAL_START_OK)		// F->C
+#define T_FC_TUTORIAL_COMPLETE			(MessageType_t)((T0_FC_TUTORIAL<<8)|T1_FC_TUTORIAL_COMPLETE)		// C->F
+#define T_FC_TUTORIAL_COMPLETE_OK		(MessageType_t)((T0_FC_TUTORIAL<<8)|T1_FC_TUTORIAL_COMPLETE_OK)		// F->C
+#define T_FC_TUTORIAL_END				(MessageType_t)((T0_FC_TUTORIAL<<8)|T1_FC_TUTORIAL_END)				// C->F
+#define T_FC_TUTORIAL_END_OK			(MessageType_t)((T0_FC_TUTORIAL<<8)|T1_FC_TUTORIAL_END_OK)			// F->C
+#define T_FC_TUTORIAL_WARP				(MessageType_t)((T0_FC_TUTORIAL<<8)|T1_FC_TUTORIAL_WARP)			// C->F
+
+struct STUTORIAL_LIST_INFO
+{// 2007-07-06 by dhjin, Tutorial 완료 정보 여부 구조체
+	INT		TutorialNum;				// 2007-07-06 by dhjin, Tutorial 번호 
+	BYTE 	TutorialComplete;			// 2007-07-06 by dhjin, Tutorial 완료 여부, 0 : FALSE, 1 : TRUE
+};
+
+struct MSG_FC_TUTORIAL_START_OK
+{// 2007-07-06 by dhjin, Tutorial 완료 정보 메세지
+	INT		TutorialInfoListCount;		// 2007-07-06 by dhjin, Tutorial 정보 리스트 수
+	_ARRAY(STUTORIAL_LIST_INFO);
+};
+
+struct MSG_FC_TUTORIAL_COMPLETE 
+{// 2007-07-06 by dhjin, Tutorial 완료 번호
+	INT		TutorialNum;
+};
+
+struct MSG_FC_TUTORIAL_COMPLETE_OK
+{// 2007-07-06 by dhjin, Tutorial 완료 번호
+	INT		TutorialNum;
+	INT		TutorialItemNum1;
+	INT		TutorialItemCount1;
+	INT		TutorialItemNum2;
+	INT		TutorialItemCount2;
+	INT		TutorialItemNum3;
+	INT		TutorialItemCount3;
+};
+
+
+//////////////////////////////////////////////////////////////////////////
+// 2007-08-13 by dhjin, OUTPOST
+#define T_FC_OUTPOST_WAR_BEFORE				(MessageType_t)((T0_FC_OUTPOST<<8)|T1_FC_OUTPOST_WAR_BEFORE)			// F->C(N)
+#define T_FC_OUTPOST_WAR_START 				(MessageType_t)((T0_FC_OUTPOST<<8)|T1_FC_OUTPOST_WAR_START)				// F->C(N)
+#define T_FC_OUTPOST_PROTECTOR_DESTROY		(MessageType_t)((T0_FC_OUTPOST<<8)|T1_FC_OUTPOST_PROTECTOR_DESTROY)		// F->C(N)
+//#define T_FC_OUTPOST_RESET_CHECK_START		(MessageType_t)((T0_FC_OUTPOST<<8)|T1_FC_OUTPOST_RESET_CHECK_START)		// C->F
+//#define T_FC_OUTPOST_RESET_CHECK_START_OK	(MessageType_t)((T0_FC_OUTPOST<<8)|T1_FC_OUTPOST_RESET_CHECK_START_OK)	// F->C
+#define T_FC_OUTPOST_RESET_START			(MessageType_t)((T0_FC_OUTPOST<<8)|T1_FC_OUTPOST_RESET_START)			// C->F
+#define T_FC_OUTPOST_RESET_START_OK 		(MessageType_t)((T0_FC_OUTPOST<<8)|T1_FC_OUTPOST_RESET_START_OK)		// F->C(N)
+#define T_FC_OUTPOST_RESET_DESTROY	 		(MessageType_t)((T0_FC_OUTPOST<<8)|T1_FC_OUTPOST_RESET_DESTROY)			// F->C
+#define T_FC_OUTPOST_RESET_SUCCESS	 		(MessageType_t)((T0_FC_OUTPOST<<8)|T1_FC_OUTPOST_RESET_SUCCESS)			// F->C
+#define T_FC_OUTPOST_WAR_END		 		(MessageType_t)((T0_FC_OUTPOST<<8)|T1_FC_OUTPOST_WAR_END)				// F->C(N)
+#define T_FC_OUTPOST_NEXTWAR_INFO_REQUEST		(MessageType_t)((T0_FC_OUTPOST<<8)|T1_FC_OUTPOST_NEXTWAR_INFO_REQUEST)			// C->F
+#define T_FC_OUTPOST_NEXTWAR_INFO_REQUEST_OK 	(MessageType_t)((T0_FC_OUTPOST<<8)|T1_FC_OUTPOST_NEXTWAR_INFO_REQUEST_OK)		// F->C(N)
+#define T_FC_OUTPOST_NEXTWAR_SET_TIME 		(MessageType_t)((T0_FC_OUTPOST<<8)|T1_FC_OUTPOST_NEXTWAR_SET_TIME)			// C->F
+#define T_FC_OUTPOST_NEXTWAR_SET_TIME_OK	(MessageType_t)((T0_FC_OUTPOST<<8)|T1_FC_OUTPOST_NEXTWAR_SET_TIME_OK)			// F->C
+#define T_FC_OUTPOST_WAR_INFO				(MessageType_t)((T0_FC_OUTPOST<<8)|T1_FC_OUTPOST_WAR_INFO)					// F->C
+
+
+struct MSG_FC_OUTPOST_WAR_BEFORE
+{// 2007-08-13 by dhjin, OutPost 시작 전 남은 시간 정보 전송
+	BYTE	RemainTime;
+	BYTE	Influence;
+	INT		MapIndex;
+};
+
+struct MSG_FC_OUTPOST_WAR_START
+{// 2007-08-13 by dhjin, OutPost 시작 정보 전송
+	BYTE			OutPostState;
+	BYTE			Influence;
+	INT				MapIndex;
+	ATUM_DATE_TIME	WarStartTime;
+	ATUM_DATE_TIME	WarEndTime;
+};
+
+struct MSG_FC_OUTPOST_PROTECTOR_DESTROY
+{// 2007-08-13 by dhjin, OutPost 보호막 파괴 전송
+	BYTE	Influence;
+	INT		MapIndex;
+	UID32_t	GuildUID;
+	CHAR	GuildName[SIZE_MAX_GUILD_NAME];
+};
+
+struct MSG_FC_OUTPOST_RESET_START
+{// 2007-08-16 by dhjin, 중앙처리장치 제어 시작
+	ClientIndex_t	TargetIndex;	
+};
+
+struct MSG_FC_OUTPOST_RESET_START_OK
+{// 2007-08-16 by dhjin, 중앙처리장치 제어 시작
+	BYTE	Influence;
+	INT		MapIndex;
+	UID32_t	GuildUID;
+	CHAR	GuildName[SIZE_MAX_GUILD_NAME];
+	ATUM_DATE_TIME	ResetStartTime;
+	ATUM_DATE_TIME	ResetEndTime;
+};
+
+struct MSG_FC_OUTPOST_RESET_DESTROY
+{// 2007-08-13 by dhjin, 중앙처리장치 파괴됨
+	INT		MapIndex;
+};
+
+struct MSG_FC_OUTPOST_RESET_SUCCESS
+{// 2007-08-13 by dhjin, 중앙처리장치 제어 성공 
+	BYTE	Influence;
+	INT		MapIndex;
+	UID32_t	GuildUID;
+	CHAR	GuildName[SIZE_MAX_GUILD_NAME];
+};
+
+struct MSG_FC_OUTPOST_WAR_END
+{// 2007-08-13 by dhjin, 전진기지전 종료
+	BYTE	Influence;
+	INT		MapIndex;
+	UID32_t	GuildUID;
+	CHAR	GuildName[SIZE_MAX_GUILD_NAME];
+};
+
+struct MSG_FC_OUTPOST_NEXTWAR_INFO_REQUEST_OK 
+{// 2007-08-13 by dhjin, 전진기지전 시간 설정 정보 전송
+	ATUM_DATE_TIME	    OutPostNextWarTime;
+	INT					OutPostNextWarSelectTimeChoice;
+	INT					OutPostNextWarTimeListCount;
+	_ARRAY(ATUM_DATE_TIME);	
+};
+
+struct MSG_FC_OUTPOST_NEXTWAR_SET_TIME 
+{// 2007-08-13 by dhjin, 전진기지전 다음 시간 설정
+	INT		OutPostNextWarSelectTimeChoice;
+};
+
+struct MSG_FC_OUTPOST_NEXTWAR_SET_TIME_OK 
+{// 2007-09-06 by dhjin, 전진기지전 다음 시간 설정 정보를 모든 유저에게 보내준다.
+	MapIndex_t		MapIndex;
+	ATUM_DATE_TIME	OutPostNextWarTime;
+};
+
+struct SOUTPOST_WAR_INFO
+{// 2007-09-14 by dhjin, 유저 접속 시 전쟁기지 전쟁이 시작 중이면 전쟁기지 정보를 유저에게 보내준다.
+	BYTE			OutPostState;
+	BYTE			OutPostResetIngInfluence;			// 2007-10-04 by dhjin, 리셋 중인 세력
+	MapIndex_t		MapIndex;
+	INT				OutPostWarResetRamainSecondTime;	// 2007-10-04 by dhjin, 리셋 완료까지 남은 시간
+	ATUM_DATE_TIME	OutPostWarStartTime;
+	ATUM_DATE_TIME  OutPostWarEndTime;
+//	ATUM_DATE_TIME	OutPostWarResetStartTime;
+//	ATUM_DATE_TIME	OutPostWarResetEndTime;
+};
+
+struct MSG_FC_OUTPOST_WAR_INFO
+{// 2007-09-14 by dhjin, 유저 접속 시 전쟁기지 전쟁이 시작 중이면 전쟁기지 정보를 유저에게 보내준다.
+	INT					OutPostWarInfoListCount;
+	_ARRAY(SOUTPOST_WAR_INFO);	
+};
+
+
+//////////////////////////////////////////////////////////////////////////
+// 2007-08-13 by dhjin, 공지사항 (주의~! FC 프로토콜이 많이 남아 있지 않아서 의미가 비슷한 T_FC_INFO에 우선 할당하여 진행)
+#define T_FC_INFO_NOTICE_REQUEST		(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_NOTICE_REQUEST)			// C->F
+#define T_FC_INFO_NOTICE_REQUEST_OK		(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_NOTICE_REQUEST_OK)		// F->C
+#define T_FC_INFO_NOTICE_REG 			(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_NOTICE_REG)			// C->F
+#define T_FC_INFO_NOTICE_REG_OK			(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_NOTICE_REG_OK)		// F->C
+#define T_FC_INFO_NOTICE_MODIFY 		(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_NOTICE_MODIFY)			// C->F
+#define T_FC_INFO_NOTICE_MODIFY_OK		(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_NOTICE_MODIFY_OK)		// F->C
+
+struct MSG_FC_INFO_NOTICE_REQUEST
+{// 2007-08-13 by dhjin, 공지사항 요청
+	BYTE	NoticeState;
+	INT		MapIndex;
+};
+
+struct MSG_FC_INFO_NOTICE_REQUEST_OK 
+{// 2007-08-13 by dhjin, 공지사항 요청 전송
+	CHAR	NoticeString[SIZE_MAX_NOTICE];
+};
+
+struct MSG_FC_INFO_NOTICE_REG
+{// 2007-08-13 by dhjin, 공지사항 등록
+	UID32_t	GuildUID;
+	CHAR	NoticeString[SIZE_MAX_NOTICE];
+};
+
+struct MSG_FC_INFO_NOTICE_MODIFY 
+{// 2007-08-13 by dhjin, 공지사항 수정
+	UID32_t	GuildUID;
+	CHAR	NoticeString[SIZE_MAX_NOTICE];
+};
+
+//////////////////////////////////////////////////////////////////////////
+// 2007-08-13 by dhjin, 판공비 (주의~! FC 프로토콜이 많이 남아 있지 않아서 의미가 비슷한 T_FC_INFO에 우선 할당하여 진행)
+#define T_FC_INFO_EXPEDIENCYFUND_REQUEST 		(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_EXPEDIENCYFUND_REQUEST)			// C->F
+#define T_FC_INFO_EXPEDIENCYFUND_REQUEST_OK		(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_EXPEDIENCYFUND_REQUEST_OK)		// F->C
+#define T_FC_INFO_EXPEDIENCYFUND_PAYBACK 		(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_EXPEDIENCYFUND_PAYBACK)			// C->F
+#define T_FC_INFO_EXPEDIENCYFUND_PAYBACK_OK		(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_EXPEDIENCYFUND_PAYBACK_OK)		// F->C
+#define T_FC_INFO_SECONDARYPASSWORD_UPDATE_PASSWORD		(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_SECONDARYPASSWORD_UPDATE_PASSWORD)	// 2007-09-12 by cmkwon, 베트남 2차패스워드 구현 - 프로토콜 추가, C->F
+#define T_FC_INFO_SECONDARYPASSWORD_UPDATE_PASSWORD_OK	(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_SECONDARYPASSWORD_UPDATE_PASSWORD_OK)	// 2007-09-12 by cmkwon, 베트남 2차패스워드 구현 - 프로토콜 추가, F->C
+#define T_FC_INFO_SECONDARYPASSWORD_CHECK_PASSWORD		(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_SECONDARYPASSWORD_CHECK_PASSWORD)	// 2007-09-12 by cmkwon, 베트남 2차패스워드 구현 - 프로토콜 추가, C->F
+#define T_FC_INFO_SECONDARYPASSWORD_CHECK_PASSWORD_OK	(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_SECONDARYPASSWORD_CHECK_PASSWORD_OK)	// 2007-09-12 by cmkwon, 베트남 2차패스워드 구현 - 프로토콜 추가, F->C
+#define T_FC_INFO_SECONDARYPASSWORD_LOCK				(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_SECONDARYPASSWORD_LOCK)				// 2007-09-12 by cmkwon, 베트남 2차패스워드 구현 - 프로토콜 추가, C->F
+#define T_FC_INFO_SECONDARYPASSWORD_LOCK_OK				(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_SECONDARYPASSWORD_LOCK_OK)			// 2007-09-12 by cmkwon, 베트남 2차패스워드 구현 - 프로토콜 추가, F->C
+
+struct MSG_FC_INFO_EXPEDIENCYFUND_REQUEST 
+{// 2007-08-13 by dhjin, 판공비 정보 요청
+	INT 	MapIndex;
+};
+
+struct MSG_FC_INFO_EXPEDIENCYFUND_REQUEST_OK 
+{// 2007-08-13 by dhjin, 판공비 정보 전송
+	INT		CumulativeExpediencyFund;
+	INT		ExpediencyFund;
+	INT		ExpediencyFundRate;
+};
+
+struct MSG_FC_INFO_EXPEDIENCYFUND_PAYBACK 
+{// 2007-08-13 by dhjin, 판공비 신청 요청
+	INT	 ExpediencyFundPayBackCount;
+};
+
+struct MSG_FC_INFO_EXPEDIENCYFUND_PAYBACK_OK 
+{// 2007-08-13 by dhjin, 판공비 신청 처리 정보 전송
+	INT		CumulativeExpediencyFund;
+	INT		ExpediencyFund;
+	INT		ExpediencyFundPayBackCount;
+	INT		ExpediencyFundRate;
+};
+
+struct MSG_FC_INFO_SECONDARYPASSWORD_UPDATE_PASSWORD
+{// 2007-09-12 by cmkwon, 베트남 2차패스워드 구현 -
+	char	CurrentSecPassword[SIZE_MAX_PASSWORD_MD5_STRING];
+	char	NewSecPassword[SIZE_MAX_PASSWORD_MD5_STRING];
+};
+struct MSG_FC_INFO_SECONDARYPASSWORD_CHECK_PASSWORD
+{// 2007-09-12 by cmkwon, 베트남 2차패스워드 구현 -
+	char	CurrentSecPassword[SIZE_MAX_PASSWORD_MD5_STRING];
+};
+struct MSG_FC_INFO_SECONDARYPASSWORD_LOCK
+{// 2007-09-12 by cmkwon, 베트남 2차패스워드 구현 -	
+	BYTE	bIsUnlockFlag;		// FALSE이면 Lock, FALSE가 아니면 Unlock
+	char	CurrentSecPassword[SIZE_MAX_PASSWORD_MD5_STRING];
+};
+struct MSG_FC_INFO_SECONDARYPASSWORD_LOCK_OK
+{// 2007-09-12 by cmkwon, 베트남 2차패스워드 구현 -	
+	BYTE	bIsUnlockFlag;		// FALSE이면 Lock, FALSE가 아니면 Unlock
+};
+
+
+//////////////////////////////////////////////////////////////////////////
+// 2007-09-06 by dhjin, 텔레포트 클릭하여 빌딩을 시작한다.
+#define T_FC_EVENT_CLICK_TELEPORT			(MessageType_t)((T0_FC_EVENT<<8)|T1_FC_EVENT_CLICK_TELEPORT)		// 2007-09-06 by dhjin, C->F
+#define T_FC_EVENT_CLICK_TELEPORT_OK		(MessageType_t)((T0_FC_EVENT<<8)|T1_FC_EVENT_CLICK_TELEPORT_OK)		// 2008-04-22 by dhjin, F->C 모선전 정보 표시 기획안 - 텔레포트 빌딩 완료 시간
+#define T_FC_EVENT_TELEPORT_BUILDCOMPLETE	(MessageType_t)((T0_FC_EVENT<<8)|T1_FC_EVENT_TELEPORT_BUILDCOMPLETE)		// 2007-09-19 by dhjin, F->C(n)
+#define T_FC_EVENT_TELEPORT_DESTROY			(MessageType_t)((T0_FC_EVENT<<8)|T1_FC_EVENT_TELEPORT_DESTROY)		// 2007-09-19 by dhjin, F->C(n)
+
+struct MSG_FC_EVENT_CLICK_TELEPORT
+{// 2007-09-06 by dhjin, 텔레포트 클릭
+	INT 			MapIndex;
+	ClientIndex_t	TargetIndex;
+};
+
+struct MSG_FC_EVENT_CLICK_TELEPORT_OK
+{// 2008-04-22 by dhjin, 모선전 정보 표시 기획안 - 텔레포트 빌딩 완료 시간
+	INT				MapIndex;
+	ATUM_DATE_TIME 	StartTime;
+	ATUM_DATE_TIME 	EndTime;
+};
+
+struct MSG_FC_EVENT_TELEPORT_BUILDCOMPLETE
+{// 2007-09-06 by dhjin, 텔레포트 완성
+	MapIndex_t 		MapIndex;	
+};
+
+struct MSG_FC_EVENT_TELEPORT_DESTROY
+{// 2007-09-20 by cmkwon, 텔레포트 수정 - 
+	MapIndex_t 		MapIndex;
+	BOOL			bInactivateByOtherTeleport;		// 2007-09-20 by cmkwon, 텔레포트 수정 - 필드추가, FALSE이면 공격에 의한 폭파, TRUE이면 다른 Teleport 생성으로 인한 비활성화
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// 2007-11-28 by cmkwon, 통지시스템 구현 -
+#define T_FC_EVENT_NOTIFY_MSG_GET			(MessageType_t)((T0_FC_EVENT<<8)|T1_FC_EVENT_NOTIFY_MSG_GET)	// 2007-11-28 by cmkwon, 통지시스템 구현 - C->F
+#define T_FC_EVENT_NOTIFY_MSG_GET_OK		(MessageType_t)((T0_FC_EVENT<<8)|T1_FC_EVENT_NOTIFY_MSG_GET_OK)	// 2007-11-28 by cmkwon, 통지시스템 구현 - F->C
+#define T_FC_EVENT_NOTIFY_MSG_DELETE		(MessageType_t)((T0_FC_EVENT<<8)|T1_FC_EVENT_NOTIFY_MSG_DELETE)	// 2007-11-28 by cmkwon, 통지시스템 구현 - C->F
+
+struct MSG_FC_EVENT_NOTIFY_MSG_GET_OK		// 2007-11-28 by cmkwon, 통지시스템 구현 -
+{
+	UID64_t			NotifyMsgUID;				//	
+	UID32_t			CharacterUID;				// 통지메시지 받을 캐릭터 UID, 0 이면 모든 캐릭터에게 전송(0 인것은 유저가 지울 수 없다)
+	BYTE			NotifyMsgType;				// NOTIFY_MSG_TYPE_XXX
+	char			NotifyMsgString[SIZE_MAX_NOTIFY_MSG_STRING];
+};
+
+struct MSG_FC_EVENT_NOTIFY_MSG_DELETE		// 2007-11-28 by cmkwon, 통지시스템 구현 -
+{
+	UID64_t			NotifyMsgUID;				//	
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// 2008-01-10 by cmkwon, 아이템 이벤트 시스템에 신 쿠폰 시스템 추가 - 
+#define T_FC_EVENT_COUPON_EVENT_INFO			(MessageType_t)((T0_FC_EVENT<<8)|T1_FC_EVENT_COUPON_EVENT_INFO)				// 2008-01-10 by cmkwon, 아이템 이벤트 시스템에 신 쿠폰 시스템 추가 - F->C
+#define T_FC_EVENT_COUPON_EVENT_USE_COUPON		(MessageType_t)((T0_FC_EVENT<<8)|T1_FC_EVENT_COUPON_EVENT_USE_COUPON)		// 2008-01-10 by cmkwon, 아이템 이벤트 시스템에 신 쿠폰 시스템 추가 - C->F
+#define T_FC_EVENT_COUPON_EVENT_USE_COUPON_OK	(MessageType_t)((T0_FC_EVENT<<8)|T1_FC_EVENT_COUPON_EVENT_USE_COUPON_OK)	// 2008-01-10 by cmkwon, 아이템 이벤트 시스템에 신 쿠폰 시스템 추가 - F->C
+struct MSG_FC_EVENT_COUPON_EVENT_INFO				// 2008-01-10 by cmkwon, 아이템 이벤트 시스템에 신 쿠폰 시스템 추가 - 
+{
+	int		ItemEventUID;
+	int		ItemEventType;
+};
+struct MSG_FC_EVENT_COUPON_EVENT_USE_COUPON			// 2008-01-10 by cmkwon, 아이템 이벤트 시스템에 신 쿠폰 시스템 추가 - 
+{
+	int		ItemEventUID;
+	char	CouponNumber[SIZE_MAX_COUPON_NUMBER];
+};
+struct MSG_FC_EVENT_COUPON_EVENT_USE_COUPON_OK		// 2008-01-10 by cmkwon, 아이템 이벤트 시스템에 신 쿠폰 시스템 추가 - 
+{
+	int		ItemEventUID;
+};
+
+
+
+//////////////////////////////////////////////////////////////////////////
+// 2007-10-29 by dhjin, Poll시스템 관련
+#define T_FC_CITY_POLL_REQUEST_LEADER_CANDIDATE_LIST			(MessageType_t)((T0_FC_CITY<<8)|T1_FC_CITY_POLL_REQUEST_LEADER_CANDIDATE_LIST)			// C->F, 지도자 후보 리스트 요청
+#define T_FC_CITY_POLL_REQUEST_LEADER_CANDIDATE_LIST_OK_HEADER	(MessageType_t)((T0_FC_CITY<<8)|T1_FC_CITY_POLL_REQUEST_LEADER_CANDIDATE_LIST_OK_HEADER)		// F->C, 지도자 후보 리스트 요청
+#define T_FC_CITY_POLL_REQUEST_LEADER_CANDIDATE_LIST_OK			(MessageType_t)((T0_FC_CITY<<8)|T1_FC_CITY_POLL_REQUEST_LEADER_CANDIDATE_LIST_OK)		// F->C, 지도자 후보 리스트 요청
+#define T_FC_CITY_POLL_REQUEST_LEADER_CANDIDATE_LIST_OK_DONE	(MessageType_t)((T0_FC_CITY<<8)|T1_FC_CITY_POLL_REQUEST_LEADER_CANDIDATE_LIST_OK_DONE)		// F->C, 지도자 후보 리스트 요청
+#define T_FC_CITY_POLL_REQUEST_LEADER_CANDIDATE_INFO			(MessageType_t)((T0_FC_CITY<<8)|T1_FC_CITY_POLL_REQUEST_LEADER_CANDIDATE_INFO)			// C->F, 지도자 후보 정보 요청
+#define T_FC_CITY_POLL_REQUEST_LEADER_CANDIDATE_INFO_OK			(MessageType_t)((T0_FC_CITY<<8)|T1_FC_CITY_POLL_REQUEST_LEADER_CANDIDATE_INFO_OK)		// F->C, 지도자 후보 정보 요청
+#define T_FC_CITY_POLL_REQUEST_LEADER_CANDIDATE_INFO_OK_GUILDMARK			(MessageType_t)((T0_FC_CITY<<8)|T1_FC_CITY_POLL_REQUEST_LEADER_CANDIDATE_INFO_OK_GUILDMARK)		// F->C, 지도자 후보 정보 요청
+#define T_FC_CITY_POLL_REG_LEADER_CANDIDATE						(MessageType_t)((T0_FC_CITY<<8)|T1_FC_CITY_POLL_REG_LEADER_CANDIDATE)					// C->F, 지도자 후보 등록
+#define T_FC_CITY_POLL_REG_LEADER_CANDIDATE_OK					(MessageType_t)((T0_FC_CITY<<8)|T1_FC_CITY_POLL_REG_LEADER_CANDIDATE_OK)				// F->C, 지도자 후보 등록
+#define T_FC_CITY_POLL_DELETE_LEADER_CANDIDATE					(MessageType_t)((T0_FC_CITY<<8)|T1_FC_CITY_POLL_DELETE_LEADER_CANDIDATE)				// C->F, 지도자 후보 탈퇴
+#define T_FC_CITY_POLL_DELETE_LEADER_CANDIDATE_OK				(MessageType_t)((T0_FC_CITY<<8)|T1_FC_CITY_POLL_DELETE_LEADER_CANDIDATE_OK)				// F->C, 지도자 후보 탈퇴
+#define T_FC_CITY_POLL_VOTE										(MessageType_t)((T0_FC_CITY<<8)|T1_FC_CITY_POLL_VOTE)									// C->F, 지도자 후보에게 투표
+#define T_FC_CITY_POLL_VOTE_OK									(MessageType_t)((T0_FC_CITY<<8)|T1_FC_CITY_POLL_VOTE_OK)								// F->C, 지도자 후보에게 투표
+#define T_FC_CITY_POLL_REQUEST_POLL_DATE						(MessageType_t)((T0_FC_CITY<<8)|T1_FC_CITY_POLL_REQUEST_POLL_DATE)						// C->F, 선거 기간 요청
+#define T_FC_CITY_POLL_REQUEST_POLL_DATE_OK						(MessageType_t)((T0_FC_CITY<<8)|T1_FC_CITY_POLL_REQUEST_POLL_DATE_OK)					// F->C, 선거 기간 요청
+#define T_FC_CITY_POLL_LEADER_ELECTION_INFO						(MessageType_t)((T0_FC_CITY<<8)|T1_FC_CITY_POLL_LEADER_ELECTION_INFO)					// F->C, 선거 결과 전송
+
+struct MSG_FC_CITY_POLL_REQUEST_LEADER_CANDIDATE_LIST_OK_HEADER
+{// 2007-10-29 by dhjin, 지도자 후보 리스트 전송
+	BOOL			RegLeaderCandidate;								// 지도자 후보 출마 한 정보, TURE = 출마
+};
+
+struct MSG_FC_CITY_POLL_REQUEST_LEADER_CANDIDATE_LIST_OK
+{// 2007-10-29 by dhjin, 지도자 후보 리스트 정보
+	INT				LeaderCandidateNum;							//	지도자 후보 번호
+	UID32_t			CharacterUID;								//	지도자 후보 UID
+	UID32_t			GuildUID;									//  지도자 후보 길드 UID
+	BOOL			DeleteCandidate;							//  이번 선거 기간에 후보 탈퇴 했는지 여부, TRUE = 탈퇴
+	CHAR			CharacterName[SIZE_MAX_CHARACTER_NAME];		//  지도자 후보 이름
+	CHAR			GuildName[SIZE_MAX_GUILD_NAME];				//  지도자 후보 길드명
+};
+
+struct MSG_FC_CITY_POLL_REQUEST_LEADER_CANDIDATE_INFO
+{// 2007-10-29 by dhjin, 지도자 후보 정보 전송
+	INT				LeaderCandidateNum;							//	지도자 후보 번호
+};
+
+struct MSG_FC_CITY_POLL_REQUEST_LEADER_CANDIDATE_INFO_OK
+{// 2007-10-29 by dhjin, 지도자 후보 정보 전송
+	BYTE			PilotFace;									//  지도자 후보 얼굴
+	BYTE			Level;										//	지도자 후보 Level
+	INT				GuildFame;									//	지도자 후보 여단 명성
+	UID32_t			AccountUID;									//	지도자 후보 계정 UID
+	UID32_t			CharacterUID;								//	지도자 후보 UID
+	CHAR			CharacterName[SIZE_MAX_CHARACTER_NAME];		//  지도자 후보 이름
+	CHAR			GuildName[SIZE_MAX_GUILD_NAME];				//  지도자 후보 길드명
+	CHAR			CampaignPromises[SIZE_MAX_CAMPAIGNPROMISES];//  지도자 후보 공약
+};
+
+struct MSG_FC_CITY_POLL_REQUEST_LEADER_CANDIDATE_INFO_OK_GUILDMARK
+{// 2007-11-01 by dhjin, 지도자 후보 정보 전송 여단 마크
+	INT				GuildMarkSize;								//  지도자 후보 여단 마크 크기
+	UID32_t			GuildUID;									//  지도자 후보 길드 UID
+	ARRAY_(char);												//	지도자 후보 여단 마크
+};
+
+struct MSG_FC_CITY_POLL_REG_LEADER_CANDIDATE
+{// 2007-10-29 by dhjin, 지도자 후보 등록
+	UID32_t			CharacterUID;								//	지도자 후보 UID
+	UID32_t			GuildUID;									//  지도자 후보 길드 UID
+	CHAR			CampaignPromises[SIZE_MAX_CAMPAIGNPROMISES];//  지도자 후보 공약
+};
+
+struct MSG_FC_CITY_POLL_REG_LEADER_CANDIDATE_OK
+{// 2007-10-29 by dhjin, 지도자 후보 등록
+	INT				LeaderCandidateNum;							//	지도자 후보 번호
+};
+
+struct MSG_FC_CITY_POLL_DELETE_LEADER_CANDIDATE
+{// 2007-10-29 by dhjin, 지도자 후보 탈퇴
+	UID32_t			CharacterUID;								//	지도자 후보 UID
+};
+
+struct MSG_FC_CITY_POLL_VOTE
+{// 2007-10-29 by dhjin, 투표
+	INT				LeaderCandidateNum;							//	지도자 후보 번호
+	UID32_t			CharacterUID;								//	지도자 후보 UID
+	UID32_t			VoteCharacterUID;							//	투표자 UID
+};
+
+struct MSG_FC_CITY_POLL_REQUEST_POLL_DATE_OK
+{// 2007-10-29 by dhjin, 선거 일정
+	ATUM_DATE_TIME	ApplicationStartDate;		// 후보 신청 시작 날
+	ATUM_DATE_TIME	ApplicationEndDate;			// 후보 시청 끝나는 날
+	ATUM_DATE_TIME	VoteStartDate;				// 투표 시작 날
+	ATUM_DATE_TIME	VoteEndDate;				// 투표 마지막 날
+	ATUM_DATE_TIME	Election;					// 선출일
+};
+
+struct MSG_FC_CITY_POLL_LEADER_ELECTION_INFO
+{// 2007-11-16 by dhjin, 선거 결과
+	INT				LeaderCandidateNum;							//	지도자 후보 번호
+	CHAR			CharacterName[SIZE_MAX_CHARACTER_NAME];		//  지도자 후보 이름
+	CHAR			GuildName[SIZE_MAX_GUILD_NAME];				//  지도자 후보 길드명
+	INT				Percent;									//  지도자 득표율
+};
+
+//////////////////////////////////////////////////////////////////////////
+// 2007-12-03 by dhjin, 전장 정보 
+#define T_FC_CITY_WARINFO_INFLUENCE						(MessageType_t)((T0_FC_CITY<<8)|T1_FC_CITY_WARINFO_INFLUENCE)		// C->F, 세력 정보
+#define T_FC_CITY_WARINFO_INFLUENCE_OK					(MessageType_t)((T0_FC_CITY<<8)|T1_FC_CITY_WARINFO_INFLUENCE_OK)	// F->C, 세력 정보
+#define T_FC_CITY_WARINFO_OUTPOST						(MessageType_t)((T0_FC_CITY<<8)|T1_FC_CITY_WARINFO_OUTPOST)			// C->F, 전진기지 정보 
+#define T_FC_CITY_WARINFO_OUTPOST_OK					(MessageType_t)((T0_FC_CITY<<8)|T1_FC_CITY_WARINFO_OUTPOST_OK)		// F->C, 전진기지 정보 
+
+struct MSG_FC_CITY_WARINFO_INFLUENCE_OK
+{// 2007-12-03 by dhjin, 세력 정보 
+	INT			VCNInfluencePoint;
+	INT			ANIInfluencePoint;
+	CHAR		VCNInfluenceLeader[SIZE_MAX_CHARACTER_NAME];
+	CHAR		VCNInfluenceSubLeader1[SIZE_MAX_CHARACTER_NAME];
+	CHAR		VCNInfluenceSubLeader2[SIZE_MAX_CHARACTER_NAME];
+	CHAR		ANIInfluenceLeader[SIZE_MAX_CHARACTER_NAME];
+	CHAR		ANIInfluenceSubLeader1[SIZE_MAX_CHARACTER_NAME];
+	CHAR		ANIInfluenceSubLeader2[SIZE_MAX_CHARACTER_NAME];
+};
+
+struct SCITY_WARINFO_OUTPOST
+{// 2007-12-03 by dhjin, 전진기지 정보 
+	BYTE			Influence;
+	MapIndex_t		MapIndex;
+	UID32_t			GuildUID;
+	CHAR			GuildCommander[SIZE_MAX_CHARACTER_NAME];
+	CHAR			GuildName[SIZE_MAX_GUILD_NAME];
+	ATUM_DATE_TIME	OutpostDate;
+};
+
+struct MSG_FC_CITY_WARINFO_OUTPOST_OK
+{// 2007-12-03 by dhjin, 전진기지전 정보
+	INT					CityWarInfoOutpostListCount;
+	_ARRAY(SCITY_WARINFO_OUTPOST);
+};
+
+#define T_FC_INFO_GET_GUILDMARK				(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_GET_GUILDMARK)			// 2007-12-07 by dhjin, 여단 마크 C->F
+#define T_FC_INFO_GET_GUILDMARK_OK			(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_GET_GUILDMARK_OK)		// 2007-12-07 by dhjin, 여단 마크 F->C
+struct MSG_FC_INFO_GET_GUILDMARK
+{// 2007-12-07 by dhjin
+	UID32_t			GuildUID;
+};
+
+struct MSG_FC_INFO_GET_GUILDMARK_OK
+{// 2007-12-07 by dhjin, 여단 마크 전송
+	INT				GuildMarkSize;
+	INT				GuildMarkVersion;
+	UID32_t			GuildUID;
+	ARRAY_(char);									
+};
+
+// 2007-12-27 by dhjin, 아레나 통합 - 아레나 프로토콜 MainField <=> ArenaField 
+#define T_FtoA_MFSINFO						(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_MFSINFO)			// 2007-12-27 by dhjin, 아레나 서버에 필드 서버 등록 및 필드 서버 정보 전송, MF->AF
+#define T_FtoA_MFSINFO_OK					(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_MFSINFO_OK)		// 2007-12-27 by dhjin, 아레나 서버에 필드 서버 등록 및 필드 서버 정보 전송, AF->MF
+#define T_FtoA_ALIVE						(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_ALIVE)				// 2007-12-27 by dhjin,
+#define T_FtoA_AUTH_CHARACTER				(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_AUTH_CHARACTER)	// 2007-12-27 by dhjin, 아레나 서버에서 유효한 유저인지 필드 서버로 확인 요청, AF->MF
+#define T_FtoA_AUTH_CHARACTER_OK			(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_AUTH_CHARACTER_OK)	// 2007-12-27 by dhjin, 아레나 서버에서 유효한 유저인지 필드 서버로 확인 요청, MF->AF
+#define T_FtoA_ARENA_STATE_CHANGE			(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_ARENA_STATE_CHANGE)	// 2008-01-03 by dhjin, 필드 서버에 유저 아레나 상태값 변경, AF->MF
+#define T_FtoA_ARENA_TEAM_MATCHING			(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_ARENA_TEAM_MATCHING)	// 2008-01-04 by dhjin, 필드 서버로 매칭 정보를 전송한다, AF->MF
+#define T_FtoA_ARENA_TEAM_MATCHING_OK		(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_ARENA_TEAM_MATCHING_OK)	// 2008-01-04 by dhjin, 필드 서버로 매칭 정보를 전송한다, MF->AF
+#define T_FtoA_ARENA_SERVER_PAY				(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_ARENA_SERVER_PAY)		// 2008-01-10 by dhjin, 필드 서버로 서버 아레나 보상 전송, AF->MF
+#define T_FtoA_ARENA_CHARACTER_PAY			(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_ARENA_CHARACTER_PAY)	// 2008-01-10 by dhjin, 필드 서버로 케릭터 아레나 보상 전송, AF->MF
+#define T_FtoA_ARENA_CHARACTER_DISCONNECT	(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_ARENA_CHARACTER_DISCONNECT)	// 2008-01-15 by dhjin, 필드 서버로 케릭터 아레나 보상 전송, AF->MF
+struct MSG_FtoA_MFSINFO
+{
+	USHORT		MFS_Port;
+	USHORT		MFS_ID;
+	CHAR		MFS_Name[SIZE_MAX_SERVER_NAME];
+	CHAR		MFS_IP[SIZE_MAX_IPADDRESS];
+};
+
+struct MSG_FtoA_AUTH_CHARACTER
+{
+	UID32_t			AccountUID;
+	UID32_t			MFSCharacterUID;
+	ClientIndex_t	MFSClientIndex;
+	ClientIndex_t	AFSClientIndex;
+};
+
+struct MSG_FtoA_AUTH_CHARACTER_OK
+{
+	bool			ErrorCheck;		// TRUE -> Error
+	UID32_t			AccountUID;
+	UID32_t			MFSCharacterUID;
+	CHAR			MFSCharacterName[SIZE_MAX_CHARACTER_NAME];
+	ClientIndex_t	MFSClientIndex;
+	UID32_t			AFSCharacterUID;
+	CHAR			AFSCharacterName[SIZE_MAX_CHARACTER_NAME];
+	ClientIndex_t	AFSClientIndex;
+	MessageType_t	ErrorMsgType;			// 2010-04-05 by cmkwon, 인피 재입장 카드 관련 시스템 수정 - 
+	Err_t			ErrorCode;				// 2010-04-05 by cmkwon, 인피 재입장 카드 관련 시스템 수정 - 
+	BOOL			ShutDownMins; // 2011-11-03 by shcho, yedang 셧다운제 구현 - 아레나서버 셧다운제 인증용
+};
+
+struct MSG_FtoA_ARENA_STATE_CHANGE
+{
+	UID32_t			AccountUID;
+	UID32_t			MFSCharacterUID;
+	ClientIndex_t	MFSClientIndex;
+	BYTE			AFSArenaState;
+	ClientIndex_t	AFSClientIndex;
+};
+
+struct MSG_FtoA_ARENA_TEAM_MATCHING
+{
+	UID32_t			AccountUID;
+	UID32_t			MFSCharacterUID;
+	ClientIndex_t	MFSClientIndex;
+	UID32_t			AFSCharacterUID;
+	ClientIndex_t	AFSClientIndex;
+};
+
+struct MSG_FtoA_ARENA_TEAM_MATCHING_OK
+{
+	ClientIndex_t	AFSClientIndex;
+	UID32_t			AccountUID;
+	UID32_t			AFSCharacterUID;		
+};
+
+struct MSG_FtoA_ARENA_SERVER_PAY
+{
+	BYTE			Influence;
+	INT				PayInfluencePoint;
+};
+
+struct MSG_FtoA_ARENA_CHARACTER_PAY
+{
+	BYTE			Issue;					// 2007-04-20 by dhjin, 아레나 승패 여부, 1 : ARENA_ISSUE_WIN, 2 : ARENA_ISSUE_LOSE, 3 : ARENA_ISSUE_DRAW
+	INT				PayWarPoint;
+	UID32_t			AccountUID;
+	UID32_t			MFSCharacterUID;
+	ClientIndex_t	MFSClientIndex;
+	ClientIndex_t	AFSClientIndex;
+};
+
+struct MSG_FtoA_ARENA_CHARACTER_DISCONNECT
+{
+	UID32_t			AccountUID;
+	UID32_t			MFSCharacterUID;
+	ClientIndex_t	MFSClientIndex;
+	ClientIndex_t	AFSClientIndex;
+};
+
+//////////////////////////////////////////////////////////////////////////
+// 2008-03-27 by dhjin, 모선전 정보 표시 기획안 - 
+#define T_FC_INFO_MSWARINFO_DISPLAY				(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_MSWARINFO_DISPLAY)			// 2008-03-27 by dhjin, 모선전 정보 표시 기획안 - 모선전 정보 전송 F->C
+#define T_FC_INFO_MSWARINFO_DISPLAY_OPTION		(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_MSWARINFO_DISPLAY_OPTION)	// 2008-03-27 by dhjin, 모선전 정보 표시 기획안 - 모선전 정보 옵션 전송 C->F
+#define T_FC_INFO_MSWARINFO_DISPLAY_OPTION_OK	(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_MSWARINFO_DISPLAY_OPTION_OK)	// 2008-03-27 by dhjin, 모선전 정보 표시 기획안 - 모선전 정보 옵션 전송 F->C(n)
+struct SMSWARINFO_DISPLAY
+{// 2008-03-26 by dhjin, 모선전 정보 표시 기획안 - 유저에게 필요한 정보 표시 데이타
+	MapIndex_t		MapIndex;
+	INT				MapInfluenceType;
+	INT				HPRate;
+	INT				TelePortState;
+	ATUM_DATE_TIME	TelePortBuildingStartTime;
+	ATUM_DATE_TIME	TelePortBuildingEndTime;
+};
+
+struct MSG_FC_INFO_MSWARINFO_DISPLAY
+{// 2008-03-26 by dhjin, 모선전 정보 표시 기획안 - 유저에게 필요한 정보 표시 데이타
+	INT				MSWarInfoDisPlayListCount;
+	_ARRAY(SMSWARINFO_DISPLAY);
+};
+//19-04-2016 by Inetpub
+struct MSG_FC_INFO_STRATEGICPOINTINFO_DISPLAY_LIST
+{
+	INT				StrategicPointInfoDisplayListCount;
+	_ARRAY(SSTRATEGYPOINT_DISPLAY_INFO);
+};
+struct MSG_FC_INFO_STRATEGICPOINTINFO_DISPLAY : public SSTRATEGYPOINT_DISPLAY_INFO
+{
+};
+//end 19-04-2016 by Inetpub
+struct MSG_FC_INFO_MSWARINFO_DISPLAY_OPTION
+{// 2008-03-26 by dhjin, 모선전 정보 표시 기획안 - 모선전 정보 옵션
+	SHORT			MSWarOptionType;		
+	UID32_t			CharacterUID;		
+	ClientIndex_t	ClientIndex;
+};
+
+struct MSG_FC_INFO_MSWARINFO_DISPLAY_OPTION_OK
+{// 2008-03-26 by dhjin, 모선전 정보 표시 기획안 - 모선전 정보 옵션
+	SHORT			MSWarOptionType;
+};
+
+//////////////////////////////////////////////////////////////////////////
+// 2008-04-02 by dhjin, 모선전, 거점전 정보창 기획안 - 
+#define T_FC_INFO_MSWARINFO_RESULT				(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_MSWARINFO_RESULT)	// 2008-04-02 by dhjin, 모선전, 거점전 정보창 기획안 - 모선전 결과 정보 C->F
+#define T_FC_INFO_MSWARINFO_RESULT_OK			(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_MSWARINFO_RESULT_OK)	// 2008-04-02 by dhjin, 모선전, 거점전 정보창 기획안 - 모선전 결과 정보 F->C
+#define T_FC_INFO_SPWARINFO_RESULT				(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_SPWARINFO_RESULT)	// 2008-04-02 by dhjin, 모선전, 거점전 정보창 기획안 - 거점전 결과 정보 C->F
+#define T_FC_INFO_SPWARINFO_RESULT_OK_HEADER	(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_SPWARINFO_RESULT_OK_HEADER)	// 2008-04-02 by dhjin, 모선전, 거점전 정보창 기획안 - 거점전 결과 정보 F->C
+#define T_FC_INFO_SPWARINFO_RESULT_OK			(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_SPWARINFO_RESULT_OK)	// 2008-04-02 by dhjin, 모선전, 거점전 정보창 기획안 - 거점전 결과 정보 F->C
+#define T_FC_INFO_SPWARINFO_RESULT_OK_DONE		(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_SPWARINFO_RESULT_OK_DONE)	// 2008-04-02 by dhjin, 모선전, 거점전 정보창 기획안 - 거점전 결과 정보 F->C
+struct MSG_FC_INFO_MSWARINFO_RESULT_OK
+{// 2008-04-02 by dhjin, 모선전, 거점전 정보창 기획안 - 모선전 결과 정보 F->C
+	INT				MSWarInfoResultListCount;
+	_ARRAY(SMSWAR_INFO_RESULT);
+};
+
+//////////////////////////////////////////////////////////////////////////
+// 2008-04-29 by dhjin, EP3 편지 시스템 - 
+#define T_FC_CHAT_LETTER_REQUEST_TITLE			(MessageType_t)((T0_FC_CHAT<<8)|T1_FC_CHAT_LETTER_REQUEST_TITLE)			// 2008-04-29 by dhjin, EP3 편지 시스템 - 편지 리스트 요청 C->F
+#define T_FC_CHAT_LETTER_REQUEST_TITLE_OK_HEADER (MessageType_t)((T0_FC_CHAT<<8)|T1_FC_CHAT_LETTER_REQUEST_TITLE_OK_HEADER)	// 2008-04-29 by dhjin, EP3 편지 시스템 - 편지 리스트 전송 F->C
+#define T_FC_CHAT_LETTER_REQUEST_TITLE_OK		(MessageType_t)((T0_FC_CHAT<<8)|T1_FC_CHAT_LETTER_REQUEST_TITLE_OK)			// 2008-04-29 by dhjin, EP3 편지 시스템 - 편지 리스트 전송 F->C
+#define T_FC_CHAT_LETTER_REQUEST_TITLE_OK_DONE	(MessageType_t)((T0_FC_CHAT<<8)|T1_FC_CHAT_LETTER_REQUEST_TITLE_OK_DONE)	// 2008-04-29 by dhjin, EP3 편지 시스템 - 편지 리스트 전송 F->C
+#define T_FC_CHAT_LETTER_READ					(MessageType_t)((T0_FC_CHAT<<8)|T1_FC_CHAT_LETTER_READ)						// 2008-04-29 by dhjin, EP3 편지 시스템 - 편지 읽기 요청 C->F
+#define T_FC_CHAT_LETTER_READ_OK				(MessageType_t)((T0_FC_CHAT<<8)|T1_FC_CHAT_LETTER_READ_OK)					// 2008-04-29 by dhjin, EP3 편지 시스템 - 편지 읽기 완료 F->C
+#define T_FC_CHAT_LETTER_DELETE					(MessageType_t)((T0_FC_CHAT<<8)|T1_FC_CHAT_LETTER_DELETE)					// 2008-04-29 by dhjin, EP3 편지 시스템 - 편지 지우기 요청 C->F
+#define T_FC_CHAT_LETTER_DELETE_OK				(MessageType_t)((T0_FC_CHAT<<8)|T1_FC_CHAT_LETTER_DELETE_OK)				// 2008-04-29 by dhjin, EP3 편지 시스템 - 편지 지우기 완료 F->C
+#define T_FC_CHAT_LETTER_SEND					(MessageType_t)((T0_FC_CHAT<<8)|T1_FC_CHAT_LETTER_SEND)						// 2008-05-08 by dhjin, EP3 편지 시스템 - 편지 전송 C->F
+#define T_FC_CHAT_LETTER_SEND_OK				(MessageType_t)((T0_FC_CHAT<<8)|T1_FC_CHAT_LETTER_SEND_OK)					// 2008-05-08 by dhjin, EP3 편지 시스템 - 편지 전송 완료 F->C 
+#define T_FC_CHAT_LETTER_RECEIVE				(MessageType_t)((T0_FC_CHAT<<8)|T1_FC_CHAT_LETTER_RECEIVE)					// 2008-05-08 by dhjin, EP3 편지 시스템 - 편지 전송 받음 F->C
+#define T_FC_CHAT_ALLLETTER_REQUEST_TITLE			(MessageType_t)((T0_FC_CHAT<<8)|T1_FC_CHAT_ALLLETTER_REQUEST_TITLE)				// 2008-05-09 by dhjin, EP3 편지 시스템 - 전체 편지 리스트 요청 C->F
+#define T_FC_CHAT_ALLLETTER_REQUEST_TITLE_OK_HEADER (MessageType_t)((T0_FC_CHAT<<8)|T1_FC_CHAT_ALLLETTER_REQUEST_TITLE_OK_HEADER)	// 2008-05-09 by dhjin, EP3 편지 시스템 - 전체 편지 리스트 전송 F->C
+#define T_FC_CHAT_ALLLETTER_REQUEST_TITLE_OK		(MessageType_t)((T0_FC_CHAT<<8)|T1_FC_CHAT_ALLLETTER_REQUEST_TITLE_OK)			// 2008-05-09 by dhjin, EP3 편지 시스템 - 전체 편지 리스트 전송 F->C
+#define T_FC_CHAT_ALLLETTER_REQUEST_TITLE_OK_DONE	(MessageType_t)((T0_FC_CHAT<<8)|T1_FC_CHAT_ALLLETTER_REQUEST_TITLE_OK_DONE)		// 2008-05-09 by dhjin, EP3 편지 시스템 - 전체 편지 리스트 전송 F->C
+#define T_FC_CHAT_ALLLETTER_READ					(MessageType_t)((T0_FC_CHAT<<8)|T1_FC_CHAT_ALLLETTER_READ)						// 2008-05-09 by dhjin, EP3 편지 시스템 - 전체 편지 읽기 요청 C->F
+#define T_FC_CHAT_ALLLETTER_READ_OK					(MessageType_t)((T0_FC_CHAT<<8)|T1_FC_CHAT_ALLLETTER_READ_OK)					// 2008-05-09 by dhjin, EP3 편지 시스템 - 전체 편지 읽기 완료 F->C
+#define T_FC_CHAT_ALLLETTER_DELETE					(MessageType_t)((T0_FC_CHAT<<8)|T1_FC_CHAT_ALLLETTER_DELETE)					// 2008-05-09 by dhjin, EP3 편지 시스템 - 전체 편지 지우기 요청 C->F
+#define T_FC_CHAT_ALLLETTER_DELETE_OK				(MessageType_t)((T0_FC_CHAT<<8)|T1_FC_CHAT_ALLLETTER_DELETE_OK)					// 2008-05-09 by dhjin, EP3 편지 시스템 - 전체 편지 지우기 완료 F->C
+#define T_FC_CHAT_ALLLETTER_SEND					(MessageType_t)((T0_FC_CHAT<<8)|T1_FC_CHAT_ALLLETTER_SEND)						// 2008-05-09 by dhjin, EP3 편지 시스템 - 전체 편지 전송 C->F
+#define T_FC_CHAT_ALLLETTER_SEND_OK					(MessageType_t)((T0_FC_CHAT<<8)|T1_FC_CHAT_ALLLETTER_SEND_OK)					// 2008-05-09 by dhjin, EP3 편지 시스템 - 전체 편지 전송 완료 F->C 
+#define T_FC_CHAT_ALLLETTER_RECEIVE					(MessageType_t)((T0_FC_CHAT<<8)|T1_FC_CHAT_ALLLETTER_RECEIVE)					// 2008-05-09 by dhjin, EP3 편지 시스템 - 전체 편지 전송 받음 F->C
+
+struct MSG_FC_CHAT_LETTER_REQUEST_TITLE_OK
+{// 2008-04-29 by dhjin, EP3 편지 시스템 - 편지 리스트 전송
+	UID64_t			LetterUID;
+	CHAR			SendCharacterName[SIZE_MAX_CHARACTER_NAME];
+	ATUM_DATE_TIME  SendDate;
+	BOOL			CheckRead;
+	CHAR			Title[SIZE_MAX_LETTER_TITLE];
+};
+typedef MSG_FC_CHAT_LETTER_REQUEST_TITLE_OK		MSG_FC_CHAT_ALLLETTER_REQUEST_TITLE_OK;
+
+struct MSG_FC_CHAT_LETTER_READ
+{// 2008-04-29 by dhjin, EP3 편지 시스템 - 편지 내용 요청
+	UID64_t			LetterUID;
+	BOOL			CheckRead;
+};
+typedef MSG_FC_CHAT_LETTER_READ			MSG_FC_CHAT_ALLLETTER_READ;
+
+struct MSG_FC_CHAT_LETTER_READ_OK
+{// 2008-04-29 by dhjin, EP3 편지 시스템 - 편지 내용 전송
+	UID64_t			LetterUID;
+	CHAR			Content[SIZE_MAX_LETTER_CONTENT];
+};
+typedef MSG_FC_CHAT_LETTER_READ_OK		MSG_FC_CHAT_ALLLETTER_READ_OK;
+
+struct MSG_FC_CHAT_LETTER_DELETE
+{// 2008-04-29 by dhjin, EP3 편지 시스템 - 편지 지우기 
+	UID64_t			LetterUID;
+};
+typedef MSG_FC_CHAT_LETTER_DELETE		MSG_FC_CHAT_ALLLETTER_DELETE;
+
+struct MSG_FC_CHAT_LETTER_DELETE_OK
+{// 2008-04-29 by dhjin, EP3 편지 시스템 - 편지 지우기 완료
+	UID64_t			LetterUID;
+};
+typedef MSG_FC_CHAT_LETTER_DELETE_OK	MSG_FC_CHAT_ALLLETTER_DELETE_OK;
+
+struct MSG_FC_CHAT_LETTER_SEND
+{// 2008-05-08 by dhjin, EP3 편지 시스템 - 편지 보내기
+	INT				SendCharacterUID;
+	CHAR			RecvCharacterName[SIZE_MAX_CHARACTER_NAME];
+	CHAR			Title[SIZE_MAX_LETTER_TITLE];
+	CHAR			Content[SIZE_MAX_LETTER_CONTENT];
+};
+typedef MSG_FC_CHAT_LETTER_SEND			MSG_FC_CHAT_ALLLETTER_SEND;
+
+struct MSG_FC_CHAT_LETTER_RECEIVE
+{// 2008-05-08 by dhjin, EP3 편지 시스템 - 편지 전송 받음
+	CHAR				SendCharacterName[SIZE_MAX_CHARACTER_NAME];
+};
+typedef MSG_FC_CHAT_LETTER_RECEIVE		MSG_FC_CHAT_ALLLETTER_RECEIVE;
+
+//////////////////////////////////////////////////////////////////////////
+// 2008-08-18 by dhjin, 세력마크이벤트 
+#define T_FC_EVENT_INFLUENCEMARK		(MessageType_t)((T0_FC_EVENT<<8)|T1_FC_EVENT_INFLUENCEMARK)		
+#define T_FC_EVENT_INFLUENCEMARKEND		(MessageType_t)((T0_FC_EVENT<<8)|T1_FC_EVENT_INFLUENCEMARKEND)
+struct MSG_FC_EVENT_INFLUENCEMARK
+{
+	BYTE			Influence;		// 세력마크이벤트세력
+};
+
+//////////////////////////////////////////////////////////////////////////
+// 2008-12-02 by dhjin, 미션마스터
+#define T_FC_QUEST_REQUEST_MISSIONMASTER_HELP			(MessageType_t)((T0_FC_QUEST<<8)|T1_FC_QUEST_REQUEST_MISSIONMASTER_HELP)		// 2008-12-02 by dhjin, C -> F, 미션마스터 요청
+#define T_FC_QUEST_REQUEST_MISSIONMASTER_HELP_INVITE	(MessageType_t)((T0_FC_QUEST<<8)|T1_FC_QUEST_REQUEST_MISSIONMASTER_HELP_INVITE)	// 2008-12-02 by dhjin, F -> C(n), 랜덤으로 뽑힌 미션마스터에게 요청
+#define T_FC_QUEST_MISSIONMASTER_HELP_INVITE			(MessageType_t)((T0_FC_QUEST<<8)|T1_FC_QUEST_MISSIONMASTER_HELP_INVITE)			// 2008-12-02 by dhjin, C -> F, 미션마스터 요청 승락 
+#define T_FC_QUEST_MISSIONMASTER_HELP_INVITE_OK			(MessageType_t)((T0_FC_QUEST<<8)|T1_FC_QUEST_MISSIONMASTER_HELP_INVITE_OK)		// 2008-12-02 by dhjin, F -> C, 미션마스터 요청 승락
+#define T_FC_QUEST_MISSIONMASTER_HELP_REJECT			(MessageType_t)((T0_FC_QUEST<<8)|T1_FC_QUEST_MISSIONMASTER_HELP_REJECT)			// 2008-12-02 by dhjin, C -> F, 미션마스터 요청 거절 
+#define T_FC_QUEST_MISSIONMASTER_HELP_REJECT_OK			(MessageType_t)((T0_FC_QUEST<<8)|T1_FC_QUEST_MISSIONMASTER_HELP_REJECT_OK)		// 2008-12-02 by dhjin, F -> C, 미션마스터 요청 거절
+struct MSG_FC_QUEST_REQUEST_MISSIONMASTER_HELP
+{
+	INT				QuestIdx;
+};
+
+struct MSG_FC_QUEST_REQUEST_MISSIONMASTER_HELP_INVITE
+{
+	ClientIndex_t	ClientIdx;
+	UID32_t			CharacterUID;		// 2008-12-02 by dhjin, 미션마스터 요청한 케릭터
+	char			CharacterName[SIZE_MAX_CHARACTER_NAME];
+	PartyID_t		PartyID;
+};
+
+struct MSG_FC_QUEST_MISSIONMASTER_HELP_INVITE
+{
+	UID32_t			CharacterUID;		// 2008-12-02 by dhjin, 미션마스터 요청한 케릭터
+};
+
+struct MSG_FC_QUEST_MISSIONMASTER_HELP_INVITE_OK
+{
+	ClientIndex_t	ClientIdx;
+	UID32_t			CharacterUID;		// 2008-12-02 by dhjin, 미션마스터 케릭터
+	char			CharacterName[SIZE_MAX_CHARACTER_NAME];	
+};
+
+struct MSG_FC_QUEST_MISSIONMASTER_HELP_REJECT
+{
+	UID32_t			CharacterUID;		// 2008-12-02 by dhjin, 미션마스터 요청한 케릭터
+};
+
+struct MSG_FC_QUEST_MISSIONMASTER_HELP_REJECT_OK
+{
+	ClientIndex_t	ClientIdx;
+	UID32_t			CharacterUID;		// 2008-12-02 by dhjin, 미션마스터 케릭터
+	char			CharacterName[SIZE_MAX_CHARACTER_NAME];	
+};
+
+//////////////////////////////////////////////////////////////////////////
+// 2009-01-12 by dhjin, 선전 포고 -
+#define T_FC_INFO_DECLARATION_MSWAR_INFO		(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_DECLARATION_MSWAR_INFO)		// 2009-01-12 by dhjin, 선전 포고 - 선전포고 정보 요청 C->F
+#define T_FC_INFO_DECLARATION_MSWAR_INFO_OK		(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_DECLARATION_MSWAR_INFO_OK)	// 2009-01-12 by dhjin, 선전 포고 - 선전포고 정보 전송 F->C
+#define T_FC_INFO_DECLARATION_MSWAR_SET			(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_DECLARATION_MSWAR_SET)	// 2009-01-12 by dhjin, 선전 포고 - 선전포고 시간 및 포기 설정 C->F
+#define T_FI_INFO_DECLARATION_MSWAR_SET_OK		(MessageType_t)((T0_FI_INFO<<8)|T1_FI_INFO_DECLARATION_MSWAR_SET_OK)	// 2009-01-12 by dhjin, 선전 포고 - 선전포고 시간 및 포기 설정 F->I
+#define T_IC_INFO_DECLARATION_MSWAR_SET_OK		(MessageType_t)((T0_IC_INFO<<8)|T1_IC_INFO_DECLARATION_MSWAR_SET_OK)	// 2009-01-12 by dhjin, 선전 포고 - 선전포고 시간 및 포기 설정 I->C
+#define T_FC_INFO_STRATEGICPOINTINFO_DISPLAY_LIST	(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_STRATEGICPOINTINFO_DISPLAY_LIST)		//19-04-2016 by Inetpub
+#define T_FC_INFO_STRATEGICPOINTINFO_DISPLAY		(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_STRATEGICPOINTINFO_DISPLAY)			//19-04-2016 by Inetpub
+struct MSG_FC_INFO_DECLARATION_MSWAR_INFO_OK
+{// 2009-01-12 by dhjin, 선전 포고 - 선전포고 정보 전송 F->C
+	INT								DeclarationOfWarListCount;
+	SDECLARATION_OF_WAR_FORBID_TIME	ForbidTime;
+	_ARRAY(SDECLARATION_OF_WAR);
+};
+
+struct MSG_FC_INFO_DECLARATION_MSWAR_SET
+{// 2009-01-12 by dhjin, 선전 포고 - 선전포고 시간 및 포기 설정 C->F
+	BYTE			MSWarStep;
+	ATUM_DATE_TIME	MSWarStartTime;
+	BOOL			GiveUp;
+};
+
+struct MSG_FI_INFO_DECLARATION_MSWAR_SET_OK
+{// 2009-01-12 by dhjin, 선전 포고 - 선전포고 시간 및 포기 설정 F->C
+	BYTE			Influence;		// 선전 포고한 지도자 세력.
+	ATUM_DATE_TIME	MSWarStartTime;
+	BOOL			GiveUp;
+	BYTE			SelectCount;
+};
+typedef MSG_FI_INFO_DECLARATION_MSWAR_SET_OK	MSG_IC_INFO_DECLARATION_MSWAR_SET_OK;
+
+
+///////////////////////////////////////////////////////////////////////////////
+// 2009-02-12 by cmkwon, EP3-3 월드랭킹시스템 구현 - 
+#define T_FC_INFO_WRK_GET_SERVICE_INFO					(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_WRK_GET_SERVICE_INFO)			// 2009-02-12 by cmkwon, EP3-3 월드랭킹시스템 구현 - C->F
+#define T_FC_INFO_WRK_GET_SERVICE_INFO_OK				(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_WRK_GET_SERVICE_INFO_OK)			// 2009-02-12 by cmkwon, EP3-3 월드랭킹시스템 구현 - F->C
+#define T_FC_INFO_WRK_GET_SERVICE_INFO_OK_IMAGE			(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_WRK_GET_SERVICE_INFO_OK_IMAGE)	// 2009-02-12 by cmkwon, EP3-3 월드랭킹시스템 구현 - F->C
+#define T_FC_INFO_WRK_GET_SERVICE_INFO_OK_DONE			(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_WRK_GET_SERVICE_INFO_OK_DONE)	// 2009-02-12 by cmkwon, EP3-3 월드랭킹시스템 구현 - F->C
+#define T_FC_INFO_WRK_GET_RANKER_LIST					(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_WRK_GET_RANKER_LIST)				// 2009-02-12 by cmkwon, EP3-3 월드랭킹시스템 구현 - C->F
+#define T_FC_INFO_WRK_GET_LEVEL_RANKER_LIST_OK			(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_WRK_GET_LEVEL_RANKER_LIST_OK)	// 2009-02-12 by cmkwon, EP3-3 월드랭킹시스템 구현 - F->C
+#define T_FC_INFO_WRK_GET_FAME_RANKER_LIST_OK			(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_WRK_GET_FAME_RANKER_LIST_OK)		// 2009-02-12 by cmkwon, EP3-3 월드랭킹시스템 구현 - F->C
+#define T_FC_INFO_WRK_GET_PVP_RANKER_LIST_OK			(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_WRK_GET_PVP_RANKER_LIST_OK)		// 2009-02-12 by cmkwon, EP3-3 월드랭킹시스템 구현 - F->C
+#define T_FC_INFO_WRK_GET_SELF_RANKING					(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_WRK_GET_SELF_RANKING)			// 2009-02-12 by cmkwon, EP3-3 월드랭킹시스템 구현 - C->F
+#define T_FC_INFO_WRK_GET_SELF_RANKING_OK				(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_WRK_GET_SELF_RANKING_OK)			// 2009-02-12 by cmkwon, EP3-3 월드랭킹시스템 구현 - F->C
+struct MSG_FC_INFO_WRK_GET_SERVICE_INFO_OK
+{
+	INT		ServiceUID;
+	char	ServiceName[SIZE_MAX_SERVICE_NAME];
+	INT		SymbolImageSize;
+};
+struct MSG_FC_INFO_WRK_GET_SERVICE_INFO_OK_IMAGE
+{
+	INT		ServiceUID;
+	BYTE	SymbolImageIndex;
+	BYTE	SymbolImage[1000];
+};
+struct MSG_FC_INFO_WRK_GET_RANKER_LIST
+{
+	BYTE	byRankingType;			// RANKING_TYPE_XXX
+	INT		UnitKind;
+	BYTE	byScope;				// RANKING_SCOPE_XXX
+	BYTE	byStartRank;
+	BYTE	byReqRankerCnt;
+};
+struct MSG_FC_INFO_WRK_GET_LEVEL_RANKER_LIST_OK
+{
+	BYTE	byStartRank;
+	BYTE	byRankerCnt;
+	_ARRAY(SWRK_LEVEL);
+};
+struct MSG_FC_INFO_WRK_GET_FAME_RANKER_LIST_OK
+{
+	BYTE	byStartRank;
+	BYTE	byRankerCnt;
+	_ARRAY(SWRK_FAME);
+
+};
+struct MSG_FC_INFO_WRK_GET_PVP_RANKER_LIST_OK
+{
+	BYTE	byStartRank;
+	BYTE	byRankerCnt;
+	_ARRAY(SWRK_PVP);
+};
+struct MSG_FC_INFO_WRK_GET_SELF_RANKING_OK
+{
+	UID32_t	CharacUID;
+	INT		LevelRanking;
+	INT		FameRanking;
+	INT		PvPRanking;
+};
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// 2009-03-31 by cmkwon, 세력초기화 시스템 구현 - 
+#define T_FC_QUEST_INSERT_QUEST			(MessageType_t)((T0_FC_QUEST<<8)|T1_FC_QUEST_INSERT_QUEST)	// 2009-03-31 by cmkwon, 세력초기화 시스템 구현 - F->C
+#define T_FC_QUEST_DELETE_QUEST			(MessageType_t)((T0_FC_QUEST<<8)|T1_FC_QUEST_DELETE_QUEST)	// 2009-03-31 by cmkwon, 세력초기화 시스템 구현 - F->C
+
+struct MSG_FC_QUEST_INSERT_QUEST
+{
+	INT		QuestIndex;
+	BYTE	QuestState;				// 완료, 진행중
+};
+struct MSG_FC_QUEST_DELETE_QUEST
+{
+	INT		QuestIndex;
+};
+
+////////////////////////////////////////////////////////////////////////////////
+// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 
+#define T_FN_MONSTER_HPTALK							(MessageType_t)((T0_FN_MONSTER<<8)|T1_FN_MONSTER_HPTALK)	// 2009-09-09 ~ 2010 by dhjin, 인피니티 - , N->F
+struct MSG_FN_MONSTER_HPTALK {
+	MAP_CHANNEL_INDEX				ChannelIndex;
+	ClientIndex_t					MonsterIndex;				// 인덱스
+	INT								MonsterUnitKind;			// 몬스터 고유번호
+	HPValueRate_t					HPValueRate;
+	eHPACTION_TALK_IMPORTANCE		HPTalkImportance;
+	MSec_t							HPCameraTremble;
+	ClientIndex_t					TargetIndex;				// 대상에 관련된 대사가 있다면 설정한다.	
+	HPTalk_t						HPTalk[SIZE_MAX_HPTALK_DESCRIPTION];
+};
+
+#define T_FC_MONSTER_HPTALK							(MessageType_t)((T0_FC_MONSTER<<8)|T1_FC_MONSTER_HPTALK)	// 2009-09-09 ~ 2010 by dhjin, 인피니티 - , F->C(n)
+struct MSG_FC_MONSTER_HPTALK {
+	ClientIndex_t					MonsterIndex;				// 인덱스
+	INT								MonsterUnitKind;			// 몬스터 고유번호
+	eHPACTION_TALK_IMPORTANCE		HPTalkImportance;
+	MSec_t							HPCameraTremble;
+	ClientIndex_t					TargetIndex;				// 대상에 관련된 대사가 있다면 설정한다.
+	HPTalk_t						HPTalk[SIZE_MAX_HPTALK_DESCRIPTION];
+};
+
+#define T_FN_BATTLE_ATTACK_SKILL					(MessageType_t)((T0_FN_BATTLE<<8)|T1_FN_BATTLE_ATTACK_SKILL)				// 2009-09-09 ~ 2010 by dhjin, 인피니티 - N -> F
+struct MSG_FN_BATTLE_ATTACK_SKILL
+{
+	MAP_CHANNEL_INDEX	MapInfo;
+	ClientIndex_t		MonsterIndex;				// 스킬을 사용한 몬스터
+	ClientIndex_t		ClientIndex;				// 클라이언트 인덱스
+	INT					SkillItemNum;				// 스킬의 ItemNum
+	AVECTOR3			PositionVector;
+	AVECTOR3			TargetVector;
+	float				fIncreasePowerRatio;		// 스킬의 파워(데미지 or 버프/디버프 관련 효과) 증가율.		// 2010. 06. 08 by hsLee 인피니티 필드 2차 난이도 조절. (아군 동일 밸런스 적용.) - 몬스터 스킬 밸런스 적용.
+};
+
+#define T_FC_MONSTER_SKILL							(MessageType_t)((T0_FC_MONSTER<<8)|T1_FC_MONSTER_SKILL)	// 2009-09-09 ~ 2010 by dhjin, 인피니티 - , F->C(n)
+struct MSG_FC_MONSTER_SKILL {
+	ClientIndex_t		MonsterIndex;				// 스킬을 사용한 몬스터
+	ClientIndex_t		ClientIndex;				// 클라이언트 인덱스
+	INT					SkillItemNum;				// 스킬의 ItemNum
+	AVECTOR3			PositionVector;
+	AVECTOR3			TargetVector;
+};
+
+#define T_FC_BATTLE_MONSTER_BARRIER_USING		(MessageType_t)((T0_FC_BATTLE<<8)|T1_FC_BATTLE_MONSTER_BARRIER_USING)	// 2009-09-09 ~ 2010 by dhjin, 인피니티 - F -> C
+struct MSG_FC_BATTLE_MONSTER_BARRIER_USING {
+	ClientIndex_t		MonsterIndex;				// 스킬을 사용한 몬스터
+};
+
+#define T_FC_BATTLE_MONSTER_BARRIER_USE			(MessageType_t)((T0_FC_BATTLE<<8)|T1_FC_BATTLE_MONSTER_BARRIER_USE)		// 2009-09-09 ~ 2010 by dhjin, 인피니티 - F -> C(n)
+struct MSG_FC_BATTLE_MONSTER_BARRIER_USE {
+	ClientIndex_t		MonsterIndex;				// 스킬을 사용한 몬스터
+	INT					SkillItemNum;
+};
+
+#define T_FC_CHARACTER_DEBUFF_DOT_INFO			(MessageType_t)((T0_FC_CHARACTER<<8)|T1_FC_CHARACTER_DEBUFF_DOT_INFO)			// 2009-09-09 ~ 2010 by dhjin, 인피니티 - C -> F
+#define T_FC_CHARACTER_DEBUFF_DOT_INFO_OK		(MessageType_t)((T0_FC_CHARACTER<<8)|T1_FC_CHARACTER_DEBUFF_DOT_INFO_OK)		// 2009-09-09 ~ 2010 by dhjin, 인피니티 - F -> C
+#define T_FC_CHARACTER_DEBUFF_DOT_APPLYING		(MessageType_t)((T0_FC_CHARACTER<<8)|T1_FC_CHARACTER_DEBUFF_DOT_APPLYING)		// 2009-09-09 ~ 2010 by dhjin, 인피니티 - F -> C
+#define T_FC_CHARACTER_DEBUFF_DOT_RELEASE		(MessageType_t)((T0_FC_CHARACTER<<8)|T1_FC_CHARACTER_DEBUFF_DOT_RELEASE)		// 2009-09-09 ~ 2010 by dhjin, 인피니티 - F -> C
+struct MSG_FC_CHARACTER_DEBUFF_DOT_INFO {
+	UID32_t			CharacterUID;
+};
+
+struct MSG_DEBUFF_INFO {
+	INT					ItemNum;						// 아이템 고유번호, 장착 아이템일 때 (ITEM_BASE*)
+};
+
+struct MSG_DOT_INFO {
+	INT					ItemNum;						// 아이템 고유번호, 장착 아이템일 때 (ITEM_BASE*)
+};
+
+struct MSG_FC_CHARACTER_DEBUFF_DOT_INFO_OK {
+	UID32_t				CharacterUID;
+	INT					DebuffCount;
+	INT					DotCount;
+	_ARRAY(MSG_DEBUFF_INFO);
+	_ARRAY(MSG_DOT_INFO);
+};
+struct MSG_FC_CHARACTER_DEBUFF_DOT_APPLYING {
+	UID32_t				CharacterUID;
+	INT					SkillItemNum;
+};
+
+struct MSG_FC_CHARACTER_DEBUFF_DOT_RELEASE {
+	UID32_t				CharacterUID;
+	INT					SkillItemNum;
+};
+
+
+#define T_FC_INFINITY_MODE_LIST					(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_MODE_LIST)				// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 리스트 요청, C -> F
+#define T_FC_INFINITY_MODE_LIST_OK				(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_MODE_LIST_OK)			// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 리스트 요청, F -> C
+struct INFINITY_MODE_INFO {
+	MapIndex_t		InfinityMapIdx;
+	InfiModeUID_t	InfinityModeUID;
+	eINFINITY_MODE	InfinityMode;
+	Lv_t			MinLv;
+	Lv_t			MaxLv;
+	BOOL			Join;
+	Minute_t		TimePenaltyValue;		// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 사망시 패널티 추가
+	INT				MinMemberCount;			// 2009-09-09 ~ 2010-01-22 by dhjin, 인피니티 - 최소,최대인원 정보 추가
+	INT				MaxMemberCount;			// 2009-09-09 ~ 2010-01-22 by dhjin, 인피니티 - 최소,최대인원 정보 추가
+	INT				InfinityDifficultyStep; // 2010. 05. 19 by hsLee 인피니티 필드 2차 난이도 조절. (신호처리 + 몬스터 처리(서버) ) - 설정된 난이도 정보 추가.
+	Penalty_t		HPPenaltyValue;			// 2011-06-14 by hskim, 인피니티 3차 - 패널티 기능 추가 (HP 및 시간 동시 지원을 위해)
+};
+struct MSG_FC_INFINITY_MODE_LIST_OK {
+	INT				InfinityModeListCount;
+	_ARRAY(INFINITY_MODE_INFO);
+};
+
+#define T_FC_INFINITY_READY_LIST					(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_READY_LIST)				// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 리스트 요청, C -> F
+#define T_FC_INFINITY_READY_LIST_OK					(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_READY_LIST_OK)				// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 리스트 요청, F -> C
+struct MSG_FC_INFINITY_READY_LIST {
+	MapIndex_t		InfinityMapIdx;
+	eINFINITY_MODE	InfinityMode;
+};
+
+struct INFINITY_READY_LIST {
+	InfinityCreateUID_t	InfinityCreateUID;
+	CHAR				MasterName[SIZE_MAX_CHARACTER_NAME];
+	CHAR				InfinityTeamName[SIZE_MAX_PARTY_NAME];
+	INT					PlayingRoomMemberCount;
+	INT					MaxMemberCount;
+	INT					DifficultLevel;
+};
+struct MSG_FC_INFINITY_READY_LIST_OK {
+	INT				InfinityPlayingListCount;
+	_ARRAY(INFINITY_READY_LIST);
+};
+
+#define T_FC_INFINITY_CREATE						(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_CREATE)				// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 생성 요청, C -> F
+#define T_FC_INFINITY_CREATE_OK						(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_CREATE_OK)			// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 생성 요청, F -> C
+struct MSG_FC_INFINITY_CREATE {
+	InfiModeUID_t	InfinityModeUID;
+	eINFINITY_MODE	InfinityMode;
+	MapIndex_t		MapIndex;
+	CHAR			InfinityTeamName[SIZE_MAX_PARTY_NAME];
+	INT				InfinityDifficultyLevel;
+};
+struct MSG_FC_INFINITY_CREATE_OK {
+	InfinityCreateUID_t	InfinityCreateUID;
+
+	// 2010. 05. 19 by hsLee 인피니티 필드 2차 난이도 조절. (신호처리 + 몬스터 처리(서버) )
+	INT					IntinityDifficultyLevel;
+	// End 2010. 05. 19 by hsLee 인피니티 필드 2차 난이도 조절. (신호처리 + 몬스터 처리(서버) )
+
+};
+
+#define T_FC_INFINITY_JOIN							(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_JOIN)						// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 가입 요청, C -> F
+#define T_FC_INFINITY_JOIN_REQUEST_MASTERUSER		(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_JOIN_REQUEST_MASTERUSER)		// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 방장에거 가입자 승인 여부 요청, F -> C
+#define T_FC_INFINITY_JOIN_REQUEST_MASTERUSER_OK	(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_JOIN_REQUEST_MASTERUSER_OK)	// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 방장에거 가입자 승인 여부 요청, C -> F
+#define T_FC_INFINITY_JOIN_OK						(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_JOIN_OK)						// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 가입 요청, F -> C
+#define T_FC_INFINITY_MEMBER_INFO_LIST				(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_MEMBER_INFO_LIST)			// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 맴버 정보, C -> F
+#define T_FC_INFINITY_MEMBER_INFO_LIST_OK			(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_MEMBER_INFO_LIST_OK)			// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 맴버 정보, F -> C
+struct MSG_FC_INFINITY_JOIN {
+	eINFINITY_MODE		InfinityMode;
+	InfinityCreateUID_t	InfinityCreateUID;	
+	InfiModeUID_t		InfinityModeUID;		// 2010-03-23 by cmkwon, 인피니티 입장 캐쉬 아이템 구현 - 
+};	
+struct MSG_FC_INFINITY_JOIN_REQUEST_MASTERUSER {
+	ClientIndex_t		ReQuestClientIdx;
+	CHAR				ReQuestCharacterName[SIZE_MAX_CHARACTER_NAME];
+	USHORT				Gear;
+	BYTE				Lv;
+};
+struct MSG_FC_INFINITY_JOIN_REQUEST_MASTERUSER_OK {
+	ClientIndex_t		ReQuestClientIdx;
+	BOOL				bAccept;
+	eINFINITY_MODE		InfinityMode;
+	InfinityCreateUID_t	InfinityCreateUID;	
+};
+struct MSG_FC_INFINITY_JOIN_OK {
+	ClientIndex_t		JoinClientIdx;
+	CHAR				JoinCharacterName[SIZE_MAX_CHARACTER_NAME];
+	USHORT				Gear;
+	BYTE				Lv;
+	BOOL				bAccept;
+};
+struct INFINITY_MEMBER_INFO_LIST {
+	ClientIndex_t		ClientIdx;
+	CHAR				CharacterName[SIZE_MAX_CHARACTER_NAME];
+	USHORT				Gear;
+	BYTE				Lv;
+	eINFINITY_STATE		State;
+};
+struct MSG_FC_INFINITY_MEMBER_INFO_LIST_OK {
+	ClientIndex_t		MasterClientIdx;
+	INT					InfinityMemberListCount;
+	_ARRAY(INFINITY_MEMBER_INFO_LIST);
+};
+
+#define T_FC_INFINITY_CHANGE_MASTER					(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_CHANGE_MASTER)			// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 마스터 변경, C -> F
+#define T_FC_INFINITY_CHANGE_MASTER_OK				(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_CHANGE_MASTER_OK)		// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 마스터 변경, F -> C
+#define T_FC_INFINITY_LEAVE							(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_LEAVE)					// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 탈퇴, C -> F
+#define T_FC_INFINITY_LEAVE_OK						(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_LEAVE_OK)				// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 탈퇴, F -> C
+#define T_FC_INFINITY_BAN							(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_BAN)						// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 추방, C -> F
+#define T_FC_INFINITY_BAN_OK						(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_BAN_OK)					// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 추방, F -> C
+struct MSG_FC_INFINITY_CHANGE_MASTER {
+	ClientIndex_t		ChangeMasterClientIdx;
+};
+struct MSG_FC_INFINITY_CHANGE_MASTER_OK {
+	ClientIndex_t		ChangeMasterClientIdx;
+};
+struct MSG_FC_INFINITY_LEAVE_OK {
+	ClientIndex_t		LeaveClientIdx;
+};
+struct MSG_FC_INFINITY_BAN {
+	ClientIndex_t		BanClientIdx;
+};
+struct MSG_FC_INFINITY_BAN_OK {
+	ClientIndex_t		BanClientIdx;
+};
+
+#define T_FtoA_INFINITY_IMPUTE_LIST					(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_INFINITY_IMPUTE_LIST)			// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 귀속 정보 전송, MFS -> AFS
+struct MSG_FtoA_INFINITY_IMPUTE_LIST {
+	ClientIndex_t	AFSClientIndex;
+	INT				InfinityImputeListCount;
+	BOOL			bHaveReentryTicket;			// 2010-03-23 by cmkwon, 인피니티 입장 캐쉬 아이템 구현 - 
+	_ARRAY(INFINITY_IMPUTE);	
+};
+
+#define T_FC_INFINITY_READY							(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_READY)			// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 래디 버튼 누름, C -> F
+#define T_FC_INFINITY_READY_OK						(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_READY_OK)		// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 래디 버튼 누름, F -> C
+#define T_FC_INFINITY_READY_CANCEL					(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_READY_CANCEL)	// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 래디취소 버튼 누름, C -> F
+#define T_FC_INFINITY_READY_CANCEL_OK				(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_READY_CANCEL_OK)	// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 래디취소 버튼 누름, F -> C
+#define T_FC_INFINITY_READY_CANCEL_ALL_OK			(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_READY_CANCEL_ALL_OK)	// // 2010. 05. 31 by hsLee 인피니티 필드 2차 난이도 조절. (오브젝트 몬스터 밸런스 적용 문제 수정.) - 인피니티 - 난이도 변경시 모든 래디 취소. ( AFS -> C )
+struct MSG_FC_INFINITY_READY_OK {
+	ClientIndex_t		ReadyClientIdx;
+};
+struct MSG_FC_INFINITY_READY_CANCEL_OK {
+	ClientIndex_t		ReadyCancelClientIdx;
+};
+
+// 2010. 05. 31 by hsLee 인피니티 필드 2차 난이도 조절. (오브젝트 몬스터 밸런스 적용 문제 수정.) - 인피니티 방 난이도 변경시 모두 래디 취소 패킷.
+struct MSG_FC_INFINITY_READY_CANCEL_ALL_OK
+{
+	 InfinityCreateUID_t	InfinityCreateUID;
+};
+// End 2010. 05. 31 by hsLee 인피니티 필드 2차 난이도 조절. (오브젝트 몬스터 밸런스 적용 문제 수정.)
+
+#define T_FC_INFINITY_START							(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_START)			// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 시작 버튼 누름(인피 시작), C -> F
+#define T_FtoA_INFINITY_START						(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_INFINITY_START)			// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 시작 MainFieldServer로 알림, AFS -> MFS
+#define T_FtoA_INFINITY_START_OK					(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_INFINITY_START_OK)			// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 시작 MainFieldSever준비 완료 전송, MFS -> AFS
+#define T_FC_INFINITY_MAP_LOADING					(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_MAP_LOADING)		// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 맵 로딩 상태임을 알림, F -> C  <-- 주의!!!! 삭제 대기중!
+#define T_FC_INFINITY_MAP_LOADED					(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_MAP_LOADED)		// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 맵 로딩 완료, C -> F
+#define T_FtoA_INFINITY_IMPUTE						(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_INFINITY_IMPUTE)			// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 MainFieldServer로 귀속 정보 전송, AFS -> MFS
+#define T_FC_INFINITY_ENTER							(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_ENTER)			// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 맵 입장 허가, F -> C
+struct MSG_FtoA_INFINITY_START {
+	UID32_t			AccountUID;
+	UID32_t			MFSCharacterUID;
+	ClientIndex_t	MFSClientIndex;
+	UID32_t			AFSCharacterUID;
+	ClientIndex_t	AFSClientIndex;
+};
+struct MSG_FtoA_INFINITY_START_OK {
+	ClientIndex_t	AFSClientIndex;
+	BOOL			bIsPCBangClient;
+};
+struct MSG_FC_INFINITY_ENTER {
+	ChannelIndex_t	InfinityChannelIdx;
+	D3DXVECTOR3		CharacterPosition;
+	ATUM_DATE_TIME	StartTime;
+	MSec_t			LimitTime;
+};
+struct MSG_FtoA_INFINITY_IMPUTE {
+	InfiModeUID_t	InfinityModeUID;
+	UID32_t			AccountUID;
+	UID32_t			MFSCharacterUID;
+	ClientIndex_t	MFSClientIndex;
+	ClientIndex_t	AFSClientIndex;
+	BOOL			CheckExistImpute;
+};
+
+
+#define T_FC_INFINITY_CINEMA						(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_CINEMA)			// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 시네마 정보 전송, F -> C
+typedef CINEMAINFO	MSG_FC_INFINITY_CINEMA;
+
+struct MSG_FN_NPCSERVER_CINEMA_MONSTER_CREATE		// 2010-03-31 by dhjin, 인피니티(기지방어) -
+{
+	MAP_CHANNEL_INDEX		mapChann;
+	INT						MonsterUnitKind;
+	SummonCnt_t				MonsterSummonCount;			// 2010-03-31 by dhjin, 인피니티(기지방어) -	
+	Distance_t				MaxRandomDistance;			// 2010-03-31 by dhjin, 인피니티(기지방어) -
+	MONSTER_BALANCE_DATA	MonsterBalanceInfo;			// 2010. 05. 19 by hsLee 인피니티 필드 2차 난이도 조절. (신호처리 + 몬스터 처리(서버) ) - 몬스터 밸런스 정보(확장 정보 대입).
+};
+
+// start 2011-04-28 by hskim, 인피니티 3차 - 시네마 관련 기능 추가 - 해당 맵채널 특정 몬스터 삭제/변경 기능 추가
+struct MSG_FN_NPCSERVER_CINEMA_MONSTER_DESTROY
+{
+	MAP_CHANNEL_INDEX		mapChann;
+	INT						MonsterUnitKind;
+};
+
+struct MSG_FN_NPCSERVER_CINEMA_MONSTER_CHANGE
+{
+	MAP_CHANNEL_INDEX		mapChann;					// 채널 맵 번호
+	INT						MonsterUnitKind;			// 적용할 몬스터 번호
+	INT						ChangeMonsterUnitKind;		// 변경될 몬스터 번호
+};
+// end 2011-04-28 by hskim, 인피니티 3차 - 시네마 관련 기능 추가 - 해당 맵채널 특정 몬스터 삭제/변경 기능 추가
+
+// start 2011-06-02 인피니티 3차 - 스텝 6 - 주기적 소환 기능 제작
+struct MSG_FN_NPCSERVER_CINEMA_MONSTER_REGEN
+{
+	MAP_CHANNEL_INDEX		mapChann;
+	INT						iMonsterUnitKind;
+	BOOL					bRegen;
+	MONSTER_BALANCE_DATA	MonsterBalanceInfo;			// 2011-06-21 by hskim 몬스터 밸런스 정보
+};
+// end 2011-06-02 인피니티 3차 - 스텝 6 - 주기적 소환 기능 제작
+
+#define T_FC_INFINITY_SUCCESS_FIN					(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_SUCCESS_FIN)			// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 성공 종료, F -> C
+#define T_FC_INFINITY_FAIL_FIN						(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_FAIL_FIN)			// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 실패 종료, F -> C
+#define T_FC_INFINITY_FIN_OK						(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_FIN_OK)				// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 종료 확인 후 마을(Main서버로 돌아감), C -> F
+#define T_FC_INFINITY_READY_FINISH_MAINSVR_START	(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_READY_FINISH_MAINSVR_START)	// 2009-09-09 ~ 2010 by dhjin, 인피니티 - Main서버로 돌아갈 준비가 완료 됨, F -> C
+
+#define T_FtoA_INFINITY_UPDATE_ALL_ITEM_COUNT		(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_INFINITY_UPDATE_ALL_ITEM_COUNT)	// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 MainFieldServer로 아이템 동기화 위해 전송, AFS -> MFS
+#define T_FtoA_INFINITY_INSERT_ITEM_HEADER			(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_INFINITY_INSERT_ITEM_HEADER)		// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 MainFieldServer로 아이템 동기화 위해 전송, AFS -> MFS
+#define T_FtoA_INFINITY_INSERT_ITEM					(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_INFINITY_INSERT_ITEM)				// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 MainFieldServer로 아이템 동기화 위해 전송, AFS -> MFS
+#define T_FtoA_INFINITY_INSERT_ITEM_DONE			(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_INFINITY_INSERT_ITEM_DONE)			// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 MainFieldServer로 아이템 동기화 위해 전송, AFS -> MFS
+#define T_FtoA_INFINITY_UPDATE_ITEM_HEADER			(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_INFINITY_UPDATE_ITEM_HEADER)		// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 MainFieldServer로 아이템 동기화 위해 전송, AFS -> MFS
+#define T_FtoA_INFINITY_UPDATE_ITEM					(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_INFINITY_UPDATE_ITEM)				// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 MainFieldServer로 아이템 동기화 위해 전송, AFS -> MFS
+#define T_FtoA_INFINITY_UPDATE_ITEM_DONE			(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_INFINITY_UPDATE_ITEM_DONE)			// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 MainFieldServer로 아이템 동기화 위해 전송, AFS -> MFS
+#define T_FtoA_INFINITY_DELETE_ITEM					(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_INFINITY_DELETE_ITEM)				// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 MainFieldServer로 아이템 동기화 위해 전송, AFS -> MFS
+#define T_FtoA_INFINITY_UPDATE_USER_INFO			(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_INFINITY_UPDATE_USER_INFO)			// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 MainFieldServer로 유저 동기화 위해 전송, AFS -> MFS
+#define T_FtoA_INFINITY_READY_FINISH_MAINSVR_START  (MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_INFINITY_READY_FINISH_MAINSVR_START)	// 2009-09-09 ~ 2010 by dhjin, 인피니티 - Main서버로 돌아갈 준비가 완료 됨, MFS -> AFS
+#define T_FtoA_INFINITY_LOG							(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_INFINITY_LOG)						// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 MainFieldServer로 로그 전송, AFS -> MFS
+#define T_FtoA_INFINITY_USING_TIME_LIMIT_ITEM		(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_USING_TIME_LIMIT_ITEM)				// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 MainFieldServer로 아이템 동기화 위해 전송, AFS -> MFS
+#ifdef _INET_PET
+#define T_FtoA_INFINITY_UPDATE_ITEM_PET				(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_INFINITY_UPDATE_ITEM_PET)			// 2011-09-30 by hskim, 파트너 시스템 2차 - 인피 MainFieldServer로 파트너 아이템 동기화 위해 전송, AFS -> MFS
+
+// start 2011-09-30 by hskim, 파트너 시스템 2차
+struct MSG_FtoA_INFINITY_UPDATE_ITEM_PET {
+	UID32_t			AccountUID;
+	UID32_t			MFSCharacterUID;
+	ClientIndex_t	MFSClientIndex;
+	UID64_t			MainSvrItemUID;
+
+	struct tPET_CURRENTINFO	PetCurrentData;		// Arena -> Field 로 전송후 Field 서버에서는 PetSocketItemUID 및 pItemPetSocket 의 데이터는 적용하지 않는다
+};
+// end 2011-09-30 by hskim, 파트너 시스템 2차
+#endif
+struct MSG_FtoA_INFINITY_UPDATE_ALL_ITEM_COUNT {
+	UID32_t			AccountUID;
+	UID32_t			MFSCharacterUID;
+	ClientIndex_t	MFSClientIndex;
+	INT				AllItemCount;
+};
+struct MSG_FtoA_INFINITY_INSERT_ITEM {
+	UID32_t			AccountUID;
+	UID32_t			MFSCharacterUID;
+	ClientIndex_t	MFSClientIndex;
+	INT				ItemNum;
+	INT				ItemWindowIndex;
+	INT				CurrentCount;
+	INT				PrefixCodeNum;
+	INT				SuffixCodeNum;
+	BYTE			Wear;
+	INT				ShapeItemNum;
+	INT				UsingTimeStamp;
+	ATUM_DATE_TIME	CreatedTime;
+	INT				CoolingTimeStamp;	// 2009-09-09 ~ 2010-02-10 by dhjin, 인피니티 - 발동류장착아이템
+};
+struct MSG_FtoA_INFINITY_UPDATE_ITEM {
+	UID32_t			AccountUID;
+	UID32_t			MFSCharacterUID;
+	ClientIndex_t	MFSClientIndex;
+	UID64_t			MainSvrItemUID;
+	INT				ItemWindowIndex;
+	INT				CurrentCount;
+	BYTE			Wear;
+	INT				UsingTimeStamp;
+	INT				CoolingTimeStamp;	// 2009-09-09 ~ 2010-02-10 by dhjin, 인피니티 - 발동류장착아이템
+};
+struct MSG_FtoA_INFINITY_DELETE_ITEM {
+//	INT InfinityDeleteItemInfoListCount;
+//	ARRAY_(INFINITY_DELETE_ITEM_INFO);
+	UID32_t			AccountUID;
+	UID32_t			MFSCharacterUID;
+	ClientIndex_t	MFSClientIndex;
+	UID64_t			MainSvrItemUID;
+};
+struct MSG_FtoA_INFINITY_UPDATE_USER_INFO {
+	UID32_t				AccountUID;
+	UID32_t				MFSCharacterUID;
+	ClientIndex_t		MFSClientIndex;
+	GEAR_STAT			GearStat;						// 기어 스탯
+	BYTE				Level;							//
+	Experience_t		Experience;						//
+	Experience_t		DownExperience;					// 캐릭이 죽을때 떨어진 경험치
+	INT					DownSPIOnDeath;					// 2006-04-10 by cmkwon, 캐릭이 죽을때 떨어진 SPI
+	BYTE				BonusStat;						// 추가 2002.12.13
+	BYTE				BonusStatPoint;					// 2005-11-15 by cmkwon, 레벨업이 아닌 다른방법으로 받은 보너스 스탯 포인트, BonusSkillPoint를 변경함 // 추가 2002.12.13
+	LONGLONG			TotalPlayTime;					// 초단위
+	ATUM_DATE_TIME		LevelUpTime;					// 2006-12-18 by dhjin, 레벨업 시간
+	INT					WarPoint;						// 2007-04-17 by dhjin, WP
+	INT					CumulativeWarPoint;				// 2007-05-28 by dhjin, 누적WP
+	LONGLONG			PCBangTotalPlayTime;			// 2007-06-07 by dhjin, PC방 총 플레이 시간, 초단위
+	INT					SecretInfoOption;				// 2008-06-23 by dhjin, EP3 유저정보옵션 -
+	MapIndex_t			InfinityMapIndex;				// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 팅긴 유저 재접속 처리
+	ChannelIndex_t		InfinityChannelIndex;			// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 팅긴 유저 재접속 처리
+};
+struct MSG_FtoA_INFINITY_READY_FINISH_MAINSVR_START {
+	ClientIndex_t	AFSClientIndex;
+};
+
+struct MSG_FtoA_INFINITY_LOG {
+	UID32_t			AccountUID;
+	UID32_t			MFSCharacterUID;
+	ClientIndex_t	MFSClientIndex;
+	ClientIndex_t	AFSClientIndex;
+	InfiModeUID_t	InfinityModeUID;
+	DeathCnt_t		DeathCount;
+	KillCnt_t		KillCount;
+	ATUM_DATE_TIME	StartTime;
+	ATUM_DATE_TIME	EndTime;
+	Experience_t	AllEXP;								// 2010-06-25 by shcho, 인피니티 관련로그 찍기 - 종료시 최대 경험치 추가
+};
+
+struct MSG_FtoA_INFINITY_USING_TIME_LIMIT_ITEM {
+	UID32_t			AccountUID;
+	UID32_t			MFSCharacterUID;
+	ClientIndex_t	MFSClientIndex;
+	INT				ItemNum;
+	INT				ItemWindowIndex;
+	INT				CurrentCount;
+	BYTE			Wear;
+	INT				ShapeItemNum;
+	INT				UsingTimeStamp;
+	ATUM_DATE_TIME	CreatedTime;
+	UID64_t			MainSvrItemUID;
+	INT				CoolingTimeStamp;			// 2009-09-09 ~ 2010-02-10 by dhjin, 인피니티 - 발동류장착아이템
+};
+
+struct MSG_FN_NPCSERVER_NEW_CHANGE_OBJECT {
+	MAP_CHANNEL_INDEX	mapChann;
+	ObjectIdx_t			DeleteObjectUID;
+	ObjectNum_t			NewObjectNum;
+};
+struct MSG_FN_NPCSERVER_RESET_CHANGE_OBJECT {
+	MAP_CHANNEL_INDEX	mapChann;
+};
+
+#define T_FC_INFINITY_TENDER_DROPITEM_INFO		(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_TENDER_DROPITEM_INFO)	// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 몬스터에게서 드랍된 Tender 아이템, F -> C
+#define T_FC_INFINITY_TENDER_START				(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_TENDER_START)			// 2009-09-09 ~ 2010 by dhjin, 인피니티 - Tender 시작, F -> C
+#define T_FC_INFINITY_TENDER_PUT_IN_TENDER		(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_TENDER_PUT_IN_TENDER)	// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 유저 Tender 버튼 누름, C -> F
+#define T_FC_INFINITY_TENDER_PUT_IN_TENDER_OK	(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_TENDER_PUT_IN_TENDER_OK)	// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 유저 Tender 버튼 누름 결과, F -> C
+#define T_FC_INFINITY_TENDER_RESULT				(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_TENDER_RESULT)			// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 입찰자 결과, F -> C
+#define T_FC_INFINITY_TENDER_RESULT_TIMEOVER	(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_TENDER_TIMEOVER)			// 2009-09-09 ~ 2010 by dhjin, 인피니티 - Tender 시간이 지났지만 입찰자가 없다, F -> C
+#define T_FC_INFINITY_TENDER_RESULT_ALLGIVEUP	(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_TENDER_ALLGIVEUP)		// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 입찰자 모두 포기, F -> C
+struct MSG_FC_INFINITY_TENDER_DROPITEM_INFO {
+	UINT			ItemFieldIndex;			// 습득 전까지 서버가 임시로 관리하는 번호
+	ItemNum_t		TenderDropItemNum;
+	INT				Count;
+	INT				PrefixCodeNum;
+	INT				SuffixCodeNum;
+	ATUM_DATE_TIME	TenderStartTime;		// 입찰 시작 시간.
+};
+struct MSG_FC_INFINITY_TENDER_START {
+	UINT			ItemFieldIndex;			// 습득 전까지 서버가 임시로 관리하는 번호
+	ItemNum_t		TenderItemNum;
+	INT				Count;
+};
+struct MSG_FC_INFINITY_TENDER_PUT_IN_TENDER {
+	ItemNum_t			TenderDropItemNum;	// 2010-06-25 by shcho, 인피니티 관련로그 찍기 - 메세지 추가
+	eINFINITY_MODE		InfinityMode;
+	InfinityCreateUID_t	InfinityCreateUID;
+	UINT				ItemFieldIndex;			// 습득 전까지 서버가 임시로 관리하는 번호
+	BOOL				GiveUp;
+};
+struct MSG_FC_INFINITY_TENDER_PUT_IN_TENDER_OK {
+	UINT				ItemFieldIndex;			// 습득 전까지 서버가 임시로 관리하는 번호
+	ClientIndex_t		DiceUserIdx;			// 입찰 유저
+	DiceCnt_t			DiceCount;				// 주사위 결과 값.
+};
+struct MSG_FC_INFINITY_TENDER_RESULT {
+	UINT				ItemFieldIndex;			// 습득 전까지 서버가 임시로 관리하는 번호
+	ClientIndex_t		DiceUserIdx;			// 입찰 유저
+	DiceCnt_t			DiceCount;				// 주사위 결과 값.
+	ItemNum_t			TenderItemNum;
+	INT					Count;
+};
+struct MSG_FC_INFINITY_TENDER_RESULT_TIMEOVER {
+	UINT				ItemFieldIndex;			// 습득 전까지 서버가 임시로 관리하는 번호
+};
+struct MSG_FC_INFINITY_TENDER_RESULT_ALLGIVEUP {
+	UINT				ItemFieldIndex;			// 습득 전까지 서버가 임시로 관리하는 번호
+};
+
+#define T_FC_INFO_APPLY_RESISTANCE_ITEM	(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_APPLY_RESISTANCE_ITEM)	// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 저항 아이템 적용 정보 전송, F -> C(n)
+struct MSG_FC_INFO_APPLY_RESISTANCE_ITEM {
+	ClientIndex_t		ResistanceUserIdx;
+	ItemNum_t			SkillNum;			// 2009-09-09 ~ 2010-01-19 by dhjin, 인피니티 - 저항된 스킬 정보 추가
+	BOOL				OnceResistanceItem;	// 2009-09-09 ~ 2010-01-19 by dhjin, 인피니티 - 한 번만 저항하고 없어지는 저항 아이템 추가
+};
+
+#define T_FC_SHOP_INFINITY_ITEM_HEADER		(MessageType_t)((T0_FC_SHOP<<8)|T1_FC_SHOP_INFINITY_ITEM_HEADER)	// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 상점
+#define T_FC_SHOP_INFINITY_ITEM				(MessageType_t)((T0_FC_SHOP<<8)|T1_FC_SHOP_INFINITY_ITEM)			// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 상점
+#define T_FC_SHOP_INFINITY_ITEM_DONE		(MessageType_t)((T0_FC_SHOP<<8)|T1_FC_SHOP_INFINITY_ITEM_DONE)		// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 상점
+typedef INFINITY_SHOP_INFO	MSG_FC_SHOP_INFINITY_ITEM;
+#define T_FC_SHOP_INFINITY_BUY_ITEM			(MessageType_t)((T0_FC_SHOP<<8)|T1_FC_SHOP_INFINITY_BUY_ITEM)		// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 상점, 구매
+struct MSG_FC_SHOP_INFINITY_BUY_ITEM {
+	InfinityShopUID_t		InfinityShopUID;
+	int						Amount;
+};
+
+#define T_FC_INFINITY_CHANGE_LIMITTIME				(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_CHANGE_LIMITTIME)		// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 사망시 패널티 추가, F -> C
+struct MSG_FC_INFINITY_CHANGE_LIMITTIME {
+	char			DeadCharactarName[SIZE_MAX_CHARACTER_NAME];		// 2009-09-09 ~ 2010-01-13 by dhjin, 인피니티 - 죽은 유저 이름 정보 전송 추가
+	MSec_t			LimitTime;
+};
+
+// start 2011-05-30 by hskim, 인피니티 3차 - 플레이 시간 재설정 기능 
+#define T_FC_INFINITY_SET_LIMITTIME				(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_SET_LIMITTIME)		// 2011-05-30 by hskim, 인피니티 3차 - 플레이 시간 재설정 기능
+struct MSG_FC_INFINITY_SET_LIMITTIME {
+	MSec_t			LimitTime;		// ms
+};
+// end 2011-05-30 by hskim, 인피니티 3차 - 플레이 시간 재설정 기능
+
+#define T_FC_INFINITY_JOIN_CANCEL							(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_JOIN_CANCEL)							// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 입장 취소
+#define T_FC_INFINITY_JOIN_CANCEL_REQUEST_MASTERUSER		(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_JOIN_CANCEL_REQUEST_MASTERUSER)		// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 인피 입장 취소
+struct MSG_FC_INFINITY_JOIN_CANCEL {
+	eINFINITY_MODE		InfinityMode;
+	InfinityCreateUID_t	InfinityCreateUID;	
+};
+struct MSG_FC_INFINITY_JOIN_CANCEL_REQUEST_MASTERUSER {
+	ClientIndex_t		JoinCancelClientIdx;
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 팅긴 유저 재접속 처리
+#define T_FC_INFINITY_REQUEST_RESTART_BY_DISCONNECT					(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_REQUEST_RESTART_BY_DISCONNECT)			// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 팅긴 유저 재접속 처리, MFS -> C
+#define T_FC_INFINITY_RESTART_BY_DISCONNECT							(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_RESTART_BY_DISCONNECT)					// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 팅긴 유저 재접속 처리, C -> AFS
+#define T_FC_INFINITY_MAP_LOADED_RESTART_BY_DISCONNECT				(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_MAP_LOADED_RESTART_BY_DISCONNECT)		// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 팅긴 유저 재접속 처리, C -> AFS
+#define T_FC_INFINITY_DELETED_CINEMA_HEADER							(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_DELETED_CINEMA_HEADER)					// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 팅긴 유저 재접속 처리
+#define T_FC_INFINITY_DELETED_CINEMA								(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_DELETED_CINEMA)							// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 팅긴 유저 재접속 처리
+#define T_FC_INFINITY_DELETED_CINEMA_DONE							(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_DELETED_CINEMA_DONE)						// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 팅긴 유저 재접속 처리
+#define T_FC_INFINITY_ENTER_BY_DISCONNECT							(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_ENTER_BY_DISCONNECT)						// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 팅긴 유저 재접속 처리
+typedef CINEMAINFO	MSG_FC_INFINITY_DELETED_CINEMA;
+struct MSG_FC_INFINITY_ENTER_BY_DISCONNECT {
+	eINFINITY_MODE		InfinityMode;
+	Minute_t			TimePenaltyValue;
+	ChannelIndex_t		InfinityChannelIdx;
+	D3DXVECTOR3			CharacterPosition;
+	ATUM_DATE_TIME		StartTime;
+	MSec_t				LimitTime;
+	MSec_t				DecreaseTimeByDead;		// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 팅긴 유저 재접속 처리
+	InfinityCreateUID_t	InfinityCreateUID;	// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 팅긴 유저 재접속 처리
+	ClientIndex_t		MasterClientIdx;	// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 팅긴 유저 재접속 처리
+	Penalty_t			HPPenaltyValue;			// 2011-06-14 by hskim, 인피니티 3차 - 패널티 기능 추가 (HP 및 시간 동시 지원을 위해)
+};
+
+#define T_FtoA_INFINITY_STATE_CHANGE			(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_INFINITY_STATE_CHANGE)		// 2009-09-09 ~ 2010-01-20 by dhjin, 인피니티 - 인피 상태 값을 메인서버로 전송한다.
+struct MSG_FtoA_INFINITY_STATE_CHANGE {
+	UID32_t			AccountUID;
+	UID32_t			MFSCharacterUID;
+	ClientIndex_t	MFSClientIndex;
+	eINFINITY_STATE	AFSInfinityState;
+	ClientIndex_t	AFSClientIndex;
+};
+
+// start 2011-05-17 by hskim, 인피니티 3차 - 시네마 연출
+#define T_FC_INFINITY_MOVIE						(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_MOVIE)				// 2011-05-17 by hskim, 인피니티 3차 - 시네마 연출, F -> C
+
+struct MSG_FC_INFINITY_MOVIE 
+{
+	INT			UniqueNumber;			// 연출 번호
+	USHORT		Command;				// MOVIE_COMMAND_START, MOVIE_COMMAND_END
+};
+// end 2011-05-17 by hskim, 인피니티 3차 - 시네마 연출
+
+#define T_FI_PARTY_AUTO_CREATE						(MessageType_t)((T0_FI_PARTY<<8)|T1_FI_PARTY_AUTO_CREATE)					// 2009-09-09 ~ 2010-01-26 by dhjin, 인피니티 - 자동 편대 생성 요청, F -> I
+#define T_FI_PARTY_AUTO_CREATE_OK					(MessageType_t)((T0_FI_PARTY<<8)|T1_FI_PARTY_AUTO_CREATE_OK)				// 2009-09-09 ~ 2010-01-26 by dhjin, 인피니티 - 자동 편대 생성 완료, I -> F
+#define T_FC_PARTY_AUTO_CREATED						(MessageType_t)((T0_FC_PARTY<<8)|T1_FC_PARTY_AUTO_CREATED)					// 2009-09-09 ~ 2010-01-26 by dhjin, 인피니티 - 자동 편대 생성 완료 알림, F -> C
+#define T_IC_PARTY_GET_AUTO_PARTY_INFO				(MessageType_t)((T0_IC_PARTY<<8)|T1_IC_PARTY_GET_AUTO_PARTY_INFO)			// 2009-09-09 ~ 2010-01-26 by dhjin, 인피니티 - 자동 편대 정보 요청, C -> I
+#define T_IC_PARTY_GET_AUTO_PARTY_INFO_OK			(MessageType_t)((T0_IC_PARTY<<8)|T1_IC_PARTY_GET_AUTO_PARTY_INFO_OK)		// 2009-09-09 ~ 2010-01-26 by dhjin, 인피니티 - 자동 편대 정보 전송, I -> C
+struct MSG_FI_PARTY_AUTO_CREATE {
+	INT				PartyMemberListCount;
+	UID32_t			MasterUID;
+	_ARRAY(UID32_t);
+};
+struct MSG_FI_PARTY_AUTO_CREATE_OK {
+	PartyID_t				PartyID;
+	MEX_FIELD_PARTY_INFO	FieldPartyInfo;
+	INT						PartyMemberListCount;
+	UID32_t					MasterUID;
+	_ARRAY(UID32_t);
+};
+struct MSG_FC_PARTY_AUTO_CREATED {
+	PartyID_t				PartyID;
+};
+struct MSG_IC_PARTY_GET_AUTO_PARTY_INFO {
+	PartyID_t				PartyID;
+};
+struct MSG_IC_PARTY_GET_AUTO_PARTY_INFO_OK {
+	PartyID_t				PartyID;
+	SPARTY_INFO				PartyInfo;
+	UID32_t					MasterUniqueNumber;			// 파티장의 CharacterUniqueNumber
+	UINT					nNumOfPartyMembers;
+	ARRAY_(IM_PARTY_MEMBER_INFO);
+};
+
+#define T_FI_PARTY_DISCONNECT_LEAVE_OK		(MessageType_t)((T0_FI_PARTY<<8)|T1_FI_PARTY_DISCONNECT_LEAVE_OK)	// 2009-09-09 ~ 2010-01-27 by dhjin, 인피니티 - 강제 종료 유저 파티에서 탈퇴처리!
+typedef MSG_FI_PARTY_LEAVE_OK MSG_FI_PARTY_DISCONNECT_LEAVE_OK;
+
+///////////////////////////////////////////////////////////////////////////////
+// 2010-01-26 by cmkwon, 캐쉬 아이템 한정판매 시스템 구현 - 
+typedef vector<ITEM_W_COUNT>				vectITEM_W_COUNT;
+typedef mt_vector<ITEM_W_COUNT>				mtvectITEM_W_COUNT;
+
+///////////////////////////////////////////////////////////////////////////////
+// 2009-09-09 ~ 2010-02-10 by dhjin, 인피니티 - 발동류장착아이템
+#define T_FC_ITEM_USE_INVOKING_WEAR_ITEM	(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_USE_INVOKING_WEAR_ITEM)	// 2009-09-09 ~ 2010-02-10 by dhjin, 인피니티 - 발동류장착아이템 사용, C->F
+struct MSG_FC_ITEM_USE_INVOKING_WEAR_ITEM {
+	ItemUID_t				InvokingWearItemUID;
+};
+
+#define T_FC_ITEM_EXPIRE_TIME_INVOKING_WEAR_ITEM	(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_EXPIRE_TIME_INVOKING_WEAR_ITEM)	// C->F, 2009-09-09 ~ 2010-02-10 by dhjin, 인피니티 - 발동류장착아이템 지속 시간 완료
+#define T_FC_MINIMAP_SET_MARKER	(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_MINIMAP_SET_MARKER)
+struct MSG_FC_MINIMAP_SET_MARKER {
+	char				CharacterName[SIZE_MAX_CHARACTER_NAME];
+	POINT				ptMarkerPos;
+	int					nEventType;
+	int					nParam1;
+	int					nParam2;
+	int					nParam3;
+	MAP_CHANNEL_INDEX	MapChannelIdx;
+};
+struct MSG_FC_ITEM_EXPIRE_TIME_INVOKING_WEAR_ITEM {
+	ItemUID_t				InvokingWearItemUID;
+};
+
+#define T_FC_INFO_APPLY_DESTPARAM		(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_APPLY_DESTPARAM)			// 2009-09-09 ~ 2010-02-10 by dhjin, 인피니티 - 발동류장착아이템, DestParam 적용 유저 정보 전송
+struct MSG_FC_INFO_APPLY_DESTPARAM {
+	ClientIndex_t			ApplyClientIdx;
+	DestParam_t				ApplyDestParam;
+	EffectIdx_t				ApplyEffectIdx;
+	ItemUID_t				ApplyItemUID;
+};
+
+#define T_FC_INFO_APPLY_DESTPARAM_LIST	(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_APPLY_DESTPARAM_LIST)			// 2009-09-09 ~ 2010-02-10 by dhjin, 인피니티 - 발동류장착아이템, DestParam 적용 유저 정보 전송
+struct APPLY_DESTPARAM_INFO {
+	DestParam_t				ApplyDestParam;
+	EffectIdx_t				ApplyEffectIdx;
+};
+struct MSG_FC_INFO_APPLY_DESTPARAM_LIST {
+	ClientIndex_t			ApplyClientIdx;
+	ItemUID_t				ApplyItemUID;
+	UINT					ApplyDestParamCnt;
+	ARRAY_(APPLY_DESTPARAM_INFO);
+};
+
+#define T_FC_ITEM_END_COOLINGTIME_ITEM		(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_END_COOLINGTIME_ITEM)	// 2009-09-09 ~ 2010-02-10 by dhjin, 인피니티 - 발동류장착아이템, 쿨타임 종료 C->F
+struct MSG_FC_ITEM_END_COOLINGTIME_ITEM {
+	ItemUID_t				ItemUID;
+};
+
+#define T_FC_ITEM_END_COOLINGTIME_ITEM_OK		(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_END_COOLINGTIME_ITEM_OK)	// 2009-09-09 ~ 2010-02-10 by dhjin, 인피니티 - 발동류장착아이템, 쿨타임 종료 F->C
+struct MSG_FC_ITEM_END_COOLINGTIME_ITEM_OK {
+	ItemUID_t				ItemUID;
+};
+
+#define T_FC_ITEM_GET_COOLINGTIME_INFO		(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_GET_COOLINGTIME_INFO)	// 2009-09-09 ~ 2010-02-10 by dhjin, 인피니티 - 발동류장착아이템, 쿨타임 정보 요청 C->F
+#define T_FC_ITEM_GET_COOLINGTIME_INFO_OK	(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_GET_COOLINGTIME_INFO_OK)	// 2009-09-09 ~ 2010-02-10 by dhjin, 인피니티 - 발동류장착아이템, 쿨타임 정보 요청 F->C
+struct MSG_FC_ITEM_GET_COOLINGTIME_INFO_OK	{
+	UID64_t			ItemUID;
+	INT				CoolingTimeStamp;		// 지금까지 사용된 시간(단위:초)
+};
+
+#define T_FC_ITEM_USE_INVOKING_WEAR_ITEM_BUFF		(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_USE_INVOKING_WEAR_ITEM_BUFF)	// 2009-09-09 ~ 2010-02-10 by dhjin, 인피니티 - 발동류장착아이템, 버프 올리세요 F->C
+struct MSG_FC_ITEM_USE_INVOKING_WEAR_ITEM_BUFF {
+	ItemUID_t				ItemUID;
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// 2010-03-31 by dhjin, 인피니티(기지방어) -
+#define T_FC_INFINITY_CHANGE_ALIVE_FOR_GAMECLEAR_MONSTERHP			(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_CHANGE_ALIVE_FOR_GAMECLEAR_MONSTERHP)		// 2010-03-31 by dhjin, 인피니티(기지방어) - 인피 사망시 패널티, F -> C
+struct MSG_FC_INFINITY_CHANGE_ALIVE_FOR_GAMECLEAR_MONSTERHP {
+	char			DeadCharactarName[SIZE_MAX_CHARACTER_NAME];
+	MonIdx_t		MonsterNum;
+	ClientIndex_t	MonsterIdx;
+	float			CurrentHP;
+};
+
+#define T_FC_MONSTER_CREATED_ALIVE_FOR_GAMECLEAR					(MessageType_t)((T0_FC_MONSTER<<8)|T1_FC_MONSTER_CREATED_ALIVE_FOR_GAMECLEAR)		// 2010-03-31 by dhjin, 인피니티(기지방어) - F -> C
+struct MSG_FC_MONSTER_CREATED_ALIVE_FOR_GAMECLEAR
+{
+	MonIdx_t		MonsterNum;
+	ClientIndex_t	MonsterIdx;
+	float			CurrentHP;
+
+	// 2010. 06. 08 by hsLee 인피니티 필드 2차 난이도 조절. (아군 동일 밸런스 적용.) - MAX HP 추가.
+	float			MaxHP;
+};
+
+
+#define T_FC_ITEM_UPDATE_TRANSFORMER_OK				(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_UPDATE_TRANSFORMER_OK)	// F->C(n), // 2010-03-18 by cmkwon, 몬스터변신 구현 - 
+struct MSG_FC_ITEM_UPDATE_TRANSFORMER_OK		// 2010-03-18 by cmkwon, 몬스터변신 구현 - 
+{
+	UID32_t			CharacUID;
+	ClientIndex_t	ClientIdx;
+	INT				MonsterUnitKind;
+};
+
+#define T_FI_PARTY_UPDATE_ITEM_TRANSFORMER_OK			(MessageType_t)((T0_FI_PARTY<<8)|T1_FI_PARTY_UPDATE_ITEM_TRANSFORMER_OK)	// F->I, // 2010-03-18 by cmkwon, 몬스터변신 구현 - 
+typedef MSG_FC_ITEM_UPDATE_TRANSFORMER_OK	MSG_FI_PARTY_UPDATE_ITEM_TRANSFORMER_OK;	// 2010-03-18 by cmkwon, 몬스터변신 구현 - 
+
+#define T_IC_PARTY_UPDATE_ITEM_TRANSFORMER_OK			(MessageType_t)((T0_IC_PARTY<<8)|T1_IC_PARTY_UPDATE_ITEM_TRANSFORMER_OK)	// I -> C(n), // 2010-03-18 by cmkwon, 몬스터변신 구현 - 
+typedef MSG_FC_ITEM_UPDATE_TRANSFORMER_OK	MSG_IC_PARTY_UPDATE_ITEM_TRANSFORMER_OK;	// 2010-03-18 by cmkwon, 몬스터변신 구현 - 
+
+///////////////////////////////////////////////////////////////////////////////
+// 2010-03-23 by cmkwon, 인피니티 입장 캐쉬 아이템 구현 - 
+#define T_FtoA_INFINITY_START_CHECK			(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_INFINITY_START_CHECK)		// AF->MF, // 2010-03-23 by cmkwon, 인피니티 입장 캐쉬 아이템 구현 - 
+#define T_FtoA_INFINITY_START_CHECK_ACK		(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_INFINITY_START_CHECK_ACK)	// MF->AF, // 2010-03-23 by cmkwon, 인피니티 입장 캐쉬 아이템 구현 - 
+struct MSG_FtoA_INFINITY_START_CHECK		// 2010-03-23 by cmkwon, 인피니티 입장 캐쉬 아이템 구현 - 
+{
+	UID32_t			AccountUID;
+	UID32_t			MFSCharacterUID;
+	ClientIndex_t	MFSClientIndex;	
+	ClientIndex_t	AFSClientIndex;	
+	BOOL			bCheckReentryTicket;	// 
+	eINFINITY_MODE		InfinityMode;
+	InfinityCreateUID_t	InfinityCreateUID;	
+};
+
+struct MSG_FtoA_INFINITY_START_CHECK_ACK		// 2010-03-23 by cmkwon, 인피니티 입장 캐쉬 아이템 구현 - 
+{
+	Err_t			ErrorCode;
+ 	UID32_t			AccountUID;
+	ClientIndex_t	AFSClientIndex;	
+	eINFINITY_MODE		InfinityMode;
+	InfinityCreateUID_t	InfinityCreateUID;	
+};
+
+#define T_FN_BATTLE_ATTACK_SKILL_CANCEL					(MessageType_t)((T0_FN_BATTLE<<8)|T1_FN_BATTLE_ATTACK_SKILL_CANCEL)				// 2010-03-31 by dhjin, 인피니티(기지방어) - N -> F
+struct MSG_FN_BATTLE_ATTACK_SKILL_CANCEL
+{
+	MAP_CHANNEL_INDEX	MapInfo;
+	ClientIndex_t		MonsterIndex;				
+	INT					SkillItemNum;				// 스킬의 ItemNum
+};
+
+#define T_FC_MONSTER_SKILL_CANCEL							(MessageType_t)((T0_FC_MONSTER<<8)|T1_FC_MONSTER_SKILL_CANCEL)			// 2010-03-31 by dhjin, 인피니티(기지방어) - , F->C(n)
+struct MSG_FC_MONSTER_SKILL_CANCEL {
+	ClientIndex_t		MonsterIndex;				
+	INT					SkillItemNum;				// 스킬의 ItemNum
+};
+
+#define T_FtoA_UPDATE_ITEM_NOTI			(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_UPDATE_ITEM_NOTI)		//	MFS -> AFS // 2010-03-31 by dhjin, 인피니티 입장 캐쉬 아이템 구현 - 
+struct MSG_FtoA_UPDATE_ITEM_NOTI {
+	ClientIndex_t		AFSClientIdx;
+	ItemNum_t			ItemNum;
+};
+
+#define T_FtoA_INFINITY_UPDATE_USER_MAP_INFO	(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_INFINITY_UPDATE_USER_MAP_INFO)	//	AFS -> MFS // 2010-04-06 by cmkwon, 인피2차 추가 수정 - 
+struct MSG_FtoA_INFINITY_UPDATE_USER_MAP_INFO
+{
+	UID32_t				AccountUID;
+	UID32_t				MFSCharacterUID;
+	ClientIndex_t		MFSClientIndex;
+	MapIndex_t			InfinityMapIndex;				// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 팅긴 유저 재접속 처리
+	ChannelIndex_t		InfinityChannelIndex;			// 2009-09-09 ~ 2010 by dhjin, 인피니티 - 팅긴 유저 재접속 처리
+};
+
+
+// 2010-05-04 by shcho, 인피니티 난이도 조절 start
+//#define T_FC_INFINITY_DIFFICULTY_LIST		(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_DIFFICULTY_LIST) // C -> AFS // 2010-05-04 by shcho, 난이도 정보 목록 요청
+#define T_FC_INFINITY_DIFFICULTY_LIST_OK		(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_DIFFICULTY_LIST_OK) // AFS -> C // 2010-05-04 by shcho, 클라이언트 난이도 정보 목록 요청에 응답
+struct MSG_INFINITY_DIFFICULTY_LIST_OK
+{
+ 	int Difficulty_List_count; //리스트가 몇 개인지 보냄.
+ 	_ARRAY(INFINITY_DIFFICULTY_BONUS_INFO);
+};
+// 2010-05-04 by shcho, 인피니티 난이도 조절 end
+
+
+// 2010. 05. 19 by hsLee 인피니티 필드 2차 난이도 조절. (신호처리 + 몬스터 처리(서버) )
+#define T_FC_INFINITY_CHANGE_DIFFICULTY_LEVEL		(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_CHANGE_DIFFICULTY_LEVEL)		// C -> AFS // 2010-05-24 by hsLee, 난이도 변경 요청.
+#define T_FC_INFINITY_CHANGE_DIFFICULTY_LEVEL_OK	(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_CHANGE_DIFFICULTY_LEVEL_OK)	// AFS -> C // 2010-05-24 by hsLee, 난이도 변경 요청 결과.
+
+struct MSG_FC_INFINITY_CHANGE_DIFFICULTY_LEVEL 
+{
+	INT	InfinityDifficultyLevel;
+};
+
+// 2010. 06. 01 by hsLee 인피니티 필드 2차 난이도 조절. (에디트 박스 추가 + 난이도 변경 결과 패킷 변경.)
+struct MSG_FC_INFINITY_CHANGE_DIFFICULTY_LEVEL_OK
+{
+	BOOL bUpdate;									// 클라이언트 메시지 처리를 위한 Flag.
+	INT InfinityDifficultyLevel;
+};
+// End 2010. 06. 01 by hsLee 인피니티 필드 2차 난이도 조절. (에디트 박스 추가 + 난이도 변경 결과 패킷 변경.)
+
+// End 2010. 05. 19 by hsLee 인피니티 필드 2차 난이도 조절. (신호처리 + 몬스터 처리(서버) )
+
+// 2010-06-01 by shcho, GLogDB 관련 -
+#define T_FL_LOG_EVENT_PARTICIPATION_RATE		(MessageType_t)((T0_FL_LOG<<8)|T1_FL_LOG_EVENT_PARTICIPATION_RATE)			// F -> L // 2010-06-01 by shcho, GLogDB 관련 -
+struct MSG_FL_LOG_EVENT_PARTICIPATION_RATE
+{
+	ATUM_DATE_TIME		StartTime;
+	ATUM_DATE_TIME		EndTime;
+	INT					ParticipationCount;
+	USHORT				ParticipationRate;
+	CHAR				Description[SIZE_MAX_GLOG_EVENT_DESCRIPTION];
+};
+
+// 2010-06-01 by shcho, PC방 권한 획득(캐쉬) 아이템 - 
+#define T_FC_ITEM_HOMEPREMIUM_INFO			(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_HOMEPREMIUM_INFO)	// F->C, // 2010-06-01 by shcho, PC방 권한 획득(캐쉬) 아이템 -
+struct MSG_FC_ITEM_HOMEPREMIUM_INFO
+{
+	BOOL bUse; // 0:FALSE  1:TRUE
+};
+#ifndef _INET_PET
+#define T_FC_ITEM_PET_HEADER				(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_PET_HEADER)			// 2010-06-15 by shcho&hslee 펫시스템 - 클라이언트 패킷 전송 커맨드 추가 
+#define T_FC_ITEM_PET						(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_PET)					// 2010-06-15 by shcho&hslee 펫시스템 - 클라이언트 패킷 전송 커맨드 추가 
+#define T_FC_ITEM_PET_BASEDATA_OK			(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_PET_BASEDATA_OK)		// 2010-06-15 by shcho&hslee 펫시스템 - 클라이언트 패킷 전송 커맨드 추가 
+#define T_FC_ITEM_PET_SKILLDATA_OK			(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_PET_SKILLDATA_OK)	// 2010-06-15 by shcho&hslee 펫시스템 - 클라이언트 패킷 전송 커맨드 추가 
+#define T_FC_ITEM_PET_SOCKETDATA_OK			(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_PET_SOCKETDATA_OK)	// 2010-06-15 by shcho&hslee 펫시스템 - 클라이언트 패킷 전송 커맨드 추가 
+#define T_FC_ITEM_PET_DONE					(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_PET_DONE)			// 2010-06-15 by shcho&hslee 펫시스템 - 클라이언트 패킷 전송 커맨드 추가 
+#endif
+#ifdef _INET_PET
+#define T_FC_ITEM_PET_HEADER				(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_PET_HEADER)
+#define T_FC_ITEM_PET						(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_PET)	
+#define T_FC_ITEM_PET_BASEDATA_OK			(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_PET_BASEDATA_OK)
+#define T_FC_ITEM_PET_DONE					(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_PET_DONE)
+
+#define T_FC_ITEM_PET_SET_NAME				(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_PET_SET_NAME)
+#define T_FC_ITEM_PET_SET_NAME_OK			(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_PET_SET_NAME_OK)
+#define T_FC_ITEM_PET_SET_EXP_RATIO			(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_PET_SET_EXP_RATIO)
+#define T_FC_ITEM_PET_SET_EXP_RATIO_OK		(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_PET_SET_EXP_RATIO_OK)
+#define T_FC_ITEM_PET_CHANGE_LEVEL			(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_PET_CHANGE_LEVEL)
+#define T_FC_ITEM_PET_CHANGE_EXP			(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_PET_CHANGE_EXP)
+
+#define T_FC_ITEM_PET_SET_SOCKET			(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_PET_SET_SOCKET)
+#define T_FC_ITEM_PET_SET_SOCKET_OK			(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_PET_SET_SOCKET_OK)
+#define T_FC_ITEM_PET_SET_KIT_SLOT			(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_PET_SET_KIT_SLOT)
+#define T_FC_ITEM_PET_SET_KIT_SLOT_OK		(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_PET_SET_KIT_SLOT_OK)
+#define T_FC_ITEM_PET_SET_AUTOSKILL_SLOT	(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_PET_SET_KIT_AUTOSKILL_SLOT)
+#define T_FC_ITEM_PET_SET_AUTOSKILL_SLOT_OK	(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_PET_SET_KIT_AUTOSKILL_SLOT_OK)
+#endif
+// 2010-06-15 by shcho&hslee 펫시스템 - 팻 기본 수치 정보 구조체
+#ifndef _INET_PET
+struct MSG_FC_ITEM_PET_BASEDATA
+{
+	BYTE			ItemUpdateType;										// 아이템 수정 타입, IUT_XXX
+
+	UID64_t			CreatedPetUID;
+	
+	BOOL			EnableEditPetName;
+	BOOL			EnableLevelUp;
+	
+	char			szPetName[SIZE_MAX_PET_NAME];
+	
+	INT				PetIndex;
+	INT				PetLevel;
+	
+	Experience_t	PetExp;
+	
+	FLOAT			Stamina;
+	
+	INT				SourceIndex_Field;
+	INT				SourceIndex_City;
+
+	ItemNum_t		ItemIndex_PetSkill[SIZE_MAX_PETSKILLITEM];
+	
+//	ITEM			sItem_PetSkill[SIZE_MAX_PETSKILLITEM];
+//	ITEM			sItem_PetSocketItem[SIZE_MAX_PETSOCKETITEM];
+};
+#else
+struct MSG_FC_ITEM_PET_BASEDATA
+{
+	BYTE			ItemUpdateType;										// 아이템 수정 타입, IUT_XXX
+	UID64_t			CreatedPetUID;
+	char			PetName[SIZE_MAX_PET_NAME];
+	INT				PetIndex;
+	INT				PetLevel;
+	Experience_t	PetExp;
+	BYTE			PetExpRatio;
+	BYTE			PetEnableSocketCount;
+
+	UID64_t			PetSocketItemUID[SIZE_MAX_PETSOCKET];
+
+	SPET_KIT_SLOT_DATA			PetKitHP;
+	SPET_KIT_SLOT_DATA			PetKitShield;
+	SPET_KIT_SLOT_DATA			PetKitSP;
+
+	SPET_AUTOSKILL_SLOT_DATA	PetAutoSkill;
+};
+#endif
+#ifdef _INET_PET
+struct MSG_FC_ITEM_PET_SET_NAME
+{
+	UID64_t			ItemUniqueNumber;
+	char			PetName[SIZE_MAX_PET_NAME];
+};
+struct MSG_FC_ITEM_PET_SET_NAME_OK
+{
+	UID64_t			ItemUniqueNumber;
+	char			PetName[SIZE_MAX_PET_NAME];
+};
+struct MSG_FC_ITEM_PET_SET_EXP_RATIO
+{
+	UID64_t			ItemUniqueNumber;
+	BYTE			ExpRatio;
+};
+struct MSG_FC_ITEM_PET_SET_EXP_RATIO_OK
+{
+	UID64_t			ItemUniqueNumber;
+	BYTE			ExpRatio;
+};
+struct MSG_FC_ITEM_PET_CHANGE_LEVEL
+{
+	UID64_t			ItemUniqueNumber;
+	BYTE			Level;
+};
+struct MSG_FC_ITEM_PET_CHANGE_EXP
+{
+	UID64_t			ItemUniqueNumber;
+	Experience_t	Experience;
+};
+struct MSG_FC_ITEM_PET_SET_SOCKET
+{
+	UID64_t			ItemUniqueNumber;
+	INT				SocketIndex;
+	UID64_t			PetSocketItemUID;
+};
+struct MSG_FC_ITEM_PET_SET_SOCKET_OK
+{
+	UID64_t			ItemUniqueNumber;
+	INT				SocketIndex;
+	UID64_t			PetSocketItemUID;
+};
+struct MSG_FC_ITEM_PET_SET_KIT_SLOT
+{
+	UID64_t				ItemUniqueNumber;
+	INT					SocketIndex;
+	UID64_t				PetSocketItemUID;
+	SPET_KIT_SLOT_DATA	PetKitHP;
+	SPET_KIT_SLOT_DATA	PetKitShield;
+	SPET_KIT_SLOT_DATA	PetKitSP;
+};
+
+struct MSG_FC_ITEM_PET_SET_KIT_SLOT_OK
+{
+	UID64_t				ItemUniqueNumber;
+	INT					SocketIndex;
+	UID64_t				PetSocketItemUID;
+	SPET_KIT_SLOT_DATA	PetKitHP;
+	SPET_KIT_SLOT_DATA	PetKitShield;
+	SPET_KIT_SLOT_DATA	PetKitSP;
+};
+struct MSG_FC_ITEM_PET_SET_AUTOSKILL_SLOT
+{
+	UID64_t						ItemUniqueNumber;
+	INT							SocketIndex;
+	UID64_t						PetSocketItemUID;
+	SPET_AUTOSKILL_SLOT_DATA	PetAutoSkill;
+};
+
+struct MSG_FC_ITEM_PET_SET_AUTOSKILL_SLOT_OK
+{
+	UID64_t						ItemUniqueNumber;
+	INT							SocketIndex;
+	UID64_t						PetSocketItemUID;
+	SPET_AUTOSKILL_SLOT_DATA	PetAutoSkill;
+};
+#else
+// 2010-06-15 by shcho&hslee 펫시스템 - 팻 스킬 정보 구조체
+struct MSG_FC_ITEM_PET_SKILLDATA
+{
+	UID64_t			CreatePetUID;
+
+	INT				iSlotIndex;
+
+	ITEM			sItem_PetSkill;
+};
+
+
+// 2010-06-15 by shcho&hslee 펫시스템 - 팻 소켓 정보 구조체
+struct MSG_FC_ITEM_PET_SOCKETDATA
+{
+	UID64_t			CreatePetUID;
+	
+	INT				iSlotIndex;
+	
+	ITEM			sItem_PetSocket;
+};
+#endif
+
+#define T_FC_INFINITY_SKIP_ENDING_CINEMA			(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_SKIP_ENDING_CINEMA)		// 인피니티 거점 방어 엔딩 시네마 연출 스킵 요청. 2010. 07. 27 by hsLee.
+#define T_FC_INFINITY_SKIP_ENDING_CINEMA_OK			(MessageType_t)((T0_FC_INFINITY<<8)|T1_FC_INFINITY_SKIP_ENDING_CINEMA_OK)	// 인피니티 거점 방어 엔딩 시네마 연출 스킵 결과. 2010. 07. 27 by hsLee.
+
+struct MSG_FC_INFINITY_SKIP_ENDING					// 인피니티 시네마 연출 스킵 패킷.
+{
+	InfinityCreateUID_t	InfinityCreateUID;			// 인피니티 파티 UID.
+	bool				bNormalEnding;				// 정상 연출 종료 & 스킵 요청 구별 인자.
+};
+
+struct MSG_FC_INFINITY_SKIP_ENDING_CINEMA_OK		// 인피니티 시네마 연출 스킵 결과 패킷.
+{
+	BOOL			EnableSkip;								// 연출 스킵 적용 구별 인자.
+	BOOL			NormalEnding;							// 정상 연출 종료 & 스킵 요청 구별 인자.
+	
+	char			szCharName[SIZE_MAX_CHARACTER_NAME];	// 스킵일 경우 System Message처리에 사용할 요청자 캐릭터 이름.
+
+	ATUM_DATE_TIME	sUpdateTenderItemStartTime;			// 입찰 아이템의 입찰 제한 시간 갱신값. (연출 스킵이 적용된 시각).
+};
+
+// 2010-08-31 by shcho&jskim 아이템용해 시스템 - 용해 시스템 패킷 처리
+#define T_FC_DISSOLVED_ITEM			(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_DISSOLUTIONITEM)		// client -> field
+#define T_FC_DISSOLVED_ITEM_OK		(MessageType_t)((T0_FC_ITEM<<8)|T1_FC_ITEM_DISSOLUTIONITEM_OK)	// field  -> client
+
+struct MSG_FC_DISSOLVED_ITEM // 용해 할 아이템 정보 구조체 client -> field
+{
+	UID64_t UniqueNumber;
+	INT	Itemnum;
+};
+
+struct MSG_FC_DISSOLVED_SUCCESS_AND_FAILED // 용해된 아이템 처리 결과
+{
+	BOOL Item_Success;		// 용해 성공 또는 실패
+	BOOL Dissolved_success;
+};
+// END 2010-08-31 by shcho&jskim 아이템용해 시스템 - 용해 시스템 패킷 처리
+
+// 2010-06-25 by shcho, 인피니티 관련로그 찍기 - 습득 아이템 정보 DB저장
+#define T_FtoA_LOG_INFINITY_USER_GET_TENDERITEM		(MessageType_t)((T0_MF_TO_AF<<8)|T1_FtoA_LOG_INFINITYUSER_GET_TENDERITEM) // Field <- Arena
+
+struct MSG_FtoA_INFINITY_TENDER_ITEM
+{
+	INT			TenderItemNum;		// 획득한 아이템 넘버
+	DiceCnt_t	GDicecount;			// 획득한 주사위 카운트
+	UID64_t		AccountUID;			// 계정 UID
+	CHAR		AccountName[SIZE_MAX_ACCOUNT_NAME];	// 계정 이름
+	UID64_t		CharacterUID;						// 케릭터 UID
+	CHAR		CharacterName[SIZE_MAX_CHARACTER_NAME];	// 케릭터 이름
+	INT			MFSClientIdx;
+	
+};
+// END 2010-06-25 by shcho, 인피니티 관련로그 찍기 - 습득 아이템 정보 DB저장
+
+///////////////////////////////////////////////////////////////////////////////
+// 2011-01-26 by hskim, 인증 서버 구현
+#define T_PAUTH_CONNECT_LOGIN						(MessageType_t)((T0_PAUTH_CONNECT<<8)|T1_PAUTH_CONNECT_LOGIN)
+#define T_PAUTH_CONNECT_LOGIN_OK					(MessageType_t)((T0_PAUTH_CONNECT<<8)|T1_PAUTH_CONNECT_LOGIN_OK)
+#define T_PAUTH_CONNECT_LOGIN_FAIL					(MessageType_t)((T0_PAUTH_CONNECT<<8)|T1_PAUTH_CONNECT_LOGIN_FAIL)
+#define T_PAUTH_CONNECT_LOGIN_SHUTDOWN				(MessageType_t)((T0_PAUTH_CONNECT<<8)|T1_PAUTH_CONNECT_LOGIN_SHUTDOWN)		// 2011-06-22 by hskim, 사설 서버 방지
+
+struct SSERVER_AUTHENTICATION_ACCOUNT
+{
+	UINT64	UniqueNumber;
+	char	szGameName[SIZE_MAX_AUTH_GAMENAME];
+	char	szServerIP[SIZE_MAX_IPADDRESS];
+	char	szServerNetmask[SIZE_MAX_IPADDRESS];
+	char	szPublisher[SIZE_MAX_AUTH_PUBLISHER];
+	int		iAllow;
+	int		iShutdown;
+	char	szResourceFileName[SIZE_MAX_AUTH_RESOURCE_FILE_NAME];
+};
+
+struct QPARAM_AUTHENTICATION_ACCOUNT
+{
+	BOOL	bResult;
+	char	szGameName[SIZE_MAX_AUTH_GAMENAME];
+	char	szServerPublicIP[SIZE_MAX_IPADDRESS];
+	char	szServerPrivateIP[SIZE_MAX_IPADDRESS];
+	char	szCurrentVer[SIZE_MAX_AUTH_CURRENTVER];
+	int		nLanguageType;
+	BYTE	byTestServer;
+	USHORT	nServerPort;
+	BYTE	byUseExternalAuthentication;
+	int		nPreServerGroupCnts;
+	int		nEnableGameServerGroupCnts;
+	
+	BOOL	bAccept;
+	BOOL	bShutdown;
+	char	szAcceptComment[SIZE_MAX_AUTH_ACCEPT_COMMENT];
+	SSERVER_AUTHENTICATION_ACCOUNT AuthAccount;
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// 2011-06-22 by hskim, 사설 서버 방지
+
+// start 2011-06-22 by hskim, 사설 서버 방지
+#define T_IP_AUTHENTICATION_SHUTDOWN			(MessageType_t)((T0_IP_CONNECT<<8)|T1_IP_AUTHENTICATION_SHUTDOWN)	// PreServer 가 Authentication 서버에 인증되지 않았다면 서버 종료
+#define T_FP_AUTHENTICATION_SHUTDOWN			(MessageType_t)((T0_FP_CONNECT<<8)|T1_FP_AUTHENTICATION_SHUTDOWN)	// PreServer 가 Authentication 서버에 인증되지 않았다면 서버 종료
+
+struct MSG_IP_AUTHENTICATION_SHUTDOWN
+{
+	BOOL	bFlag;
+};
+
+struct MSG_FP_AUTHENTICATION_SHUTDOWN
+{
+	BOOL	bFlag;
+};
+// end 2011-06-22 by hskim, 사설 서버 방지
+
+// start 2011-11-03 by shcho, yedang 셧다운제 구현 - 
+#define T_FC_SHUTDOWNMINS_USER_ALTER			(MessageType_t)((T0_FC_CONNECT<<8)|T1_FC_CONNECT_SHUTDOWNMINS_USER_ALTER)	// nobody
+#define T_FC_SHUTDOWNMINS_USER_ENDGAME			(MessageType_t)((T0_FC_CONNECT<<8)|T1_FC_CONNECT_SHUTDOWNMINS_USER_ENDGAME)	// nobody
+
+// end 2011-11-03 by shcho, yedang 셧다운제 구현 - 
+struct MSG_PA_ADMIN_STRATRGYPOINT_INFO_CHANGE
+{
+	char DBName[20];
+};
+typedef MSG_PA_ADMIN_STRATRGYPOINT_INFO_CHANGE	MSG_FP_ADMIN_STRATRGYPOINT_INFO_CHANGE;
+
+#ifdef _INET_LINK_CHAT
+typedef struct						// 2012-06-05 by jhseol, 아템미리보기 - 클라요청 패킷 추가
+{
+	struct ItemEnchantInfo
+	{
+		// 2013-01-24 by jhseol, 아템미리보기 패킷 사이즈 초과로 인한 버그 수정
+		UID64_t		TargetItemUniqueNumber;
+		INT			TargetItemNum;				// 대상 아이템의 ItemNum
+		INT			EnchantItemNum;				// enchant로 쓰인 아이템의 ItemNum
+		// end 2013-01-24 by jhseol, 아템미리보기 패킷 사이즈 초과로 인한 버그 수정
+		int			EnchantCount;
+	};
+	ItemEnchantInfo ItemEnchant[6][8];
+#ifdef BONUS_STAT_ITEM
+	BONUS			AddingBonus[7];
+#endif
+} MSG_FC_CHARACTER_GET_USER_ITEM_INFO_OK_DONE;
+#endif
+// 2015-08-11 by silver for HP info of SP
+#define T_FC_INFO_SP_HP_SILVER		(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_SP_HP_SILVER)
+struct MSG_IC_ADMIN_COMMAND_EVO_WHO_OK	// 2022-04-14 by robz
+{
+	CHARACTER Character;
+};
+struct MSG_FC_INFO_SP_HP_SILVER
+{
+	/*int	currentHP;
+	int	maxHP;
+	int mapindex;*/
+	USHORT mapindex;
+	float my_scale;
+};
+// 2015-08-11 by silver
+// start 2015-08-14 by silver
+#define T_FC_INFO_SP_AT_LOGIN_SILVER	(MessageType_t)((T0_FC_INFO<<8)|T1_FC_INFO_SP_AT_LOGIN_SILVER)
+struct MSG_FC_INFO_SP_AT_LOGIN_SILVER
+{
+	float my_scale_tab[STRATEGYPOINT_AMOUNT];
+};
+// end 2015-08-14 by silver
+#define T1_FC_CHARACTER_DEAD_NOTIFY_MAP                    0xA2    // send killmessage to all players on same map
+#define T_FC_CHARACTER_DEAD_NOTIFY_MAP                (MessageType_t)((T0_FC_CHARACTER<<8)|T1_FC_CHARACTER_DEAD_NOTIFY_MAP)
+
+struct MSG_FC_CHARACTER_DEAD_NOTIFY_MAP
+{
+    char AttackerName[SIZE_MAX_CHARACTER_NAME];
+    char TargetName[SIZE_MAX_CHARACTER_NAME];
+    BYTE AttackerInfluence;
+    BYTE TargetInfluence;
+    MAP_CHANNEL_INDEX MapChannel;
+    USHORT KilledCount;
+    byte DamageType;
+};
+
+
+// 2013-11-25 by jhseol&bckim, 거래소 - 패킷 추가
+/////////////////////////////////////////////////////////////////////////////////////////////
+// T0_FC_MARKET
+#define T1_FC_MARKET_BASE_INFO_REQUEST					0x00	// 초기정보 요청
+#define T1_FC_MARKET_BASE_INFO_HEADER					0x01	// 초기정보 해더
+#define T1_FC_MARKET_BASE_INFO_OK						0x02	// 초기정보 데이터
+#define T1_FC_MARKET_BASE_INFO_DONE						0x03	// 초기정보 완료
+#define T1_FC_MARKET_SEARCH_REQUEST						0x04	// 검색 요청
+#define T1_FC_MARKET_SEARCH_HEADER						0x05	// 검색 해더
+#define T1_FC_MARKET_SEARCH_OK							0x06	// 검색 데이터
+#define T1_FC_MARKET_SEARCH_DONE						0x07	// 검색 완료
+#define T1_FC_MARKET_PAGING_REQUEST						0x08	// 페이지변경 요청
+#define T1_FC_MARKET_PAGING_HEADER						0x09	// 페이지변경 해더
+#define T1_FC_MARKET_PAGING_OK							0x0A	// 페이지변경 데이터
+#define T1_FC_MARKET_PAGING_DONE						0x0B	// 페이지변경 완료
+#define T1_FC_MARKET_SORT_REQUEST						0x0C	// 정렬 요청
+#define T1_FC_MARKET_SORT_HEADER						0x0D	// 정렬 해더
+#define T1_FC_MARKET_SORT_OK							0x0E	// 정렬 데이터
+#define T1_FC_MARKET_SORT_DONE							0x0F	// 정렬 완료
+#define T1_FC_MARKET_SELL_REQUEST						0x10	// 아이템 등록 요청
+#define T1_FC_MARKET_SELL_OK							0x11	// 아이템 등록 완료
+#define T1_FC_MARKET_BUY_REQUEST						0x12	// 아이템 구매 요청
+#define T1_FC_MARKET_BUY_OK								0x13	// 아이템 구매 완료
+#define T1_FC_MARKET_GET_REQUEST						0x14	// 아이템 회수 요청
+#define T1_FC_MARKET_GET_OK								0x15	// 아이템 회수 완료
+#define T1_FC_MARKET_MY_LIST_REQUEST					0x16	// 판매현황 요청
+#define T1_FC_MARKET_MY_LIST_HEADER						0x17	// 판매현황 해더
+#define T1_FC_MARKET_MY_LIST_OK							0x18	// 판매현황 데이터
+#define T1_FC_MARKET_MY_LIST_DONE						0x19	// 판매현황 완료
+
+#define T_FC_MARKET_BASE_INFO_REQUEST	(MessageType_t)((T0_FC_MARKET<<8)|T1_FC_MARKET_BASE_INFO_REQUEST)	// C->F // 초기정보 요청
+#define T_FC_MARKET_BASE_INFO_HEADER	(MessageType_t)((T0_FC_MARKET<<8)|T1_FC_MARKET_BASE_INFO_HEADER)	// F->C // 초기정보 해더
+#define T_FC_MARKET_BASE_INFO_OK		(MessageType_t)((T0_FC_MARKET<<8)|T1_FC_MARKET_BASE_INFO_OK)		// F->C // 초기정보 데이터
+#define T_FC_MARKET_BASE_INFO_DONE		(MessageType_t)((T0_FC_MARKET<<8)|T1_FC_MARKET_BASE_INFO_DONE)		// F->C // 초기정보 완료
+#define T_FC_MARKET_SEARCH_REQUEST		(MessageType_t)((T0_FC_MARKET<<8)|T1_FC_MARKET_SEARCH_REQUEST)		// C->F // 검색 요청
+#define T_FC_MARKET_SEARCH_HEADER		(MessageType_t)((T0_FC_MARKET<<8)|T1_FC_MARKET_SEARCH_HEADER)		// F->C // 검색 해더
+#define T_FC_MARKET_SEARCH_OK			(MessageType_t)((T0_FC_MARKET<<8)|T1_FC_MARKET_SEARCH_OK)			// F->C // 검색 데이터
+#define T_FC_MARKET_SEARCH_DONE			(MessageType_t)((T0_FC_MARKET<<8)|T1_FC_MARKET_SEARCH_DONE)			// F->C // 검색 완료
+#define T_FC_MARKET_PAGING_REQUEST		(MessageType_t)((T0_FC_MARKET<<8)|T1_FC_MARKET_PAGING_REQUEST)		// C->F // 페이지변경 요청
+#define T_FC_MARKET_PAGING_HEADER		(MessageType_t)((T0_FC_MARKET<<8)|T1_FC_MARKET_PAGING_HEADER)		// F->C // 페이지변경 해더
+#define T_FC_MARKET_PAGING_OK			(MessageType_t)((T0_FC_MARKET<<8)|T1_FC_MARKET_PAGING_OK)			// F->C // 페이지변경 데이터
+#define T_FC_MARKET_PAGING_DONE			(MessageType_t)((T0_FC_MARKET<<8)|T1_FC_MARKET_PAGING_DONE)			// F->C // 페이지변경 완료
+#define T_FC_MARKET_SORT_REQUEST		(MessageType_t)((T0_FC_MARKET<<8)|T1_FC_MARKET_SORT_REQUEST)		// C->F // 정렬 요청
+#define T_FC_MARKET_SORT_HEADER			(MessageType_t)((T0_FC_MARKET<<8)|T1_FC_MARKET_SORT_HEADER)			// F->C // 정렬 해더
+#define T_FC_MARKET_SORT_OK				(MessageType_t)((T0_FC_MARKET<<8)|T1_FC_MARKET_SORT_OK)				// F->C // 정렬 데이터
+#define T_FC_MARKET_SORT_DONE			(MessageType_t)((T0_FC_MARKET<<8)|T1_FC_MARKET_SORT_DONE)			// F->C // 정렬 완료
+#define T_FC_MARKET_SELL_REQUEST		(MessageType_t)((T0_FC_MARKET<<8)|T1_FC_MARKET_SELL_REQUEST)		// C->F // 아이템 등록 요청
+#define T_FC_MARKET_SELL_OK				(MessageType_t)((T0_FC_MARKET<<8)|T1_FC_MARKET_SELL_OK)				// F->C // 아이템 등록 완료
+#define T_FC_MARKET_BUY_REQUEST			(MessageType_t)((T0_FC_MARKET<<8)|T1_FC_MARKET_BUY_REQUEST)			// C->F // 아이템 구매 요청
+#define T_FC_MARKET_BUY_OK				(MessageType_t)((T0_FC_MARKET<<8)|T1_FC_MARKET_BUY_OK)				// F->C // 아이템 구매 완료
+#define T_FC_MARKET_GET_REQUEST			(MessageType_t)((T0_FC_MARKET<<8)|T1_FC_MARKET_GET_REQUEST)			// C->F // 아이템 회수 요청
+#define T_FC_MARKET_GET_OK				(MessageType_t)((T0_FC_MARKET<<8)|T1_FC_MARKET_GET_OK)				// F->C // 아이템 회수 완료
+#define T_FC_MARKET_MY_LIST_REQUEST		(MessageType_t)((T0_FC_MARKET<<8)|T1_FC_MARKET_MY_LIST_REQUEST)		// C->F // 판매현황 요청
+#define T_FC_MARKET_MY_LIST_HEADER		(MessageType_t)((T0_FC_MARKET<<8)|T1_FC_MARKET_MY_LIST_HEADER)		// F->C // 판매현황 해더
+#define T_FC_MARKET_MY_LIST_OK			(MessageType_t)((T0_FC_MARKET<<8)|T1_FC_MARKET_MY_LIST_OK)			// F->C // 판매현황 데이터
+#define T_FC_MARKET_MY_LIST_DONE		(MessageType_t)((T0_FC_MARKET<<8)|T1_FC_MARKET_MY_LIST_DONE)		// F->C // 판매현황 완료
+
+struct MSG_FC_MARKET_SEARCH_REQUEST // 검색 요청 패킷
+{
+	BYTE			Kind;				// 아이템 종류(기본값 0) 0=전체
+	BYTE			LevelMin;			// 레벨(기본값 0)
+	BYTE			LevelMax;			// 레벨(기본값 0)
+	BYTE			EnchantMin;			// 인첸트(기본값 0)
+	BYTE			EnchantMax;			// 인첸트(기본값 0)
+	USHORT			ItemGear;			// 사용가능 기어(기본값 0)
+	BYTE			MoneyType;			// 화폐 타입(0=SPI, 1=WP)
+	char			Name[MARKET_ITEM_FULL_NAME];	// 아이템 이름(접두, 접미 포함)
+};
+
+struct MSG_FC_MARKET_PAGING_REQUEST // 페이지 변경 패킷
+{
+	UID64_t			MarketUID;			// 제외시킬 번호(없으면 0)
+	int				SelectPage;			// 선택한 페이지
+};
+
+struct MSG_FC_MARKET_SORT_REQUEST // 정렬 요청 패킷
+{
+	BYTE			SortingType;		// 정렬 종류
+};
+
+typedef struct
+{
+	INT nSellingTime;
+} MSG_FC_MARKET_BASE_INFO_HEAD;
+
+typedef struct // 초기화, 검색, 패이징, 정렬, 판매현황 리스트 패킷
+{
+	MARKET_INFO MarketInfo;
+} MSG_FC_MARKET_BASE_INFO_OK, MSG_FC_MARKET_SEARCH_OK, MSG_FC_MARKET_PAGING_OK, MSG_FC_MARKET_SORT_OK, MSG_FC_MARKET_MY_LIST_OK;
+
+typedef struct // 초기화, 검색, 패이징, 정렬 완료 패킷으로 해당 결과에 따른 전체 페이지와 현제 페이지를 리턴
+{
+	int				ItemCount;			// 검색된 아이템의 수
+	int				MaxPage;			// 전체 페이지 (페이지가 0이면 검색결과가 없다는 의미)
+	int				CurrentPage;		// 보여지는 페이지
+} MSG_FC_MARKET_BASE_INFO_DONE, MSG_FC_MARKET_SEARCH_DONE, MSG_FC_MARKET_PAGING_DONE, MSG_FC_MARKET_SORT_DONE;
+
+typedef struct					// 판매현황 완료 패킷 , 입찰현황 
+{
+	BYTE			MyListItemCount;		// 아이템의 수
+}MSG_FC_MARKET_MY_LIST_DONE, MSG_FC_DESTROY_AUCTION_MY_LIST_DONE;
+
+struct MSG_FC_MARKET_SELL_REQUEST // 물품 등록 요청 패킷
+{
+	UID64_t			ItemUID;			// 아이템 고유번호
+	BYTE			MoneyType;			// 화폐 타입(0=SPI, 1=WP)
+	INT				Price;				// 판매금액
+	INT				Count;				// 판매수량
+	char			Name[MARKET_ITEM_FULL_NAME];	// 아이템 이름(접두, 접미 포함)
+};
+
+struct MSG_FC_MARKET_SELL_OK// 물품 등록 완료 패킷
+{
+	UID64_t			ItemUID;			// 아이템 UID
+};
+
+typedef struct // 구매, 회수 요청 및 완료 패킷
+{
+	UID64_t			MarketUID;			// 거래소 고유번호
+}MSG_FC_MARKET_BUY_REQUEST, MSG_FC_MARKET_BUY_OK;
+
+typedef struct // 회수 요청
+{
+	UID64_t			MarketUID;			// 거래소 고유번호
+	BYTE			MarketStatus;
+}MSG_FC_MARKET_GET_REQUEST, MSG_FC_MARKET_GET_OK;
+
+struct MSG_FL_LOG_MARKET_REGISTRATION	// 게임로그 등록
+{
+	UID64_t				ItemUID;
+	MARKET_INFO			MarketInfo;
+	char* GetWriteLogString(int i_nLogType, char* o_szLogString)
+	{
+		sprintf(o_szLogString, "%s|%d|%d|(%I64d,%d,%d,%d,%d)|(%I64d|%I64d)\r\n", GetGameLogTypeString(i_nLogType), MarketInfo.AccountUID, MarketInfo.CharacterUID
+			, ItemUID, MarketInfo.ItemNum, MarketInfo.ItemCount, MarketInfo.Price, MarketInfo.MoneyType, MarketInfo.MarketUID, MarketInfo.ItemUID);
+		return o_szLogString;
+	}
+};
+struct MSG_FL_LOG_MARKET_BUY			// 게임로그 구매
+{
+	UID32_t				BuyerAccountUID;
+	UID32_t				BuyerCheracterUID;
+	MARKET_INFO			MarketInfo;
+	char* GetWriteLogString(int i_nLogType, char* o_szLogString)
+	{
+		sprintf(o_szLogString, "%s|%d|%d|(%d,%d,%I64d,%I64d,%d,%d,%d,%d)\r\n", GetGameLogTypeString(i_nLogType), BuyerAccountUID, BuyerCheracterUID
+			, MarketInfo.AccountUID, MarketInfo.CharacterUID, MarketInfo.MarketUID, MarketInfo.ItemUID, MarketInfo.ItemNum, MarketInfo.ItemCount, MarketInfo.Price, MarketInfo.MoneyType);
+		return o_szLogString;
+	}
+};
+struct MSG_FL_LOG_MARKET_GET			// 게임로그 회수
+{
+	MARKET_INFO			MarketInfo;
+	char* GetWriteLogString(int i_nLogType, char* o_szLogString)
+	{
+		sprintf(o_szLogString, "%s|%d|%d|(%I64d,%I64d,%d,%d,%d,%d,%d)\r\n", GetGameLogTypeString(i_nLogType), MarketInfo.AccountUID, MarketInfo.CharacterUID
+			, MarketInfo.MarketUID, MarketInfo.ItemUID, MarketInfo.ItemNum, MarketInfo.ItemCount, MarketInfo.Price, MarketInfo.MoneyType, MarketInfo.MarketState);
+		return o_szLogString;
+	}
+};
+// end 2013-11-25 by jhseol&bckim, 거래소 - 패킷 추가
+
+#endif
