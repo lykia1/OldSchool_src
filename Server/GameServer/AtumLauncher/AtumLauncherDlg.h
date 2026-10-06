@@ -16,24 +16,24 @@
 #include "ListBoxEBX.h"
 #include "comboboxebx.h"
 
-// 2008-12-17 by ckPark ·¯½Ã¾Æ ·±ÃÄ
+// 2008-12-17 by ckPark ëŸ¬ì‹œì•„ ëŸ°ì³
 #include "MyEdit.h"
 #include "MyCheck.h"
 #include "MyComboBox.h"
-// end 2008-12-17 by ckPark ·¯½Ã¾Æ ·±ÃÄ
+// end 2008-12-17 by ckPark ëŸ¬ì‹œì•„ ëŸ°ì³
 
 
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // 2005-08-22 by cmkwon
-//	MGame º»¼· PreServer			: 218.38.136.192
-//	MGame Å×¼· PreServer			: 218.38.136.201
-//	MasangSoft ³»ºÎ(¿¥°ÔÀÓ¿ë) Å×¼·	: 121.134.114.145		// 2007-01-03 by cmkwon
-//	MasangSoft ³»ºÎ(ÀÏº»_JPN)		: 121.134.114.144		// 2007-01-03 by cmkwon
-//	MasangSoft ³»ºÎ(°³¹ß_Kor)		: 121.134.114.140		// 2007-01-03 by cmkwon
+//	MGame ë³¸ì„­ PreServer			: 218.38.136.192
+//	MGame í…Œì„­ PreServer			: 218.38.136.201
+//	MasangSoft ë‚´ë¶€(ì— ê²Œì„ìš©) í…Œì„­	: 121.134.114.145		// 2007-01-03 by cmkwon
+//	MasangSoft ë‚´ë¶€(ì¼ë³¸_JPN)		: 121.134.114.144		// 2007-01-03 by cmkwon
+//	MasangSoft ë‚´ë¶€(ê°œë°œ_Kor)		: 121.134.114.140		// 2007-01-03 by cmkwon
 
-// 2007-02-13 by cmkwon, LocalizationDefineCommon.h·Î ÀÌµ¿ÇÔ
+// 2007-02-13 by cmkwon, LocalizationDefineCommon.hë¡œ ì´ë™í•¨
 //
 //// Main PreServer IPs
 //#define MAIN_PRE_SERVER_IP_0			218
@@ -43,9 +43,9 @@
 //#define REGISTRY_BASE_PATH				"SpaceCowboy"
 //#define CLIENT_EXEUTE_FILE_NAME			"SpaceCowboy.atm"
 //#define URL_REGISTER_PAGE				"Sign_up.htm"
-//#define	SG_BOX_FONT_FACENAME			"Times New Roman"			// 2007-02-12 by cmkwon, ±Û¾¾Ã¼
-//#define	SG_BOX_FONT_CHARSET				ANSI_CHARSET				// 2007-02-12 by cmkwon, Ä³¸¯ÅÍ¼Â
-//#define	SG_BOX_FONT_WEIGHT				FW_NORMAL					// 2007-02-12 by cmkwon, ±Û¾¾Ã¼ µÎ±ú
+//#define	SG_BOX_FONT_FACENAME			"Times New Roman"			// 2007-02-12 by cmkwon, ê¸€ì”¨ì²´
+//#define	SG_BOX_FONT_CHARSET				ANSI_CHARSET				// 2007-02-12 by cmkwon, ìºë¦­í„°ì…‹
+//#define	SG_BOX_FONT_WEIGHT				FW_NORMAL					// 2007-02-12 by cmkwon, ê¸€ì”¨ì²´ ë‘ê¹¨
 //#ifdef _MGAME_TEST_SERVER
 //	#undef MAIN_PRE_SERVER_IP_0
 //	#undef MAIN_PRE_SERVER_IP_1
@@ -93,9 +93,9 @@
 //	#undef SG_BOX_FONT_CHARSET					// 2007-02-12 by cmkwon
 //	#undef SG_BOX_FONT_WEIGHT					// 2007-02-12 by cmkwon	
 //
-//	#define	SG_BOX_FONT_FACENAME					"±¼¸²"					// 2007-02-12 by cmkwon, ±Û¾¾Ã¼
-//	#define	SG_BOX_FONT_CHARSET					ANSI_CHARSET			// 2007-02-12 by cmkwon, Ä³¸¯ÅÍ¼Â
-//	#define	SG_BOX_FONT_WEIGHT						FW_BOLD					// 2007-02-12 by cmkwon, ±Û¾¾Ã¼ µÎ±ú
+//	#define	SG_BOX_FONT_FACENAME					"êµ´ë¦¼"					// 2007-02-12 by cmkwon, ê¸€ì”¨ì²´
+//	#define	SG_BOX_FONT_CHARSET					ANSI_CHARSET			// 2007-02-12 by cmkwon, ìºë¦­í„°ì…‹
+//	#define	SG_BOX_FONT_WEIGHT						FW_BOLD					// 2007-02-12 by cmkwon, ê¸€ì”¨ì²´ ë‘ê¹¨
 //
 //	// 2007-01-03 by cmkwon, 121.134.114.140
 //	#define MAIN_PRE_SERVER_IP_0		121
@@ -122,11 +122,11 @@
 //	#undef SG_BOX_FONT_CHARSET					// 2007-02-12 by cmkwon
 //	#undef SG_BOX_FONT_WEIGHT					// 2007-02-12 by cmkwon	
 //
-//	#define	SG_BOX_FONT_FACENAME					"Times New Roman"		// 2007-02-12 by cmkwon, ±Û¾¾Ã¼
-//	#define	SG_BOX_FONT_CHARSET					ANSI_CHARSET			// 2007-02-12 by cmkwon, Ä³¸¯ÅÍ¼Â
-//	#define	SG_BOX_FONT_WEIGHT						FW_BOLD					// 2007-02-12 by cmkwon, ±Û¾¾Ã¼ µÎ±ú
+//	#define	SG_BOX_FONT_FACENAME					"Times New Roman"		// 2007-02-12 by cmkwon, ê¸€ì”¨ì²´
+//	#define	SG_BOX_FONT_CHARSET					ANSI_CHARSET			// 2007-02-12 by cmkwon, ìºë¦­í„°ì…‹
+//	#define	SG_BOX_FONT_WEIGHT						FW_BOLD					// 2007-02-12 by cmkwon, ê¸€ì”¨ì²´ ë‘ê¹¨
 //
-//#ifdef _TEST_SERVER					// 2006-06-12 by cmkwon, ¹Ì±¹ Gala-Net
+//#ifdef _TEST_SERVER					// 2006-06-12 by cmkwon, ë¯¸êµ­ Gala-Net
 //	// 2006-06-12 by cmkwon, 69.90.214.114
 //	#define MAIN_PRE_SERVER_IP_0		69
 //	#define MAIN_PRE_SERVER_IP_1		90
@@ -134,7 +134,7 @@
 //	#define MAIN_PRE_SERVER_IP_3		114
 //	#define REGISTRY_BASE_PATH			"SpaceCowboy(Eng)_Test"
 //	#define CLIENT_EXEUTE_FILE_NAME		"SpaceCowboy_Test.atm"
-//	#define URL_REGISTER_PAGE			"reg.asp"				// 2006-04-05 by cmkwon, ¼öÁ¤ÇÔ
+//	#define URL_REGISTER_PAGE			"reg.asp"				// 2006-04-05 by cmkwon, ìˆ˜ì •í•¨
 //#else
 //	// 2006-05-19 by cmkwon, 69.90.214.106
 //	#define MAIN_PRE_SERVER_IP_0		69
@@ -150,7 +150,7 @@
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 //// 2006-06-12 by cmkwon
-//#ifdef _VTC_VIET_SERVER				// 2006-03-23 by cmkwon, º£Æ®³² VTC
+//#ifdef _VTC_VIET_SERVER				// 2006-03-23 by cmkwon, ë² íŠ¸ë‚¨ VTC
 //	#undef MAIN_PRE_SERVER_IP_0
 //	#undef MAIN_PRE_SERVER_IP_1
 //	#undef MAIN_PRE_SERVER_IP_2
@@ -162,20 +162,20 @@
 //	#undef SG_BOX_FONT_CHARSET					// 2007-02-12 by cmkwon
 //	#undef SG_BOX_FONT_WEIGHT					// 2007-02-12 by cmkwon	
 //
-//	#define	SG_BOX_FONT_FACENAME					"Times New Roman"		// 2007-02-12 by cmkwon, ±Û¾¾Ã¼
-//	#define	SG_BOX_FONT_CHARSET					VIETNAMESE_CHARSET		// 2007-02-12 by cmkwon, Ä³¸¯ÅÍ¼Â
-//	#define	SG_BOX_FONT_WEIGHT						FW_BOLD					// 2007-02-12 by cmkwon, ±Û¾¾Ã¼ µÎ±ú
+//	#define	SG_BOX_FONT_FACENAME					"Times New Roman"		// 2007-02-12 by cmkwon, ê¸€ì”¨ì²´
+//	#define	SG_BOX_FONT_CHARSET					VIETNAMESE_CHARSET		// 2007-02-12 by cmkwon, ìºë¦­í„°ì…‹
+//	#define	SG_BOX_FONT_WEIGHT						FW_BOLD					// 2007-02-12 by cmkwon, ê¸€ì”¨ì²´ ë‘ê¹¨
 //
-//#ifdef _TEST_SERVER					// 2006-03-23 by cmkwon, º£Æ®³² VTC
+//#ifdef _TEST_SERVER					// 2006-03-23 by cmkwon, ë² íŠ¸ë‚¨ VTC
 //	// 2006-06-09 by cmkwon, 210.245.12.5: VTC-Intecom TestServer
-//	// 2006-09-08 by cmkwon, º¯°æ(210.245.12.5-->222.255.15.54)
+//	// 2006-09-08 by cmkwon, ë³€ê²½(210.245.12.5-->222.255.15.54)
 //	#define MAIN_PRE_SERVER_IP_0		222
 //	#define MAIN_PRE_SERVER_IP_1		255
 //	#define MAIN_PRE_SERVER_IP_2		15
 //	#define MAIN_PRE_SERVER_IP_3		54
 //	#define REGISTRY_BASE_PATH			"SpaceCowboy(Viet)_Test"
 //	#define CLIENT_EXEUTE_FILE_NAME		"SpaceCowboy_Test.atm"
-//	#define URL_REGISTER_PAGE			"reg.asp"				// 2006-04-05 by cmkwon, ¼öÁ¤ÇÔ
+//	#define URL_REGISTER_PAGE			"reg.asp"				// 2006-04-05 by cmkwon, ìˆ˜ì •í•¨
 //#else
 //	// 2006-08-17 by cmkwon, 222.255.15.37: VTC-Intecom PreServer
 //	#define MAIN_PRE_SERVER_IP_0		222
@@ -184,7 +184,7 @@
 //	#define MAIN_PRE_SERVER_IP_3		37
 //	#define REGISTRY_BASE_PATH			"SpaceCowboy(Viet)"
 //	#define CLIENT_EXEUTE_FILE_NAME		"SpaceCowboy.atm"
-//	#define URL_REGISTER_PAGE			"reg.asp"				// 2006-04-05 by cmkwon, ¼öÁ¤ÇÔ
+//	#define URL_REGISTER_PAGE			"reg.asp"				// 2006-04-05 by cmkwon, ìˆ˜ì •í•¨
 //#endif// end_#ifdef _VTC_VIET_TEST_SERVER
 //#endif
 //
@@ -203,30 +203,30 @@
 //	#undef SG_BOX_FONT_CHARSET					// 2007-02-12 by cmkwon
 //	#undef SG_BOX_FONT_WEIGHT					// 2007-02-12 by cmkwon	
 //
-//	#define	SG_BOX_FONT_FACENAME					"±¼¸²"					// 2007-02-12 by cmkwon, ±Û¾¾Ã¼
-//	#define	SG_BOX_FONT_CHARSET					ANSI_CHARSET			// 2007-02-12 by cmkwon, Ä³¸¯ÅÍ¼Â
-//	#define	SG_BOX_FONT_WEIGHT						FW_BOLD					// 2007-02-12 by cmkwon, ±Û¾¾Ã¼ µÎ±ú
+//	#define	SG_BOX_FONT_FACENAME					"êµ´ë¦¼"					// 2007-02-12 by cmkwon, ê¸€ì”¨ì²´
+//	#define	SG_BOX_FONT_CHARSET					ANSI_CHARSET			// 2007-02-12 by cmkwon, ìºë¦­í„°ì…‹
+//	#define	SG_BOX_FONT_WEIGHT						FW_BOLD					// 2007-02-12 by cmkwon, ê¸€ì”¨ì²´ ë‘ê¹¨
 //
-//#ifdef _TEST_SERVER					// 2006-03-23 by cmkwon, º£Æ®³² VTC
-//	// 2006-09-05 by cmkwon, ÀÓ½Ã·Î º»¼·°ú °°ÀÌ ÇØ ³õ´Â´Ù - 218.145.57.83
-//	// 2006-12-22 by cmkwon, 211.189.116.11 <=¿¹´ç¿Â¶óÀÎ
+//#ifdef _TEST_SERVER					// 2006-03-23 by cmkwon, ë² íŠ¸ë‚¨ VTC
+//	// 2006-09-05 by cmkwon, ì„ì‹œë¡œ ë³¸ì„­ê³¼ ê°™ì´ í•´ ë†“ëŠ”ë‹¤ - 218.145.57.83
+//	// 2006-12-22 by cmkwon, 211.189.116.11 <=ì˜ˆë‹¹ì˜¨ë¼ì¸
 //	#define MAIN_PRE_SERVER_IP_0		211
 //	#define MAIN_PRE_SERVER_IP_1		189
 //	#define MAIN_PRE_SERVER_IP_2		116
 //	#define MAIN_PRE_SERVER_IP_3		11
 //	#define REGISTRY_BASE_PATH			"ACEonline_Test"
 //	#define CLIENT_EXEUTE_FILE_NAME		"ACEonline_Test.atm"
-//	#define URL_REGISTER_PAGE			"reg.asp"				// 2006-04-05 by cmkwon, ¼öÁ¤ÇÔ
+//	#define URL_REGISTER_PAGE			"reg.asp"				// 2006-04-05 by cmkwon, ìˆ˜ì •í•¨
 //#else
 //	// 2006-09-05 by cmkwon, 218.145.57.83
-//	// 2006-12-22 by cmkwon, 211.189.116.13 <=¿¹´ç¿Â¶óÀÎ
+//	// 2006-12-22 by cmkwon, 211.189.116.13 <=ì˜ˆë‹¹ì˜¨ë¼ì¸
 //	#define MAIN_PRE_SERVER_IP_0		211
 //	#define MAIN_PRE_SERVER_IP_1		189
 //	#define MAIN_PRE_SERVER_IP_2		116
 //	#define MAIN_PRE_SERVER_IP_3		13
 //	#define REGISTRY_BASE_PATH			"ACEonline"
 //	#define CLIENT_EXEUTE_FILE_NAME		"ACEonline.atm"
-//	#define URL_REGISTER_PAGE			"reg.asp"				// 2006-04-05 by cmkwon, ¼öÁ¤ÇÔ
+//	#define URL_REGISTER_PAGE			"reg.asp"				// 2006-04-05 by cmkwon, ìˆ˜ì •í•¨
 //#endif// end_#ifdef _KOREA_SERVER_2
 //#endif
 
@@ -243,39 +243,39 @@
 #define GAME_MODE_WINDOW		0
 #define GAME_MODE_FULLSCREEN	1
 
-// 2007-12-27 by cmkwon, À©µµ¿ìÁî ¸ğµå ±â´É Ãß°¡ - ÇÊ¿ä ¾øÀ½
-//// 2007-08-23 by cmkwon, Wide ÇØ»óµµ 1280x720(16:9) Ãß°¡ - °ªÀ» Áß°£¿¡ Ãß°¡ÇÔ
-//// 2007-07-24 by cmkwon, ·±Ã³¿¡¼­ 800*600 ÇØ»óµµ »èÁ¦ - ÄŞº¸¹Ú½º ¸®½ºÆ® ÀÎµ¥½º ÇÊ¿ä ¾øÀ½
+// 2007-12-27 by cmkwon, ìœˆë„ìš°ì¦ˆ ëª¨ë“œ ê¸°ëŠ¥ ì¶”ê°€ - í•„ìš” ì—†ìŒ
+//// 2007-08-23 by cmkwon, Wide í•´ìƒë„ 1280x720(16:9) ì¶”ê°€ - ê°’ì„ ì¤‘ê°„ì— ì¶”ê°€í•¨
+//// 2007-07-24 by cmkwon, ëŸ°ì²˜ì—ì„œ 800*600 í•´ìƒë„ ì‚­ì œ - ì½¤ë³´ë°•ìŠ¤ ë¦¬ìŠ¤íŠ¸ ì¸ë°ìŠ¤ í•„ìš” ì—†ìŒ
 ////#define WINDOW_DEGREE_800x600_LOW		0
 ////#define WINDOW_DEGREE_800x600_MEDIUM	1
 ////#define WINDOW_DEGREE_800x600_HIGH		2
 //#define WINDOW_DEGREE_1024x768_LOW		3
 //#define WINDOW_DEGREE_1024x768_MEDIUM	4
 //#define WINDOW_DEGREE_1024x768_HIGH		5
-//#define WINDOW_DEGREE_W1280x720_LOW		6		// 2007-08-23 by cmkwon, Wide ÇØ»óµµ 1280x720(16:9) Ãß°¡ - 
-//#define WINDOW_DEGREE_W1280x720_MEDIUM	7		// 2007-08-23 by cmkwon, Wide ÇØ»óµµ 1280x720(16:9) Ãß°¡ - 
-//#define WINDOW_DEGREE_W1280x720_HIGH	8		// 2007-08-23 by cmkwon, Wide ÇØ»óµµ 1280x720(16:9) Ãß°¡ - 
-//#define WINDOW_DEGREE_W1280x800_LOW		9		// 2007-05-02 by cmkwon, Wide Ãß°¡ - 1280x800(16:10)
-//#define WINDOW_DEGREE_W1280x800_MEDIUM	10		// 2007-05-02 by cmkwon, Wide Ãß°¡
-//#define WINDOW_DEGREE_W1280x800_HIGH	11		// 2007-05-02 by cmkwon, Wide Ãß°¡
+//#define WINDOW_DEGREE_W1280x720_LOW		6		// 2007-08-23 by cmkwon, Wide í•´ìƒë„ 1280x720(16:9) ì¶”ê°€ - 
+//#define WINDOW_DEGREE_W1280x720_MEDIUM	7		// 2007-08-23 by cmkwon, Wide í•´ìƒë„ 1280x720(16:9) ì¶”ê°€ - 
+//#define WINDOW_DEGREE_W1280x720_HIGH	8		// 2007-08-23 by cmkwon, Wide í•´ìƒë„ 1280x720(16:9) ì¶”ê°€ - 
+//#define WINDOW_DEGREE_W1280x800_LOW		9		// 2007-05-02 by cmkwon, Wide ì¶”ê°€ - 1280x800(16:10)
+//#define WINDOW_DEGREE_W1280x800_MEDIUM	10		// 2007-05-02 by cmkwon, Wide ì¶”ê°€
+//#define WINDOW_DEGREE_W1280x800_HIGH	11		// 2007-05-02 by cmkwon, Wide ì¶”ê°€
 //#define WINDOW_DEGREE_1280x960_LOW		12
 //#define WINDOW_DEGREE_1280x960_MEDIUM	13
 //#define WINDOW_DEGREE_1280x960_HIGH		14
 //#define WINDOW_DEGREE_1280x1024_LOW		15
 //#define WINDOW_DEGREE_1280x1024_MEDIUM	16
 //#define WINDOW_DEGREE_1280x1024_HIGH	17
-//#define WINDOW_DEGREE_W1600x900_LOW		18		// 2007-05-02 by cmkwon, Wide Ãß°¡ - 1600x900(16:9)
-//#define WINDOW_DEGREE_W1600x900_MEDIUM	19		// 2007-05-02 by cmkwon, Wide Ãß°¡
-//#define WINDOW_DEGREE_W1600x900_HIGH	20		// 2007-05-02 by cmkwon, Wide Ãß°¡
+//#define WINDOW_DEGREE_W1600x900_LOW		18		// 2007-05-02 by cmkwon, Wide ì¶”ê°€ - 1600x900(16:9)
+//#define WINDOW_DEGREE_W1600x900_MEDIUM	19		// 2007-05-02 by cmkwon, Wide ì¶”ê°€
+//#define WINDOW_DEGREE_W1600x900_HIGH	20		// 2007-05-02 by cmkwon, Wide ì¶”ê°€
 //#define WINDOW_DEGREE_1600x1200_LOW		21
 //#define WINDOW_DEGREE_1600x1200_MEDIUM	22
 //#define WINDOW_DEGREE_1600x1200_HIGH	23
 
-// °ÔÀÓ ½ÃÀÛ ¹öÆ°ÀÌ ´­·¯Á³À» ¶§ controlµéÀ» disable½ÃÅ°±â À§ÇÔ
+// ê²Œì„ ì‹œì‘ ë²„íŠ¼ì´ ëˆŒëŸ¬ì¡Œì„ ë•Œ controlë“¤ì„ disableì‹œí‚¤ê¸° ìœ„í•¨
 #define TIMERID_CONNECT_PRESERVER		1
 #define TIMERID_ENABLE_CONTROL			2
 #define TIMERID_SEND_ALIVE_PACKET		3
-#define TIMERID_NETWORK_STATE_CHECK		4		// 2007-06-18 by cmkwon, ³×Æ®¿öÅ© »óÅÂ Ã¼Å©
+#define TIMERID_NETWORK_STATE_CHECK		4		// 2007-06-18 by cmkwon, ë„¤íŠ¸ì›Œí¬ ìƒíƒœ ì²´í¬
 
 typedef enum
 {	
@@ -285,7 +285,7 @@ typedef enum
 	UPDATE_STATE_DOWNLOADED		= 3
 } FTP_UPDATE_STATE;
 
-// 2008-02-14 by cmkwon, ·±Ã³¿¡¼­ ¼­¹ö±×·ì ¸íÀÌ ±úÁ®µµ °ÔÀÓ ½ÇÇà¿¡ ¹®Á¦°¡ ¾øµµ·Ï ¼öÁ¤ - 
+// 2008-02-14 by cmkwon, ëŸ°ì²˜ì—ì„œ ì„œë²„ê·¸ë£¹ ëª…ì´ ê¹¨ì ¸ë„ ê²Œì„ ì‹¤í–‰ì— ë¬¸ì œê°€ ì—†ë„ë¡ ìˆ˜ì • - 
 struct SSERVER_GROUP_FOR_LAUNCHER
 {
 	int		nIndex;
@@ -293,13 +293,13 @@ struct SSERVER_GROUP_FOR_LAUNCHER
 };
 typedef vector<SSERVER_GROUP_FOR_LAUNCHER>		vectSSERVER_GROUP_FOR_LAUNCHER;
 
-typedef vector<DEVMODE>			vectDEVMODE;		// 2008-01-03 by cmkwon, Áö¿øÇÏ´Â ÇØ»óµµ ¸®½ºÆ®¸¸ º¸¿©ÁÖ±â - 
+typedef vector<DEVMODE>			vectDEVMODE;		// 2008-01-03 by cmkwon, ì§€ì›í•˜ëŠ” í•´ìƒë„ ë¦¬ìŠ¤íŠ¸ë§Œ ë³´ì—¬ì£¼ê¸° - 
 
 /////////////////////////////////////////////////////////////////////////////
 // CAtumLauncherDlg dialog
 class CFTPManager;
 class CHttpManager;
-//class CScreenKeyboardDlg;		// 2007-09-10 by cmkwon, º£Æ®³² È­¸éÅ°º¸µå ±¸Çö -
+//class CScreenKeyboardDlg;		// 2007-09-10 by cmkwon, ë² íŠ¸ë‚¨ í™”ë©´í‚¤ë³´ë“œ êµ¬í˜„ -
 #ifdef _INET_CONFIGURATOR
 class InetConfiguratorDLG;
 #endif
@@ -316,7 +316,7 @@ public:
 	// 2004-07-05, cmkwon
 	CBitmapButton		m_bitmapBtnCancel;
 	CBitmapButton		m_bitmapBtnMin;
-	CBitmapButton		m_bmpBtnHomepage;		// 2007-09-27 by cmkwon, Homepage°¡±â ¹öÆ° Ãß°¡(º£Æ®³² VTC-Intecom ¿äÃ») - ¸â¹ö º¯¼ö Ãß°¡
+	CBitmapButton		m_bmpBtnHomepage;		// 2007-09-27 by cmkwon, Homepageê°€ê¸° ë²„íŠ¼ ì¶”ê°€(ë² íŠ¸ë‚¨ VTC-Intecom ìš”ì²­) - ë©¤ë²„ ë³€ìˆ˜ ì¶”ê°€
 #ifdef _INET_CONFIGURATOR
 	CKbcButton		m_ctlINETCfgBtn;
 #endif
@@ -350,6 +350,8 @@ public:
 
 	CFont				m_fontPlayers;
 	CFont				m_fontNotice;
+	CFont				m_fontModernInput;
+	CFont				m_fontModernSmall;
 
 // Dialog Data
 	//{{AFX_DATA(CAtumLauncherDlg)
@@ -361,10 +363,10 @@ public:
 
 	
 
-	// 2008-12-17 by ckPark ·¯½Ã¾Æ ·±ÃÄ
-	// ·¯½Ã¾Æ Àü¿ë ÄÁÆ®·Ñ
+	// 2008-12-17 by ckPark ëŸ¬ì‹œì•„ ëŸ°ì³
+	// ëŸ¬ì‹œì•„ ì „ìš© ì»¨íŠ¸ë¡¤
 //	CEdit	m_ctrlEditAccount;
-#if defined(SERVICE_TYPE_RUSSIAN_SERVER_1)		// ·¯½Ã¾Æ ·±Ã³ ¼öÁ¤
+#if defined(SERVICE_TYPE_RUSSIAN_SERVER_1)		// ëŸ¬ì‹œì•„ ëŸ°ì²˜ ìˆ˜ì •
 	CMyEdit		m_ctrlEditPassword;
 	CMyEdit		m_ctrlEditAccount;
 	CMyCheck	m_ctrlCheckWindowMode;
@@ -374,7 +376,7 @@ public:
 	CEdit		m_ctrlEditAccount;
 #endif
 	CButton	m_ctrl64Bit;
-	// end 2008-12-17 by ckPark ·¯½Ã¾Æ ·±ÃÄ
+	// end 2008-12-17 by ckPark ëŸ¬ì‹œì•„ ëŸ°ì³
 
 
 
@@ -430,19 +432,19 @@ public:
 	CString				m_szCrocessSuffix;
 	int					m_nWindowModeReg;	// GAME_MODE_FULLSCREEN(1) or GAME_MODE_WINDOW(0)
 	int					m_n64Bit;
-// 2007-12-27 by cmkwon, À©µµ¿ìÁî ¸ğµå ±â´É Ãß°¡ - ¾Æ·¡ÀÇ ½ºÆ®¸µ º¯¼ö·Î ¼öÁ¤ ÇÔ
+// 2007-12-27 by cmkwon, ìœˆë„ìš°ì¦ˆ ëª¨ë“œ ê¸°ëŠ¥ ì¶”ê°€ - ì•„ë˜ì˜ ìŠ¤íŠ¸ë§ ë³€ìˆ˜ë¡œ ìˆ˜ì • í•¨
 //	int					m_nWindowDegreeReg;
-	CString				m_csWindowsResolutionReg;		// 2007-12-27 by cmkwon, À©µµ¿ìÁî ¸ğµå ±â´É Ãß°¡ - ÇØ»óµµ ÀúÀå ½Ã½ºÅÛ ¼öÁ¤
+	CString				m_csWindowsResolutionReg;		// 2007-12-27 by cmkwon, ìœˆë„ìš°ì¦ˆ ëª¨ë“œ ê¸°ëŠ¥ ì¶”ê°€ - í•´ìƒë„ ì €ì¥ ì‹œìŠ¤í…œ ìˆ˜ì •
 
 
-	BOOL				m_bGuardAgreementReg;		// 2009-08-31 by cmkwon, Gameforge4D °ÔÀÓ°¡µå µ¿ÀÇÃ¢ ¶ç¿ì±â - 
+	BOOL				m_bGuardAgreementReg;		// 2009-08-31 by cmkwon, Gameforge4D ê²Œì„ê°€ë“œ ë™ì˜ì°½ ë„ìš°ê¸° - 
 
 	//ysw
 	CString				m_NoticeEdit;
 	int					m_Cur_Rect;
 	DWORD				m_Cur_Percent;
 	BOOL				m_SelectFlag;
-	BOOL				m_bControlEnabled;		// controlÀÇ enable »óÅÂ¸¦ ÀúÀå
+	BOOL				m_bControlEnabled;		// controlì˜ enable ìƒíƒœë¥¼ ì €ì¥
 	CBrush				m_StaticBrushBlack;
 	CBrush				m_StaticBrushGray;
 	CBrush				m_ListBrushGray;
@@ -454,14 +456,14 @@ public:
 	int					m_nOldSel;				// 7/13/2006 by dgwoo list Old Select item
 	CListBoxEBX				*m_ServerList;			// 7/13/2006 by dgwoo combo & list box handler
 
-	int					m_nBirthYear;			// 2007-06-05 by cmkwon, Ãâ»ı³âµµ
+	int					m_nBirthYear;			// 2007-06-05 by cmkwon, ì¶œìƒë…„ë„
 
 	///////////////////////////////////////////////////////////////////////////////	
-	// 2007-06-18 by cmkwon, ³×Æ®¿öÅ© »óÅÂ Ã¼Å© 
-	int					m_nMaxNetworkCheckCount;		// 2007-06-18 by cmkwon, Å×½ºÆ® È½¼ö
-	int					m_nCurNetworkCheckCount;		// 2007-06-18 by cmkwon, ÇöÀç Å×½ºÆ® ÁøÇà È½¼ö
-	DWORD				m_dwNetworkCheckSendTick;		// 2007-06-18 by cmkwon, Å×½ºÆ® ÆĞÅ¶À» Àü¼ÛÇÑ Tick
-	DWORD				m_dwSumPacketTickGap;			// 2007-06-18 by cmkwon, °¢ ÆĞÅ¶ Àü¼Û ÈÄ ¹ŞÀº ½Ã°£ÀÇ ÇÕ
+	// 2007-06-18 by cmkwon, ë„¤íŠ¸ì›Œí¬ ìƒíƒœ ì²´í¬ 
+	int					m_nMaxNetworkCheckCount;		// 2007-06-18 by cmkwon, í…ŒìŠ¤íŠ¸ íšŸìˆ˜
+	int					m_nCurNetworkCheckCount;		// 2007-06-18 by cmkwon, í˜„ì¬ í…ŒìŠ¤íŠ¸ ì§„í–‰ íšŸìˆ˜
+	DWORD				m_dwNetworkCheckSendTick;		// 2007-06-18 by cmkwon, í…ŒìŠ¤íŠ¸ íŒ¨í‚·ì„ ì „ì†¡í•œ Tick
+	DWORD				m_dwSumPacketTickGap;			// 2007-06-18 by cmkwon, ê° íŒ¨í‚· ì „ì†¡ í›„ ë°›ì€ ì‹œê°„ì˜ í•©
 	BOOL NTStartNetworkCheck(void);
 	int NTOnReceivedNetworkCheckOK(int i_nCheckCount);
 	int NTGetPingAverageTime(void);
@@ -474,12 +476,12 @@ public:
 	int CreateDirectory(CString strParent, CList<CString, CString&> &lsDir);
 	BOOL ConnectPreServer();
 
-// 2009-01-30 by cmkwon, ·¯½Ã¾Æ Innova ·±Ã³ ½Ã½ºÅÛ(ÇÁ·Î½ºÆ®) ¼öÁ¤ - ¾Æ·¡¿Í °°ÀÌ ¼öÁ¤ÇÔ.
+// 2009-01-30 by cmkwon, ëŸ¬ì‹œì•„ Innova ëŸ°ì²˜ ì‹œìŠ¤í…œ(í”„ë¡œìŠ¤íŠ¸) ìˆ˜ì • - ì•„ë˜ì™€ ê°™ì´ ìˆ˜ì •í•¨.
 //	void ExecGame(char *cmdLine);
 	void ExecGame(char *cmdLine, char *i_szAppPath=NULL, char *i_szCmdParam=NULL);
 	void ExecGameCrocess(char *cmdLine);
 
-	// Delete File List, Notice.txt Ã³¸®
+	// Delete File List, Notice.txt ì²˜ë¦¬
 	BOOL ProcessDeleteFileList(MSG_PC_CONNECT_SINGLE_FILE_UPDATE_INFO *pUpdateInfo);
 	BOOL ProcessNoticeFile(MSG_PC_CONNECT_SINGLE_FILE_UPDATE_INFO *pUpdateInfo);
 
@@ -492,40 +494,40 @@ public:
 	BOOL ProcessDeleteFileListByHttp(MSG_PC_CONNECT_SINGLE_FILE_UPDATE_INFO *pUpdateInfo);
 
 	///////////////////////////////////////////////////////////////////////////////
-	// 2007-09-07 by cmkwon, º£Æ®³² ·±Ã³ ÀÎÅÍÆäÀÌ½º ¼öÁ¤ - 
+	// 2007-09-07 by cmkwon, ë² íŠ¸ë‚¨ ëŸ°ì²˜ ì¸í„°í˜ì´ìŠ¤ ìˆ˜ì • - 
 	void MoveWindow2Center(void);
 
 	///////////////////////////////////////////////////////////////////////////////
-	// 2007-09-10 by cmkwon, º£Æ®³² È­¸éÅ°º¸µå ±¸Çö - 
+	// 2007-09-10 by cmkwon, ë² íŠ¸ë‚¨ í™”ë©´í‚¤ë³´ë“œ êµ¬í˜„ - 
 //	CScreenKeyboardDlg		*m_pScreenKeyboardDlg;
 #ifdef _INET_CONFIGURATOR
 	InetConfiguratorDLG		*m_pInetCFG;
 #endif
 	CWnd					*m_pInputEditFromScreenKeyboard;
-	BOOL					m_bHideScreenKeyboardByScreenKeyboardWindow;	// 2007-09-18 by cmkwon, È­»óÅ°º¸µå ¼öÁ¤ - 
+	BOOL					m_bHideScreenKeyboardByScreenKeyboardWindow;	// 2007-09-18 by cmkwon, í™”ìƒí‚¤ë³´ë“œ ìˆ˜ì • - 
 	void PushCharFromScreenKeyboard(char i_cPushChar);
 	void DeleteCharFromScreenKeyboard(void);
-	void HideScreenKeyboardByScreenKeyboardWindow(void);		// 2007-09-18 by cmkwon, È­»óÅ°º¸µå ¼öÁ¤ -
+	void HideScreenKeyboardByScreenKeyboardWindow(void);		// 2007-09-18 by cmkwon, í™”ìƒí‚¤ë³´ë“œ ìˆ˜ì • -
 
 	///////////////////////////////////////////////////////////////////////////////
-	// 2007-12-27 by cmkwon, À©µµ¿ìÁî ¸ğµå ±â´É Ãß°¡ -
+	// 2007-12-27 by cmkwon, ìœˆë„ìš°ì¦ˆ ëª¨ë“œ ê¸°ëŠ¥ ì¶”ê°€ -
 	BOOL FindWindowResolutionByWindowDegree(int *o_pnCX, int *o_pnCY, int *o_pnDegree, char *i_szWindowDegreeName);
 	int InsertWindowDegreeList(CComboBox *i_pComboBox, BOOL i_bWindowsMode);
 	int FindWindowDegreeComboBoxIndex(CComboBox *i_pComboBox, char *i_szWindowDegreeName);
 
-	// 2008-01-03 by cmkwon, Áö¿øÇÏ´Â ÇØ»óµµ ¸®½ºÆ®¸¸ º¸¿©ÁÖ±â - 
+	// 2008-01-03 by cmkwon, ì§€ì›í•˜ëŠ” í•´ìƒë„ ë¦¬ìŠ¤íŠ¸ë§Œ ë³´ì—¬ì£¼ê¸° - 
 	vectDEVMODE				m_vectSupportedResolutionList;
 	int InitSupportedWindowResolutionList(void);
 	BOOL IsSupportedResolution(int i_nWidth, int i_nHeight);
 
 	///////////////////////////////////////////////////////////////////////////////
-	// 2008-02-14 by cmkwon, ·±Ã³¿¡¼­ ¼­¹ö±×·ì ¸íÀÌ ±úÁ®µµ °ÔÀÓ ½ÇÇà¿¡ ¹®Á¦°¡ ¾øµµ·Ï ¼öÁ¤ - 
+	// 2008-02-14 by cmkwon, ëŸ°ì²˜ì—ì„œ ì„œë²„ê·¸ë£¹ ëª…ì´ ê¹¨ì ¸ë„ ê²Œì„ ì‹¤í–‰ì— ë¬¸ì œê°€ ì—†ë„ë¡ ìˆ˜ì • - 
 	vectSSERVER_GROUP_FOR_LAUNCHER	m_vectServerGroupList;
 	BOOL FindServerGroupName(CString *o_pcsServerGroupName, int i_nFindIndex);
 
-	CString					m_strEventURL;		// 2008-10-16 by cmkwon, Gameforge4D(Eng,Deu) Launcher Registry event ±¸Çö - ·±Ã³ ÀÌº¥Æ® URL
+	CString					m_strEventURL;		// 2008-10-16 by cmkwon, Gameforge4D(Eng,Deu) Launcher Registry event êµ¬í˜„ - ëŸ°ì²˜ ì´ë²¤íŠ¸ URL
 
-	CString					m_csSessionKey;		// 2008-12-18 by cmkwon, ÀÏº» Arario ·±Ã³ ¼öÁ¤ - CAtumLauncherDlg¿¡ º¯¼ö Ãß°¡
+	CString					m_csSessionKey;		// 2008-12-18 by cmkwon, ì¼ë³¸ Arario ëŸ°ì²˜ ìˆ˜ì • - CAtumLauncherDlgì— ë³€ìˆ˜ ì¶”ê°€
 #ifdef _INET_MAC_ADDRESS_CHECKER
 	string					m_szTempMAC;
 #endif
@@ -547,7 +549,7 @@ public:
 	void ExtractUpdateFile(MSG_PC_CONNECT_UPDATE_INFO *pMsgUpdateInfo);
 	BOOL DownloadUpdateFileByHttp(MSG_PC_CONNECT_UPDATE_INFO *pMsgUpdateInfo , bool b_MssWayFailed = false);
 
-	//ysw : Ãß°¡
+	//ysw : ì¶”ê°€
 	BOOL	ReadNoticeFile();
 	int		DrawProgressBar();
 	void	Set_Cur_Percent(DWORD CurSize);
@@ -621,7 +623,7 @@ protected:
 	afx_msg LONG OnUpdateFileDownloadOK(WPARAM wParam, LPARAM lParam);	
 
 	// ysw
-	afx_msg UINT OnNcHitTest( CPoint point );  // <- ¿©±â¿¡ Ãß°¡
+	afx_msg UINT OnNcHitTest( CPoint point );  // <- ì—¬ê¸°ì— ì¶”ê°€
 
    	DECLARE_MESSAGE_MAP()
 };
