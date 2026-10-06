@@ -280,6 +280,7 @@ CAtumLauncherDlg::CAtumLauncherDlg(CWnd* pParent /*=NULL*/)
 	m_bModernNavTracking = FALSE;
 	m_bLauncherLoggedIn = FALSE;
 	m_nLauncherAccountPage = 0;
+	m_nLauncherMainPage = 0;
 	m_szLauncherSessionToken.Empty();
 	m_szLauncherCharacterData.Empty();
 	MEMSET_ZERO(m_szLaunchCmdLine, sizeof(m_szLaunchCmdLine));
@@ -1289,10 +1290,11 @@ void CAtumLauncherDlg::OnPaint()
 		for (int i = 0; i < 5; ++i)
 		{
 			const bool hot = (m_nModernNavHover == navItems[i].id);
-			PaintDC.SetTextColor(hot ? RGB(255, 255, 255) : RGB(174, 180, 194));
+			const bool active = (m_nLauncherMainPage == (navItems[i].id - 1));
+			PaintDC.SetTextColor((hot || active) ? RGB(255, 255, 255) : RGB(174, 180, 194));
 			PaintDC.DrawText(navItems[i].text, navItems[i].r, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 
-			if (hot)
+			if (hot || active)
 			{
 				CRect underline = navItems[i].r;
 				underline.top = underline.bottom - 3;
@@ -1301,6 +1303,137 @@ void CAtumLauncherDlg::OnPaint()
 			}
 		}
 		PaintDC.SelectObject(oldFont);
+
+		// Top navigation opens native launcher pages; no external browser is required.
+		if (m_nLauncherMainPage != 0)
+		{
+			CBrush pageBrush(RGB(22, 25, 34));
+			CBrush cardBrush(RGB(29, 33, 45));
+			CBrush accentBrush(RGB(225, 82, 35));
+			CPen pagePen(PS_SOLID, 1, RGB(54, 60, 76));
+			CBrush* oldPageBrush = PaintDC.SelectObject(&pageBrush);
+			CPen* oldPagePen = PaintDC.SelectObject(&pagePen);
+
+			PaintDC.RoundRect(CRect(55, 82, 805, 602), CPoint(16, 16));
+			PaintDC.SetBkMode(TRANSPARENT);
+
+			CFont pageTitleFont;
+			pageTitleFont.CreateFont(25, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0,
+				DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
+				CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
+			CFont pageSubFont;
+			pageSubFont.CreateFont(14, 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0,
+				DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
+				CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
+			CFont cardTitleFont2;
+			cardTitleFont2.CreateFont(17, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0,
+				DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
+				CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
+
+			CFont* oldPageFont = PaintDC.SelectObject(&pageTitleFont);
+			PaintDC.SetTextColor(RGB(245, 247, 251));
+
+			CString pageTitle;
+			CString pageSubtitle;
+			if (m_nLauncherMainPage == 1)
+			{
+				pageTitle = "HABER MERKEZİ";
+				pageSubtitle = "AceTR dünyasındaki son gelişmeler ve duyurular";
+			}
+			else if (m_nLauncherMainPage == 2)
+			{
+				pageTitle = "ETKİNLİKLER";
+				pageSubtitle = "Aktif ve yaklaşan oyun etkinliklerini takip et";
+			}
+			else if (m_nLauncherMainPage == 3)
+			{
+				pageTitle = "ACE TR MERKEZİ";
+				pageSubtitle = "Oyun, hesap ve topluluk servislerine tek noktadan eriş";
+			}
+			else
+			{
+				pageTitle = "TOPLULUK";
+				pageSubtitle = "Discord topluluğu, destek ve sosyal kanallar";
+			}
+
+			PaintDC.TextOut(82, 110, pageTitle);
+			PaintDC.SelectObject(&pageSubFont);
+			PaintDC.SetTextColor(RGB(150, 157, 174));
+			PaintDC.TextOut(82, 148, pageSubtitle);
+
+			if (m_nLauncherMainPage == 1)
+			{
+				// News cards.
+				for (int i = 0; i < 3; ++i)
+				{
+					CRect card(82, 190 + i * 105, 778, 278 + i * 105);
+					PaintDC.SelectObject(&cardBrush);
+					PaintDC.RoundRect(card, CPoint(12, 12));
+					PaintDC.SelectObject(&accentBrush);
+					PaintDC.FillSolidRect(CRect(card.left, card.top, card.left + 4, card.bottom), RGB(225, 82, 35));
+					PaintDC.SelectObject(&cardTitleFont2);
+					PaintDC.SetTextColor(RGB(240, 243, 248));
+					PaintDC.TextOut(102, card.top + 15, i == 0 ? "SON DUYURU" : (i == 1 ? "GÜNCELLEME NOTLARI" : "TOPLULUK HABERLERİ"));
+					PaintDC.SelectObject(&pageSubFont);
+					PaintDC.SetTextColor(RGB(150, 157, 174));
+					PaintDC.TextOut(102, card.top + 47, i == 0 ? "En son launcher duyurusu ve sunucu bilgilendirmeleri." : (i == 1 ? "Yeni sürüm, denge ve içerik değişiklikleri burada." : "Turnuvalar, topluluk etkinlikleri ve önemli gelişmeler."));
+				}
+			}
+			else if (m_nLauncherMainPage == 2)
+			{
+				CRect liveCard(82, 190, 778, 300);
+				PaintDC.SelectObject(&cardBrush);
+				PaintDC.RoundRect(liveCard, CPoint(12, 12));
+				PaintDC.SelectObject(&accentBrush);
+				PaintDC.Ellipse(CRect(103, 214, 115, 226));
+				PaintDC.SelectObject(&cardTitleFont2);
+				PaintDC.SetTextColor(RGB(245, 247, 251));
+				PaintDC.TextOut(128, 205, "NATION WAR");
+				PaintDC.SelectObject(&pageSubFont);
+				PaintDC.SetTextColor(RGB(150, 157, 174));
+				PaintDC.TextOut(128, 236, "Etkinlik takvimi ve canlı durum bilgisi bu panelde gösterilecek.");
+				PaintDC.TextOut(82, 335, "YAKLAŞAN ETKİNLİKLER");
+				PaintDC.SetTextColor(RGB(205, 210, 221));
+				PaintDC.TextOut(82, 370, "Haftalık PvP etkinlikleri");
+				PaintDC.TextOut(82, 402, "Nation War programı");
+				PaintDC.TextOut(82, 434, "Sezon görevleri ve ödüller");
+			}
+			else if (m_nLauncherMainPage == 3)
+			{
+				CRect gameCard(82, 190, 430, 320);
+				CRect serviceCard(445, 190, 778, 320);
+				PaintDC.SelectObject(&cardBrush);
+				PaintDC.RoundRect(gameCard, CPoint(12, 12));
+				PaintDC.RoundRect(serviceCard, CPoint(12, 12));
+				PaintDC.SelectObject(&cardTitleFont2);
+				PaintDC.SetTextColor(RGB(245, 247, 251));
+				PaintDC.TextOut(105, 215, "OYUN MERKEZİ");
+				PaintDC.TextOut(468, 215, "HESAP SERVİSLERİ");
+				PaintDC.SelectObject(&pageSubFont);
+				PaintDC.SetTextColor(RGB(150, 157, 174));
+				PaintDC.TextOut(105, 252, "Sunucu ve istemci bilgileri");
+				PaintDC.TextOut(105, 276, "Sürüm ve bakım durumu");
+				PaintDC.TextOut(468, 252, "Profil ve karakter yönetimi");
+				PaintDC.TextOut(468, 276, "Güvenlik ve destek merkezi");
+			}
+			else
+			{
+				CRect discordCard(82, 190, 778, 330);
+				PaintDC.SelectObject(&cardBrush);
+				PaintDC.RoundRect(discordCard, CPoint(12, 12));
+				PaintDC.SelectObject(&cardTitleFont2);
+				PaintDC.SetTextColor(RGB(245, 247, 251));
+				PaintDC.TextOut(105, 215, "ACE TR DISCORD");
+				PaintDC.SelectObject(&pageSubFont);
+				PaintDC.SetTextColor(RGB(150, 157, 174));
+				PaintDC.TextOut(105, 252, "Duyurular, oyuncu bulma, destek ve topluluk etkinlikleri.");
+				PaintDC.TextOut(105, 282, "Discord içerikleri sonraki aşamada API üzerinden launcher içine alınabilir.");
+			}
+
+			PaintDC.SelectObject(oldPageFont);
+			PaintDC.SelectObject(oldPagePen);
+			PaintDC.SelectObject(oldPageBrush);
+		}
 
 		if (m_bLauncherLoggedIn)
 		{
@@ -4038,6 +4171,32 @@ void CAtumLauncherDlg::OnCancel()
 	CDialog::OnCancel();
 }
 
+void CAtumLauncherDlg::SetLauncherMainPage(int page)
+{
+	if (page < 0 || page > 4)
+		page = 0;
+
+	m_nLauncherMainPage = page;
+
+	CWnd* notice = GetDlgItem(IDC_NOTICE2);
+	CWnd* serverList = GetDlgItem(IDC_LIST);
+
+	if (page == 0)
+	{
+		if (notice) notice->ShowWindow(SW_SHOW);
+		if (serverList)
+			serverList->ShowWindow(m_bLauncherLoggedIn ? SW_HIDE : SW_SHOW);
+	}
+	else
+	{
+		if (notice) notice->ShowWindow(SW_HIDE);
+		if (serverList) serverList->ShowWindow(SW_HIDE);
+	}
+
+	InvalidateRect(CRect(50, 70, 815, 610), FALSE);
+	InvalidateRect(CRect(470, 8, 990, 65), FALSE);
+}
+
 BOOL CAtumLauncherDlg::LoadLauncherCharacters()
 {
 	m_szLauncherCharacterData.Empty();
@@ -4513,27 +4672,27 @@ void CAtumLauncherDlg::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	if (ACETR_NAV_HOME_RECT.PtInRect(point))
 	{
-		OpenLauncherConfiguredUrl("Home");
+		SetLauncherMainPage(0);
 		return;
 	}
 	if (ACETR_NAV_NEWS_RECT.PtInRect(point))
 	{
-		OpenLauncherConfiguredUrl("News");
+		SetLauncherMainPage(1);
 		return;
 	}
 	if (ACETR_NAV_EVENTS_RECT.PtInRect(point))
 	{
-		OpenLauncherConfiguredUrl("Events");
+		SetLauncherMainPage(2);
 		return;
 	}
 	if (ACETR_NAV_WEB_RECT.PtInRect(point))
 	{
-		OpenLauncherConfiguredUrl("Website");
+		SetLauncherMainPage(3);
 		return;
 	}
 	if (ACETR_NAV_DISCORD_RECT.PtInRect(point))
 	{
-		OpenLauncherConfiguredUrl("Discord");
+		SetLauncherMainPage(4);
 		return;
 	}
 
