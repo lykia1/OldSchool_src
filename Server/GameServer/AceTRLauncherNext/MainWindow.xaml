@@ -11,7 +11,7 @@
         UseLayoutRounding="True"
         SnapsToDevicePixels="True">
     <Grid>
-        <Image Source="Assets/launcher_master.jpg" Stretch="Fill" IsHitTestVisible="False"/>
+        <Image x:Name="SkinImage" Stretch="Fill" IsHitTestVisible="False"/>
 
         <!-- Drag surface: header except window controls -->
         <Border Height="174" VerticalAlignment="Top" Background="Transparent"
