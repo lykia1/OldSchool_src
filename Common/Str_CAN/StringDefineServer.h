@@ -597,63 +597,86 @@ LoadFieldServerDataDebug() kaldirilmalidir! "
 	#define STRMSG_S_F2NOTIFY_0124 "In stealth state"
 	#define STRMSG_S_F2NOTIFY_0125 "Map is not validated."
 	#define STRMSG_S_F2NOTIFY_0126 "Happy hour event set [progress time:%4dminute)]"
-	#define STRMSG_S_F2NOTIFY_0127 "Happy hour event finished"
-	#define STRMSG_S_F2NOTIFY_0128 "  1 -> From monster %3d ,received damage %5.2f"
-	#define STRMSG_S_F2NOTIFY_0129 "  1type -> From monster %3d ,received damage %5.2f(dummy)"
-	#define STRMSG_S_F2NOTIFY_0130 "Logged in with %s authority"
-	#define STRMSG_S_F2NOTIFY_0131 "  Do not process completing routine %s: CS(%d), DBStore(%d)\r\n"
-	#define STRMSG_S_F2NOTIFY_0132 "  ERROR@CharacterGameEndRoutine(): Failed to eliminate party personnel! %s\r\n"
+	#define STRMSG_S_F2NOTIFY_0127 "Happy Hour etkinligi sona erdi"
+	#define STRMSG_S_F2NOTIFY_0128 "  1 -> Canavardan %3d, %5.2f hasar aldi"
+	#define STRMSG_S_F2NOTIFY_0129 "  1tur -> Canavardan %3d, %5.2f hasar aldi(sahte hedef)"
+	#define STRMSG_S_F2NOTIFY_0130 "%s yetkisiyle giris yapildi"
+	#define STRMSG_S_F2NOTIFY_0131 "  Tamamlama rutini islenmiyor %s: CS(%d), DBStore(%d)
+"
+	#define STRMSG_S_F2NOTIFY_0132 "  HATA@CharacterGameEndRoutine(): Formasyon uyesi silinemedi! %s
+"
 // 2005-11-24 by cmkwon, 
 //	#define STRMSG_S_F2NOTIFY_0133 "Prefix \'%s\' 성공: %d <= %d <= %d\r\n"
 //	#define STRMSG_S_F2NOTIFY_0134 "Suffix \'%s\' 성공: %d <= %d <= %d\r\n"
-	#define STRMSG_S_F2NOTIFY_0135 "%s: Stopped!"
-	#define STRMSG_S_F2NOTIFY_0136 "FATAL ERROR: Please make an inquiry to the administrator! Shop variable allotment error!"
-	#define STRMSG_S_F2NOTIFY_0137 "%s is deleted."
-	#define STRMSG_S_F2NOTIFY_0138 "The channel that you are presently at is deactivated so monsters and other functions are not available."
-	#define STRMSG_S_F2NOTIFY_0139 "Stopped. Please use another channel."
-	#define STRMSG_S_F2NOTIFY_0140 "  Warp Obj.[%s,%2dpieces]: %04d[%1s%4d]"
-	#define STRMSG_S_F2NOTIFY_0141 "Timer movement %s\r\n"
-	#define STRMSG_S_F2NOTIFY_0142 "HP auto recovery stopped"
-	#define STRMSG_S_F2NOTIFY_0143 "HP auto recovery has stopped as this is not a possible location for landing"
-	#define STRMSG_S_F2NOTIFY_0144 "HP 5.2f recovery for emergency"
-	#define STRMSG_S_F2NOTIFY_0145 "Gradual HP UP Stopped(remaining time: %d)"
-	#define STRMSG_S_F2NOTIFY_0146 "Gradual DP UP Stopped(remaining time: %d)"
-	#define STRMSG_S_F2NOTIFY_0147 "Gradual EP UP Stopped(remaining time: %d)"
-	#define STRMSG_S_F2NOTIFY_0148 "%s event has been completed."
-	#define STRMSG_S_F2NOTIFY_0149 "%s event under progress (magnification %4.2f, remaining:%3dminute)"
-	#define STRMSG_S_F2NOTIFY_0150 "Command has not been exercised"
+	#define STRMSG_S_F2NOTIFY_0135 "%s: Durduruldu!"
+	#define STRMSG_S_F2NOTIFY_0136 "KRITIK HATA: Lutfen yoneticiye bildirin! Dukkan degisken atama hatasi!"
+	#define STRMSG_S_F2NOTIFY_0137 "%s silindi."
+	#define STRMSG_S_F2NOTIFY_0138 "Bulundugunuz kanal devre disi oldugu icin canavarlar ve diger islevler kullanilamaz."
+	#define STRMSG_S_F2NOTIFY_0139 "Durduruldu. Lutfen baska bir kanal kullanin."
+	#define STRMSG_S_F2NOTIFY_0140 "  Warp Nesnesi[%s,%2dadet]: %04d[%1s%4d]"
+	#define STRMSG_S_F2NOTIFY_0141 "Zamanlayici hareketi %s
+"
+	#define STRMSG_S_F2NOTIFY_0142 "HP otomatik yenilenmesi durdu"
+	#define STRMSG_S_F2NOTIFY_0143 "Inis icin uygun bir konum olmadigindan HP otomatik yenilenmesi durdu"
+	#define STRMSG_S_F2NOTIFY_0144 "Acil durum icin HP 5.2f yenilendi"
+	#define STRMSG_S_F2NOTIFY_0145 "Kademeli HP YUKSELTME durdu(kalan sure: %d)"
+	#define STRMSG_S_F2NOTIFY_0146 "Kademeli DP YUKSELTME durdu(kalan sure: %d)"
+	#define STRMSG_S_F2NOTIFY_0147 "Kademeli EP YUKSELTME durdu(kalan sure: %d)"
+	#define STRMSG_S_F2NOTIFY_0148 "%s etkinligi tamamlandi."
+	#define STRMSG_S_F2NOTIFY_0149 "%s etkinligi devam ediyor (carpan %4.2f, kalan:%3ddakika)"
+	#define STRMSG_S_F2NOTIFY_0150 "Komut uygulanmadi"
 
 
 	// 5-5 Field - NOTIFY Error
-	#define STRERR_S_F2NOTIFY_0000 "	Experience point division error(%s, %s(%d)): fTotalDamage(%d) < 0.0f or Empty Vector: %d, Distance(%5.1f)\n"
-	#define STRERR_S_F2NOTIFY_0001 "  Not valid Game Start message error ClientState[%d]\r\n"
-	#define STRERR_S_F2NOTIFY_0002 "  Not valid Game Start message error ClientState[%d]\r\n"
-	#define STRERR_S_F2NOTIFY_0003 "  WARP(%04d) treatment impossible at ProcessQuestResult(), %s\r\n"
-	#define STRERR_S_F2NOTIFY_0004 "Map event information abnormal!!! Please make inquiry to the administrator!!! Current(%s, %s, %04d), Target(%04d, %d)\r\n"
-	#define STRERR_S_F2NOTIFY_0005 "  EVENT(%d) treatment impossible at T_FC_PARTY_REQUEST_PARTY_WARP(), %s\r\n"
-	#define STRERR_S_F2NOTIFY_0006 "Map event information abnormal!!! Please make inquiry to the administrator!!! Current(%s, %s, %04d), Target(%04d, %d)\r\n"
-	#define STRERR_S_F2NOTIFY_0007 "  WARP treatment impossible at T_FC_PARTY_REQUEST_PARTY_WARP(). %s\r\n"
-	#define STRERR_S_F2NOTIFY_0008 "  EVENT(%d) treatment impossible(party leader) at Process_FC_PARTY_REQUEST_PARTY_WARP_WITH_MAP_NAME(). %s\r\n"
-	#define STRERR_S_F2NOTIFY_0009 "  WARP(%04d) treatment impossible at Process_FC_PARTY_REQUEST_PARTY_WARP_WITH_MAP_NAME(). %s\r\n"
-	#define STRERR_S_F2NOTIFY_0010 "  EVENT(%d) treatment impossible at Process_FC_EVENT_REQUEST_WARP(), %s\r\n"
-	#define STRERR_S_F2NOTIFY_0011 "  WARP treatment impossible at T_FC_PARTY_REQUEST_PARTY_WARP(). %s\r\n"
-	#define STRERR_S_F2NOTIFY_0012 "Party warp failed: %s -> distance: %5.2f, bodycon: %d, %d"
-	#define STRERR_S_F2NOTIFY_0013 "  WARP(%04d) treatment impossible at Process_FC_CHARACTER_DEAD_GAMESTART(), %s\r\n"
-	#define STRERR_S_F2NOTIFY_0014 "  %s -> click overlapped OK button!!!\r\n"
-	#define STRERR_S_F2NOTIFY_0015 "Quest has not been loaded.\r\n"
-	#define STRERR_S_F2NOTIFY_0016 "  WARP(%s) treatment impossible at HandleAdminCommands(), /move, %s\r\n"
-	#define STRERR_S_F2NOTIFY_0017 "  WARP(%s) treatment impossible at HandleAdminCommands(), /send, %s\r\n"
-	#define STRERR_S_F2NOTIFY_0018 "  FATAL ERROR: This message should not be sent to field server that members do not belong to. check it out\r\n"
-	#define STRERR_S_F2NOTIFY_0019 "  WARP(%04d) treatment impossible at T_FI_ADMIN_CALL_CHARACTER, %s\r\n"
-	#define STRERR_S_F2NOTIFY_0020 "  WARP(%s) treatment impossible at T_FI_ADMIN_MOVETO_CHARACTER, %s\r\n"
+	#define STRERR_S_F2NOTIFY_0000 "	Deneyim puani bolme hatasi(%s, %s(%d)): fTotalDamage(%d) < 0.0f veya Bos Vektor: %d, Mesafe(%5.1f)
+"
+	#define STRERR_S_F2NOTIFY_0001 "  Gecersiz Game Start mesaji hatasi ClientState[%d]
+"
+	#define STRERR_S_F2NOTIFY_0002 "  Gecersiz Game Start mesaji hatasi ClientState[%d]
+"
+	#define STRERR_S_F2NOTIFY_0003 "  ProcessQuestResult() icinde WARP(%04d) islenemiyor, %s
+"
+	#define STRERR_S_F2NOTIFY_0004 "Harita etkinlik bilgisi anormal!!! Lutfen yoneticiye bildirin!!! Mevcut(%s, %s, %04d), Hedef(%04d, %d)
+"
+	#define STRERR_S_F2NOTIFY_0005 "  T_FC_PARTY_REQUEST_PARTY_WARP() icinde EVENT(%d) islenemiyor, %s
+"
+	#define STRERR_S_F2NOTIFY_0006 "Harita etkinlik bilgisi anormal!!! Lutfen yoneticiye bildirin!!! Mevcut(%s, %s, %04d), Hedef(%04d, %d)
+"
+	#define STRERR_S_F2NOTIFY_0007 "  T_FC_PARTY_REQUEST_PARTY_WARP() icinde WARP islenemiyor. %s
+"
+	#define STRERR_S_F2NOTIFY_0008 "  Process_FC_PARTY_REQUEST_PARTY_WARP_WITH_MAP_NAME() icinde EVENT(%d) islenemiyor(formasyon lideri). %s
+"
+	#define STRERR_S_F2NOTIFY_0009 "  Process_FC_PARTY_REQUEST_PARTY_WARP_WITH_MAP_NAME() icinde WARP(%04d) islenemiyor. %s
+"
+	#define STRERR_S_F2NOTIFY_0010 "  Process_FC_EVENT_REQUEST_WARP() icinde EVENT(%d) islenemiyor, %s
+"
+	#define STRERR_S_F2NOTIFY_0011 "  T_FC_PARTY_REQUEST_PARTY_WARP() icinde WARP islenemiyor. %s
+"
+	#define STRERR_S_F2NOTIFY_0012 "Formasyon warp basarisiz: %s -> mesafe: %5.2f, bodycon: %d, %d"
+	#define STRERR_S_F2NOTIFY_0013 "  Process_FC_CHARACTER_DEAD_GAMESTART() icinde WARP(%04d) islenemiyor, %s
+"
+	#define STRERR_S_F2NOTIFY_0014 "  %s -> ust uste OK dugmesine tikladi!!!
+"
+	#define STRERR_S_F2NOTIFY_0015 "Gorev yuklenmedi.
+"
+	#define STRERR_S_F2NOTIFY_0016 "  HandleAdminCommands(), /move icinde WARP(%s) islenemiyor, %s
+"
+	#define STRERR_S_F2NOTIFY_0017 "  HandleAdminCommands(), /send icinde WARP(%s) islenemiyor, %s
+"
+	#define STRERR_S_F2NOTIFY_0018 "  KRITIK HATA: Bu mesaj uyelerin ait olmadigi Field Server'a gonderilmemelidir. Kontrol edin
+"
+	#define STRERR_S_F2NOTIFY_0019 "  T_FI_ADMIN_CALL_CHARACTER icinde WARP(%04d) islenemiyor, %s
+"
+	#define STRERR_S_F2NOTIFY_0020 "  T_FI_ADMIN_MOVETO_CHARACTER icinde WARP(%s) islenemiyor, %s
+"
 
 	// 5-6 Field - Event
-	#define STRMSG_S_F2EVENTTYPE_0000 "Experience point"
+	#define STRMSG_S_F2EVENTTYPE_0000 "Deneyim puani"
 	#define STRMSG_S_F2EVENTTYPE_0001 "SPI"
-	#define STRMSG_S_F2EVENTTYPE_0002 "Restoration of experience point"
-	#define STRMSG_S_F2EVENTTYPE_0003 "Item drop"
-	#define STRMSG_S_F2EVENTTYPE_0004 "Rare item drop"
-	#define STRMSG_S_F2EVENTTYPE_0005 "War Point event"
+	#define STRMSG_S_F2EVENTTYPE_0002 "Deneyim puani geri yukleme"
+	#define STRMSG_S_F2EVENTTYPE_0003 "Esya dusurme"
+	#define STRMSG_S_F2EVENTTYPE_0004 "Nadir esya dusurme"
+	#define STRMSG_S_F2EVENTTYPE_0005 "Savas Puani etkinligi"
 // 5_end	
 ///////////////////////////////////////////////////////////////////////////////
 	
@@ -661,65 +684,67 @@ LoadFieldServerDataDebug() kaldirilmalidir! "
 ///////////////////////////////////////////////////////////////////////////////
 // 6 - IMServer
 	// 6-1 IM<->Pre
-	#define STRMSG_S_I2PRECONNECT_0000 "Logged into Pre Server.\n"
-	#define STRMSG_S_I2PRECONNECT_0001 "Connection to Pre Server[%15s:%4d]has been lost. Attempting reconnection.\r\n"
+	#define STRMSG_S_I2PRECONNECT_0000 "Pre Server'a giris yapildi.
+"
+	#define STRMSG_S_I2PRECONNECT_0001 "Pre Server[%15s:%4d] baglantisi kesildi. Yeniden baglaniliyor.
+"
 
 	// 6-2 IM Notify
-	#define STRMSG_S_I2NOTIFY_0000 "\'%s\' already exists"
-	#define STRMSG_S_I2NOTIFY_0001 "\'%s\' is already in a brigade."
-	#define STRMSG_S_I2NOTIFY_0002 "\'%s\' is already the name of an existing brigade"
-	#define STRMSG_S_I2NOTIFY_0003 "Brigade loading failed - Please make an inquiry to the administrator!"
-	#define STRMSG_S_I2NOTIFY_0004 "Your friend '%s' has logged in"
-	#define STRMSG_S_I2NOTIFY_0005 "Checking previous formation"
-	#define STRMSG_S_I2NOTIFY_0006 "Previous formation does not exist"
-	#define STRMSG_S_I2NOTIFY_0007 "Rejoined the formation"
-	#define STRMSG_S_I2NOTIFY_0008 "You are currently in a formation"
-	#define STRMSG_S_I2NOTIFY_0009 "  Fatal Error: Fatal party error! at T_IC_PARTY_GET_MEMBER"
-	#define STRMSG_S_I2NOTIFY_0010 "State of formation personnel is invalid"
-	#define STRMSG_S_I2NOTIFY_0011 "formation personnel have already joined the brigade"
-	#define STRMSG_S_I2NOTIFY_0012 "That person has already joined the brigade"
-	#define STRMSG_S_I2NOTIFY_0013 "You cannot invite yourself"
-	#define STRMSG_S_I2NOTIFY_0014 "You are in a state where joining brigades is not allowed"
-	#define STRMSG_S_I2NOTIFY_0015 "You have exceeded the number of brigade personnel that can join"
-	#define STRMSG_S_I2NOTIFY_0016 "You are in a state where joining brigades is not allowed"
-	#define STRMSG_S_I2NOTIFY_0017 "Brigade leader cannot withdraw from brigade"
-	#define STRMSG_S_I2NOTIFY_0018 "Cannot withdraw from brigade while you are in a brigade fight"
-	#define STRMSG_S_I2NOTIFY_0019 "Cannot expel brigade personnel while in brigade fight"
-	#define STRMSG_S_I2NOTIFY_0020 "Brigade leader cannot be expelled"
-	#define STRMSG_S_I2NOTIFY_0021 "Cannot disperse brigade while you are in a brigade fight"
-	#define STRMSG_S_I2NOTIFY_0022 "Cannot change to the same name"
-	#define STRMSG_S_I2NOTIFY_0023 "You are in a state where the brigade name cannot be changed"
-	#define STRMSG_S_I2NOTIFY_0024 "You are in a state where the brigade mark cannot be changed"
-	#define STRMSG_S_I2NOTIFY_0025 "You are in a state where rank cannot be changed"
-	#define STRMSG_S_I2NOTIFY_0026 "Rank has overlapped"
-	#define STRMSG_S_I2NOTIFY_0027 "Rank change to regiment leader is not possible."
-	#define STRMSG_S_I2NOTIFY_0028 "Change in regiment leaders rank is not possible."
-	#define STRMSG_S_I2NOTIFY_0029 "Number of whole users: %dpersons (output up to %dpeople)"
-	#define STRMSG_S_I2NOTIFY_0030 "Added to administrators message list"
-	#define STRMSG_S_I2NOTIFY_0031 "Deleted from administrators message list"
-	#define STRMSG_S_I2NOTIFY_0032 "Server IP: %s"
-	#define STRMSG_S_I2NOTIFY_0033 "Server group \'%s\' total number of people logged on: %dpeople"
-	#define STRMSG_S_I2NOTIFY_0034 "Do you really want to close the server(%s)? number: %d"
-	#define STRMSG_S_I2NOTIFY_0035 "\'%s\'is not playing the game "
-	#define STRMSG_S_I2NOTIFY_0036 "Number of whole users: %dpersons (Output up to %dpeople)"
+	#define STRMSG_S_I2NOTIFY_0000 "'%s' zaten mevcut"
+	#define STRMSG_S_I2NOTIFY_0001 "'%s' zaten bir tugayda."
+	#define STRMSG_S_I2NOTIFY_0002 "'%s' zaten mevcut bir tugayin adi"
+	#define STRMSG_S_I2NOTIFY_0003 "Tugay yukleme basarisiz - Lutfen yoneticiye bildirin!"
+	#define STRMSG_S_I2NOTIFY_0004 "Arkadasiniz '%s' giris yapti"
+	#define STRMSG_S_I2NOTIFY_0005 "Onceki formasyon kontrol ediliyor"
+	#define STRMSG_S_I2NOTIFY_0006 "Onceki formasyon bulunmuyor"
+	#define STRMSG_S_I2NOTIFY_0007 "Formasyona yeniden katildiniz"
+	#define STRMSG_S_I2NOTIFY_0008 "Su anda bir formasyondasiniz"
+	#define STRMSG_S_I2NOTIFY_0009 "  Kritik Hata: T_IC_PARTY_GET_MEMBER icinde kritik formasyon hatasi"
+	#define STRMSG_S_I2NOTIFY_0010 "Formasyon uyesinin durumu gecersiz"
+	#define STRMSG_S_I2NOTIFY_0011 "Formasyon uyesi zaten tugaya katilmis"
+	#define STRMSG_S_I2NOTIFY_0012 "Bu kisi zaten tugaya katilmis"
+	#define STRMSG_S_I2NOTIFY_0013 "Kendinizi davet edemezsiniz"
+	#define STRMSG_S_I2NOTIFY_0014 "Tugaya katilamayacaginiz bir durumdasiniz"
+	#define STRMSG_S_I2NOTIFY_0015 "Tugaya katilabilecek uye sayisi sinirini astiniz"
+	#define STRMSG_S_I2NOTIFY_0016 "Tugaya katilamayacaginiz bir durumdasiniz"
+	#define STRMSG_S_I2NOTIFY_0017 "Tugay lideri tugaydan ayrilamaz"
+	#define STRMSG_S_I2NOTIFY_0018 "Tugay savasindayken tugaydan ayrilamazsiniz"
+	#define STRMSG_S_I2NOTIFY_0019 "Tugay savasindayken tugay uyesi atamazsiniz"
+	#define STRMSG_S_I2NOTIFY_0020 "Tugay lideri atilamaz"
+	#define STRMSG_S_I2NOTIFY_0021 "Tugay savasindayken tugay dagitilamaz"
+	#define STRMSG_S_I2NOTIFY_0022 "Ayni ada degistirilemez"
+	#define STRMSG_S_I2NOTIFY_0023 "Tugay adinin degistirilemeyecegi bir durumdasiniz"
+	#define STRMSG_S_I2NOTIFY_0024 "Tugay ambleminin degistirilemeyecegi bir durumdasiniz"
+	#define STRMSG_S_I2NOTIFY_0025 "Rutbenin degistirilemeyecegi bir durumdasiniz"
+	#define STRMSG_S_I2NOTIFY_0026 "Rutbe cakismasi var"
+	#define STRMSG_S_I2NOTIFY_0027 "Alay lideri rutbesine gecis mumkun degil."
+	#define STRMSG_S_I2NOTIFY_0028 "Alay liderinin rutbesi degistirilemez."
+	#define STRMSG_S_I2NOTIFY_0029 "Toplam kullanici sayisi: %dkisi (en fazla %dkisi gosterilir)"
+	#define STRMSG_S_I2NOTIFY_0030 "Yonetici mesaj listesine eklendi"
+	#define STRMSG_S_I2NOTIFY_0031 "Yonetici mesaj listesinden silindi"
+	#define STRMSG_S_I2NOTIFY_0032 "Sunucu IP: %s"
+	#define STRMSG_S_I2NOTIFY_0033 "Sunucu grubu '%s' toplam cevrimici kullanici sayisi: %dkisi"
+	#define STRMSG_S_I2NOTIFY_0034 "Sunucuyu(%s) gercekten kapatmak istiyor musunuz? sayi: %d"
+	#define STRMSG_S_I2NOTIFY_0035 "'%s' su anda oyunda degil "
+	#define STRMSG_S_I2NOTIFY_0036 "Toplam kullanici sayisi: %dkisi (en fazla %dkisi gosterilir)"
 	#define STRMSG_S_I2NOTIFY_0037 "/send %s %s"
-	#define STRMSG_S_I2NOTIFY_0038 "Corresponding regiment does not exist."
-	#define STRMSG_S_I2NOTIFY_0039 "Whisper block has been disabled"
-	#define STRMSG_S_I2NOTIFY_0040 "Whisper has been blocked"
-	#define STRMSG_S_I2NOTIFY_0041 "Did not join the brigade"
-	#define STRMSG_S_I2NOTIFY_0042 "Brigade(%d) is not available"
-	#define STRMSG_S_I2NOTIFY_0043 "Corresponding weather(%s)does not exist"
-	#define STRMSG_S_I2NOTIFY_0044 "Field Server is invalid"
-	#define STRMSG_S_I2NOTIFY_0045 "Corresponding map(%s) does not exist"
-	#define STRMSG_S_I2NOTIFY_0046 "You cannot chat for %d!minutes!!"
-	#define STRMSG_S_I2NOTIFY_0047 "Chatting block set : '%10s', %3dminute"
-	#define STRMSG_S_I2NOTIFY_0048 "Chatting block condition has been cancelled."
-	#define STRMSG_S_I2NOTIFY_0049 "Chatting block cancelled: '%10s'"
-	#define STRMSG_S_I2NOTIFY_0050 "%s(account: %s, map: %d(%d), level: %d) PLAYING"
-	#define STRMSG_S_I2NOTIFY_0051 "Cannot summon yourself."
-	#define STRMSG_S_I2NOTIFY_0052 "Corresponding brigade does not exist."
+	#define STRMSG_S_I2NOTIFY_0038 "Ilgili alay bulunmuyor."
+	#define STRMSG_S_I2NOTIFY_0039 "Fisilti engeli devre disi birakildi"
+	#define STRMSG_S_I2NOTIFY_0040 "Fisilti engellendi"
+	#define STRMSG_S_I2NOTIFY_0041 "Tugaya katilmadi"
+	#define STRMSG_S_I2NOTIFY_0042 "Tugay(%d) kullanilabilir degil"
+	#define STRMSG_S_I2NOTIFY_0043 "Ilgili hava durumu(%s) bulunmuyor"
+	#define STRMSG_S_I2NOTIFY_0044 "Field Server gecersiz"
+	#define STRMSG_S_I2NOTIFY_0045 "Ilgili harita(%s) bulunmuyor"
+	#define STRMSG_S_I2NOTIFY_0046 "%d dakika sohbet edemezsiniz!!"
+	#define STRMSG_S_I2NOTIFY_0047 "Sohbet engeli ayarlandi : '%10s', %3ddakika"
+	#define STRMSG_S_I2NOTIFY_0048 "Sohbet engeli durumu iptal edildi."
+	#define STRMSG_S_I2NOTIFY_0049 "Sohbet engeli iptal edildi: '%10s'"
+	#define STRMSG_S_I2NOTIFY_0050 "%s(hesap: %s, harita: %d(%d), seviye: %d) OYUNDA"
+	#define STRMSG_S_I2NOTIFY_0051 "Kendinizi cagirmazsiniz."
+	#define STRMSG_S_I2NOTIFY_0052 "Ilgili tugay bulunmuyor."
 
-	#define STRMSG_S_IMSERVER_050607_0001	"Corresponding map does not exist."
+	#define STRMSG_S_IMSERVER_050607_0001	"Ilgili harita bulunmuyor."
 // 6_end	
 ///////////////////////////////////////////////////////////////////////////////
 	
@@ -727,12 +752,17 @@ LoadFieldServerDataDebug() kaldirilmalidir! "
 ///////////////////////////////////////////////////////////////////////////////
 // 7 - NPCServer
 	// 7-1 NPC<->Field
-	#define STRMSG_S_N2FIELDCONNECT_0000 "Logged into field Server.\n"
-	#define STRMSG_S_N2FIELDCONNECT_0001 "Connection to field Server[%15s:%4d]has been lost. Attempting reconnection.\r\n"
+	#define STRMSG_S_N2FIELDCONNECT_0000 "Field Server'a giris yapildi.
+"
+	#define STRMSG_S_N2FIELDCONNECT_0001 "Field Server[%15s:%4d] baglantisi kesildi. Yeniden baglaniliyor.
+"
 
 	// 7-2 IM Notify
-	#define STRMSG_S_N2NOTIFY_0000 "							Collision check between monster and object does not exist\r\n"
-	#define STRMSG_S_N2NOTIFY_0001 "City occupying battle monster(%10s) summoned\r\n\r\n"
+	#define STRMSG_S_N2NOTIFY_0000 "							Canavar ile nesne arasinda carpisma kontrolu bulunmuyor
+"
+	#define STRMSG_S_N2NOTIFY_0001 "Sehir isgal savasi canavari(%10s) cagirildi
+
+"
 
 	#define STRMSG_S_N2TESTMONNAME_0000 "Chul min ho"
 // 7_end	
@@ -742,56 +772,63 @@ LoadFieldServerDataDebug() kaldirilmalidir! "
 ///////////////////////////////////////////////////////////////////////////////
 // 8 - PreServer
 	// 8-1 Pre Notify
-	#define STRMSG_S_P2PRENOTIFY_0000 "Logged in with %s account(%s). IP: %s\r\n"
-	#define STRMSG_S_P2PRENOTIFY_0001 "Success"
-	#define STRMSG_S_P2PRENOTIFY_0002 "Failure"
-	#define STRMSG_S_P2PRENOTIFY_0003 "[ERROR] Error in adding account information, AccountName(%s)  privateIP(%15s)\n"
+	#define STRMSG_S_P2PRENOTIFY_0000 "%s hesabi(%s) ile giris yapildi. IP: %s
+"
+	#define STRMSG_S_P2PRENOTIFY_0001 "Basarili"
+	#define STRMSG_S_P2PRENOTIFY_0002 "Basarisiz"
+	#define STRMSG_S_P2PRENOTIFY_0003 "[HATA] Hesap bilgisi ekleme hatasi, AccountName(%s) privateIP(%15s)
+"
 
 
-	#define STRMSG_SCAT_051115_0001		"Hello. This is the ACE Online Administrator."
-	#define STRMSG_SCAT_051115_0002		"We will be performing our regular maintenance in 10 minutes."
-	#define STRMSG_SCAT_051115_0003		"Please move to a safe area and exit from the game."
-	#define STRMSG_SCAT_051115_0004		"First, NPC server will be shut down."
-	#define STRMSG_SCAT_051115_0005		"ACE Online regular maintenance will begin."
-	#define STRMSG_SCAT_051115_0006		"Please enjoy your day with ACE Online."
-	#define STRMSG_SCAT_051115_0007		"There will be a server checkup in 5 minutes." // 5분 후 서버 점검이 있을 예정입니다.
-	#define STRMSG_SCAT_051115_0008		"Server will be down for 60 minutes."	// 서버는 60분 동안 내려질 예정입니다
+	#define STRMSG_SCAT_051115_0001		"Merhaba. ACE Online Yoneticisi konusuyor."
+	#define STRMSG_SCAT_051115_0002		"10 dakika sonra rutin bakim yapilacak."
+	#define STRMSG_SCAT_051115_0003		"Lutfen guvenli bir bolgeye gecip oyundan cikin."
+	#define STRMSG_SCAT_051115_0004		"Once NPC sunucusu kapatilacak."
+	#define STRMSG_SCAT_051115_0005		"ACE Online rutin bakimi baslayacak."
+	#define STRMSG_SCAT_051115_0006		"ACE Online ile iyi eglenceler."
+	#define STRMSG_SCAT_051115_0007		"5 dakika sonra sunucu bakimi yapilacak." // 5분 후 서버 점검이 있을 예정입니다.
+	#define STRMSG_SCAT_051115_0008		"Sunucu 60 dakika boyunca kapali olacak."	// 서버는 60분 동안 내려질 예정입니다
 
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
 	// 2006-05-09 by cmkwon
-	#define STRMSG_060509_0000			"Invisible Mode: Users cannot see you but weapons cannot be used."
-	#define STRMSG_060509_0001			"Invincible Status: You will not receive any damage."
-	#define STRMSG_060509_0002			"Stealth Mode: Monsters will not attack you first."
+	#define STRMSG_060509_0000			"Gorunmez Mod: Kullanicilar sizi goremez ancak silah kullanamazsiniz."
+	#define STRMSG_060509_0001			"Yenilmezlik Durumu: Hicbir hasar almazsiniz."
+	#define STRMSG_060509_0002			"Gizlilik Modu: Canavarlar size ilk saldiriyi yapmaz."
 
 	// 2006-05-26 by cmkwon
-	#define	STRMSG_060526_0000			"Your request has been sent to a GM. One of our GMs will contact you as soon as possible."
-	#define	STRMSG_060526_0001			"You were unable to automatically update.\r\n\r\nPlease download the patch from Homepage(%s) and connect again.\r\n\r\n    Error: %s"
+	#define	STRMSG_060526_0000			"Talebiniz bir GM'e gonderildi. GM'lerimizden biri en kisa surede sizinle iletisime gececek."
+	#define	STRMSG_060526_0001			"Otomatik guncelleme yapilamadi.
+
+Lutfen yamayi Ana Sayfadan(%s) indirip yeniden baglanin.
+
+    Hata: %s"
 
 	// 2006-08-24 by cmkwon
-	#define STRMSG_060824_0000			"This ID has not been registered or the ID and password do not match."
+	#define STRMSG_060824_0000			"Bu ID kayitli degil veya ID ile sifre eslesmiyor."
 	
 	// 2006-09-27 by cmkwon
-	#define STRMSG_060927_0000			"The game server is currently offline for maintenance. Please check the official homepage (https://oldschoolrivals.com) for further information."
+	#define STRMSG_060927_0000			"Oyun sunucusu su anda bakim nedeniyle cevrimdisi. Ayrintili bilgi icin resmi ana sayfayi (https://oldschoolrivals.com) kontrol edin."
 
 	// 2006-10-11 by cmkwon
-	#define STRERR_061011_0000			"Game client version is not valid.\r\n  Please reinstall or download the patch file."
+	#define STRERR_061011_0000			"Oyun istemci surumu gecersiz.
+  Lutfen yeniden kurun veya yama dosyasini indirin."
 
 	// 2006-11-07 by cmkwon
-	#define STRMSG_061107_0000			"You were killed by %s."
+	#define STRMSG_061107_0000			"%s tarafindan olduruldunuz."
 
 	// 2006-11-07 by cmkwon
-	#define STRMSG_070410_0000   	"Jamboree server DB(atum2_db_20) initialization must be conducted after closing the jamboree server."
-	#define STRMSG_070410_0001   	"Do you really want to initialize jamboree server DB(atum2_db_20)- [Validation number:%d]"
-	#define STRMSG_070410_0002   	"Jamboree server  DB(atum2_db_20) is initialized."
-	#define STRMSG_070410_0003   	"Jamboree server  DB(atum2_db_20) initialization failed !!"
-	#define STRMSG_070410_0004   	"'%s' data duplication to Jamboree server  DB(atum2_db_20) completed."
-	#define STRMSG_070410_0005   	"'%s' data duplication to Jamboree server  DB(atum2_db_20) failed - character do not exist!!"
-	#define STRMSG_070410_0006   	" %s' data duplication to Jamboree server  DB(atum2_db_20) failed - Corresponding account character exists !!"
-	#define STRMSG_070410_0007   	" %s' data duplication to Jamboree server  DB(atum2_db_20) failed - DB addition failure !!"
-	#define STRMSG_070410_0008   	" %s' data duplication to Jamboree server  DB(atum2_db_20) failed - Unknown (%d)!!"
+	#define STRMSG_070410_0000   	"Jamboree sunucu DB(atum2_db_20) baslatma islemi jamboree sunucusu kapatildiktan sonra yapilmalidir."
+	#define STRMSG_070410_0001   	"Jamboree sunucu DB(atum2_db_20) gercekten baslatilsin mi? - [Dogrulama numarasi:%d]"
+	#define STRMSG_070410_0002   	"Jamboree sunucu DB(atum2_db_20) baslatildi."
+	#define STRMSG_070410_0003   	"Jamboree sunucu DB(atum2_db_20) baslatma basarisiz !!"
+	#define STRMSG_070410_0004   	"'%s' verisinin Jamboree sunucu DB(atum2_db_20) kopyalamasi tamamlandi."
+	#define STRMSG_070410_0005   	"'%s' verisinin Jamboree sunucu DB(atum2_db_20) kopyalamasi basarisiz - karakter bulunmuyor!!"
+	#define STRMSG_070410_0006   	"%s verisinin Jamboree sunucu DB(atum2_db_20) kopyalamasi basarisiz - Ilgili hesap karakteri zaten mevcut!!"
+	#define STRMSG_070410_0007   	"%s verisinin Jamboree sunucu DB(atum2_db_20) kopyalamasi basarisiz - DB ekleme basarisiz!!"
+	#define STRMSG_070410_0008   	"%s verisinin Jamboree sunucu DB(atum2_db_20) kopyalamasi basarisiz - Bilinmeyen (%d)!!"
 
 ///////////////////////////////////////////////////////////////////////////////
 // 2007-05-07 by cmkwon, 해상도 문자열 
