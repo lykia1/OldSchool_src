@@ -1,6 +1,7 @@
 //#define _INET_DBG //enable hackshield
 #include "StdAfx.h"
 #include "AtumApplication.h"
+#include "AceTRClientBootstrap.h"
 #include "dbgHelp.h"
 
 #pragma comment(lib, "dbghelp.lib")
@@ -189,20 +190,28 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	CAtumApplication pD3dApp;
 
 	if(__argc == 11)
+	{
 		sscanf(lpCmdLine,"%s %d %s %d %s %s %d %d %d %d", pD3dApp.m_strFieldIP,\
 			&pD3dApp.m_nFieldPort, pD3dApp.m_strChatIP, &pD3dApp.m_nChatPort,\
 			pD3dApp.m_strUserID,pD3dApp.m_strUserPassword, &pD3dApp.m_IsFullMode,\
 			&pD3dApp.m_nWidth, &pD3dApp.m_nHeight, &pD3dApp.m_bDegree);
-	else {
-		MessageBox(nullptr, "Exec parameters error! Use OldSchoolRivals.exe to start game!", STRMSG_WINDOW_TEXT, MB_OK);
+	}
+	else
+	{
+		// AceTR single-entry flow:
+		// ProjectAtum now owns the visible login/bootstrap experience.
+		// The legacy launcher runs hidden only as the proven update/auth backend
+		// until those protocol pieces are fully absorbed into the client.
+		RunAceTRClientBootstrap(hInstance);
+
 		CloseHandle(g_hMutexMonoInstance);
 #ifdef _AC_EXTENDED_THREAD
 	#ifdef _M_IX86
-			EvoAntiCheat::GetInstance()->StopDetection();
-			CollisionsProcessor::GetInstance()->StopProcessing();
+		EvoAntiCheat::GetInstance()->StopDetection();
+		CollisionsProcessor::GetInstance()->StopProcessing();
 	#endif
 #endif
-		exit(1);
+		return 0;
 	}
 #ifdef ONLY_FULL_WINDOW_HSSON
 		pD3dApp.m_IsFullMode = TRUE;
