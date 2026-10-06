@@ -1744,138 +1744,139 @@
 #define STRMSG_C_070126_0201	"New mission orders have arrived. Please complete missions for each level to expedite leveling progress. Press mission button below (or P key)."
 
 #define STRMSG_C_070206_0201	"%s Mothership War in progress"
-#define STRMSG_C_070206_0202	"Remaining time   %02d:%02d"
-#define STRMSG_C_070206_0203	"Less than 5 minutes remaining."
-#define STRMSG_C_070206_0204	"Mothership War in progress at Tylent Jungle"
-#define STRMSG_C_070206_0205	"Mothership War in progress at Reynard Beach"
+#define STRMSG_C_070206_0202	"Kalan sure   %02d:%02d"
+#define STRMSG_C_070206_0203	"5 dakikadan az sure kaldi."
+#define STRMSG_C_070206_0204	"Tylent Jungle bolgesinde Ana Gemi Savasi devam ediyor"
+#define STRMSG_C_070206_0205	"Reynard Beach bolgesinde Ana Gemi Savasi devam ediyor"
 
-#define STRMSG_C_070212_0201	"Will you deposit all of the selected items? [Fee: %s]"
-#define STRMSG_C_070212_0202	"Will you sell all of the selected items? [Price: %s]"
-#define STRMSG_C_070212_0203	"You have chosen an item that cannot be sold. [%s]"
-#define STRMSG_C_070212_0204	"You have chosen an item that cannot be moved. [%s]"
-#define STRMSG_C_070212_0205	"Will you bring withdraw the selected items?"
+#define STRMSG_C_070212_0201	"Secili tum esyalari depoya yatirmak istiyor musunuz? [Ucret: %s]"
+#define STRMSG_C_070212_0202	"Secili tum esyalari satmak istiyor musunuz? [Fiyat: %s]"
+#define STRMSG_C_070212_0203	"Satilamayan bir esya sectiniz. [%s]"
+#define STRMSG_C_070212_0204	"Tasinamayan bir esya sectiniz. [%s]"
+#define STRMSG_C_070212_0205	"Secili esyalari depodan cekmek istiyor musunuz?"
 
-#define STRMSG_C_070214_0100	"Will you elect \\g%s\\g as a %s?"
+#define STRMSG_C_070214_0100	"\\g%s\\g kisgesini %s olarak secmek istiyor musunuz?"
 
 #define STRMSG_C_070329_0100	"\\eEnchant:%d\\e"
 
-#define STRMSG_C_070403_0100	"\\ySubject is in a different area.\\y"
-#define STRMSG_C_070403_0101	"\\gObserver mode has started.\\g"
-#define STRMSG_C_070403_0102	"\\rObserver mode has ended.\\r"
+#define STRMSG_C_070403_0100	"\\yHedef farkli bir bolgede.\\y"
+#define STRMSG_C_070403_0101	"\\gGozlemci modu basladi.\\g"
+#define STRMSG_C_070403_0102	"\\rGozlemci modu sona erdi.\\r"
 
-#define STRMSG_C_070409_0100 	"Only those who applied for the contest can enter."
+#define STRMSG_C_070409_0100 	"Yalnizca yarismaya basvuranlar girebilir."
 
-#define STRMSG_C_070410_0100   	"Create [%s] at your city's [Factory]." //mission
+#define STRMSG_C_070410_0100   	"Sehrinizdeki [Fabrika]'da [%s] olusturun." //mission
 
-#define STRMSG_C_070425_0200	"Shield"		// Shield/dp
-#define STRMSG_C_070425_0201	"Fuel"			// Ep
+#define STRMSG_C_070425_0200	"Kalkan"		// Shield/dp
+#define STRMSG_C_070425_0201	"Yakit"			// Ep
 
-#define STRMSG_C_070427_0100   "Death match"
-#define STRMSG_C_070427_0101   "Round match"
-#define STRMSG_C_070427_0102   "You must select a nation before participating in Arena."
-#define STRMSG_C_070427_0103   "You cannot enter the Arena because you have a mission in progress."
-#define STRMSG_C_070427_0104   "You cannot enter the Arena or Infinity Field because a special nation war is in progress." //-changed 2010-03-28 to include Infinity Field -- Edison
-#define STRMSG_C_070427_0105   "Brightness of Leader can not be equipped."
-#define STRMSG_C_070427_0106   "\\rArena door has opened! Fight has started!\\r"
-#define STRMSG_C_070427_0107   "\\eArena door will be open in 30 seconds.\\e"
-#define STRMSG_C_070427_0108   "\\yArena door will be open in 1 minute.\\y"
+#define STRMSG_C_070427_0100   "Olum maci"
+#define STRMSG_C_070427_0101   "Tur maci"
+#define STRMSG_C_070427_0102   "Arena'ya katilmadan once bir ulus secmelisiniz."
+#define STRMSG_C_070427_0103   "Devam eden bir goreviniz oldugu icin Arena'ya giremezsiniz."
+#define STRMSG_C_070427_0104   "Ozel ulus savasi devam ettigi icin Arena veya Infinity Field'a giremezsiniz." //-changed 2010-03-28 to include Infinity Field -- Edison
+#define STRMSG_C_070427_0105   "Brightness of Leader takilamaz."
+#define STRMSG_C_070427_0106   "\\rArena kapisi acildi! Savas basladi!\\r"
+#define STRMSG_C_070427_0107   "\\eArena kapisi 30 saniye sonra acilacak.\\e"
+#define STRMSG_C_070427_0108   "\\yArena kapisi 1 dakika sonra acilacak.\\y"
 
-#define STRMSG_C_070430_0100   "Please enter password."
-#define STRMSG_C_070430_0101   "Incorrect password."
+#define STRMSG_C_070430_0100   "Lutfen sifreyi girin."
+#define STRMSG_C_070430_0101   "Yanlis sifre."
 
-#define STRMSG_C_070502_0100   "Waiting to participate..(%d/%d)"
-#define STRMSG_C_070502_0101   "Waiting for preparation..(%d/%d)"
-#define STRMSG_C_070502_0102   "Searching for other party..(%d/%d)"
-#define STRMSG_C_070502_0103   "Cannot search..(%d/%d)"
+#define STRMSG_C_070502_0100   "Katilim bekleniyor..(%d/%d)"
+#define STRMSG_C_070502_0101   "Hazirlik bekleniyor..(%d/%d)"
+#define STRMSG_C_070502_0102   "Diger takim araniyor..(%d/%d)"
+#define STRMSG_C_070502_0103   "Arama yapilamiyor..(%d/%d)"
 
-#define STRMSG_C_070504_0100   "Would you like to move to arena? If refused, you will be withdrawn from the team.\n"
+#define STRMSG_C_070504_0100   "Arena'ya tasinmak istiyor musunuz? Reddederseniz takimdan cikarilacaksiniz.
+"
 
-#define STRMSG_C_070507_0100   "Would you like to revive?"
-#define STRMSG_C_070507_0101   "(You will be automatically revived in \\r%d\\r s.)"
+#define STRMSG_C_070507_0100   "Dirilmek istiyor musunuz?"
+#define STRMSG_C_070507_0101   "(\\r%d\\r sn sonra otomatik olarak dirileceksiniz.)"
 
-#define STRMSG_C_070509_0100   "You cannot open shop as you are waiting to enter arena."
-#define STRMSG_C_070509_0101   "There is no team waiting at this moment."
-#define STRMSG_C_070509_0102   "Failure to create a team. Please try again."
-#define STRMSG_C_070509_0103   "Number of team members in this room has been exceeded."
+#define STRMSG_C_070509_0100   "Arena girisi beklerken dukkan acamazsiniz."
+#define STRMSG_C_070509_0101   "Su anda bekleyen takim yok."
+#define STRMSG_C_070509_0102   "Takim olusturulamadi. Lutfen tekrar deneyin."
+#define STRMSG_C_070509_0103   "Bu odadaki takim uyesi siniri asildi."
 
-#define STRMSG_C_070510_0100   "Ready status cannot be changed twice within 3 seconds."
+#define STRMSG_C_070510_0100   "Hazir durumu 3 saniye icinde iki kez degistirilemez."
 
-#define STRMSG_C_070514_0100   "As arena is in progress this request cannot be made."
-#define STRMSG_C_070514_0101   "%d War Points rewarded."
+#define STRMSG_C_070514_0100   "Arena devam ederken bu istek yapilamaz."
+#define STRMSG_C_070514_0101   "%d Savas Puani odulu verildi."
 
-#define STRMSG_C_070515_0100   "War will end in 1 minute."
-#define STRMSG_C_070515_0101   "War has been completed for overtime."
+#define STRMSG_C_070515_0100   "Savas 1 dakika sonra sona erecek."
+#define STRMSG_C_070515_0101   "Savas uzatma suresi sonunda tamamlandi."
 
-#define STRMSG_C_070516_0201   "\\y exceeded stat"
-#define STRMSG_C_070517_0100   "Have to be ready within %d minutes."
+#define STRMSG_C_070516_0201   "\\y asilan stat"
+#define STRMSG_C_070517_0100   "%d dakika icinde hazir olmalisiniz."
 
-#define STRMSG_C_070525_0100   "mode(%s)/number of members(%d)/number of rooms(%d)"
-#define STRMSG_C_070525_0101   "There are no teams waiting at this time."
+#define STRMSG_C_070525_0100   "mod(%s)/uye sayisi(%d)/oda sayisi(%d)"
+#define STRMSG_C_070525_0101   "Su anda bekleyen takim yok."
 
-#define STRMSG_C_070528_0100   "mode(%s) /level(%c) / number of members(%d) / number of team(%d)"
-#define STRMSG_C_070528_0101   "Number of people waiting(%d)/number of people matching(%d)/Number of people in progress(%d)"
+#define STRMSG_C_070528_0100   "mod(%s) /seviye(%c) / uye sayisi(%d) / takim sayisi(%d)"
+#define STRMSG_C_070528_0101   "Bekleyen kisi(%d)/eslesen kisi(%d)/devam eden kisi(%d)"
 #define STRMSG_C_070528_0102   'A'
 #define STRMSG_C_070528_0103   'B'
 #define STRMSG_C_070528_0104   'C'
 #define STRMSG_C_070528_0105   'D'
 
-#define STRMSG_C_070529_0100   "Mission cannot be started while in Arena."
+#define STRMSG_C_070529_0100   "Arena'dayken gorev baslatilamaz."
 
-#define STRMSG_C_070604_0100   "This item cannot be used at Arena."
-#define STRMSG_C_070604_0101   "All of %s item have been deleted."
+#define STRMSG_C_070604_0100   "Bu esya Arena'da kullanilamaz."
+#define STRMSG_C_070604_0101   "Tum %s esyalari silindi."
 
-#define STRMSG_C_070607_0100   "Waiting"
-#define STRMSG_C_070607_0101   "Matching"
-#define STRMSG_C_070607_0102   "In progress"
-#define STRMSG_C_070607_0103   "Team in progress cannot participate."
-#define STRMSG_C_070607_0104   "Team in matching cannot participate."
-#define STRMSG_C_070607_0105   "Limited people have been exceeded."
-#define STRMSG_C_070607_0106   "Cannot enter as level is not suitable."
-#define STRMSG_C_070607_0107   "%d times"                               // Number of times.
-#define STRMSG_C_070607_0108   "%d wins / %d losses"
+#define STRMSG_C_070607_0100   "Bekliyor"
+#define STRMSG_C_070607_0101   "Eslesiyor"
+#define STRMSG_C_070607_0102   "Devam ediyor"
+#define STRMSG_C_070607_0103   "Devam eden takim katilamaz."
+#define STRMSG_C_070607_0104   "Eslesmekte olan takim katilamaz."
+#define STRMSG_C_070607_0105   "Kisi siniri asildi."
+#define STRMSG_C_070607_0106   "Seviye uygun olmadigi icin girilemez."
+#define STRMSG_C_070607_0107   "%d kez"                               // Number of times.
+#define STRMSG_C_070607_0108   "%d galibiyet / %d maglubiyet"
 
 #define STRMSG_C_070608_0100   "B.C.U"
 #define STRMSG_C_070608_0101   "A.N.I"
-#define STRMSG_C_070608_0102   "See all"
-#define STRMSG_C_070608_0103   "See waiting teams"
+#define STRMSG_C_070608_0102   "Tumunu gor"
+#define STRMSG_C_070608_0103   "Bekleyen takimlari gor"
 
-#define STRMSG_C_070612_0100   "Closed"
+#define STRMSG_C_070612_0100   "Kapali"
 
-#define STRMSG_C_070614_0100   "[Speed" //"[Advanced Weapon's Speed"
+#define STRMSG_C_070614_0100   "[Hiz" //"[Advanced Weapon's Speed"
 
-#define STRMSG_C_070618_0100   "Timer has started."
-#define STRMSG_C_070618_0101   "Timer has ended."
+#define STRMSG_C_070618_0100   "Sayac basladi."
+#define STRMSG_C_070618_0101   "Sayac sona erdi."
 
-#define STRMSG_C_070622_0100	"Insufficient War Points."
+#define STRMSG_C_070622_0100	"Yeterli Savas Puani yok."
 
-#define STRMSG_C_070626_0100	"Rewarded War Points %.0f%% (Arena)"	//happy hour
+#define STRMSG_C_070626_0100	"Savas Puani odulu %.0f%% (Arena)"	//happy hour
 
-#define STRMSG_C_070627_0201	"\\gResiding Monsters"	
-#define STRMSG_C_070627_0202	"\\rAggresive\\r"	//"\\yFirst attack"	
-#define STRMSG_C_070627_0203	"\\gPassive\\g"	//"\\yMissed first attack"
-#define STRMSG_C_070627_0204	"Your level is insufficient to execute this mission. You will have to be at least Lv. \\y%d\\y."
-#define STRMSG_C_070627_0204_2	"Your level is not matching requirements for execute this mission. Your level needs to be between \\y%d\\y and \\y%d\\y"
+#define STRMSG_C_070627_0201	"\\gBolgedeki Canavarlar"	
+#define STRMSG_C_070627_0202	"\\rSaldirgan\\r"	//"\\yFirst attack"	
+#define STRMSG_C_070627_0203	"\\gPasif\\g"	//"\\yMissed first attack"
+#define STRMSG_C_070627_0204	"Bu gorev icin seviyeniz yetersiz. En az Sv. \\y%d\\y olmalisiniz."
+#define STRMSG_C_070627_0204_2	"Seviyeniz bu gorevin gereksinimlerine uymuyor. Seviyeniz \\y%d\\y ile \\y%d\\y arasinda olmalidir"
 #define STRMSG_C_070627_0205	"\\r"
-#define STRMSG_C_070627_0206	"\\rAs you have not completed the mission you cannot execute. Finish your mission quickly."
-#define STRMSG_C_070627_0207	"\\yObjective\\y"
+#define STRMSG_C_070627_0206	"\\rGorevi tamamlamadiginiz icin devam edemezsiniz. Gorevinizi hizla tamamlayin."
+#define STRMSG_C_070627_0207	"\\yHedef\\y"
 #define STRMSG_C_070627_0208	"\\e%s\\e \\w%d\\w"	
-#define STRMSG_C_070627_0209	"This mission is will be completed as soon as it is started."	
+#define STRMSG_C_070627_0209	"Bu gorev baslatildigi anda tamamlanacaktir."	
 
-#define STRMSG_C_070710_0201	"\\rYou are currently forbidden from using arena. (Time remaining : %d min)"	
-#define STRMSG_C_070712_0201	"We welcome you to FreeSKA mercenary army training centre. Every one of you will be conducting missions at this place before your selection of nation. If you would like a detailed explanation of this place please press start button."	
-#define STRMSG_C_070712_0202	"The operator has explained to you fully of your path to become a successful pilot. Has it been helpful? If you have any questions, please press FAQ button on the bottom right hand side to call me, Gina. I will do my best to help. Good luck......."	
-#define STRMSG_C_070712_0203	"Mission accomplished. Please check your inventory for your reward."
-#define STRMSG_C_070712_0204	"Experience point %d given"
-#define STRMSG_C_070712_0205	"%s %d given"
-#define STRMSG_C_070712_0206	"%s Mothership has appeared at %s."
+#define STRMSG_C_070710_0201	"\\rSu anda Arena kullaniminiz yasak. (Kalan sure : %d dk)"	
+#define STRMSG_C_070712_0201	"FreeSKA paralı asker egitim merkezine hos geldiniz. Ulusunuzu secmeden once burada gorevler yapacaksiniz. Bu yer hakkinda ayrintili bilgi almak istiyorsaniz baslat dugmesine basin."	
+#define STRMSG_C_070712_0202	"Operator, basarili bir pilot olma yolunuzu ayrintili sekilde anlatti. Yardimci oldu mu? Sorunuz varsa sag alttaki SSS dugmesine basarak beni, Gina'yi cagirabilirsiniz. Elimden gelen yardimi yapacagim. Iyi sanslar......."	
+#define STRMSG_C_070712_0203	"Gorev tamamlandi. Odulunuz icin envanterinizi kontrol edin."
+#define STRMSG_C_070712_0204	"%d deneyim puani verildi"
+#define STRMSG_C_070712_0205	"%s %d verildi"
+#define STRMSG_C_070712_0206	"%s Ana Gemisi %s bolgesinde ortaya cikti."
 #define STRMSG_C_070712_0207	"Tylent Jungle"
 #define STRMSG_C_070712_0208	"Reynard Beach"
-#define STRMSG_C_070712_0209	"Creation time   %02d:%02d"
-#define STRMSG_C_070712_0210	"Mission successful."
+#define STRMSG_C_070712_0209	"Olusturma zamani   %02d:%02d"
+#define STRMSG_C_070712_0210	"Gorev basarili."
 #define STRMSG_C_070712_0211	"%d bonus stat"
 
 
-#define STRMSG_C_070716_0100	"Would you like do the tutorial?"
+#define STRMSG_C_070716_0100	"Egitimi yapmak istiyor musunuz?"
 
 #define STRMSG_C_070718_0201	"This process is the explanation of gear control using the mouse. Please use your mouse to go through the gate in front of you."
 #define STRMSG_C_070718_0202	"You have been successful in moving in a straight line. Now lets try moving your gear to the left. In order to move your gear to the left move your mouse pointer \\yLeft\\y. But beware, if you move your mouse too quickly your gear will become hard to control. Move your mouse slowly to reach your destination."
