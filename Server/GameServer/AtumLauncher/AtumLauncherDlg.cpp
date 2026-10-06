@@ -2235,6 +2235,8 @@ LONG CAtumLauncherDlg::OnSocketNotify(WPARAM wParam, LPARAM lParam)
 						MSG_PC_CONNECT_LAUNCHER_SESSION* pSession =
 							(MSG_PC_CONNECT_LAUNCHER_SESSION*)(pPacket + SIZE_FIELD_TYPE_HEADER);
 						m_szLauncherSessionToken = pSession->SessionToken;
+						if (!m_szLauncherSessionToken.IsEmpty())
+							SetProgressGroupText("Launcher hesabı doğrulandı. Hesap servisleri hazır.");
 					}
 					break;
 
