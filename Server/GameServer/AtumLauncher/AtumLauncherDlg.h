@@ -352,6 +352,8 @@ public:
 	CFont				m_fontNotice;
 	CFont				m_fontModernInput;
 	CFont				m_fontModernSmall;
+	int					m_nModernNavHover;
+	BOOL				m_bModernNavTracking;
 
 // Dialog Data
 	//{{AFX_DATA(CAtumLauncherDlg)
@@ -593,6 +595,10 @@ protected:
 	afx_msg void OnSharin();
 	afx_msg void OnPhilon();
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
+	afx_msg LRESULT OnModernNavMouseLeave(WPARAM wParam, LPARAM lParam);
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnSelchangeList();
 	afx_msg void OnCan();
