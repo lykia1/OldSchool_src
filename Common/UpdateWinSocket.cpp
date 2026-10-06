@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "UpdateWinSocket.h"
+#include "AtumProtocol.h"
 #ifdef _ATUM_LAUNCHER
 #include "FtpDownload.h"
 
@@ -46,7 +47,7 @@ int CUpdateWinSocket::CreateDirectory(CString strParent, CList<CString, CString&
 {
 	POSITION pos = lsDir.GetHeadPosition();
 	strParent += lsDir.GetNext(pos);
-	if(pos)// ¸¶Áö¸·Àº µð·ºÅä¸®°¡ ¾Æ´Ñ º¹»çÇÒ ÆÄÀÏ
+	if(pos)// ë§ˆì§€ë§‰ì€ ë””ë ‰í† ë¦¬ê°€ ì•„ë‹Œ ë³µì‚¬í•  íŒŒì¼
 	{
 		CFileFind finder;
 		if(finder.FindFile(strParent))
@@ -55,7 +56,7 @@ int CUpdateWinSocket::CreateDirectory(CString strParent, CList<CString, CString&
 		    finder.FindNextFile();
 			if(!finder.IsDirectory())
 			{
-				DeleteFile(strParent); // ÆÄÀÏ·Î Á¸ÀçÇÏ¸é Áö¿î´Ù.
+				DeleteFile(strParent); // íŒŒì¼ë¡œ ì¡´ìž¬í•˜ë©´ ì§€ìš´ë‹¤.
 				if(!::CreateDirectory(strParent,NULL))
 					return -1;
 			}
@@ -95,7 +96,7 @@ BOOL CUpdateWinSocket::OnRecvdPacket(LPSTR pPacket, int nLength, BYTE nSeq)
 				m_queueRecvMessage.push(pRMsg);
 				LeaveCriticalSection(&m_criticalRecvMessageQueue);
 				pRMsg = NULL;
-				//  Ã³¸®
+				//  ì²˜ë¦¬
 				PostNotify(WS_RECEIVED, 0, (char*)this);
 				nBytesUsed += nMsgSize;
 			}
@@ -109,7 +110,7 @@ BOOL CUpdateWinSocket::OnRecvdPacket(LPSTR pPacket, int nLength, BYTE nSeq)
 				m_queueRecvMessage.push(pRMsg);
 				LeaveCriticalSection(&m_criticalRecvMessageQueue);
 				pRMsg = NULL;
-				//  Ã³¸®
+				//  ì²˜ë¦¬
 				PostNotify(WS_RECEIVED, 0, (char*)this);
 				nBytesUsed += nMsgSize;
 			}
@@ -123,7 +124,7 @@ BOOL CUpdateWinSocket::OnRecvdPacket(LPSTR pPacket, int nLength, BYTE nSeq)
 				m_queueRecvMessage.push(pRMsg);
 				LeaveCriticalSection(&m_criticalRecvMessageQueue);
 				pRMsg = NULL;
-				//  Ã³¸®
+				//  ì²˜ë¦¬
 				PostNotify(WS_RECEIVED, 0, (char*)this);
 				nBytesUsed += nMsgSize;
 			}
@@ -164,7 +165,7 @@ BOOL CUpdateWinSocket::OnRecvdPacket(LPSTR pPacket, int nLength, BYTE nSeq)
 				m_queueRecvMessage.push(pRMsg);
 				LeaveCriticalSection(&m_criticalRecvMessageQueue);
 				pRMsg = NULL;
-				//  Ã³¸®
+				//  ì²˜ë¦¬
 				PostNotify(WS_RECEIVED, 0, (char*)this);
 				nBytesUsed += nMsgSize;
 			}
@@ -178,7 +179,7 @@ BOOL CUpdateWinSocket::OnRecvdPacket(LPSTR pPacket, int nLength, BYTE nSeq)
 				m_queueRecvMessage.push(pRMsg);
 				LeaveCriticalSection(&m_criticalRecvMessageQueue);
 				pRMsg = NULL;
-				//  Ã³¸®
+				//  ì²˜ë¦¬
 				PostNotify(WS_RECEIVED, 0, (char*)this);
 				nBytesUsed += nMsgSize;
 			}
@@ -192,7 +193,7 @@ BOOL CUpdateWinSocket::OnRecvdPacket(LPSTR pPacket, int nLength, BYTE nSeq)
 				m_queueRecvMessage.push(pRMsg);
 				LeaveCriticalSection(&m_criticalRecvMessageQueue);
 				pRMsg = NULL;
-				//  Ã³¸®
+				//  ì²˜ë¦¬
 				PostNotify(WS_RECEIVED, 0, (char*)this);
 				nBytesUsed += nMsgSize;
 			}
@@ -207,12 +208,12 @@ BOOL CUpdateWinSocket::OnRecvdPacket(LPSTR pPacket, int nLength, BYTE nSeq)
 				m_queueRecvMessage.push(pRMsg);
 				LeaveCriticalSection(&m_criticalRecvMessageQueue);
 				pRMsg = NULL;
-				//  Ã³¸®
+				//  ì²˜ë¦¬
 				PostNotify(WS_RECEIVED, 0, (char*)this);
 				nBytesUsed += nMsgSize;
 			}
 			break;
-		case T_PC_CONNECT_NETWORK_CHECK_OK:		// 2007-06-18 by cmkwon, ³×Æ®¿öÅ© »óÅÂ Ã¼Å©
+		case T_PC_CONNECT_NETWORK_CHECK_OK:		// 2007-06-18 by cmkwon, ë„¤íŠ¸ì›Œí¬ ìƒíƒœ ì²´í¬
 			{
 				nMsgSize = MSG_SIZE(MSG_PC_CONNECT_NETWORK_CHECK_OK);
 				pRMsg = new char[nMsgSize];
@@ -221,7 +222,7 @@ BOOL CUpdateWinSocket::OnRecvdPacket(LPSTR pPacket, int nLength, BYTE nSeq)
 				m_queueRecvMessage.push(pRMsg);
 				LeaveCriticalSection(&m_criticalRecvMessageQueue);
 				pRMsg = NULL;
-				//  Ã³¸®
+				//  ì²˜ë¦¬
 				PostNotify(WS_RECEIVED, 0, (char*)this);
 				nBytesUsed += nMsgSize;
 			}
@@ -236,7 +237,7 @@ BOOL CUpdateWinSocket::OnRecvdPacket(LPSTR pPacket, int nLength, BYTE nSeq)
 				m_queueRecvMessage.push(pRMsg);
 				LeaveCriticalSection(&m_criticalRecvMessageQueue);
 				pRMsg = NULL;
-				//  Ã³¸®
+				//  ì²˜ë¦¬
 				PostNotify(WS_RECEIVED, 0, (char*)this);
 				nBytesUsed += nMsgSize;
 			}
@@ -250,7 +251,7 @@ BOOL CUpdateWinSocket::OnRecvdPacket(LPSTR pPacket, int nLength, BYTE nSeq)
 				m_queueRecvMessage.push(pRMsg);
 				LeaveCriticalSection(&m_criticalRecvMessageQueue);
 				pRMsg = NULL;
-				//  Ã³¸®
+				//  ì²˜ë¦¬
 				PostNotify(WS_RECEIVED, 0, (char*)this);
 				nBytesUsed += nMsgSize;
 			}
