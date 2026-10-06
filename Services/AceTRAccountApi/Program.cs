@@ -70,11 +70,36 @@ app.MapGet("/api/account/profile", async (HttpRequest request, DbOptions db) =>
     return Results.Ok(profile);
 });
 
+static async Task<int?> GetAccountUniqueNumberAsync(string accountName, string accountDb)
+{
+    await using var con = new SqlConnection(accountDb);
+    await con.OpenAsync();
+
+    const string sql = """
+        SELECT TOP 1 AccountUniqueNumber
+        FROM dbo.td_Account WITH (NOLOCK)
+        WHERE AccountName = @accountName
+        """;
+
+    await using var cmd = new SqlCommand(sql, con);
+    cmd.Parameters.Add("@accountName", SqlDbType.VarChar, 20).Value = accountName;
+
+    var value = await cmd.ExecuteScalarAsync();
+    if (value is null || value == DBNull.Value)
+        return null;
+
+    return Convert.ToInt32(value);
+}
+
 app.MapGet("/api/account/characters", async (HttpRequest request, DbOptions db) =>
 {
     var session = LauncherSession.TryValidate(request, db.SigningSecret);
     if (session is null)
         return Results.Unauthorized();
+
+    var accountUniqueNumber = await GetAccountUniqueNumberAsync(session.AccountName, db.AccountDb);
+    if (accountUniqueNumber is null)
+        return Results.NotFound(new { error = "account_not_found" });
 
     await using var con = new SqlConnection(db.GameDb);
     await con.OpenAsync();
@@ -87,13 +112,12 @@ app.MapGet("/api/account/characters", async (HttpRequest request, DbOptions db) 
             UnitKind,
             Race
         FROM dbo.td_Character WITH (NOLOCK)
-        WHERE AccountName = @accountName
-          AND Race < 128
+        WHERE AccountUniqueNumber = @accountUniqueNumber
         ORDER BY Level DESC, CharacterName ASC
         """;
 
     await using var cmd = new SqlCommand(sql, con);
-    cmd.Parameters.Add("@accountName", SqlDbType.VarChar, 20).Value = session.AccountName;
+    cmd.Parameters.Add("@accountUniqueNumber", SqlDbType.Int).Value = accountUniqueNumber.Value;
 
     var result = new List<CharacterSummary>();
     await using var reader = await cmd.ExecuteReaderAsync();
@@ -119,19 +143,22 @@ app.MapGet("/api/launcher/characters", async (HttpRequest request, DbOptions db)
     if (session is null)
         return Results.Unauthorized();
 
+    var accountUniqueNumber = await GetAccountUniqueNumberAsync(session.AccountName, db.AccountDb);
+    if (accountUniqueNumber is null)
+        return Results.NotFound("account_not_found");
+
     await using var con = new SqlConnection(db.GameDb);
     await con.OpenAsync();
 
     const string sql = """
         SELECT CharacterName, Level, UnitKind, Race
         FROM dbo.td_Character WITH (NOLOCK)
-        WHERE AccountName = @accountName
-          AND Race < 128
+        WHERE AccountUniqueNumber = @accountUniqueNumber
         ORDER BY Level DESC, CharacterName ASC
         """;
 
     await using var cmd = new SqlCommand(sql, con);
-    cmd.Parameters.Add("@accountName", SqlDbType.VarChar, 20).Value = session.AccountName;
+    cmd.Parameters.Add("@accountUniqueNumber", SqlDbType.Int).Value = accountUniqueNumber.Value;
 
     var lines = new List<string>();
     await using var reader = await cmd.ExecuteReaderAsync();
