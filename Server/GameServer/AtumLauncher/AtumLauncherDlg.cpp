@@ -713,7 +713,7 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	m_ctlINETCfgBtn.SetToolTipText("Oyun Ayarlari");
 	m_ctlINETCfgBtn.SetModernButton("AYAR", RGB(38, 42, 52));
 
-	GetDlgItem(IDC_BTN_VIEW_INET_CFG)->MoveWindow(1054, 18, 58, 26);
+	GetDlgItem(IDC_BTN_VIEW_INET_CFG)->MoveWindow(1168, 660, 72, 30);
 #endif	
 	// 2007-09-07 by cmkwon, »çżëÇĎÁö ľĘ´Â ąöĆ°ŔÓ
 	//// Join Button
@@ -721,6 +721,8 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 
 	// Update Progress Bar
 	m_progressCtrl.MoveWindow(EXE2_BG_UPDATE_PROGRESS_BAR_POS_X, EXE2_BG_UPDATE_PROGRESS_BAR_POS_Y, EXE2_BG_UPDATE_PROGRESS_BAR_WIDTH, EXE2_BG_UPDATE_PROGRESS_BAR_HEIGHT);
+	GetDlgItem(IDC_PLAYER_CNT)->MoveWindow(985, 195, 220, 22);
+	GetDlgItem(IDC_PLAYER_CNT)->ShowWindow(SW_SHOW);
 
 
 
@@ -1257,32 +1259,64 @@ void CAtumLauncherDlg::OnPaint()
 		&mem, 0, 0, bm.bmWidth, bm.bmHeight, SRCCOPY);
 	mem.SelectObject(oldBmp);
 
-	// Dark glass panels.
-	CBrush panel(RGB(10, 18, 29));
-	CBrush panel2(RGB(14, 25, 39));
-	CPen border(PS_SOLID, 1, RGB(34, 122, 158));
-	CBrush* oldBrush = dc.SelectObject(&panel);
-	CPen* oldPen = dc.SelectObject(&border);
-	dc.RoundRect(CRect(10, 125, 245, 640), CPoint(12, 12));
-	dc.RoundRect(CRect(255, 125, 950, 640), CPoint(12, 12));
-	dc.SelectObject(&panel2);
-	dc.RoundRect(CRect(960, 125, 1268, 640), CPoint(12, 12));
+	// AceTR dark glass frame.
+	CBrush shell(RGB(7, 14, 24));
+	CBrush panel(RGB(10, 22, 34));
+	CBrush panelLight(RGB(15, 31, 46));
+	CBrush card(RGB(18, 37, 54));
+	CBrush cyan(RGB(47, 211, 255));
+	CBrush green(RGB(67, 224, 132));
+	CPen framePen(PS_SOLID, 1, RGB(32, 103, 137));
+	CPen cyanPen(PS_SOLID, 2, RGB(47, 211, 255));
+
+	CBrush* oldBrush=dc.SelectObject(&shell);
+	CPen* oldPen=dc.SelectObject(&framePen);
+	dc.RoundRect(CRect(8, 8, 1272, 712), CPoint(14, 14));
+
+	// Header.
+	dc.SelectObject(&panel);
+	dc.RoundRect(CRect(18, 18, 1258, 108), CPoint(12, 12));
+	dc.FillSolidRect(CRect(18, 106, 1258, 108), RGB(26, 123, 158));
+
+	// Main columns.
+	dc.RoundRect(CRect(18, 124, 238, 642), CPoint(12, 12));
+	dc.SelectObject(&panelLight);
+	dc.RoundRect(CRect(250, 124, 950, 642), CPoint(12, 12));
+	dc.SelectObject(&panel);
+	dc.RoundRect(CRect(962, 124, 1258, 642), CPoint(12, 12));
+
+	// Bottom patch strip.
+	dc.SelectObject(&panel);
+	dc.RoundRect(CRect(18, 650, 1258, 704), CPoint(10, 10));
 
 	dc.SetBkMode(TRANSPARENT);
-	CFont titleFont, navFont, heroFont, bodyFont, statusFont;
-	titleFont.CreateFont(30,0,0,0,FW_BOLD,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
+	CFont logoFont, logoSubFont, navFont, sectionFont, heroFont, bodyFont, smallFont, tinyFont;
+	logoFont.CreateFont(34,0,0,0,FW_BOLD,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
+	logoSubFont.CreateFont(14,0,0,0,FW_SEMIBOLD,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
 	navFont.CreateFont(18,0,0,0,FW_SEMIBOLD,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
-	heroFont.CreateFont(27,0,0,0,FW_BOLD,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
+	sectionFont.CreateFont(16,0,0,0,FW_BOLD,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
+	heroFont.CreateFont(29,0,0,0,FW_BOLD,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
 	bodyFont.CreateFont(15,0,0,0,FW_NORMAL,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
-	statusFont.CreateFont(16,0,0,0,FW_BOLD,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
+	smallFont.CreateFont(13,0,0,0,FW_SEMIBOLD,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
+	tinyFont.CreateFont(12,0,0,0,FW_NORMAL,FALSE,FALSE,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH|FF_SWISS,"Segoe UI");
 
-	CFont* oldFont=dc.SelectObject(&titleFont);
-	dc.SetTextColor(RGB(235,248,255));
-	dc.TextOut(34,38,"ACE TR");
-	dc.SelectObject(&bodyFont);
-	dc.SetTextColor(RGB(94,218,255));
-	dc.TextOut(36,79,"ACE ONLINE TURKIYE");
+	CFont* oldFont=dc.SelectObject(&logoFont);
+	dc.SetTextColor(RGB(238,250,255));
+	dc.TextOut(38,32,"ACE TR");
+	dc.SelectObject(&logoSubFont);
+	dc.SetTextColor(RGB(64,214,255));
+	dc.TextOut(40,74,"ACE ONLINE TURKIYE");
 
+	// Decorative top status line.
+	dc.SelectObject(&smallFont);
+	dc.SetTextColor(RGB(126,151,169));
+	dc.TextOut(780,47,"LAUNCHER");
+	dc.SetTextColor(RGB(67,224,132));
+	dc.TextOut(857,47,"HAZIR");
+	dc.SetTextColor(RGB(126,151,169));
+	dc.TextOut(922,47,"|  SURUM 1.0");
+
+	// Navigation.
 	struct NavItem { CRect r; LPCSTR text; int id; };
 	NavItem navItems[] = {
 		{ACETR_NAV_HOME_RECT,"ANA SAYFA",1},
@@ -1296,47 +1330,127 @@ void CAtumLauncherDlg::OnPaint()
 	{
 		const bool hot=(m_nModernNavHover==navItems[i].id);
 		const bool active=(m_nLauncherMainPage==(navItems[i].id-1));
+		CRect r=navItems[i].r;
 		if(hot||active)
 		{
-			dc.FillSolidRect(CRect(navItems[i].r.left,navItems[i].r.top,navItems[i].r.right,navItems[i].r.bottom),RGB(19,55,76));
-			dc.FillSolidRect(CRect(navItems[i].r.left,navItems[i].r.top,navItems[i].r.left+4,navItems[i].r.bottom),RGB(50,218,255));
+			dc.FillSolidRect(r,RGB(15,55,76));
+			dc.FillSolidRect(CRect(r.left,r.top,r.left+4,r.bottom),RGB(47,211,255));
 		}
-		dc.SetTextColor((hot||active)?RGB(245,252,255):RGB(174,194,207));
-		dc.DrawText(navItems[i].text,navItems[i].r,DT_LEFT|DT_VCENTER|DT_SINGLELINE);
+		dc.SetTextColor((hot||active)?RGB(244,252,255):RGB(162,187,201));
+		CRect textRect=r; textRect.left+=24;
+		dc.DrawText(navItems[i].text,textRect,DT_LEFT|DT_VCENTER|DT_SINGLELINE);
 	}
 
-	// Main feature/news card.
-	dc.SelectObject(&panel2);
-	dc.RoundRect(CRect(280,170,925,505),CPoint(12,12));
+	// Left utility card.
+	dc.SelectObject(&card);
+	dc.RoundRect(CRect(34,475,222,615),CPoint(10,10));
+	dc.SelectObject(&sectionFont);
+	dc.SetTextColor(RGB(70,214,255));
+	dc.TextOut(52,492,"ACE TR");
+	dc.SelectObject(&tinyFont);
+	dc.SetTextColor(RGB(150,173,188));
+	dc.TextOut(52,520,"Turkiye sunucusu");
+	dc.TextOut(52,542,"Modern launcher");
+	dc.TextOut(52,564,"Otomatik guncelleme");
+	dc.SetTextColor(RGB(67,224,132));
+	dc.TextOut(52,588,"Sistem aktif");
+
+	// Featured news artwork container.
+	dc.SelectObject(&card);
+	dc.RoundRect(CRect(275,154,925,484),CPoint(12,12));
+	// Header accent and fake visual depth strips, so the layout looks finished even
+	// before the final bitmap pack replaces the legacy background.
+	dc.FillSolidRect(CRect(275,154,925,158),RGB(47,211,255));
+	dc.FillSolidRect(CRect(292,176,908,330),RGB(10,43,62));
+	dc.FillSolidRect(CRect(310,194,892,314),RGB(12,56,78));
+	dc.SelectObject(&sectionFont);
+	dc.SetTextColor(RGB(76,222,255));
+	dc.TextOut(300,170,"ONE CIKAN HABER");
 	dc.SelectObject(&heroFont);
-	dc.SetTextColor(RGB(76,220,255));
-	dc.TextOut(310,405,"YENI SEZON BASLIYOR!");
+	dc.SetTextColor(RGB(244,250,253));
+	dc.TextOut(305,352,"YENI SEZON BASLIYOR!");
 	dc.SelectObject(&bodyFont);
-	dc.SetTextColor(RGB(205,218,228));
-	dc.TextOut(310,450,"Daha buyuk savaslar, yeni etkinlikler ve surpriz oduller seni bekliyor.");
+	dc.SetTextColor(RGB(190,207,219));
+	dc.TextOut(307,397,"Daha buyuk savaslar, yeni etkinlikler ve surpriz oduller seni bekliyor.");
+	dc.SetTextColor(RGB(82,217,255));
+	dc.TextOut(307,433,"DETAYLARI GOR  >");
 
-	// Top/right server status.
-	dc.SelectObject(&statusFont);
-	dc.SetTextColor(RGB(155,170,184));
-	dc.TextOut(985,155,"SUNUCU DURUMU:");
-	dc.SetTextColor(RGB(73,235,137));
-	dc.TextOut(1120,155,"CEVRIMICI");
+	// Three compact story cards.
+	for(int i=0;i<3;++i)
+	{
+		CRect c(275+i*217,502,478+i*217,615);
+		dc.SelectObject(&panel);
+		dc.RoundRect(c,CPoint(10,10));
+		dc.FillSolidRect(CRect(c.left,c.top,c.right,c.top+3), i==0?RGB(47,211,255):RGB(40,105,133));
+	}
+	dc.SelectObject(&smallFont);
+	dc.SetTextColor(RGB(228,239,245));
+	dc.TextOut(292,523,"SEZON 1");
+	dc.TextOut(509,523,"ETKINLIK");
+	dc.TextOut(726,523,"GUNCELLEME");
+	dc.SelectObject(&tinyFont);
+	dc.SetTextColor(RGB(142,166,181));
+	dc.TextOut(292,551,"Yeni oduller ve");
+	dc.TextOut(292,570,"rekabet seni bekliyor");
+	dc.TextOut(509,551,"Haftalik etkinlik");
+	dc.TextOut(509,570,"takvimi yayinlandi");
+	dc.TextOut(726,551,"Launcher ve istemci");
+	dc.TextOut(726,570,"dosyalari guncel");
 
-	dc.SetTextColor(RGB(116,211,240));
-	dc.TextOut(985,325,"SUNUCU SECIMI");
+	// Right server panel.
+	dc.SelectObject(&sectionFont);
+	dc.SetTextColor(RGB(131,158,175));
+	dc.TextOut(986,150,"SUNUCU DURUMU");
+	dc.SelectObject(&green);
+	dc.Ellipse(CRect(987,181,999,193));
+	dc.SelectObject(&sectionFont);
+	dc.SetTextColor(RGB(67,224,132));
+	dc.TextOut(1008,178,"CEVRIMICI");
+
+	dc.SelectObject(&tinyFont);
+	dc.SetTextColor(RGB(128,151,166));
+	dc.TextOut(986,231,"BAGLANTI");
+	const int pingMs=NTGetPingAverageTime();
+	CString pingText;
+	if(pingMs>0) pingText.Format("%d ms",pingMs); else pingText="olculuyor...";
+	dc.SetTextColor(RGB(225,239,246));
+	dc.TextOut(1080,231,pingText);
+
+	dc.SelectObject(&sectionFont);
+	dc.SetTextColor(RGB(74,215,255));
+	dc.TextOut(986,302,"SUNUCU SECIMI");
+	dc.SelectObject(&card);
+	dc.RoundRect(CRect(982,330,1238,378),CPoint(8,8));
 	dc.SelectObject(&bodyFont);
-	dc.SetTextColor(RGB(205,218,228));
-	dc.TextOut(985,350,"AceTR - Ana Sunucu");
+	dc.SetTextColor(RGB(224,239,246));
+	dc.TextOut(1000,346,"AceTR - Ana Sunucu");
 
-	dc.SetTextColor(RGB(140,155,169));
-	dc.TextOut(985,445,"Guncellemeler tamamlandiginda");
-	dc.TextOut(985,466,"OYNA butonu aktif olarak kullanilir.");
+	dc.SelectObject(&tinyFont);
+	dc.SetTextColor(RGB(132,155,170));
+	dc.TextOut(986,427,"OYUN DURUMU");
+	dc.SetTextColor(RGB(218,235,243));
+	dc.TextOut(1080,427,"Hazir");
+	dc.SetTextColor(RGB(132,155,170));
+	dc.TextOut(986,451,"DOSYALAR");
+	dc.SetTextColor(RGB(218,235,243));
+	dc.TextOut(1080,451,"Kontrol edildi");
+	dc.SetTextColor(RGB(132,155,170));
+	dc.TextOut(986,475,"BOLGE");
+	dc.SetTextColor(RGB(218,235,243));
+	dc.TextOut(1080,475,"Turkiye");
 
-	// Bottom patch strip.
-	dc.SetTextColor(RGB(88,213,248));
-	dc.TextOut(30,665,"GUNCELLEME");
-	dc.SetTextColor(RGB(152,169,181));
-	dc.TextOut(30,687,"Dosyalar kontrol ediliyor...");
+	// Text directly above the real owner-draw OYNA button.
+	dc.SelectObject(&tinyFont);
+	dc.SetTextColor(RGB(111,145,164));
+	dc.DrawText("OYUNU BASLATMAK ICIN",CRect(982,514,1238,536),DT_CENTER|DT_VCENTER|DT_SINGLELINE);
+
+	// Patch strip.
+	dc.SelectObject(&smallFont);
+	dc.SetTextColor(RGB(72,216,255));
+	dc.TextOut(34,664,"GUNCELLEME");
+	dc.SelectObject(&tinyFont);
+	dc.SetTextColor(RGB(139,162,177));
+	dc.TextOut(34,684,"AceTR dosyalari otomatik kontrol edilir");
 
 	dc.SelectObject(oldFont);
 	dc.SelectObject(oldPen);
