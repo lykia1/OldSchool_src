@@ -548,6 +548,7 @@ public:
 	bool bDownloadedNoticeFile;
 	void DisableControls();
 	void EnableControls();
+	void LogoutLauncherAccount();
 
 	void SetPrivateIP();
 
