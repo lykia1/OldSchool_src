@@ -2893,7 +2893,7 @@
       </OptimizeReferences>
       <EnableCOMDATFolding>
       </EnableCOMDATFolding>
-      <UACExecutionLevel>AsInvoker</UACExecutionLevel>
+      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
     </Link>
     <PreBuildEvent>
       <Command>"$(SolutionDir)..\..\Common\buildnum.exe" "$(SolutionDir)..\..\Common\buildnumber.h"</Command>
