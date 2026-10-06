@@ -38,6 +38,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <curl/curl.h>
+#include <shellapi.h>
 //end of inet
 //26-04-2020 by Inetpub:: Launcher would make dmp at crash
 //#include "dbgHelp.h"
@@ -80,7 +81,23 @@ constexpr auto NOTICE_FILE_NAME = "notice.txt";
 constexpr auto DELFILELIST_FILE_NAME = "deletefilelist.txt";
 
 constexpr auto STRING_SERVER_GROUP_NAME_DELIMIT = " ";
-constexpr auto TICKGAP_NETWORK_STATE_WORST_PING_TICK = 1500;		// 2007-06-21 by cmkwon, Ćň±Ő Ping ĽÓµµ¸¦ ¸®ĹĎÇĎµµ·Ď ĽöÁ¤ÇÔ
+constexpr auto TICKGAP_NETWORK_STATE_WORST_PING_TICK = 1500;
+
+static const CRect ACETR_NAV_HOME_RECT(485, 10, 585, 56);
+static const CRect ACETR_NAV_NEWS_RECT(585, 10, 680, 56);
+static const CRect ACETR_NAV_EVENTS_RECT(680, 10, 790, 56);
+
+static void OpenLauncherConfiguredUrl(LPCSTR key)
+{
+	char url[1024] = {0};
+	GetPrivateProfileString("LauncherLinks", key, STRMSG_S_GAMEHOMEPAGE_DOMAIN,
+		url, sizeof(url), _INI_FILE_NAME);
+
+	if (url[0] == 0)
+		return;
+
+	ShellExecute(NULL, "open", url, NULL, NULL, SW_SHOWNORMAL);
+}		// 2007-06-21 by cmkwon, Ćň±Ő Ping ĽÓµµ¸¦ ¸®ĹĎÇĎµµ·Ď ĽöÁ¤ÇÔ
 
 struct SWINDOW_DEGREE
 {
@@ -222,6 +239,8 @@ CAtumLauncherDlg::CAtumLauncherDlg(CWnd* pParent /*=NULL*/)
 	m_nOldSel = 0;
 //	m_pFieldWinsocket = 0;
 	m_bControlEnabled = TRUE;
+	m_nModernNavHover = 0;
+	m_bModernNavTracking = FALSE;
 
 	m_StaticBrushBlack.CreateSolidBrush(RGB(22, 25, 34));
 	m_StaticBrushGray.CreateSolidBrush(RGB(27, 30, 40));
@@ -328,6 +347,10 @@ BEGIN_MESSAGE_MAP(CAtumLauncherDlg, CDialog)
 	ON_BN_CLICKED(IDSHARIN, OnSharin)
 	ON_BN_CLICKED(IDPHILON, OnPhilon)
 	ON_WM_LBUTTONDOWN()
+	ON_WM_LBUTTONUP()
+	ON_WM_MOUSEMOVE()
+	ON_WM_SETCURSOR()
+	ON_MESSAGE(WM_MOUSELEAVE, OnModernNavMouseLeave)
 	ON_WM_CTLCOLOR()
 	ON_LBN_SELCHANGE(IDC_LIST, OnSelchangeList)
 	ON_BN_CLICKED(IDCAN, OnCan)
@@ -905,9 +928,7 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 		CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
 	memDCBackGround.SelectObject(&navFont);
 	memDCBackGround.SetTextColor(RGB(174, 180, 194));
-	memDCBackGround.TextOut(500, 24, "ANA SAYFA");
-	memDCBackGround.TextOut(600, 24, "HABERLER");
-	memDCBackGround.TextOut(690, 24, "ETKINLIKLER");
+	memDCBackGround.TextOut(820, 24, "ACE TR LAUNCHER");
 
 	CFont sectionFont;
 	sectionFont.CreateFont(17, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0,
@@ -1174,6 +1195,37 @@ void CAtumLauncherDlg::OnPaint()
 
 		m_BackGround.GetObject(sizeof(BITMAP), &stBitmap);
 		PaintDC.BitBlt(0, 0, stBitmap.bmWidth, stBitmap.bmHeight, &dcMem, 0, 0, SRCCOPY);
+
+		// Interactive navigation layer.
+		CFont navFont;
+		navFont.CreateFont(15, 0, 0, 0, FW_SEMIBOLD, FALSE, FALSE, 0,
+			DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
+			CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
+		CFont* oldFont = PaintDC.SelectObject(&navFont);
+		PaintDC.SetBkMode(TRANSPARENT);
+
+		struct NavItem { CRect r; LPCSTR text; int id; };
+		NavItem navItems[] = {
+			{ ACETR_NAV_HOME_RECT, "ANA SAYFA", 1 },
+			{ ACETR_NAV_NEWS_RECT, "HABERLER", 2 },
+			{ ACETR_NAV_EVENTS_RECT, "ETKINLIKLER", 3 }
+		};
+
+		for (int i = 0; i < 3; ++i)
+		{
+			const bool hot = (m_nModernNavHover == navItems[i].id);
+			PaintDC.SetTextColor(hot ? RGB(255, 255, 255) : RGB(174, 180, 194));
+			PaintDC.DrawText(navItems[i].text, navItems[i].r, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+
+			if (hot)
+			{
+				CRect underline = navItems[i].r;
+				underline.top = underline.bottom - 3;
+				underline.bottom -= 1;
+				PaintDC.FillSolidRect(underline, RGB(225, 82, 35));
+			}
+		}
+		PaintDC.SelectObject(oldFont);
 
 		CDialog::OnPaint();
 	}
@@ -3958,21 +4010,93 @@ void CAtumLauncherDlg::Set_Cur_Percent(DWORD CurSize)
 
 void CAtumLauncherDlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	// TODO: Add your message handler code here and/or call default
+	// Keep top navigation clickable instead of treating it as a drag surface.
+	if (ACETR_NAV_HOME_RECT.PtInRect(point) ||
+		ACETR_NAV_NEWS_RECT.PtInRect(point) ||
+		ACETR_NAV_EVENTS_RECT.PtInRect(point))
+	{
+		return;
+	}
+
 	CDialog::OnLButtonDown(nFlags, point);
-
-	// fake windows into thinking your clicking on the caption, does not
-	// maximizeon double click
-	
-	// ¸¶żě˝ş·Î ˛řľîĽ­ Ŕ©µµżě ŔĚµż
 	PostMessage(WM_NCLBUTTONDOWN, HTCAPTION, MAKELPARAM(point.x, point.y));
-
-//	if(m_FTPUpdateState == UPDATE_STATE_DOWNLOADING)
-//	{
-//		AtumMessageBox("ÇöŔç ĂÖ˝Ĺ ľ÷µĄŔĚĆ®°ˇ ÁřÇŕ Áß ŔÔ´Ď´Ů.\n\nľ÷µĄŔĚĆ® żĎ·á ČÄ ˝ĂŔŰ ąöĆ°Ŕ» Ĺ¬¸ŻÇŘ ÁÖĽĽżä.");
-//	}
 }
 
+void CAtumLauncherDlg::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	if (ACETR_NAV_HOME_RECT.PtInRect(point))
+	{
+		OpenLauncherConfiguredUrl("Home");
+		return;
+	}
+	if (ACETR_NAV_NEWS_RECT.PtInRect(point))
+	{
+		OpenLauncherConfiguredUrl("News");
+		return;
+	}
+	if (ACETR_NAV_EVENTS_RECT.PtInRect(point))
+	{
+		OpenLauncherConfiguredUrl("Events");
+		return;
+	}
+
+	CDialog::OnLButtonUp(nFlags, point);
+}
+
+void CAtumLauncherDlg::OnMouseMove(UINT nFlags, CPoint point)
+{
+	int hover = 0;
+	if (ACETR_NAV_HOME_RECT.PtInRect(point)) hover = 1;
+	else if (ACETR_NAV_NEWS_RECT.PtInRect(point)) hover = 2;
+	else if (ACETR_NAV_EVENTS_RECT.PtInRect(point)) hover = 3;
+
+	if (hover != m_nModernNavHover)
+	{
+		m_nModernNavHover = hover;
+		InvalidateRect(CRect(470, 8, 800, 60), FALSE);
+	}
+
+	if (!m_bModernNavTracking)
+	{
+		TRACKMOUSEEVENT tme = {0};
+		tme.cbSize = sizeof(tme);
+		tme.dwFlags = TME_LEAVE;
+		tme.hwndTrack = m_hWnd;
+		if (_TrackMouseEvent(&tme))
+			m_bModernNavTracking = TRUE;
+	}
+
+	CDialog::OnMouseMove(nFlags, point);
+}
+
+LRESULT CAtumLauncherDlg::OnModernNavMouseLeave(WPARAM, LPARAM)
+{
+	m_bModernNavTracking = FALSE;
+	if (m_nModernNavHover != 0)
+	{
+		m_nModernNavHover = 0;
+		InvalidateRect(CRect(470, 8, 800, 60), FALSE);
+	}
+	return 0;
+}
+
+BOOL CAtumLauncherDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
+{
+	POINT pt;
+	::GetCursorPos(&pt);
+	ScreenToClient(&pt);
+	CPoint point(pt);
+
+	if (ACETR_NAV_HOME_RECT.PtInRect(point) ||
+		ACETR_NAV_NEWS_RECT.PtInRect(point) ||
+		ACETR_NAV_EVENTS_RECT.PtInRect(point))
+	{
+		::SetCursor(::LoadCursor(NULL, IDC_HAND));
+		return TRUE;
+	}
+
+	return CDialog::OnSetCursor(pWnd, nHitTest, message);
+}
 
 UINT CAtumLauncherDlg::OnNcHitTest(CPoint point)
 {
@@ -4662,9 +4786,7 @@ void CAtumLauncherDlg::OnMin()
 ///////////////////////////////////////////////////////////////////////////////
 void CAtumLauncherDlg::OnBtnHomepage() 
 {
-	// TODO: Add your control notification handler code here
-
-	//ShellExecute(NULL, "open", STRMSG_S_GAMEHOMEPAGE_DOMAIN, NULL, NULL, SW_SHOWNORMAL);
+	OpenLauncherConfiguredUrl("Home");
 }
 
 ///////////////////////////////////////////////////////////////////////////////
