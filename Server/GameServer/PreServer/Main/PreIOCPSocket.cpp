@@ -102,6 +102,19 @@ static BOOL AceTRLoadLauncherSecret(char* outSecret, int outSize)
 		}
 	}
 
+	std::ifstream repoSecret("..\\..\\..\\Server\\GameServer\\PreServer\\launcher_api_secret.txt");
+	if (repoSecret.is_open())
+	{
+		std::string line;
+		std::getline(repoSecret, line);
+		repoSecret.close();
+		if (!line.empty() && (int)line.size() < outSize)
+		{
+			STRNCPY_MEMSET(outSecret, line.c_str(), outSize);
+			return TRUE;
+		}
+	}
+
 	std::ifstream secretFile("launcher_api_secret.txt");
 	if (!secretFile.is_open())
 		return FALSE;
@@ -3033,6 +3046,9 @@ void CPreIOCPSocket::SendLauncherSessionToken(const char* accountName)
 	INIT_MSG_WITH_BUFFER(MSG_PC_CONNECT_LAUNCHER_SESSION, T_PC_CONNECT_LAUNCHER_SESSION, pSession, sessionBuf);
 	wsprintf(pSession->SessionToken, "%s|%s", payload, signature);
 	SendAddData(sessionBuf, MSG_SIZE(MSG_PC_CONNECT_LAUNCHER_SESSION));
+	g_pPreGlobal->WriteSystemLogEX(TRUE,
+		"[LauncherAPI] Session token issued: Account(%s) IP(%s)\r\n",
+		accountName, GetPeerIP());
 
 	SecureZeroMemory(secret, sizeof(secret));
 	SecureZeroMemory(digest, sizeof(digest));
