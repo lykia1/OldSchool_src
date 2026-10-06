@@ -356,6 +356,8 @@ public:
 	int					m_nModernNavHover;
 	BOOL				m_bModernNavTracking;
 	BOOL				m_bLauncherLoggedIn;
+	BOOL				m_bModernBridgeMode;
+	BOOL				m_bModernBridgeLoginStarted;
 	int					m_nLauncherAccountPage; // 0=overview, 1=account, 2=support, 3=characters
 	int					m_nLauncherMainPage; // 0=home, 1=news, 2=events, 3=web, 4=discord
 	CString				m_szLauncherSessionToken;
