@@ -88,6 +88,7 @@ static const CRect ACETR_NAV_NEWS_RECT(5, 230, 279, 312);
 static const CRect ACETR_NAV_EVENTS_RECT(5, 312, 279, 397);
 static const CRect ACETR_NAV_WEB_RECT(5, 397, 279, 482);
 static const CRect ACETR_NAV_DISCORD_RECT(5, 482, 279, 567);
+static const CRect ACETR_REMEMBER_RECT(1297, 626, 1455, 660);
 
 static size_t LauncherApiWriteCallback(void* contents, size_t size, size_t nmemb, void* userp)
 {
@@ -279,7 +280,7 @@ CAtumLauncherDlg::CAtumLauncherDlg(CWnd* pParent /*=NULL*/)
 	MEMSET_ZERO(m_szLaunchAppPath, sizeof(m_szLaunchAppPath));
 	MEMSET_ZERO(m_szLaunchCmdParam, sizeof(m_szLaunchCmdParam));
 
-	m_StaticBrushBlack.CreateSolidBrush(RGB(22, 25, 34));
+	m_StaticBrushBlack.CreateSolidBrush(RGB(5, 20, 32));
 	m_StaticBrushGray.CreateSolidBrush(RGB(27, 30, 40));
 	m_ListBrushGray.CreateSolidBrush(RGB(212, 208, 200));
 	
@@ -690,7 +691,7 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	GetDlgItem(IDC_EDIT_ACCOUNT)->ShowWindow(SW_SHOW);
 	GetDlgItem(IDC_EDIT_PASSWORD)->ShowWindow(SW_SHOW);
 #endif
-	GetDlgItem(IDC_CHECK_REMEMBER_ID)->ShowWindow(SW_SHOW);
+	GetDlgItem(IDC_CHECK_REMEMBER_ID)->ShowWindow(SW_HIDE);
 
 	GetDlgItem(IDC_LIST)->MoveWindow(EXE2_BG_SERVERLIST_BOX_POS_X, EXE2_BG_SERVERLIST_BOX_POS_Y, EXE2_BG_SERVERLIST_BOX_WIDTH, EXE2_BG_SERVERLIST_BOX_HEIGHT);
 	GetDlgItem(IDC_LIST)->ShowWindow(SW_HIDE);
@@ -1151,6 +1152,25 @@ void CAtumLauncherDlg::OnPaint()
 	}
 
 	memDC.SelectObject(oldBitmap);
+
+	// Native Remember Me state. The background artwork remains untouched;
+	// only this small interactive state is rendered at runtime.
+	CRect rememberBox(1302, 632, 1325, 655);
+	CBrush rememberBg(RGB(4, 27, 42));
+	CPen rememberBorder(PS_SOLID, 1, RGB(0, 174, 239));
+	CBrush* oldBrush = dc.SelectObject(&rememberBg);
+	CPen* oldPen = dc.SelectObject(&rememberBorder);
+	dc.Rectangle(rememberBox);
+	if (m_ctlBtnRememberID.GetCheck() == BST_CHECKED)
+	{
+		CPen checkPen(PS_SOLID, 2, RGB(185, 245, 255));
+		dc.SelectObject(&checkPen);
+		dc.MoveTo(1307, 643);
+		dc.LineTo(1312, 648);
+		dc.LineTo(1320, 638);
+	}
+	dc.SelectObject(oldPen);
+	dc.SelectObject(oldBrush);
 }
 
 HCURSOR CAtumLauncherDlg::OnQueryDragIcon()
@@ -4065,7 +4085,7 @@ void CAtumLauncherDlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	if (ACETR_NAV_HOME_RECT.PtInRect(point) || ACETR_NAV_NEWS_RECT.PtInRect(point) ||
 		ACETR_NAV_EVENTS_RECT.PtInRect(point) || ACETR_NAV_WEB_RECT.PtInRect(point) ||
-		ACETR_NAV_DISCORD_RECT.PtInRect(point))
+		ACETR_NAV_DISCORD_RECT.PtInRect(point) || ACETR_REMEMBER_RECT.PtInRect(point))
 		return;
 
 	CDialog::OnLButtonDown(nFlags, point);
@@ -4074,6 +4094,12 @@ void CAtumLauncherDlg::OnLButtonDown(UINT nFlags, CPoint point)
 
 void CAtumLauncherDlg::OnLButtonUp(UINT nFlags, CPoint point)
 {
+	if (ACETR_REMEMBER_RECT.PtInRect(point))
+	{
+		m_ctlBtnRememberID.SetCheck(m_ctlBtnRememberID.GetCheck() ? BST_UNCHECKED : BST_CHECKED);
+		InvalidateRect(ACETR_REMEMBER_RECT, FALSE);
+		return;
+	}
 	if (ACETR_NAV_HOME_RECT.PtInRect(point)) { SetLauncherMainPage(0); return; }
 	if (ACETR_NAV_NEWS_RECT.PtInRect(point)) { SetLauncherMainPage(1); return; }
 	if (ACETR_NAV_EVENTS_RECT.PtInRect(point)) { SetLauncherMainPage(2); return; }
@@ -4124,7 +4150,7 @@ BOOL CAtumLauncherDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 	POINT pt; ::GetCursorPos(&pt); ScreenToClient(&pt); CPoint point(pt);
 	if (ACETR_NAV_HOME_RECT.PtInRect(point) || ACETR_NAV_NEWS_RECT.PtInRect(point) ||
 		ACETR_NAV_EVENTS_RECT.PtInRect(point) || ACETR_NAV_WEB_RECT.PtInRect(point) ||
-		ACETR_NAV_DISCORD_RECT.PtInRect(point))
+		ACETR_NAV_DISCORD_RECT.PtInRect(point) || ACETR_REMEMBER_RECT.PtInRect(point))
 	{
 		::SetCursor(::LoadCursor(NULL,IDC_HAND));
 		return TRUE;
@@ -4154,8 +4180,8 @@ HBRUSH CAtumLauncherDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				|| (GetDlgItem(IDC_EDIT_PASSWORD)->m_hWnd == pWnd->m_hWnd))
 			{
 				pDC->SetBkMode(OPAQUE);
-				pDC->SetBkColor(RGB(22, 25, 34));
-				pDC->SetTextColor(RGB(245, 247, 251));
+				pDC->SetBkColor(RGB(5, 20, 32));
+				pDC->SetTextColor(RGB(220, 239, 248));
 				return m_StaticBrushBlack;
 			}
 		}
