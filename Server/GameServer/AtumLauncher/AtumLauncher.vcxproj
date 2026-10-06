@@ -1694,8 +1694,8 @@
     <OutDir>$(SolutionDir)..\..\BuildResult\Client\Release\</OutDir>
     <IntDir>.\AtumLauncher___Win32_R_Wikigames_Eng\</IntDir>
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)..\..\Client\ProjectAtum\DX9bLink\Include;$(SolutionDir)..\..\Common;$(IncludePath)</IncludePath>
-    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(SolutionDir)..\..\Client\ProjectAtum\DX9bLink\Lib;$(SolutionDir)..\..\Lib;$(SolutionDir)..\..\BuildResult\Lib\Release;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)..\..\Client\ProjectAtum\DX9bLink\Include;$(SolutionDir)..\..\Common;$(SolutionDir)..\..\libcurl\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(SolutionDir)..\..\Client\ProjectAtum\DX9bLink\Lib;$(SolutionDir)..\..\Lib;$(SolutionDir)..\..\BuildResult\Lib\Release;$(SolutionDir)..\..\libcurl\lib;$(LibraryPath)</LibraryPath>
     <TargetExt>.atm</TargetExt>
     <TargetName>Launcher</TargetName>
   </PropertyGroup>
@@ -4865,7 +4865,7 @@
       <Optimization>MaxSpeed</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
-      <AdditionalIncludeDirectories>.;..\..\..\Common;.\Main;..\..\..\Common\FTP;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\..\Common;.\Main;..\..\..\Common\FTP;$(SolutionDir)..\..\libcurl\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;WIKIGAMES_ENG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\AtumLauncher___Win32_R_Wikigames_Eng\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
@@ -4896,8 +4896,8 @@
       <SubSystem>Windows</SubSystem>
       <IgnoreSpecificDefaultLibraries>MSVCRT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>winmm.lib;ZipArchive.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\..\libcurl\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libcurl.dll.a;libcurl.a;winmm.lib;ZipArchive.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions> /MAPINFO:EXPORTS /LTCG</AdditionalOptions>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
