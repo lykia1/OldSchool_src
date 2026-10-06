@@ -418,8 +418,8 @@ BOOL CAtumLauncherDlg::ReadNoticeFile()
 
 #define EXE2_BG_WINDOWSMODE_CHECKBOX_POS_X      885
 #define EXE2_BG_WINDOWSMODE_CHECKBOX_POS_Y      515
-#define EXE2_BG_WINDOWSMODE_CHECKBOX_WIDTH      16
-#define EXE2_BG_WINDOWSMODE_CHECKBOX_HEIGHT     16
+#define EXE2_BG_WINDOWSMODE_CHECKBOX_WIDTH      130
+#define EXE2_BG_WINDOWSMODE_CHECKBOX_HEIGHT     22
 
 #define EXE2_BG_ACCOUNTNAME_EDIT_POS_X          885
 #define EXE2_BG_ACCOUNTNAME_EDIT_POS_Y          260
@@ -432,10 +432,10 @@ BOOL CAtumLauncherDlg::ReadNoticeFile()
 #define EXE2_BG_PASSWORD_EDIT_HEIGHT             32
 
 // Server list
-#define EXE2_BG_SERVERLIST_BOX_POS_X            70
-#define EXE2_BG_SERVERLIST_BOX_POS_Y            500
-#define EXE2_BG_SERVERLIST_BOX_WIDTH            650
-#define EXE2_BG_SERVERLIST_BOX_HEIGHT           92
+#define EXE2_BG_SERVERLIST_BOX_POS_X            82
+#define EXE2_BG_SERVERLIST_BOX_POS_Y            522
+#define EXE2_BG_SERVERLIST_BOX_WIDTH            690
+#define EXE2_BG_SERVERLIST_BOX_HEIGHT           56
 
 #define EXE2_BG_SERVERLIST_ITEM_BG_WIDTH        640
 #define EXE2_BG_SERVERLIST_ITEM_BG_HEIGHT       32
@@ -445,11 +445,11 @@ BOOL CAtumLauncherDlg::ReadNoticeFile()
 #define EXE2_BG_SERVERLIST_ITEM_ICON_HEIGHT     10
 
 // Window chrome
-#define EXE2_BG_MINIMIZED_BTN_POS_X             1125
+#define EXE2_BG_MINIMIZED_BTN_POS_X             1122
 #define EXE2_BG_MINIMIZED_BTN_POS_Y             18
 #define EXE2_BG_MINIMIZED_BTN_WIDTH             26
 #define EXE2_BG_MINIMIZED_BTN_HEIGHT            26
-#define EXE2_BG_CANCEL_BTN_POS_X                1158
+#define EXE2_BG_CANCEL_BTN_POS_X                1157
 #define EXE2_BG_CANCEL_BTN_POS_Y                18
 #define EXE2_BG_CANCEL_BTN_WIDTH                26
 #define EXE2_BG_CANCEL_BTN_HEIGHT               26
@@ -484,8 +484,8 @@ BOOL CAtumLauncherDlg::ReadNoticeFile()
 
 #define EXE2_BG_REMEMBERID_CHECKBOX_POS_X       885
 #define EXE2_BG_REMEMBERID_CHECKBOX_POS_Y       395
-#define EXE2_BG_REMEMBERID_CHECKBOX_WIDTH       16
-#define EXE2_BG_REMEMBERID_CHECKBOX_HEIGHT      16
+#define EXE2_BG_REMEMBERID_CHECKBOX_WIDTH       130
+#define EXE2_BG_REMEMBERID_CHECKBOX_HEIGHT      22
 
 #define PLAYERCNT_Y 0
 #define PLAYERCNT_X 0
@@ -599,6 +599,14 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	m_kbcBtnJoin.SetToolTipText("Join");
 
 	GetDlgItem(IDC_COMBO_WINDOW_DEGREE_LAUNCHER)->MoveWindow(EXE2_BG_RESOLUTION_COMBOBOX_POS_X, EXE2_BG_RESOLUTION_COMBOBOX_POS_Y, EXE2_BG_RESOLUTION_COMBOBOX_WIDTH, EXE2_BG_RESOLUTION_COMBOBOX_HEIGHT);
+
+	m_fontModernSmall.CreateFont(15, 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0,
+		DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
+		CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
+	GetDlgItem(IDC_COMBO_WINDOW_DEGREE_LAUNCHER)->SetFont(&m_fontModernSmall);
+	GetDlgItem(IDC_CHECK_WINDOWS_MODE)->SetFont(&m_fontModernSmall);
+	m_ctlBtnRememberID.SetFont(&m_fontModernSmall);
+	m_ctrl64Bit.SetFont(&m_fontModernSmall);
 	GetDlgItem(IDC_CHECK_WINDOWS_MODE)->MoveWindow(EXE2_BG_WINDOWSMODE_CHECKBOX_POS_X, EXE2_BG_WINDOWSMODE_CHECKBOX_POS_Y, EXE2_BG_WINDOWSMODE_CHECKBOX_WIDTH, EXE2_BG_WINDOWSMODE_CHECKBOX_HEIGHT);
 	GetDlgItem(IDC_CHARACTER_NAME)->ShowWindow(SW_HIDE);
 
@@ -640,9 +648,9 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	GetDlgItem(IDGO)->MoveWindow(EXE2_BG_GAMESTART_BTN_POS_X, EXE2_BG_GAMESTART_BTN_POS_Y, EXE2_BG_GAMESTART_BTN_WIDTH, EXE2_BG_GAMESTART_BTN_HEIGHT);
 #ifdef _INET_CONFIGURATOR
 	m_ctlINETCfgBtn.SetToolTipText("Oyun Ayarlari");
-	m_ctlINETCfgBtn.SetModernButton("*", RGB(45, 48, 58));
+	m_ctlINETCfgBtn.SetModernButton("AYAR", RGB(45, 48, 58));
 
-	GetDlgItem(IDC_BTN_VIEW_INET_CFG)->MoveWindow(1088, 18, 26, 26);
+	GetDlgItem(IDC_BTN_VIEW_INET_CFG)->MoveWindow(1054, 18, 58, 26);
 #endif	
 	// 2007-09-07 by cmkwon, »çżëÇĎÁö ľĘ´Â ąöĆ°ŔÓ
 	//// Join Button
@@ -694,14 +702,14 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 							  CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH , SG_BOX_FONT_FACENAME);    // "System" Font´Â ´ëÇĄŔűŔÎ Fixed FontŔÓ´Ů.
 	GetDlgItem(IDC_FILE_INFO)->SetFont(&m_fontFileInfo);
 
-	GetDlgItem(IDC_NOTICE2)->MoveWindow(86, 382, 680, 62);
+	GetDlgItem(IDC_NOTICE2)->MoveWindow(86, 390, 680, 52);
 	wndStyle = ::GetWindowLong(GetDlgItem(IDC_NOTICE2)->m_hWnd, GWL_STYLE);
 	::SetWindowLong(GetDlgItem(IDC_NOTICE2)->m_hWnd, GWL_STYLE, wndStyle | SS_CENTERIMAGE);	// ĂëµćÇŃ Ŕ©µµżě ĽöÁ÷ÁßľÓ(SS_CENTERIMAGE)ĽÓĽşŔ» Ăß°ˇ
 	m_fontNotice.CreateFont(13, 0, 0, 0, EXE2_BG_UPDATE_INFO_FONT_WEIGHT, 0, FALSE, FALSE, SG_BOX_FONT_CHARSET, OUT_DEFAULT_PRECIS,
 							CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH, "Verdana");    // "System" Font´Â ´ëÇĄŔűŔÎ Fixed FontŔÓ´Ů.
 	GetDlgItem(IDC_NOTICE2)->SetFont(&m_fontNotice);
 
-	GetDlgItem(IDC_PLAYER_CNT)->MoveWindow(885, 175, 245, 22);
+	GetDlgItem(IDC_PLAYER_CNT)->MoveWindow(898, 178, 220, 22);
 	wndStyle = ::GetWindowLong(GetDlgItem(IDC_PLAYER_CNT)->m_hWnd, GWL_STYLE);
 	::SetWindowLong(GetDlgItem(IDC_PLAYER_CNT)->m_hWnd, GWL_STYLE, wndStyle | SS_CENTERIMAGE);	// ĂëµćÇŃ Ŕ©µµżě ĽöÁ÷ÁßľÓ(SS_CENTERIMAGE)ĽÓĽşŔ» Ăß°ˇ
 	m_fontPlayers.CreateFont(13, 0, 0, 0, EXE2_BG_UPDATE_INFO_FONT_WEIGHT, 0, FALSE, FALSE, SG_BOX_FONT_CHARSET, OUT_DEFAULT_PRECIS,
@@ -740,7 +748,7 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 #endif
 
 	m_ctrl64Bit.ShowWindow(SW_SHOW);
-	m_ctrl64Bit.MoveWindow(EXE2_BG_REMEMBERID_CHECKBOX_POS_X, 430, EXE2_BG_REMEMBERID_CHECKBOX_WIDTH, EXE2_BG_REMEMBERID_CHECKBOX_HEIGHT);
+	m_ctrl64Bit.MoveWindow(EXE2_BG_REMEMBERID_CHECKBOX_POS_X, 430, 130, 22);
 	//m_ctrl64Bit.SetCheck(m_n64Bit);
 	
 	// 2008-12-23 by ckPark ŔĎş» ·±ĂÄ
@@ -928,6 +936,8 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	memDCBackGround.TextOut(146, 250, "Gokyuzundeki savas yeniden basliyor.");
 	memDCBackGround.SetTextColor(RGB(245, 132, 88));
 	memDCBackGround.TextOut(146, 285, "SEZON • ETKINLIK • NATION WAR");
+	memDCBackGround.SetTextColor(RGB(255, 255, 255));
+	memDCBackGround.TextOut(620, 285, "ACE TR");
 
 	CFont labelFont;
 	labelFont.CreateFont(14, 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0,
@@ -937,13 +947,15 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	memDCBackGround.SetTextColor(RGB(150, 157, 174));
 	memDCBackGround.TextOut(885, 236, "KULLANICI ADI");
 	memDCBackGround.TextOut(885, 306, "SIFRE");
-	memDCBackGround.TextOut(912, 394, "Beni hatirla");
-	memDCBackGround.TextOut(912, 429, "64-bit istemci");
+	memDCBackGround.TextOut(912, 396, "Beni hatirla");
+	memDCBackGround.TextOut(912, 431, "64-bit istemci");
 	memDCBackGround.TextOut(885, 447, "COZUNURLUK");
-	memDCBackGround.TextOut(912, 514, "Pencere modu");
+	memDCBackGround.TextOut(912, 516, "Pencere modu");
 
 	memDCBackGround.SetTextColor(RGB(150, 157, 174));
-	memDCBackGround.TextOut(75, 552, "Ping ve sunucu bilgileri baglantidan sonra otomatik guncellenir.");
+	memDCBackGround.TextOut(82, 508, "Sunucu secimi ve baglanti gecikmesi");
+	memDCBackGround.SetTextColor(RGB(108, 115, 132));
+	memDCBackGround.TextOut(82, 585, "Hazir oldugunda OYNA butonuna bas.");
 
 	// Online indicator
 	memDCBackGround.SelectObject(&brushOnline);
