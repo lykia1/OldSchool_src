@@ -88,6 +88,9 @@ static const CRect ACETR_NAV_NEWS_RECT(585, 10, 680, 56);
 static const CRect ACETR_NAV_EVENTS_RECT(680, 10, 790, 56);
 static const CRect ACETR_NAV_WEB_RECT(805, 10, 875, 56);
 static const CRect ACETR_NAV_DISCORD_RECT(875, 10, 980, 56);
+static const CRect ACETR_ACCOUNT_MANAGE_RECT(875, 475, 1000, 515);
+static const CRect ACETR_ACCOUNT_SUPPORT_RECT(1010, 475, 1125, 515);
+static const CRect ACETR_ACCOUNT_LOGOUT_RECT(875, 520, 1125, 548);
 
 static void OpenLauncherConfiguredUrl(LPCSTR key)
 {
@@ -1321,9 +1324,34 @@ void CAtumLauncherDlg::OnPaint()
 			PaintDC.TextOut(1025, 386, "Doğrulandı");
 
 			PaintDC.SetTextColor(RGB(120, 127, 143));
-			PaintDC.TextOut(875, 445, "Hesap yönetimi ve karakter bilgileri");
-			PaintDC.TextOut(875, 465, "sonraki aşamada API üzerinden eklenecek.");
+			PaintDC.TextOut(875, 428, "Hesabını yönet veya destek merkezine git.");
 
+			// Account action buttons
+			CBrush actionBrush(RGB(28, 32, 43));
+			CBrush actionHotBrush(RGB(225, 82, 35));
+			CPen actionPen(PS_SOLID, 1, RGB(56, 62, 78));
+			CBrush* prevBrush = PaintDC.SelectObject(&actionBrush);
+			CPen* prevPen = PaintDC.SelectObject(&actionPen);
+
+			const bool hotManage = (m_nModernNavHover == 6);
+			const bool hotSupport = (m_nModernNavHover == 7);
+			const bool hotLogout = (m_nModernNavHover == 8);
+
+			if (hotManage) PaintDC.SelectObject(&actionHotBrush);
+			PaintDC.RoundRect(ACETR_ACCOUNT_MANAGE_RECT, CPoint(10, 10));
+			PaintDC.SelectObject(&actionBrush);
+			if (hotSupport) PaintDC.SelectObject(&actionHotBrush);
+			PaintDC.RoundRect(ACETR_ACCOUNT_SUPPORT_RECT, CPoint(10, 10));
+			PaintDC.SelectObject(&actionBrush);
+
+			PaintDC.SetTextColor(RGB(238, 241, 247));
+			PaintDC.DrawText("HESABIM", ACETR_ACCOUNT_MANAGE_RECT, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+			PaintDC.DrawText("DESTEK", ACETR_ACCOUNT_SUPPORT_RECT, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+			PaintDC.SetTextColor(hotLogout ? RGB(255, 132, 95) : RGB(150, 157, 174));
+			PaintDC.DrawText("OTURUMU KAPAT", ACETR_ACCOUNT_LOGOUT_RECT, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+
+			PaintDC.SelectObject(prevPen);
+			PaintDC.SelectObject(prevBrush);
 			PaintDC.SelectObject(pf);
 			PaintDC.SelectObject(oldPen);
 			PaintDC.SelectObject(oldBrush);
@@ -2083,6 +2111,11 @@ LONG CAtumLauncherDlg::OnSocketNotify(WPARAM wParam, LPARAM lParam)
 						m_KbcGO.SetButtonEnable();
 						m_KbcGO.SetModernButton("OYNA", RGB(225, 82, 35));
 						m_KbcGO.SetToolTipText("Oyunu Baslat");
+
+						// The game launch parameters already contain the derived credential.
+						// Do not keep the plaintext password in launcher memory longer than needed.
+						m_szPassword.Empty();
+						GetDlgItem(IDC_EDIT_PASSWORD)->SetWindowText("");
 
 						SetProgressGroupText("Giris basarili. Oyun baslatilmaya hazir.");
 						Invalidate(FALSE);
@@ -3789,6 +3822,31 @@ void CAtumLauncherDlg::OnCancel()
 	CDialog::OnCancel();
 }
 
+void CAtumLauncherDlg::LogoutLauncherAccount()
+{
+	m_bLauncherLoggedIn = FALSE;
+	MEMSET_ZERO(m_szLaunchCmdLine, sizeof(m_szLaunchCmdLine));
+	MEMSET_ZERO(m_szLaunchAppPath, sizeof(m_szLaunchAppPath));
+	MEMSET_ZERO(m_szLaunchCmdParam, sizeof(m_szLaunchCmdParam));
+	m_szPassword.Empty();
+
+	GetDlgItem(IDC_EDIT_ACCOUNT)->ShowWindow(SW_SHOW);
+	GetDlgItem(IDC_EDIT_PASSWORD)->ShowWindow(SW_SHOW);
+	GetDlgItem(IDC_CHECK_REMEMBER_ID)->ShowWindow(SW_SHOW);
+	GetDlgItem(IDC_CHECK_64_BIT)->ShowWindow(SW_SHOW);
+	GetDlgItem(IDC_COMBO_WINDOW_DEGREE_LAUNCHER)->ShowWindow(SW_SHOW);
+	GetDlgItem(IDC_CHECK_WINDOWS_MODE)->ShowWindow(SW_SHOW);
+
+	m_KbcGO.SetModernButton("GİRİŞ YAP", RGB(225, 82, 35));
+	m_KbcGO.SetToolTipText("Giris Yap");
+	EnableControls();
+
+	GetDlgItem(IDC_EDIT_PASSWORD)->SetWindowText("");
+	GetDlgItem(IDC_EDIT_PASSWORD)->SetFocus();
+	SetProgressGroupText("Oturum kapatildi.");
+	Invalidate(FALSE);
+}
+
 void CAtumLauncherDlg::DisableControls()
 {
 	m_bControlEnabled = FALSE;
@@ -4146,7 +4204,10 @@ void CAtumLauncherDlg::OnLButtonDown(UINT nFlags, CPoint point)
 		ACETR_NAV_NEWS_RECT.PtInRect(point) ||
 		ACETR_NAV_EVENTS_RECT.PtInRect(point) ||
 		ACETR_NAV_WEB_RECT.PtInRect(point) ||
-		ACETR_NAV_DISCORD_RECT.PtInRect(point))
+		ACETR_NAV_DISCORD_RECT.PtInRect(point) ||
+		(m_bLauncherLoggedIn && ACETR_ACCOUNT_MANAGE_RECT.PtInRect(point)) ||
+		(m_bLauncherLoggedIn && ACETR_ACCOUNT_SUPPORT_RECT.PtInRect(point)) ||
+		(m_bLauncherLoggedIn && ACETR_ACCOUNT_LOGOUT_RECT.PtInRect(point)))
 	{
 		return;
 	}
@@ -4183,6 +4244,22 @@ void CAtumLauncherDlg::OnLButtonUp(UINT nFlags, CPoint point)
 		return;
 	}
 
+	if (m_bLauncherLoggedIn && ACETR_ACCOUNT_MANAGE_RECT.PtInRect(point))
+	{
+		OpenLauncherConfiguredUrl("Account");
+		return;
+	}
+	if (m_bLauncherLoggedIn && ACETR_ACCOUNT_SUPPORT_RECT.PtInRect(point))
+	{
+		OpenLauncherConfiguredUrl("Support");
+		return;
+	}
+	if (m_bLauncherLoggedIn && ACETR_ACCOUNT_LOGOUT_RECT.PtInRect(point))
+	{
+		LogoutLauncherAccount();
+		return;
+	}
+
 	CDialog::OnLButtonUp(nFlags, point);
 }
 
@@ -4194,11 +4271,14 @@ void CAtumLauncherDlg::OnMouseMove(UINT nFlags, CPoint point)
 	else if (ACETR_NAV_EVENTS_RECT.PtInRect(point)) hover = 3;
 	else if (ACETR_NAV_WEB_RECT.PtInRect(point)) hover = 4;
 	else if (ACETR_NAV_DISCORD_RECT.PtInRect(point)) hover = 5;
+	else if (m_bLauncherLoggedIn && ACETR_ACCOUNT_MANAGE_RECT.PtInRect(point)) hover = 6;
+	else if (m_bLauncherLoggedIn && ACETR_ACCOUNT_SUPPORT_RECT.PtInRect(point)) hover = 7;
+	else if (m_bLauncherLoggedIn && ACETR_ACCOUNT_LOGOUT_RECT.PtInRect(point)) hover = 8;
 
 	if (hover != m_nModernNavHover)
 	{
 		m_nModernNavHover = hover;
-		InvalidateRect(CRect(470, 8, 990, 60), FALSE);
+		InvalidateRect(CRect(470, 8, 1160, 555), FALSE);
 	}
 
 	if (!m_bModernNavTracking)
