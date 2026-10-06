@@ -1342,10 +1342,13 @@ void CAtumLauncherDlg::OnPaint()
 				PaintDC.RoundRect(ACETR_ACCOUNT_SUPPORT_RECT, CPoint(10, 10));
 				PaintDC.SelectObject(&actionBrush);
 				PaintDC.SetTextColor(RGB(238, 241, 247));
-				PaintDC.DrawText("HESAP YÖNETİMİ", ACETR_ACCOUNT_MANAGE_RECT, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
-				PaintDC.DrawText("DESTEK", ACETR_ACCOUNT_SUPPORT_RECT, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+				CRect rManage = ACETR_ACCOUNT_MANAGE_RECT;
+				PaintDC.DrawText("HESAP YÖNETİMİ", &rManage, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+				CRect rSupport = ACETR_ACCOUNT_SUPPORT_RECT;
+				PaintDC.DrawText("DESTEK", &rSupport, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 				PaintDC.SetTextColor(m_nModernNavHover == 8 ? RGB(255, 132, 95) : RGB(150, 157, 174));
-				PaintDC.DrawText("OTURUMU KAPAT", ACETR_ACCOUNT_LOGOUT_RECT, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+				CRect rLogout = ACETR_ACCOUNT_LOGOUT_RECT;
+				PaintDC.DrawText("OTURUMU KAPAT", &rLogout, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 				PaintDC.SelectObject(prevPen);
 				PaintDC.SelectObject(prevBrush);
 			}
@@ -1371,12 +1374,13 @@ void CAtumLauncherDlg::OnPaint()
 					PaintDC.SelectObject(m_nModernNavHover == actions[i].hoverId ? &actionHotBrush : &actionBrush);
 					PaintDC.RoundRect(actions[i].r, CPoint(10, 10));
 					PaintDC.SetTextColor(RGB(238, 241, 247));
-					PaintDC.DrawText(actions[i].text, actions[i].r, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+					PaintDC.DrawText(actions[i].text, &actions[i].r, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 				}
 				PaintDC.SelectObject(&actionBrush);
 				PaintDC.RoundRect(ACETR_ACCOUNT_BACK_RECT, CPoint(10, 10));
 				PaintDC.SetTextColor(RGB(180, 186, 198));
-				PaintDC.DrawText("GERİ", ACETR_ACCOUNT_BACK_RECT, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+				CRect rBack = ACETR_ACCOUNT_BACK_RECT;
+				PaintDC.DrawText("GERİ", &rBack, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 				PaintDC.SelectObject(prevPen);
 				PaintDC.SelectObject(prevBrush);
 			}
@@ -1393,7 +1397,8 @@ void CAtumLauncherDlg::OnPaint()
 				CPen* prevPen = PaintDC.SelectObject(&actionPen);
 				PaintDC.RoundRect(ACETR_ACCOUNT_BACK_RECT, CPoint(10, 10));
 				PaintDC.SetTextColor(RGB(180, 186, 198));
-				PaintDC.DrawText("GERİ", ACETR_ACCOUNT_BACK_RECT, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+				CRect rBack = ACETR_ACCOUNT_BACK_RECT;
+				PaintDC.DrawText("GERİ", &rBack, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 				PaintDC.SelectObject(prevPen);
 				PaintDC.SelectObject(prevBrush);
 			}
