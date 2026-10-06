@@ -310,7 +310,7 @@ Lutfen maksimum log sayisini veya arama kosulunu degistirin."
 	#define STRMSG_S_SCAT_COLNAME_0076 "Bullet type"
 	#define STRMSG_S_SCAT_COLNAME_0077 "For quest"
 	#define STRMSG_S_SCAT_COLNAME_0078 "Radar type"
-	#define STRMSG_S_SCAT_COLNAME_0079 "Computer type"
+	#define STRMSG_S_SCAT_COLNAME_0079 "Bilgisayar turu"
 	#define STRMSG_S_SCAT_COLNAME_0080 "Gamble Card type"
 	#define STRMSG_S_SCAT_COLNAME_0081 "Enchant Destruction Prevention type"		// 2005-08-02 by cmkwon
 	#define STRMSG_S_SCAT_COLNAME_0082 "Blaster type"				// 2005-08-02 by cmkwon
@@ -447,7 +447,8 @@ Lutfen maksimum log sayisini veya arama kosulunu degistirin."
 "
 	#define STRMSG_S_F2CITYWAR_0003 "		  Toplam hasar ==> GuildName(%10s) SumOfDamage(%8.2f)
 "
-	#define STRMSG_S_F2CITYWAR_0004 "  City occupying battle : %d(%10s) CityMapIndex(%d) QuestIndex(%d) OccGuildID(%d) OccGuildName(%s) OccGuildMasterUID(%d) 점령전시간(%s)\r\n"
+	#define STRMSG_S_F2CITYWAR_0004 "  Sehir isgal savasi : %d(%10s) CityMapIndex(%d) QuestIndex(%d) OccGuildID(%d) OccGuildName(%s) OccGuildMasterUID(%d) isgalSuresi(%s)
+"
 	#define STRMSG_S_F2CITYWAR_0005 "[Hata] SetCityWarState_ DBError, MapIndex(%d)
 "
 	#define STRMSG_S_F2CITYWAR_0006 "%d dakika sonra \"%s\" sehir isgal savasi baslayacak."
@@ -579,7 +580,7 @@ LoadFieldServerDataDebug() kaldirilmalidir! "
 	#define STRMSG_S_F2NOTIFY_0106 "Standart Hesap iptal edildi"
 	#define STRMSG_S_F2NOTIFY_0107 "Invincibility has been turned on."
 	#define STRMSG_S_F2NOTIFY_0108 "Invincibility has been turned off."
-	#define STRMSG_S_F2NOTIFY_0109 "Weapon damage will be modified by %5.0f%% "
+	#define STRMSG_S_F2NOTIFY_0109 "Silah hasari %5.0f%% oraninda degistirilecek "
 	#define STRMSG_S_F2NOTIFY_0110 "Esya yeniden yuklendiginde sifirlanacak"
 	#define STRMSG_S_F2NOTIFY_0111 "Esya yeniden yuklendiginde sifirlanacak"
 	#define STRMSG_S_F2NOTIFY_0112 "Ilgili kullanici(%s) bulunmuyor"
