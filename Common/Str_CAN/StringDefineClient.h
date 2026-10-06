@@ -1755,7 +1755,7 @@
 #define STRMSG_C_070212_0204	"Tasinamayan bir esya sectiniz. [%s]"
 #define STRMSG_C_070212_0205	"Secili esyalari depodan cekmek istiyor musunuz?"
 
-#define STRMSG_C_070214_0100	"\\g%s\\g kisgesini %s olarak secmek istiyor musunuz?"
+#define STRMSG_C_070214_0100	"\\g%s\\g kisisini %s olarak secmek istiyor musunuz?"
 
 #define STRMSG_C_070329_0100	"\\eEnchant:%d\\e"
 
@@ -2130,7 +2130,7 @@
 #define STRMSG_C_080513_0206 "\\y\\g%s\\y tarafindan posta aldiniz."
 
 #define STRMSG_C_080526_0100 "Sistem mesaji"
-#define STRMSG_C_080527_0200 "\\y%s\\y kisgesini Tugay Lider Yardimcisi olarak atamak istiyor musunuz?"
+#define STRMSG_C_080527_0200 "\\y%s\\y kisisini Tugay Lider Yardimcisi olarak atamak istiyor musunuz?"
 #define STRMSG_C_080527_0201 "Tugay Lider Yardimcisi konumunu bos birakmak istiyor musunuz?"
 #define STRMSG_C_080527_0202 "Tugay Liderligi gorevini \\y%s\\y kisgesine devretmek istiyor musunuz?"
 #define STRMSG_C_080527_0203 "\\y%s\\y Tugayina uye olmak icin basvurmak istiyor musunuz?"
