@@ -10,18 +10,22 @@
 ///////////////////////////////////////////////////////////////////////////////
 // 1 Atum
 	// 1-1 
-	#define STRERR_S_ATUMEXE_0001 "Server is not activated. \r\nPlease remember to right click -> Run as Administrator !"
-	#define STRERR_S_ATUMEXE_0002 "Socket Closed by Pre Server!"
-	#define STRERR_S_ATUMEXE_0003 "Auto update failed.\r\nPlease reinstall the game.\r\n"
-	#define STRERR_S_ATUMEXE_0004 "ERROR %s(%#04X) received from %s[%s]\r\n"
-	#define STRERR_S_ATUMEXE_0005 "Unknown Error: %s(%#04x)"
-	#define STRERR_S_ATUMEXE_0006 "Cannot connect to the download server."
-	#define STRERR_S_ATUMEXE_0007 "Download files size is unknown."
-	#define STRERR_S_ATUMEXE_0008 "Update file cannot be downloaded."
-	#define STRERR_S_ATUMEXE_0009 "The system is out of memory or resources."
-	#define STRERR_S_ATUMEXE_0010 "The .exe file is invalid."
-	#define STRERR_S_ATUMEXE_0011 "File not found."
-	#define STRERR_S_ATUMEXE_0012 "The specified path was not found. "
+	#define STRERR_S_ATUMEXE_0001 "Sunucu etkin degil. 
+Lutfen sag tiklayip -> Yonetici olarak calistirin !"
+	#define STRERR_S_ATUMEXE_0002 "Soket Pre Server tarafindan kapatildi!"
+	#define STRERR_S_ATUMEXE_0003 "Otomatik guncelleme basarisiz.
+Lutfen oyunu yeniden kurun.
+"
+	#define STRERR_S_ATUMEXE_0004 "%s[%s] kaynagindan HATA %s(%#04X) alindi
+"
+	#define STRERR_S_ATUMEXE_0005 "Bilinmeyen Hata: %s(%#04x)"
+	#define STRERR_S_ATUMEXE_0006 "Indirme sunucusuna baglanilamiyor."
+	#define STRERR_S_ATUMEXE_0007 "Indirilecek dosyalarin boyutu bilinmiyor."
+	#define STRERR_S_ATUMEXE_0008 "Guncelleme dosyasi indirilemiyor."
+	#define STRERR_S_ATUMEXE_0009 "Sistemde yeterli bellek veya kaynak yok."
+	#define STRERR_S_ATUMEXE_0010 ".exe dosyasi gecersiz."
+	#define STRERR_S_ATUMEXE_0011 "Dosya bulunamadi."
+	#define STRERR_S_ATUMEXE_0012 "Belirtilen yol bulunamadi. "
 // 2006-04-20 by cmkwon, 	#define STRERR_S_ATUMEXE_0013 "[Error]Unknown Message Type: %d(0x%08X)\n"
 // 1_end
 ///////////////////////////////////////////////////////////////////////////////
@@ -29,62 +33,85 @@
 ///////////////////////////////////////////////////////////////////////////////
 // 2 - AtumLauncher
 	// 2-1 STRMSG
-	#define STRMSG_S_ATUMLAUNCHER_0000 "Update complete"
-	#define STRMSG_S_ATUMLAUNCHER_0001 "Please choose a server."
-	#define STRMSG_S_ATUMLAUNCHER_0002 "Updating Delete File List v%s\r\n"
-	#define STRMSG_S_ATUMLAUNCHER_0003 "Deleting temporary files"
-	#define STRMSG_S_ATUMLAUNCHER_0004 "Updating notice"
-	#define STRMSG_S_ATUMLAUNCHER_0005 "Update complete(%s -> %s)"
-	#define STRMSG_S_ATUMLAUNCHER_0006 "Select operation file"
-	#define STRMSG_S_ATUMLAUNCHER_0007 "Select operation path"
-	#define STRMSG_S_ATUMLAUNCHER_0008 "Downloading has been canceled"
-	#define STRMSG_S_ATUMLAUNCHER_0009 "Download finished"
-	#define STRMSG_S_ATUMLAUNCHER_0010 "Updating to v%s - %s(%d/%d)"
-	#define STRMSG_S_ATUMLAUNCHER_0011 "Unable to create file %s"
-	#define STRMSG_S_ATUMLAUNCHER_0012 "Updating to v%s - %s(%d/%d)"
-	#define STRMSG_S_ATUMLAUNCHER_0013 "Aquiring File Information %s"
+	#define STRMSG_S_ATUMLAUNCHER_0000 "Guncelleme tamamlandi"
+	#define STRMSG_S_ATUMLAUNCHER_0001 "Lutfen bir sunucu secin."
+	#define STRMSG_S_ATUMLAUNCHER_0002 "Silinecek Dosya Listesi guncelleniyor v%s
+"
+	#define STRMSG_S_ATUMLAUNCHER_0003 "Gecici dosyalar siliniyor"
+	#define STRMSG_S_ATUMLAUNCHER_0004 "Duyuru guncelleniyor"
+	#define STRMSG_S_ATUMLAUNCHER_0005 "Guncelleme tamamlandi(%s -> %s)"
+	#define STRMSG_S_ATUMLAUNCHER_0006 "Islem dosyasini secin"
+	#define STRMSG_S_ATUMLAUNCHER_0007 "Islem yolunu secin"
+	#define STRMSG_S_ATUMLAUNCHER_0008 "Indirme iptal edildi"
+	#define STRMSG_S_ATUMLAUNCHER_0009 "Indirme tamamlandi"
+	#define STRMSG_S_ATUMLAUNCHER_0010 "v%s surumune guncelleniyor - %s(%d/%d)"
+	#define STRMSG_S_ATUMLAUNCHER_0011 "%s dosyasi olusturulamadi"
+	#define STRMSG_S_ATUMLAUNCHER_0012 "v%s surumune guncelleniyor - %s(%d/%d)"
+	#define STRMSG_S_ATUMLAUNCHER_0013 "Dosya Bilgisi Aliniyor %s"
 	
 	// STRERR
-	#define STRERR_S_ATUMLAUNCHER_0000 "[Error] Parameter Count Error, Count(%d)\n"
-	#define STRERR_S_ATUMLAUNCHER_0001 "[Error] Mutex Error\n"
-	#define STRERR_S_ATUMLAUNCHER_0002 "[Error] Excute Type Error, Type(%s)\n"
-	#define STRERR_S_ATUMLAUNCHER_0003 "[Error] Decryption ID Error, DecryptedID(%s)\n"
-	#define STRERR_S_ATUMLAUNCHER_0004 "Cannot connect to Pre server."
-	#define STRERR_S_ATUMLAUNCHER_0005 "Failed to connect to the server."
-	#define STRERR_S_ATUMLAUNCHER_0006 "Socket Closed by Pre Server!"
-	#define STRERR_S_ATUMLAUNCHER_0007 "Notice File Error!"
-	#define STRERR_S_ATUMLAUNCHER_0009 "Auto update failed.\r\nPlease reinstall the game.\r\n"
-	#define STRERR_S_ATUMLAUNCHER_0010 "All servers are inactive at this time."
-	#define STRERR_S_ATUMLAUNCHER_0011 "%-16s%s under examination..."
-	#define STRERR_S_ATUMLAUNCHER_0012 "All servers are under examination. Try logging in later."
-	#define STRERR_S_ATUMLAUNCHER_0013 "ERROR %s(%#04X) received from %s[%s]\r\n"
+	#define STRERR_S_ATUMLAUNCHER_0000 "[Hata] Parametre Sayisi Hatasi, Sayi(%d)
+"
+	#define STRERR_S_ATUMLAUNCHER_0001 "[Hata] Mutex Hatasi
+"
+	#define STRERR_S_ATUMLAUNCHER_0002 "[Hata] Calistirma Turu Hatasi, Tur(%s)
+"
+	#define STRERR_S_ATUMLAUNCHER_0003 "[Hata] Sifre Cozme ID Hatasi, CozulenID(%s)
+"
+	#define STRERR_S_ATUMLAUNCHER_0004 "Pre Server'a baglanilamiyor."
+	#define STRERR_S_ATUMLAUNCHER_0005 "Sunucuya baglanti basarisiz."
+	#define STRERR_S_ATUMLAUNCHER_0006 "Soket Pre Server tarafindan kapatildi!"
+	#define STRERR_S_ATUMLAUNCHER_0007 "Duyuru Dosyasi Hatasi!"
+	#define STRERR_S_ATUMLAUNCHER_0009 "Otomatik guncelleme basarisiz.
+Lutfen oyunu yeniden kurun.
+"
+	#define STRERR_S_ATUMLAUNCHER_0010 "Su anda tum sunucular devre disi."
+	#define STRERR_S_ATUMLAUNCHER_0011 "%-16s%s bakimda..."
+	#define STRERR_S_ATUMLAUNCHER_0012 "Tum sunucular bakimda. Daha sonra tekrar giris yapin."
+	#define STRERR_S_ATUMLAUNCHER_0013 "%s[%s] kaynagindan HATA %s(%#04X) alindi
+"
 // 2006-05-26 by cmkwon	#define STRERR_S_ATUMLAUNCHER_0014 "Wrong ID, password error\n\n* only people who are certified as beta tester can log in at the present."
 //	#define STRERR_S_ATUMLAUNCHER_0014 "You have entered an invalid login ID or password.  Please enter a registered login ID and password."
-	#define STRERR_S_ATUMLAUNCHER_0015 "Error in login process"
-	#define STRERR_S_ATUMLAUNCHER_0016 "User ID not entered"
-	#define STRERR_S_ATUMLAUNCHER_0017 "Double log in"
-	#define STRERR_S_ATUMLAUNCHER_0018 "F server is not executed."
-	#define STRERR_S_ATUMLAUNCHER_0019 "I server is not executed."
-	#define STRERR_S_ATUMLAUNCHER_0020 "Sevice is stopped temporarily.\n\nTry logging in later."
-	#define STRERR_S_ATUMLAUNCHER_0021 "There are too many users online.\n\nTry logging in later."
-	#define STRERR_S_ATUMLAUNCHER_0022 "Your account is currently blocked.\nPeriod : %s\n\nConatact Customer Support at [https://support.oldschoolrivals.com/] for further details."
-	#define STRERR_S_ATUMLAUNCHER_0023 "The client version is not correct.\n\nPlease download the game again."
-	#define STRERR_S_ATUMLAUNCHER_0024 "ERROR: %s(%#04X)"
-	#define STRERR_S_ATUMLAUNCHER_0025 "Cannot log in to the download server."
-	#define STRERR_S_ATUMLAUNCHER_0026 "Size of the download file(%s)cannot be known."
-	#define STRERR_S_ATUMLAUNCHER_0027 "Size of the download file is unknwon."
-	#define STRERR_S_ATUMLAUNCHER_0028 "Cannot download the update file."
-	#define STRERR_S_ATUMLAUNCHER_0029 "Updated file does not exist."
-	#define STRERR_S_ATUMLAUNCHER_0030 "Selected server is under examination. Try logging in later."
-	#define STRERR_S_ATUMLAUNCHER_0031 "The system is out of memory or resources."
-	#define STRERR_S_ATUMLAUNCHER_0032 "The .exe file is invalid."
-	#define STRERR_S_ATUMLAUNCHER_0033 "File cannot be found."
-	#define STRERR_S_ATUMLAUNCHER_0034 "Path cannot be found."
+	#define STRERR_S_ATUMLAUNCHER_0015 "Giris islemi hatasi"
+	#define STRERR_S_ATUMLAUNCHER_0016 "Kullanici ID girilmedi"
+	#define STRERR_S_ATUMLAUNCHER_0017 "Cift giris"
+	#define STRERR_S_ATUMLAUNCHER_0018 "F sunucusu calismiyor."
+	#define STRERR_S_ATUMLAUNCHER_0019 "I sunucusu calismiyor."
+	#define STRERR_S_ATUMLAUNCHER_0020 "Hizmet gecici olarak durduruldu.
+
+Daha sonra tekrar giris yapin."
+	#define STRERR_S_ATUMLAUNCHER_0021 "Cok fazla kullanici cevrimici.
+
+Daha sonra tekrar giris yapin."
+	#define STRERR_S_ATUMLAUNCHER_0022 "Hesabiniz su anda engelli.
+Sure : %s
+
+Ayrintili bilgi icin Musteri Destegi ile iletisime gecin: [https://support.oldschoolrivals.com/]"
+	#define STRERR_S_ATUMLAUNCHER_0023 "Istemci surumu hatali.
+
+Lutfen oyunu yeniden indirin."
+	#define STRERR_S_ATUMLAUNCHER_0024 "HATA: %s(%#04X)"
+	#define STRERR_S_ATUMLAUNCHER_0025 "Indirme sunucusuna giris yapilamiyor."
+	#define STRERR_S_ATUMLAUNCHER_0026 "Indirilecek dosyanin boyutu(%s) belirlenemiyor."
+	#define STRERR_S_ATUMLAUNCHER_0027 "Indirilecek dosyanin boyutu bilinmiyor."
+	#define STRERR_S_ATUMLAUNCHER_0028 "Guncelleme dosyasi indirilemiyor."
+	#define STRERR_S_ATUMLAUNCHER_0029 "Guncellenen dosya bulunmuyor."
+	#define STRERR_S_ATUMLAUNCHER_0030 "Secilen sunucu bakimda. Daha sonra tekrar giris yapin."
+	#define STRERR_S_ATUMLAUNCHER_0031 "Sistemde yeterli bellek veya kaynak yok."
+	#define STRERR_S_ATUMLAUNCHER_0032 ".exe dosyasi gecersiz."
+	#define STRERR_S_ATUMLAUNCHER_0033 "Dosya bulunamiyor."
+	#define STRERR_S_ATUMLAUNCHER_0034 "Yol bulunamiyor."
 // 2006-04-20 by cmkwon	#define STRERR_S_ATUMLAUNCHER_0035 "[Error] Unhandled Message Type: %s(%#04X)\n"
 // 2006-04-20 by cmkwon	#define STRERR_S_ATUMLAUNCHER_0036 "[Error] Unhandled Message Type!\n"
 
-	#define STRMSG_S_050506		"\'%s\'s account is blocked presently.\n  Reason: %s\n  Period: %s~%s\n\nConatact Customer Support at [https://support.oldschoolrivals.com] for further details."
-	#define STRMSG_S_050930		"Please download the game again.\nURL: [https://oldschoolrivals.com] %s\nNewest version: "
+	#define STRMSG_S_050506		"'%s' hesabi su anda engelli.
+  Neden: %s
+  Sure: %s~%s
+
+Ayrintili bilgi icin Musteri Destegi ile iletisime gecin: [https://support.oldschoolrivals.com]"
+	#define STRMSG_S_050930		"Lutfen oyunu yeniden indirin.
+URL: [https://oldschoolrivals.com] %s
+En yeni surum: "
 // 2_end
 ///////////////////////////////////////////////////////////////////////////////	
 
@@ -116,81 +143,92 @@
 //	#define STRMSG_S_SCADMINTOOL_0022 "GEAR"
 //	#define STRMSG_S_SCADMINTOOL_0023 "Reason unknown"
 //	#define STRMSG_S_SCADMINTOOL_0024 "%s, Remaining stat: %s"
-	#define STRMSG_S_SCADMINTOOL_0025 "(Do not exist)"
+	#define STRMSG_S_SCADMINTOOL_0025 "(Mevcut degil)"
 //	#define STRMSG_S_SCADMINTOOL_0026 "myself"
 //	#define STRMSG_S_SCADMINTOOL_0027 "Does not exist"
 //	#define STRMSG_S_SCADMINTOOL_0028 "User with bug use"
-	#define STRMSG_S_SCADMINTOOL_0029 "Account blocked"
-	#define STRMSG_S_SCADMINTOOL_0030 "Chatting prohibited"
+	#define STRMSG_S_SCADMINTOOL_0029 "Hesap engelli"
+	#define STRMSG_S_SCADMINTOOL_0030 "Sohbet yasakli"
 //	#define STRMSG_S_SCADMINTOOL_0031 "Connection log"
 //	#define STRMSG_S_SCADMINTOOL_0032 "User log"
 //	#define STRMSG_S_SCADMINTOOL_0033 "Item log"
-	#define STRMSG_S_SCADMINTOOL_0034 "%s - %s server"
-	#define STRMSG_S_SCADMINTOOL_0035 "%s - %s server,%d(%d)"
-	#define STRMSG_S_SCADMINTOOL_0036 " Account seized"
+	#define STRMSG_S_SCADMINTOOL_0034 "%s - %s sunucusu"
+	#define STRMSG_S_SCADMINTOOL_0035 "%s - %s sunucusu,%d(%d)"
+	#define STRMSG_S_SCADMINTOOL_0036 " Hesaba el konuldu"
 //	#define STRMSG_S_SCADMINTOOL_0037 "Classification    "
 //	#define STRMSG_S_SCADMINTOOL_0038 "Value"
-	#define STRMSG_S_SCADMINTOOL_0039 "Do you want to unblock this account?"
-	#define STRMSG_S_SCADMINTOOL_0040 "%s(%dsecond)"
-	#define STRMSG_S_SCADMINTOOL_0041 "%dwin %dlost"
-	#define STRMSG_S_SCADMINTOOL_0042 "Are you sure you want to disconnect and block the account?"
-	#define STRMSG_S_SCADMINTOOL_0043 "%s item"
-	#define STRMSG_S_SCADMINTOOL_0044 "[%s %15s] Notice : %s\r\n"
-	#define STRMSG_S_SCADMINTOOL_0045 "Number of users : %d\r\n"
-	#define STRMSG_S_SCADMINTOOL_0046 "[%s %15s] Received message : %s\r\n"
-	#define STRMSG_S_SCADMINTOOL_0047 "[%s %15s] number of users : %4d\r\n"
-	#define STRMSG_S_SCADMINTOOL_0048 "[%s %15s] FieldServer state : %d\r\n"
-	#define STRMSG_S_SCADMINTOOL_0049 "Connection to the server has been lost\nSocket Name: %s\nIP: %s"
+	#define STRMSG_S_SCADMINTOOL_0039 "Bu hesabin engelini kaldirmak istiyor musunuz?"
+	#define STRMSG_S_SCADMINTOOL_0040 "%s(%dsaniye)"
+	#define STRMSG_S_SCADMINTOOL_0041 "%dgalibiyet %dmaglubiyet"
+	#define STRMSG_S_SCADMINTOOL_0042 "Baglantiyi kesip hesabi engellemek istediginize emin misiniz?"
+	#define STRMSG_S_SCADMINTOOL_0043 "%s esyasi"
+	#define STRMSG_S_SCADMINTOOL_0044 "[%s %15s] Duyuru : %s
+"
+	#define STRMSG_S_SCADMINTOOL_0045 "Kullanici sayisi : %d
+"
+	#define STRMSG_S_SCADMINTOOL_0046 "[%s %15s] Alinan mesaj : %s
+"
+	#define STRMSG_S_SCADMINTOOL_0047 "[%s %15s] kullanici sayisi : %4d
+"
+	#define STRMSG_S_SCADMINTOOL_0048 "[%s %15s] FieldServer durumu : %d
+"
+	#define STRMSG_S_SCADMINTOOL_0049 "Sunucu baglantisi kesildi
+Soket Adi: %s
+IP: %s"
 	
 	// 3-2 AtumAdminTool - STRERR
-	#define STRERR_S_SCADMINTOOL_0000 "Cannot load corresponding account information."
-	#define STRERR_S_SCADMINTOOL_0001 "Failed to modify account information."
-	#define STRERR_S_SCADMINTOOL_0002 "Enter your password"
-	#define STRERR_S_SCADMINTOOL_0003 "Password authentication failed"
-	#define STRERR_S_SCADMINTOOL_0004 "Enter log in name"
-	#define STRERR_S_SCADMINTOOL_0005 "Pre Server is not executed."
-	#define STRERR_S_SCADMINTOOL_0006 "Can not connect to the PreServer !!"
-//	#define STRERR_S_SCADMINTOOL_0007 "ÀÎÁõ ½ÇÆĞÇÏ¿´½À´Ï´Ù"			// 2006-04-11 by cmkwon, ÁÖ¼®Ã³¸®ÇÔ
-	#define STRERR_S_SCADMINTOOL_0008 "ERROR: corresponding protocol does not exist."
-	#define STRERR_S_SCADMINTOOL_0009 "Enter user name"
-	#define STRERR_S_SCADMINTOOL_0010 "Enter reason"
-	#define STRERR_S_SCADMINTOOL_0011 "Experience point set up error : Level %2d ==> Exp(%.1I64f ~ %.1I64f)"
-	#define STRERR_S_SCADMINTOOL_0012 "Maximum log number exceeded.\r\n\r\nPlease modify the number of the maximum log or the search condition."
-	#define STRERR_S_SCADMINTOOL_0013 "Cannot connect to the database."
-	#define STRERR_S_SCADMINTOOL_0014 "Not connected"
-	#define STRERR_S_SCADMINTOOL_0015 "Connected"
-	#define STRERR_S_SCADMINTOOL_0016 "Updating"
-	#define STRERR_S_SCADMINTOOL_0017 "Logged in"
-	#define STRERR_S_SCADMINTOOL_0018 "Choosing character"
-	#define STRERR_S_SCADMINTOOL_0019 "Playing game"
-	#define STRERR_S_SCADMINTOOL_0020 "Unknown"
-	#define STRERR_S_SCADMINTOOL_0021 "Database %s(%s:%d)cannot be connected."
-	#define STRERR_S_SCADMINTOOL_0022 "Failed to add item"
-	#define STRERR_S_SCADMINTOOL_0023 "Failed to find blocked account."
-	#define STRERR_S_SCADMINTOOL_0024 "First, disconnect from the account and block it to modify."
-	#define STRERR_S_SCADMINTOOL_0025 "SPI(money) cannot be added."
-	#define STRERR_S_SCADMINTOOL_0026 "Selected item already exists, so modify the amount."
-	#define STRERR_S_SCADMINTOOL_0027 "Error finding item"
-	#define STRERR_S_SCADMINTOOL_0028 "SPI(money) possessed by the character cannot be deleted."
-	#define STRERR_S_SCADMINTOOL_0029 "Do you want to delete this item?"
-	#define STRERR_S_SCADMINTOOL_0030 "Failed to delete item."
-	#define STRERR_S_SCADMINTOOL_0031 "Failed to modify item."
-	#define STRERR_S_SCADMINTOOL_0032 "Enter the account"
-	#define STRERR_S_SCADMINTOOL_0033 "Account does not exist.(account may possibly be blocked)"
-	#define STRERR_S_SCADMINTOOL_0034 "Account or character does not exist."
-	#define STRERR_S_SCADMINTOOL_0035 "Error in character information search."
-	#define STRERR_S_SCADMINTOOL_0036 "Corresponding character does not exist"
-	#define STRERR_S_SCADMINTOOL_0037 "Error in character update."
-	#define STRERR_S_SCADMINTOOL_0038 "Character information has been updated succesfully."
-	#define STRERR_S_SCADMINTOOL_0039 "Choose an item."
-	#define STRERR_S_SCADMINTOOL_0040 "Choose the number of item."
-	#define STRERR_S_SCADMINTOOL_0041 "Corresponding item can be created under 5 pieces."
-	#define STRERR_S_SCADMINTOOL_0042 "Enter the message."
-	#define STRERR_S_SCADMINTOOL_0043 "Notice cannot be sent."
-	#define STRERR_S_SCADMINTOOL_0044 "%s: server state(%d)\r\n"
-	#define STRERR_S_SCADMINTOOL_0045 "IM Server is not executed."
-	#define STRERR_S_SCADMINTOOL_0046 "Field Server is not executed."
-	#define STRERR_S_SCADMINTOOL_0047 "[%s %15s] IMServer state : %d\r\n"
+	#define STRERR_S_SCADMINTOOL_0000 "Ilgili hesap bilgisi yuklenemedi."
+	#define STRERR_S_SCADMINTOOL_0001 "Hesap bilgisi degistirilemedi."
+	#define STRERR_S_SCADMINTOOL_0002 "Sifrenizi girin"
+	#define STRERR_S_SCADMINTOOL_0003 "Sifre dogrulamasi basarisiz"
+	#define STRERR_S_SCADMINTOOL_0004 "Giris adini girin"
+	#define STRERR_S_SCADMINTOOL_0005 "Pre Server calismiyor."
+	#define STRERR_S_SCADMINTOOL_0006 "PreServer'a baglanilamiyor !!"
+//	#define STRERR_S_SCADMINTOOL_0007 "ì¸ì¦ ì‹¤íŒ¨í•˜ì˜€ìŠµë‹ˆë‹¤"			// 2006-04-11 by cmkwon, ì£¼ì„ì²˜ë¦¬í•¨
+	#define STRERR_S_SCADMINTOOL_0008 "HATA: ilgili protokol bulunmuyor."
+	#define STRERR_S_SCADMINTOOL_0009 "Kullanici adini girin"
+	#define STRERR_S_SCADMINTOOL_0010 "Nedeni girin"
+	#define STRERR_S_SCADMINTOOL_0011 "Deneyim puani ayar hatasi : Seviye %2d ==> Exp(%.1I64f ~ %.1I64f)"
+	#define STRERR_S_SCADMINTOOL_0012 "Maksimum log sayisi asildi.
+
+Lutfen maksimum log sayisini veya arama kosulunu degistirin."
+	#define STRERR_S_SCADMINTOOL_0013 "Veritabanina baglanilamiyor."
+	#define STRERR_S_SCADMINTOOL_0014 "Bagli degil"
+	#define STRERR_S_SCADMINTOOL_0015 "Bagli"
+	#define STRERR_S_SCADMINTOOL_0016 "Guncelleniyor"
+	#define STRERR_S_SCADMINTOOL_0017 "Giris yapildi"
+	#define STRERR_S_SCADMINTOOL_0018 "Karakter seciliyor"
+	#define STRERR_S_SCADMINTOOL_0019 "Oyun oynaniyor"
+	#define STRERR_S_SCADMINTOOL_0020 "Bilinmiyor"
+	#define STRERR_S_SCADMINTOOL_0021 "Veritabani %s(%s:%d) baglantisi kurulamiyor."
+	#define STRERR_S_SCADMINTOOL_0022 "Esya eklenemedi"
+	#define STRERR_S_SCADMINTOOL_0023 "Engelli hesap bulunamadi."
+	#define STRERR_S_SCADMINTOOL_0024 "Degistirmek icin once hesabinin baglantisini kesip engelleyin."
+	#define STRERR_S_SCADMINTOOL_0025 "SPI(para) eklenemiyor."
+	#define STRERR_S_SCADMINTOOL_0026 "Secili esya zaten mevcut, miktari degistirin."
+	#define STRERR_S_SCADMINTOOL_0027 "Esya bulunurken hata"
+	#define STRERR_S_SCADMINTOOL_0028 "Karakterin sahip oldugu SPI(para) silinemez."
+	#define STRERR_S_SCADMINTOOL_0029 "Bu esyayi silmek istiyor musunuz?"
+	#define STRERR_S_SCADMINTOOL_0030 "Esya silinemedi."
+	#define STRERR_S_SCADMINTOOL_0031 "Esya degistirilemedi."
+	#define STRERR_S_SCADMINTOOL_0032 "Hesabi girin"
+	#define STRERR_S_SCADMINTOOL_0033 "Hesap bulunmuyor.(hesap engelli olabilir)"
+	#define STRERR_S_SCADMINTOOL_0034 "Hesap veya karakter bulunmuyor."
+	#define STRERR_S_SCADMINTOOL_0035 "Karakter bilgisi arama hatasi."
+	#define STRERR_S_SCADMINTOOL_0036 "Ilgili karakter bulunmuyor"
+	#define STRERR_S_SCADMINTOOL_0037 "Karakter guncelleme hatasi."
+	#define STRERR_S_SCADMINTOOL_0038 "Karakter bilgisi basariyla guncellendi."
+	#define STRERR_S_SCADMINTOOL_0039 "Bir esya secin."
+	#define STRERR_S_SCADMINTOOL_0040 "Esya sayisini secin."
+	#define STRERR_S_SCADMINTOOL_0041 "Ilgili esya 5 adetten az olusturulabilir."
+	#define STRERR_S_SCADMINTOOL_0042 "Mesaji girin."
+	#define STRERR_S_SCADMINTOOL_0043 "Duyuru gonderilemiyor."
+	#define STRERR_S_SCADMINTOOL_0044 "%s: sunucu durumu(%d)
+"
+	#define STRERR_S_SCADMINTOOL_0045 "IM Server calismiyor."
+	#define STRERR_S_SCADMINTOOL_0046 "Field Server calismiyor."
+	#define STRERR_S_SCADMINTOOL_0047 "[%s %15s] IMServer durumu : %d
+"
 
 	// 3-3 AtumLaAtumAdminTool -
 //	#define STRMSG_S_SCAT_COLNAME_0000 "Account name"
@@ -214,11 +252,11 @@
 //	#define STRMSG_S_SCAT_COLNAME_0018 "Item number"
 //	#define STRMSG_S_SCAT_COLNAME_0019 "Prefix"
 //	#define STRMSG_S_SCAT_COLNAME_0020 "Suffix"
-	#define STRMSG_S_SCAT_COLNAME_0021 "Equip"
+	#define STRMSG_S_SCAT_COLNAME_0021 "Takili"
 //	#define STRMSG_S_SCAT_COLNAME_0022 "Amount"
 //	#define STRMSG_S_SCAT_COLNAME_0023 "Endurance"
 //	#define STRMSG_S_SCAT_COLNAME_0024 "Create time"
-	#define STRMSG_S_SCAT_COLNAME_0025 "Not equipped"
+	#define STRMSG_S_SCAT_COLNAME_0025 "Takili degil"
 //	#define STRMSG_S_SCAT_COLNAME_0026 "Warehouse"
 //	#define STRMSG_S_SCAT_COLNAME_0027 "Auction"
 //	#define STRMSG_S_SCAT_COLNAME_0028 "Map"
@@ -246,12 +284,12 @@
 //	#define STRMSG_S_SCAT_COLNAME_0050 "Final log in time"
 //	#define STRMSG_S_SCAT_COLNAME_0051 "Type"
 //	#define STRMSG_S_SCAT_COLNAME_0052 "Whole"
-	#define STRMSG_S_SCAT_COLNAME_0053 "Automatic type(1-1type)"
-	#define STRMSG_S_SCAT_COLNAME_0054 "Vulcan type(1-1type)"	
-	#define STRMSG_S_SCAT_COLNAME_0055 "Dualist type(1-1type)" // 2005-08-01 by hblee : Grenade -> changed to dualist.
-	#define STRMSG_S_SCAT_COLNAME_0056 "Cannon type(1-1type)"
-	#define STRMSG_S_SCAT_COLNAME_0057 "Rifle type(1-2type)"
-	#define STRMSG_S_SCAT_COLNAME_0058 "Gatling type(1-2type)"
+	#define STRMSG_S_SCAT_COLNAME_0053 "Otomatik tur(1-1tur)"
+	#define STRMSG_S_SCAT_COLNAME_0054 "Vulkan turu(1-1tur)"	
+	#define STRMSG_S_SCAT_COLNAME_0055 "Duellocu turu(1-1tur)" // 2005-08-01 by hblee : Grenade -> changed to dualist.
+	#define STRMSG_S_SCAT_COLNAME_0056 "Top turu(1-1tur)"
+	#define STRMSG_S_SCAT_COLNAME_0057 "Tufek turu(1-2tur)"
+	#define STRMSG_S_SCAT_COLNAME_0058 "Gatling turu(1-2tur)"
 	#define STRMSG_S_SCAT_COLNAME_0059 "Launcher type(1-2type)"
 	#define STRMSG_S_SCAT_COLNAME_0060 "Mass drive type(1-2type)"
 	#define STRMSG_S_SCAT_COLNAME_0061 "Rocket type(2-1type)"
@@ -292,7 +330,7 @@
 //	#define STRMSG_S_SCAT_COLNAME_0093 "Abnormal"
 	#define STRMSG_S_SCAT_COLNAME_0094 "Administrator"
 
-	#define STRMSG_S_SCADMINTOOL_050512_0000	"CAST(l.CurrentCount AS VARCHAR(10)) + '°³, Param1:' + CAST(l.Param1 AS VARCHAR(10))"
+	#define STRMSG_S_SCADMINTOOL_050512_0000	"CAST(l.CurrentCount AS VARCHAR(10)) + 'ê°œ, Param1:' + CAST(l.Param1 AS VARCHAR(10))"
 // 3_end
 ///////////////////////////////////////////////////////////////////////////////
 	
@@ -391,7 +429,7 @@
 	#define STRMSG_S_F2CITYWAR_0001 "		  Participating brigade : GuildUID(%4d) GuildName(%10s) GuildMaster(%d)\r\n"
 	#define STRMSG_S_F2CITYWAR_0002 "  City occupying battle monster explosion : %d(%10s) occGuildName(%s)\r\n"
 	#define STRMSG_S_F2CITYWAR_0003 "		  Damage sum total ==> GuildName(%10s) SumOfDamage(%8.2f)\r\n"
-	#define STRMSG_S_F2CITYWAR_0004 "  City occupying battle : %d(%10s) CityMapIndex(%d) QuestIndex(%d) OccGuildID(%d) OccGuildName(%s) OccGuildMasterUID(%d) Á¡·ÉÀü½Ã°£(%s)\r\n"
+	#define STRMSG_S_F2CITYWAR_0004 "  City occupying battle : %d(%10s) CityMapIndex(%d) QuestIndex(%d) OccGuildID(%d) OccGuildName(%s) OccGuildMasterUID(%d) ì ë ¹ì „ì‹œê°„(%s)\r\n"
 	#define STRMSG_S_F2CITYWAR_0005 "[Error] SetCityWarState_ DBError, MapIndex(%d)\r\n"
 	#define STRMSG_S_F2CITYWAR_0006 "After %dminutes, \"%s\" city occupying battle will start."
 	#define STRMSG_S_F2CITYWAR_0007 "After %dminutes, \"%s\" city occupying battle will be finished."
@@ -403,7 +441,7 @@
 	// 5-4 Field - Quest
 	#define STRMSG_S_F2QUEST_0000 "Failed to load quest"
 	#define STRMSG_S_F2QUEST_0001 "Quest has not been loaded.\r\n"
-//	#define STRMSG_S_F2QUEST_0002 "Äù½ºÆ® \'%30s\' ¹øÈ£ %d -> OK\r\n"
+//	#define STRMSG_S_F2QUEST_0002 "í€˜ìŠ¤íŠ¸ \'%30s\' ë²ˆí˜¸ %d -> OK\r\n"
 
 	// 5-4 Field - config
 	#define STRMSG_S_F2CONFIG_0000 "Server for test has been set! \r\n\r\nLoadFieldServerDataDebug() needs to be eliminated! "
@@ -541,8 +579,8 @@
 	#define STRMSG_S_F2NOTIFY_0131 "  Do not process completing routine %s: CS(%d), DBStore(%d)\r\n"
 	#define STRMSG_S_F2NOTIFY_0132 "  ERROR@CharacterGameEndRoutine(): Failed to eliminate party personnel! %s\r\n"
 // 2005-11-24 by cmkwon, 
-//	#define STRMSG_S_F2NOTIFY_0133 "Prefix \'%s\' ¼º°ø: %d <= %d <= %d\r\n"
-//	#define STRMSG_S_F2NOTIFY_0134 "Suffix \'%s\' ¼º°ø: %d <= %d <= %d\r\n"
+//	#define STRMSG_S_F2NOTIFY_0133 "Prefix \'%s\' ì„±ê³µ: %d <= %d <= %d\r\n"
+//	#define STRMSG_S_F2NOTIFY_0134 "Suffix \'%s\' ì„±ê³µ: %d <= %d <= %d\r\n"
 	#define STRMSG_S_F2NOTIFY_0135 "%s: Stopped!"
 	#define STRMSG_S_F2NOTIFY_0136 "FATAL ERROR: Please make an inquiry to the administrator! Shop variable allotment error!"
 	#define STRMSG_S_F2NOTIFY_0137 "%s is deleted."
@@ -691,8 +729,8 @@
 	#define STRMSG_SCAT_051115_0004		"First, NPC server will be shut down."
 	#define STRMSG_SCAT_051115_0005		"ACE Online regular maintenance will begin."
 	#define STRMSG_SCAT_051115_0006		"Please enjoy your day with ACE Online."
-	#define STRMSG_SCAT_051115_0007		"There will be a server checkup in 5 minutes." // 5ºĞ ÈÄ ¼­¹ö Á¡°ËÀÌ ÀÖÀ» ¿¹Á¤ÀÔ´Ï´Ù.
-	#define STRMSG_SCAT_051115_0008		"Server will be down for 60 minutes."	// ¼­¹ö´Â 60ºĞ µ¿¾È ³»·ÁÁú ¿¹Á¤ÀÔ´Ï´Ù
+	#define STRMSG_SCAT_051115_0007		"There will be a server checkup in 5 minutes." // 5ë¶„ í›„ ì„œë²„ ì ê²€ì´ ìˆì„ ì˜ˆì •ì…ë‹ˆë‹¤.
+	#define STRMSG_SCAT_051115_0008		"Server will be down for 60 minutes."	// ì„œë²„ëŠ” 60ë¶„ ë™ì•ˆ ë‚´ë ¤ì§ˆ ì˜ˆì •ì…ë‹ˆë‹¤
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -731,8 +769,8 @@
 	#define STRMSG_070410_0008   	" %s' data duplication to Jamboree server  DB(atum2_db_20) failed - Unknown (%d)!!"
 
 ///////////////////////////////////////////////////////////////////////////////
-// 2007-05-07 by cmkwon, ÇØ»óµµ ¹®ÀÚ¿­ 
-	// 2007-07-24 by cmkwon, ·±Ã³¿¡¼­ 800*600 ÇØ»óµµ »èÁ¦ - ÄŞº¸¹Ú½º ½ºÆ®¸µ ÇÊ¿ä ¾øÀ½
+// 2007-05-07 by cmkwon, í•´ìƒë„ ë¬¸ìì—´ 
+	// 2007-07-24 by cmkwon, ëŸ°ì²˜ì—ì„œ 800*600 í•´ìƒë„ ì‚­ì œ - ì½¤ë³´ë°•ìŠ¤ ìŠ¤íŠ¸ë§ í•„ìš” ì—†ìŒ
 	//#define STRMSG_WINDOW_DEGREE_800x600_LOW			"800x600 (low)"
 	//#define STRMSG_WINDOW_DEGREE_800x600_MEDIUM			"800x600 (medium)"
 	//#define STRMSG_WINDOW_DEGREE_800x600_HIGH			"800x600 (high)"
@@ -755,15 +793,15 @@
 #define STRMSG_WINDOW_DEGREE_1600x1200_MEDIUM		"1600x1200 M"
 #define STRMSG_WINDOW_DEGREE_1600x1200_HIGH			"1600x1200 H"
 
-// 2007-06-15 by dhjin, °üÀü °ü·Ã ½ºÆ®¸µ
+// 2007-06-15 by dhjin, ê´€ì „ ê´€ë ¨ ìŠ¤íŠ¸ë§
 #define STRMSG_070615_0000		"Cannot start as you are not in Stealth Mode."
 #define STRMSG_070615_0001		"Cannot start the watch."
 #define STRMSG_070620_0000	"User cannot start the watch."
 
-// 2007-06-26 by dhjin, ¿öÆ÷ÀÎÆ® ÀÌº¥Æ® °ü·Ã Ãß°¡
+// 2007-06-26 by dhjin, ì›Œí¬ì¸íŠ¸ ì´ë²¤íŠ¸ ê´€ë ¨ ì¶”ê°€
 #define STRMSG_S_F2EVENTTYPE_0006		"War Point"
 
-// 2007-06-28 by cmkwon, Áß±¹ ¹æ½ÉÃë°ü·Ã(°ÔÀÓ ½Ã°£ ¾Ë¸² ±¸Çö) - ½ºÆ®¸µ Ãß°¡
+// 2007-06-28 by cmkwon, ì¤‘êµ­ ë°©ì‹¬ì·¨ê´€ë ¨(ê²Œì„ ì‹œê°„ ì•Œë¦¼ êµ¬í˜„) - ìŠ¤íŠ¸ë§ ì¶”ê°€
 #define STRMSG_070628_0000				"You have been playing the game for %d hour(s)."
 #define STRMSG_070628_0001				"You have been playing the game for %d hour(s). Please take necessary steps to get some rest."
 #define STRMSG_070628_0002				"You have played too long. It is becoming dangerous for your health. Please take care of your own health and close the game. This is for your own benefit. "
@@ -778,12 +816,12 @@
 #define STRMSG_070711_0004 "Use of Arena is prohibited for \'%s\' user."
 
 ///////////////////////////////////////////////////////////////////////////////
-// 2007-08-23 by cmkwon, Wide ÇØ»óµµ 1280x720(16:9) Ãß°¡ - ½ºÆ®¸µ Ãß°¡
+// 2007-08-23 by cmkwon, Wide í•´ìƒë„ 1280x720(16:9) ì¶”ê°€ - ìŠ¤íŠ¸ë§ ì¶”ê°€
 #define STRMSG_WINDOW_DEGREE_W1280x720_LOW			"1280x720 (low-wide)"
 #define STRMSG_WINDOW_DEGREE_W1280x720_MEDIUM		"1280x720 (medium-wide)"
 #define STRMSG_WINDOW_DEGREE_W1280x720_HIGH			"1280x720 (high-wide)"
 
-// 2007-08-30 by cmkwon, È¸ÀÇ·ë ½Ã½ºÅÛ ±¸Çö - ½ºÆ®¸µ Ãß°¡
+// 2007-08-30 by cmkwon, íšŒì˜ë£¸ ì‹œìŠ¤í…œ êµ¬í˜„ - ìŠ¤íŠ¸ë§ ì¶”ê°€
 #define STRMSG_070830_0001                                   "This command can only be used after nation has been selected."
 #define STRMSG_070830_0002                                   "Conference room map(%d) of corresponding nation is not available"
 #define STRMSG_070830_0003                                   "Number of users that can enter conference room : %dpeople(s)"
@@ -807,25 +845,25 @@
 #define STRMSG_071120_0003									"Appeal system is concluded."
 #define STRMSG_071120_0004									"Appeal system will start from %s to %s."
 
-// 2007-11-28 by cmkwon, ÅëÁö½Ã½ºÅÛ ±¸Çö - 
+// 2007-11-28 by cmkwon, í†µì§€ì‹œìŠ¤í…œ êµ¬í˜„ - 
 #define STRMSG_071128_0001									"%s has sent you %s(%d) as a present. Please check at your warehouse."
 
-// 2007-12-27 by cmkwon, À©µµ¿ìÁî ¸ğµå ±â´É Ãß°¡ - 
+// 2007-12-27 by cmkwon, ìœˆë„ìš°ì¦ˆ ëª¨ë“œ ê¸°ëŠ¥ ì¶”ê°€ - 
 #define STRMSG_071228_0001				"Resolution setting is invalid. Please check again."
 
-// 2008-01-31 by cmkwon, °èÁ¤ ºí·°/ÇØÁ¦ ¸í·É¾î·Î °¡´ÉÇÑ ½Ã½ºÅÛ ±¸Çö - 
+// 2008-01-31 by cmkwon, ê³„ì • ë¸”ëŸ­/í•´ì œ ëª…ë ¹ì–´ë¡œ ê°€ëŠ¥í•œ ì‹œìŠ¤í…œ êµ¬í˜„ - 
 #define STRMSG_080201_0001									"'Error exists in %s' block setting. ErrorCode(%d)"
 #define STRMSG_080201_0002									"'%s' account has been blocked.[Block End Date: %s]"
 #define STRMSG_080201_0003									"'%s' account does not exist in block list. ErrorCode(%d)"
 #define STRMSG_080201_0004									"'Erros has occured in the process of blocking %s' account. ErrorCode(%d)"
 #define STRMSG_080201_0005									"'%s' account has been removed from block list." 
 
-// 2008-02-11 by cmkwon, ÇØ»óµµ Ãß°¡(1440x900) - 
+// 2008-02-11 by cmkwon, í•´ìƒë„ ì¶”ê°€(1440x900) - 
 #define STRMSG_WINDOW_DEGREE_1440x900_LOW			"1440x900 (low-wide)"
 #define STRMSG_WINDOW_DEGREE_1440x900_MEDIUM		"1440x900 (medium-wide)"
 #define STRMSG_WINDOW_DEGREE_1440x900_HIGH			"1440x900 (high-wide)"
 
-// 2007-12-27 by dhjin, ¾Æ·¹³ªÅëÇÕ- ¾Æ·¹³ª¼­¹ö¿¬°á°ü·Ã¿À·ù
+// 2007-12-27 by dhjin, ì•„ë ˆë‚˜í†µí•©- ì•„ë ˆë‚˜ì„œë²„ì—°ê²°ê´€ë ¨ì˜¤ë¥˜
 #define STRMSG_S_MF2AFCONNECT_0000                       "[Error] WndProc(), Can't connect to  ArenaServer[%15s:%4d] Reconnect\r\n"
 #define STRMSG_S_MF2AFCONNECT_0001                       "Connected to Arena Server.\r\n"
 #define STRMSG_S_MF2AFCONNECT_0002                       "Connection to Arena Server[%15s:%4d] is closed. Trying to re-connect.\r\n"
@@ -836,34 +874,34 @@
 #define STRMSG_ARENAEVENT_080310_0003                    "\\yFailed to give Arena attribute.\r\n"
 #define STRMSG_080428_0001					"\\y%s has been shot down.\\y"          // 2008-04-28 by dhjin, Arena integration - String is added when taking down the opponent, only in Arena map 
 
-// 2008-04-29 by cmkwon, ¼­¹ö±º Á¤º¸ DB¿¡ Ãß°¡(½Å±Ô °èÁ¤ Ä³¸¯ÅÍ »ı¼º Á¦ÇÑ ½Ã½ºÅÛÃß°¡) - 
+// 2008-04-29 by cmkwon, ì„œë²„êµ° ì •ë³´ DBì— ì¶”ê°€(ì‹ ê·œ ê³„ì • ìºë¦­í„° ìƒì„± ì œí•œ ì‹œìŠ¤í…œì¶”ê°€) - 
 #define STRMSG_080430_0001					"Selected server is a server where creation of new character is not available."
 
-// 2008-06-13 by dhjin, EP3 ¿©´Ü ¼öÁ¤ »çÇ× - 
+// 2008-06-13 by dhjin, EP3 ì—¬ë‹¨ ìˆ˜ì • ì‚¬í•­ - 
 #define STRMSG_080613_0001					"Request for entering %s brigade was rejected."
 
 // 2008-09-04 by cmkwon, don't need translation, SystemLog 
 #define STRMSG_080904_0001					 "[DB Error] No such DB query process(QP_xxx) function !! QueryType(%d:%s)\r\n"
 
 
-// 2008-12-30 by cmkwon, ÁöµµÀÚ Ã¤ÆÃ Á¦ÇÑ Ä«µå ±¸Çö - 
+// 2008-12-30 by cmkwon, ì§€ë„ì ì±„íŒ… ì œí•œ ì¹´ë“œ êµ¬í˜„ - 
 #define STRMSG_081230_0001					"\\y%s will be restricted from chatting for %d minutes.\\y"
 #define STRMSG_081230_0002					"\\yChatting has been restricted by the leader for %d minutes.\\y"
 #define STRMSG_081230_0003					"\\yChatting restriction by leader is released.\\y"
 
 ///////////////////////////////////////////////////////////////////////////////
-// 2009-08-31 by cmkwon, Gameforge4D °ÔÀÓ°¡µå µ¿ÀÇÃ¢ ¶ç¿ì±â - 
-// 2009-09-02 by cmkwon, Gameforge4D °ÔÀÓ °¡µå µ¿ÀÇÃ¢ WebPage·Î Ã³¸® - STRMSG_090831_0001´Â À¥ÆäÀÌÁö·Î Ã³¸®
+// 2009-08-31 by cmkwon, Gameforge4D ê²Œì„ê°€ë“œ ë™ì˜ì°½ ë„ìš°ê¸° - 
+// 2009-09-02 by cmkwon, Gameforge4D ê²Œì„ ê°€ë“œ ë™ì˜ì°½ WebPageë¡œ ì²˜ë¦¬ - STRMSG_090831_0001ëŠ” ì›¹í˜ì´ì§€ë¡œ ì²˜ë¦¬
 //#define STRMSG_090831_0001					"AirRivals is now protected from cheaters with a hackshield.\r\nPlease install it to help us to make AirRivals even safer.\r\nYou can only continue gameplay once you have installed the hackshield.\r\nPlease read the privacy policy< http://agb.gameforge.de/mmog/index.php?lang=en&art=datenschutz_mmog&special=airrivals&&f_text=b1daf2&f_text_hover=ffffff&f_text_h=061229&f_text_hr=061229&f_text_hrbg=061229&f_text_hrborder=9EBDE4&f_text_font=arial%2C+arial%2C+arial%2C+sans-serif&f_bg=000000 > to find out more about the hackshield's function."
 #define STRMSG_090831_0002					"Install hackshield"
 #define STRMSG_090831_0003					"cancel"
 
 ///////////////////////////////////////////////////////////////////////////////
-// 2009-09-02 by cmkwon, Gameforge4D °ÔÀÓ °¡µå µ¿ÀÇÃ¢ WebPage·Î Ã³¸® - 
+// 2009-09-02 by cmkwon, Gameforge4D ê²Œì„ ê°€ë“œ ë™ì˜ì°½ WebPageë¡œ ì²˜ë¦¬ - 
 #define STRMSG_090902_0001					"https://support.oldschoolrivals.com"
 
 ///////////////////////////////////////////////////////////////////////////////
-// 2009-10-16 by cmkwon, Áö¿ø ÇØ»óµµ Ãß°¡(1680x1050,1920x1080,1920x1200) - 
+// 2009-10-16 by cmkwon, ì§€ì› í•´ìƒë„ ì¶”ê°€(1680x1050,1920x1080,1920x1200) - 
 #define STRMSG_WINDOW_DEGREE_1680x1050_LOW			"1680x1050 L"
 #define STRMSG_WINDOW_DEGREE_1680x1050_MEDIUM		"1680x1050 M"
 #define STRMSG_WINDOW_DEGREE_1680x1050_HIGH			"1680x1050 H"
@@ -875,7 +913,7 @@
 #define STRMSG_WINDOW_DEGREE_1920x1200_HIGH			"1920x1200 H"
 
 ///////////////////////////////////////////////////////////////////////////////
-// 2011-01-26 by hskim, ÀÎÁõ ¼­¹öÀÇ Á¢¼Ó Çã¿ë »óÈ²
+// 2011-01-26 by hskim, ì¸ì¦ ì„œë²„ì˜ ì ‘ì† í—ˆìš© ìƒí™©
 #define STRMSG_AUTHENTICATION_ACCEPT_COMMENT_NOT_REGISTER			"Not Registered Server (It can be Illegal Private Server.)"
 #define STRMSG_AUTHENTICATION_ACCEPT_COMMENT_DB_ERROR				"Error occurs during linkage with DB"
 #define STRMSG_AUTHENTICATION_ACCEPT_COMMENT_OK						"Authentication succeed"
