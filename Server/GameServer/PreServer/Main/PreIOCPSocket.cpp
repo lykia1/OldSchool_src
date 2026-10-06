@@ -8,10 +8,90 @@
 #include "PreGlobal.h"
 #include "AtumError.h"
 #include "AccountBlockManager.h"
-//#include "SecurityManager.h"		// 2011-06-22 by hskim, »ç¼³ ¼­¹ö ¹æÁö
+#include "sha256.h"
+#include <time.h>
+#include <fstream>
+//#include "SecurityManager.h"		// 2011-06-22 by hskim, ì‚¬ì„¤ ì„œë²„ ë°©ì§€
 
 
 CPreIOCP		*CPreIOCPSocket::ms_pPreIOCP = NULL;
+
+static void AceTRSha256(const unsigned char* data, unsigned int len, unsigned char out[32])
+{
+	sha256_context ctx;
+	sha256_starts(&ctx);
+	sha256_update(&ctx, (uint8*)data, len);
+	sha256_finish(&ctx, out);
+}
+
+static void AceTRHmacSha256(const unsigned char* key, unsigned int keyLen,
+	const unsigned char* data, unsigned int dataLen, unsigned char out[32])
+{
+	unsigned char keyBlock[64];
+	unsigned char innerPad[64];
+	unsigned char outerPad[64];
+	MEMSET_ZERO(keyBlock, sizeof(keyBlock));
+
+	if (keyLen > 64)
+	{
+		AceTRSha256(key, keyLen, keyBlock);
+	}
+	else if (keyLen > 0)
+	{
+		memcpy(keyBlock, key, keyLen);
+	}
+
+	for (int i = 0; i < 64; ++i)
+	{
+		innerPad[i] = keyBlock[i] ^ 0x36;
+		outerPad[i] = keyBlock[i] ^ 0x5c;
+	}
+
+	sha256_context ctx;
+	unsigned char innerHash[32];
+	sha256_starts(&ctx);
+	sha256_update(&ctx, innerPad, 64);
+	sha256_update(&ctx, (uint8*)data, dataLen);
+	sha256_finish(&ctx, innerHash);
+
+	sha256_starts(&ctx);
+	sha256_update(&ctx, outerPad, 64);
+	sha256_update(&ctx, innerHash, 32);
+	sha256_finish(&ctx, out);
+}
+
+static void AceTRHex(const unsigned char* data, int len, char* out, int outSize)
+{
+	static const char* HEX = "0123456789abcdef";
+	if (outSize < (len * 2 + 1)) return;
+	for (int i = 0; i < len; ++i)
+	{
+		out[i * 2] = HEX[(data[i] >> 4) & 0x0F];
+		out[i * 2 + 1] = HEX[data[i] & 0x0F];
+	}
+	out[len * 2] = 0;
+}
+
+static BOOL AceTRLoadLauncherSecret(char* outSecret, int outSize)
+{
+	MEMSET_ZERO(outSecret, outSize);
+	DWORD envLen = GetEnvironmentVariableA("ACETR_LAUNCHER_API_SECRET", outSecret, outSize);
+	if (envLen > 0 && envLen < (DWORD)outSize)
+		return TRUE;
+
+	std::ifstream secretFile("launcher_api_secret.txt");
+	if (!secretFile.is_open())
+		return FALSE;
+
+	std::string line;
+	std::getline(secretFile, line);
+	secretFile.close();
+	if (line.empty() || (int)line.size() >= outSize)
+		return FALSE;
+
+	STRNCPY_MEMSET(outSecret, line.c_str(), outSize);
+	return TRUE;
+}
 
 
 //////////////////////////////////////////////////////////////////////
@@ -24,7 +104,7 @@ CPreIOCPSocket::CPreIOCPSocket()
 	m_PeerSocketType	= ST_INVALID_TYPE;
 	MEMSET_ZERO(m_szConnectedServerGroupName, SIZE_MAX_SERVER_NAME);
 
-	m_eOtherPublisherConncect = CONNECT_PUBLISHER_DEFAULT;				// 2010-11 by dhjin, ¾Æ¶ó¸®¿À Ã¤³Î¸µ ·Î±×ÀÎ.
+	m_eOtherPublisherConncect = CONNECT_PUBLISHER_DEFAULT;				// 2010-11 by dhjin, ì•„ë¼ë¦¬ì˜¤ ì±„ë„ë§ ë¡œê·¸ì¸.
 	m_bHasSubmitMac = false;
 }
 
@@ -41,7 +121,7 @@ BOOL CPreIOCPSocket::OnRecvdPacketPreServer(const char* pPacket, int nLength, BY
 	int				tmpSeq;
 	MessageType_t	nOldRecvType	= 0;			// 2007-04-02 by cmkwon
 
-	// TCP Ã³¸® ·çÆ¾
+	// TCP ì²˜ë¦¬ ë£¨í‹´
 	if(m_bPeerSequenceNumberInitFlag == FALSE)
 	{
 		tmpSeq = (nSeq + SEQNO_VAR_A) * SEQNO_VAR_B;
@@ -56,8 +136,8 @@ BOOL CPreIOCPSocket::OnRecvdPacketPreServer(const char* pPacket, int nLength, BY
 	{
 		if(m_byPeerSequenceNumber != nSeq)
 		{
-			// Protocl Error Ã³¸®
-			// - ¹ŞÀº ÆĞÅ¶ÀÇ Sequence Number°¡ À¯È¿ÇÏÁö ¾ÊÀ½
+			// Protocl Error ì²˜ë¦¬
+			// - ë°›ì€ íŒ¨í‚·ì˜ Sequence Numberê°€ ìœ íš¨í•˜ì§€ ì•ŠìŒ
 			// Error Code : ERR_PROTOCOL_INVALID_SEQUENCE_NUMBER
 			SendErrorMessage(T_PRE_IOCP, ERR_PROTOCOL_INVALID_SEQUENCE_NUMBER);
 			Close(0x11000, TRUE);
@@ -69,7 +149,7 @@ BOOL CPreIOCPSocket::OnRecvdPacketPreServer(const char* pPacket, int nLength, BY
 			tmpSeq = tmpSeq % SEQNO_VAR_C;
 		}
 		m_byPeerSequenceNumber = ++tmpSeq;
-	} // end TCP Ã³¸® ·çÆ¾
+	} // end TCP ì²˜ë¦¬ ë£¨í‹´
 
 
 	while(this->IsUsing() && nBytesUsed < nLength)
@@ -88,14 +168,14 @@ BOOL CPreIOCPSocket::OnRecvdPacketPreServer(const char* pPacket, int nLength, BY
 		PrintExchangeMsg(RECV_TYPE, nRecvType, m_szPeerIP, m_PeerSocketType, GGetexchangeMsgPrintLevel());
 #endif
 
-		// ¾÷µ¥ÀÌÆ®ÁßÀÏ ¶§´Â Àá½Ã ¼­ºñ½º¸¦ Áß´ÜÇÑ´Ù.
+		// ì—…ë°ì´íŠ¸ì¤‘ì¼ ë•ŒëŠ” ì ì‹œ ì„œë¹„ìŠ¤ë¥¼ ì¤‘ë‹¨í•œë‹¤.
 		if(ms_pPreIOCP->m_bPauseService &&
 			(HIBYTE(nRecvType) == T0_PC_CONNECT || HIBYTE(nRecvType) == T0_PC_DEFAULT_UPDATE)
 		)
 		{
-			// 2008-06-05 by cmkwon, AdminTool, Monitor Á¢±Ù °¡´É IP¸¦ server config file ¿¡ ¼³Á¤ÇÏ±â - ¾Æ·¡¿Í °°ÀÌ ¼öÁ¤ ÇÔ
+			// 2008-06-05 by cmkwon, AdminTool, Monitor ì ‘ê·¼ ê°€ëŠ¥ IPë¥¼ server config file ì— ì„¤ì •í•˜ê¸° - ì•„ë˜ì™€ ê°™ì´ ìˆ˜ì • í•¨
 			//if(FALSE == IS_SCADMINTOOL_CONNECTABLE_IP(this->GetPeerIP()))
-			if(FALSE == g_pPreGlobal->CheckAllowedToolIP(this->GetPeerIP()))	// 2008-06-05 by cmkwon, AdminTool, Monitor Á¢±Ù °¡´É IP¸¦ server config file ¿¡ ¼³Á¤ÇÏ±â - 
+			if(FALSE == g_pPreGlobal->CheckAllowedToolIP(this->GetPeerIP()))	// 2008-06-05 by cmkwon, AdminTool, Monitor ì ‘ê·¼ ê°€ëŠ¥ IPë¥¼ server config file ì— ì„¤ì •í•˜ê¸° - 
 			{
 				SendErrorMessage(T_ERROR, ERR_COMMON_SERVICE_TEMPORARILY_PAUSED, 0, 0, this->GetPeerIP());
 				return TRUE;
@@ -120,16 +200,16 @@ BOOL CPreIOCPSocket::OnRecvdPacketPreServer(const char* pPacket, int nLength, BY
 		// Server <-- AdminTool
 		case T_PA_ADMIN_CONNECT:
 			{
-				MSG_PA_ADMIN_CONNECT* msgAdminConnect = (MSG_PA_ADMIN_CONNECT*)(pPacket + nBytesUsed);		// 2011-07-21 by hskim, ÀÎÁõ ¼­¹ö ±¸Çö - ±âÁ¸ ¼­¹ö¿Í È£È¯ ¾ÈµÇµµ·Ï ±¸Á¶Ã¼ Å©±â ¹Ù²Ş (Ãß°¡ ±âÁ¸ ¹ö±× ¼öÁ¤)
-				nBytesUsed += sizeof(MSG_PA_ADMIN_CONNECT);		// 2011-07-21 by hskim, ÀÎÁõ ¼­¹ö ±¸Çö - ±âÁ¸ ¼­¹ö¿Í È£È¯ ¾ÈµÇµµ·Ï ±¸Á¶Ã¼ Å©±â ¹Ù²Ş (Ãß°¡ ±âÁ¸ ¹ö±× ¼öÁ¤)
+				MSG_PA_ADMIN_CONNECT* msgAdminConnect = (MSG_PA_ADMIN_CONNECT*)(pPacket + nBytesUsed);		// 2011-07-21 by hskim, ì¸ì¦ ì„œë²„ êµ¬í˜„ - ê¸°ì¡´ ì„œë²„ì™€ í˜¸í™˜ ì•ˆë˜ë„ë¡ êµ¬ì¡°ì²´ í¬ê¸° ë°”ê¿ˆ (ì¶”ê°€ ê¸°ì¡´ ë²„ê·¸ ìˆ˜ì •)
+				nBytesUsed += sizeof(MSG_PA_ADMIN_CONNECT);		// 2011-07-21 by hskim, ì¸ì¦ ì„œë²„ êµ¬í˜„ - ê¸°ì¡´ ì„œë²„ì™€ í˜¸í™˜ ì•ˆë˜ë„ë¡ êµ¬ì¡°ì²´ í¬ê¸° ë°”ê¿ˆ (ì¶”ê°€ ê¸°ì¡´ ë²„ê·¸ ìˆ˜ì •)
 				
-				// ÀÎÁõÇÏ±â
+				// ì¸ì¦í•˜ê¸°
 				INIT_MSG(MSG_PA_ADMIN_CONNECT_OK, T_PA_ADMIN_CONNECT_OK, msgAdminConnectOK, SendBuf);
-				// 2008-06-05 by cmkwon, AdminTool, Monitor Á¢±Ù °¡´É IP¸¦ server config file ¿¡ ¼³Á¤ÇÏ±â - ¾Æ·¡¿Í °°ÀÌ ¼öÁ¤ ÇÔ
+				// 2008-06-05 by cmkwon, AdminTool, Monitor ì ‘ê·¼ ê°€ëŠ¥ IPë¥¼ server config file ì— ì„¤ì •í•˜ê¸° - ì•„ë˜ì™€ ê°™ì´ ìˆ˜ì • í•¨
 				//if(IS_SCADMINTOOL_CONNECTABLE_IP(GetPeerIP()))
-				if(g_pPreGlobal->CheckAllowedToolIP(this->GetPeerIP()))		// 2008-06-05 by cmkwon, AdminTool, Monitor Á¢±Ù °¡´É IP¸¦ server config file ¿¡ ¼³Á¤ÇÏ±â - 
+				if(g_pPreGlobal->CheckAllowedToolIP(this->GetPeerIP()))		// 2008-06-05 by cmkwon, AdminTool, Monitor ì ‘ê·¼ ê°€ëŠ¥ IPë¥¼ server config file ì— ì„¤ì •í•˜ê¸° - 
 				{
-					STRNCPY_MEMSET(m_szAdminAccountName, msgAdminConnect->UID, SIZE_MAX_ACCOUNT_NAME);		// 2007-06-20 by cmkwon, °èÁ¤ ºí·°Á¤º¸ ½Ã½ºÅÛ ·Î±×¿¡ Ãß°¡
+					STRNCPY_MEMSET(m_szAdminAccountName, msgAdminConnect->UID, SIZE_MAX_ACCOUNT_NAME);		// 2007-06-20 by cmkwon, ê³„ì • ë¸”ëŸ­ì •ë³´ ì‹œìŠ¤í…œ ë¡œê·¸ì— ì¶”ê°€
 					msgAdminConnectOK->AccountType0 = g_pGlobalGameServer->AuthAdminToolUser(msgAdminConnect->UID, msgAdminConnect->PWD);
 				}
 				ifstream fileInput;
@@ -155,7 +235,7 @@ BOOL CPreIOCPSocket::OnRecvdPacketPreServer(const char* pPacket, int nLength, BY
 					g_pPreGlobal->WriteSystemLogEX(TRUE, "[INET_AT_VERSIONS] Not allowed Admin Tool version! %s, IP(%s) ver(%s)!\r\n", msgAdminConnect->UID, GetPeerIP(), szTmpVersion);
 				}
 				///////////////////////////////////////////////////////////////////////////////
-				// 2007-11-01 by cmkwon, ½Ã½ºÅÛ ·Î±× Ãß°¡
+				// 2007-11-01 by cmkwon, ì‹œìŠ¤í…œ ë¡œê·¸ ì¶”ê°€
 				g_pGlobal->WriteSystemLogEX(TRUE, "[Notify] SCAdminTool connected !!, AccountName(%s) IP(%s) AccountType(%d)\r\n"
 													, msgAdminConnect->UID, GetPeerIP(), msgAdminConnectOK->AccountType0);
 
@@ -167,7 +247,7 @@ BOOL CPreIOCPSocket::OnRecvdPacketPreServer(const char* pPacket, int nLength, BY
 //					Close();
 //				}
 
-				// ÀÎÁõ ¼º°ø
+				// ì¸ì¦ ì„±ê³µ
 				m_PeerSocketType = ST_ADMIN_TOOL;
 
 				ms_pPreIOCP->InsertMonitorIOCPSocketPtr(this);
@@ -195,7 +275,7 @@ BOOL CPreIOCPSocket::OnRecvdPacketPreServer(const char* pPacket, int nLength, BY
 				SendAddData(SendBuf, MSG_SIZE(MSG_PA_ADMIN_GET_ACCOUNT_INFO_OK));
 			}
 			break;
-// 2005-06-02 by cmkwon, »ç¿ëÇÏÁö ¾Ê´Â Protocol Type
+// 2005-06-02 by cmkwon, ì‚¬ìš©í•˜ì§€ ì•ŠëŠ” Protocol Type
 //		case T_PA_ADMIN_DISCONNECT_USER:
 //			{
 //				MSG_PA_ADMIN_DISCONNECT_USER* msgDisconnect = (MSG_PA_ADMIN_DISCONNECT_USER*)(pPacket + nBytesUsed);
@@ -224,17 +304,17 @@ BOOL CPreIOCPSocket::OnRecvdPacketPreServer(const char* pPacket, int nLength, BY
 				MSG_PA_ADMIN_BLOCK_ACCOUNT* msgBlockAcc = (MSG_PA_ADMIN_BLOCK_ACCOUNT*)(pPacket + nBytesUsed);
 				nBytesUsed += sizeof(MSG_PA_ADMIN_BLOCK_ACCOUNT);
 
-				// 2011-11-18 by shcho, ¼­¹ö´Ù¿î ÇÁ¸®Æä¾î¼­¹ö´Ù¿î Á¦°Å Ã³¸® - ºí·° ¾ğºí·°µµ Åø IP¸¦ Ã¼Å©ÇÏµµ·Ï ÇÑ´Ù.
+				// 2011-11-18 by shcho, ì„œë²„ë‹¤ìš´ í”„ë¦¬í˜ì–´ì„œë²„ë‹¤ìš´ ì œê±° ì²˜ë¦¬ - ë¸”ëŸ­ ì–¸ë¸”ëŸ­ë„ íˆ´ IPë¥¼ ì²´í¬í•˜ë„ë¡ í•œë‹¤.
 				if(FALSE ==g_pPreGlobal->CheckAllowedToolIP(this->GetPeerIP()))
 				{
 					g_pPreGlobal->WriteSystemLogEX(TRUE, "HACKUSER!! Connect Account Block Command Using: HackingIP(%15s) AdminAccountName(%20s), BlockedUserAccName(%20s) \r\n"
 						, this->GetPeerIP(), m_szAdminAccountName, msgBlockAcc->szBlockedAccountName);
 					break;
 				}
-				// end 2011-11-18 by shcho, ¼­¹ö´Ù¿î ÇÁ¸®Æä¾î¼­¹ö´Ù¿î Á¦°Å Ã³¸® - ºí·° ¾ğºí·°µµ Åø IP¸¦ Ã¼Å©ÇÏµµ·Ï ÇÑ´Ù.
+				// end 2011-11-18 by shcho, ì„œë²„ë‹¤ìš´ í”„ë¦¬í˜ì–´ì„œë²„ë‹¤ìš´ ì œê±° ì²˜ë¦¬ - ë¸”ëŸ­ ì–¸ë¸”ëŸ­ë„ íˆ´ IPë¥¼ ì²´í¬í•˜ë„ë¡ í•œë‹¤.
 
 				///////////////////////////////////////////////////////////////////////////////
-				// 2007-06-20 by cmkwon, °èÁ¤ ºí·°Á¤º¸ ½Ã½ºÅÛ ·Î±×¿¡ Ãß°¡
+				// 2007-06-20 by cmkwon, ê³„ì • ë¸”ëŸ­ì •ë³´ ì‹œìŠ¤í…œ ë¡œê·¸ì— ì¶”ê°€
 				g_pPreGlobal->WriteSystemLogEX(TRUE, "[Notify] Account Block: AdminIP(%15s) AdminAccountName(%20s), BlockedUserAccName(%20s) Period(%s ~ %s)\r\n"
 					, this->GetPeerIP(), m_szAdminAccountName, msgBlockAcc->szBlockedAccountName
 					, msgBlockAcc->atimeStartTime.GetDateTimeString(STRNBUF(SIZE_MAX_ATUM_DATE_TIME_STRING))
@@ -248,21 +328,21 @@ BOOL CPreIOCPSocket::OnRecvdPacketPreServer(const char* pPacket, int nLength, BY
 				MSG_PA_ADMIN_UNBLOCK_ACCOUNT* msgUnblockAcc = (MSG_PA_ADMIN_UNBLOCK_ACCOUNT*)(pPacket + nBytesUsed);
 				nBytesUsed += sizeof(MSG_PA_ADMIN_UNBLOCK_ACCOUNT);
 
-				// 2011-11-18 by shcho, ¼­¹ö´Ù¿î ÇÁ¸®Æä¾î¼­¹ö´Ù¿î Á¦°Å Ã³¸® - ºí·° ¾ğºí·°µµ Åø IP¸¦ Ã¼Å©ÇÏµµ·Ï ÇÑ´Ù.
+				// 2011-11-18 by shcho, ì„œë²„ë‹¤ìš´ í”„ë¦¬í˜ì–´ì„œë²„ë‹¤ìš´ ì œê±° ì²˜ë¦¬ - ë¸”ëŸ­ ì–¸ë¸”ëŸ­ë„ íˆ´ IPë¥¼ ì²´í¬í•˜ë„ë¡ í•œë‹¤.
 				if(FALSE==g_pPreGlobal->CheckAllowedToolIP(this->GetPeerIP()))
 				{
 					g_pPreGlobal->WriteSystemLogEX(TRUE, "HACKUSER!! Connect Account UnBlock Command Using: HackingIP(%15s) AdminAccountName(%20s), UnBlockedUserAccName(%20s)\r\n"
 						, this->GetPeerIP(), m_szAdminAccountName, msgUnblockAcc->szBlockedAccountName);
 					break;
 				}
-				// end 2011-11-18 by shcho, ¼­¹ö´Ù¿î ÇÁ¸®Æä¾î¼­¹ö´Ù¿î Á¦°Å Ã³¸® - ºí·° ¾ğºí·°µµ Åø IP¸¦ Ã¼Å©ÇÏµµ·Ï ÇÑ´Ù.
+				// end 2011-11-18 by shcho, ì„œë²„ë‹¤ìš´ í”„ë¦¬í˜ì–´ì„œë²„ë‹¤ìš´ ì œê±° ì²˜ë¦¬ - ë¸”ëŸ­ ì–¸ë¸”ëŸ­ë„ íˆ´ IPë¥¼ ì²´í¬í•˜ë„ë¡ í•œë‹¤.
 
 				///////////////////////////////////////////////////////////////////////////////
-				// 2007-06-20 by cmkwon, °èÁ¤ ºí·°Á¤º¸ ½Ã½ºÅÛ ·Î±×¿¡ Ãß°¡
+				// 2007-06-20 by cmkwon, ê³„ì • ë¸”ëŸ­ì •ë³´ ì‹œìŠ¤í…œ ë¡œê·¸ì— ì¶”ê°€
 				g_pPreGlobal->WriteSystemLogEX(TRUE, "[Notify] Account Block Cancellation: AdminIP(%15s) AdminAccountName(%20s), UserAccName(%20s)\r\n"
 					, this->GetPeerIP(), m_szAdminAccountName, msgUnblockAcc->szBlockedAccountName);
 
-				msgUnblockAcc->atimeEndTime.SetCurrentDateTime();	// 2008-01-30 by cmkwon, °èÁ¤ ºí·° ·Î±× ³²±â±â ±¸Çö - 
+				msgUnblockAcc->atimeEndTime.SetCurrentDateTime();	// 2008-01-30 by cmkwon, ê³„ì • ë¸”ëŸ­ ë¡œê·¸ ë‚¨ê¸°ê¸° êµ¬í˜„ - 
 				ms_pPreIOCP->UnblockAccount(msgUnblockAcc, this);
 			}
 			break;
@@ -273,7 +353,7 @@ BOOL CPreIOCPSocket::OnRecvdPacketPreServer(const char* pPacket, int nLength, BY
 			}
 			break;
 			////////////////////////////////////////////////////////////////////////////
-			// 2012-11-13 by jhseol, ÀüÀï ½Ã½ºÅÛ ¸®´º¾ó - °ÅÁ¡Àü
+			// 2012-11-13 by jhseol, ì „ìŸ ì‹œìŠ¤í…œ ë¦¬ë‰´ì–¼ - ê±°ì ì „
 		case T_PA_ADMIN_STRATRGYPOINT_INFO_CHANGE:
 		{
 			if (FALSE == g_pPreGlobal->CheckAllowedToolIP(this->GetPeerIP()))
@@ -289,7 +369,7 @@ BOOL CPreIOCPSocket::OnRecvdPacketPreServer(const char* pPacket, int nLength, BY
 			ms_pPreIOCP->SendMessageToAllFieldServer(SendBuf, MSG_SIZE(MSG_FP_ADMIN_STRATRGYPOINT_INFO_CHANGE));
 			g_pPreGlobal->WriteSystemLogEX(TRUE, "  [Notify] S_WAR_SYSTEM_RENEWAL_STRATEGYPOINT_JHSEOL #Recvd & FieldServer Send Packet - DBName(%s)\r\n", msgStratrgyPointInfoChange->DBName);
 		}
-		// end 2012-11-13 by jhseol, ÀüÀï ½Ã½ºÅÛ ¸®´º¾ó - °ÅÁ¡Àü
+		// end 2012-11-13 by jhseol, ì „ìŸ ì‹œìŠ¤í…œ ë¦¬ë‰´ì–¼ - ê±°ì ì „
 		break;
 		case T_PA_ADMIN_GET_ACCOUNT_LIST:
 			{
@@ -330,7 +410,7 @@ BOOL CPreIOCPSocket::OnRecvdPacketPreServer(const char* pPacket, int nLength, BY
 		case T_PA_ADMIN_RELOAD_HAPPYEV:		// 2006-08-28 by cmkwon
 			{
 				///////////////////////////////////////////////////////////////////////////////
-				// 2007-11-02 by cmkwon, ½Ã½ºÅÛ ·Î±× Ãß°¡
+				// 2007-11-02 by cmkwon, ì‹œìŠ¤í…œ ë¡œê·¸ ì¶”ê°€
 				g_pGlobal->WriteSystemLogEX(TRUE, "[Notify] Protocol Type(%s:0x%X) !!, AccountName(%s) IP(%s)\r\n"
 												, GetProtocolTypeString(nRecvType), nRecvType, m_szAdminAccountName, GetPeerIP());
 
@@ -341,7 +421,7 @@ BOOL CPreIOCPSocket::OnRecvdPacketPreServer(const char* pPacket, int nLength, BY
 		case T_PA_ADMIN_RELOAD_ITEMEV:
 			{// 2006-08-31 by dhjin
 				///////////////////////////////////////////////////////////////////////////////
-				// 2007-11-02 by cmkwon, ½Ã½ºÅÛ ·Î±× Ãß°¡
+				// 2007-11-02 by cmkwon, ì‹œìŠ¤í…œ ë¡œê·¸ ì¶”ê°€
 				g_pGlobal->WriteSystemLogEX(TRUE, "[Notify] Protocol Type(%s:0x%X) !!, AccountName(%s) IP(%s)\r\n"
 												, GetProtocolTypeString(nRecvType), nRecvType, m_szAdminAccountName, GetPeerIP());
 
@@ -361,19 +441,19 @@ BOOL CPreIOCPSocket::OnRecvdPacketPreServer(const char* pPacket, int nLength, BY
 				ms_pPreIOCP->SendMessageToAllFieldServer((BYTE*)&nSTy, SIZE_FIELD_TYPE_HEADER);
 			}
 			break;	
-		case T_PA_ADMIN_PETITION_SET_PERIOD:		// 2007-11-19 by cmkwon, ÁøÁ¤½Ã½ºÅÛ ¾÷µ¥ÀÌÆ® - 
+		case T_PA_ADMIN_PETITION_SET_PERIOD:		// 2007-11-19 by cmkwon, ì§„ì •ì‹œìŠ¤í…œ ì—…ë°ì´íŠ¸ - 
 			procRes = Process_PA_ADMIN_PETITION_SET_PERIOD(pPacket, nLength, nBytesUsed);
 			break;
-		case T_PA_ADMIN_SET_DBSERVER_GROUP:			// 2008-04-29 by cmkwon, ¼­¹ö±º Á¤º¸ DB¿¡ Ãß°¡(½Å±Ô °èÁ¤ Ä³¸¯ÅÍ »ı¼º Á¦ÇÑ ½Ã½ºÅÛÃß°¡) - 
+		case T_PA_ADMIN_SET_DBSERVER_GROUP:			// 2008-04-29 by cmkwon, ì„œë²„êµ° ì •ë³´ DBì— ì¶”ê°€(ì‹ ê·œ ê³„ì • ìºë¦­í„° ìƒì„± ì œí•œ ì‹œìŠ¤í…œì¶”ê°€) - 
 			procRes = Process_PA_ADMIN_SET_DBSERVER_GROUP(pPacket, nLength, nBytesUsed);
 			break;
-		case T_PA_ADMIN_RELOAD_ADMIN_NOTICE_SYSTEM:		// 2009-01-14 by cmkwon, ¿î¿µÀÚ ÀÚµ¿ °øÁö ½Ã½ºÅÛ ±¸Çö - 
+		case T_PA_ADMIN_RELOAD_ADMIN_NOTICE_SYSTEM:		// 2009-01-14 by cmkwon, ìš´ì˜ì ìë™ ê³µì§€ ì‹œìŠ¤í…œ êµ¬í˜„ - 
 			procRes = Process_PA_ADMIN_RELOAD_ADMIN_NOTICE_SYSTEM(pPacket, nLength, nBytesUsed);
 			break;
-		case T_PA_ADMIN_RELOAD_WORLDRANKING:		// 2009-02-12 by cmkwon, EP3-3 ¿ùµå·©Å·½Ã½ºÅÛ ±¸Çö - 
+		case T_PA_ADMIN_RELOAD_WORLDRANKING:		// 2009-02-12 by cmkwon, EP3-3 ì›”ë“œë­í‚¹ì‹œìŠ¤í…œ êµ¬í˜„ - 
 			procRes = Process_PA_ADMIN_RELOAD_WORLDRANKING(pPacket, nLength, nBytesUsed);
 			break;
-		case T_PA_ADMIN_RELOAD_INFLUENCERATE:		// 2009-09-16 by cmkwon, ¼¼·Â ÃÊ±âÈ­½Ã ¾îºäÂ¡ ¹æÁö ±¸Çö - 
+		case T_PA_ADMIN_RELOAD_INFLUENCERATE:		// 2009-09-16 by cmkwon, ì„¸ë ¥ ì´ˆê¸°í™”ì‹œ ì–´ë·°ì§• ë°©ì§€ êµ¬í˜„ - 
 			procRes = Process_PA_ADMIN_RELOAD_INFLUENCERATE(pPacket, nLength, nBytesUsed);
 			break;
 
@@ -406,10 +486,10 @@ BOOL CPreIOCPSocket::OnRecvdPacketPreServer(const char* pPacket, int nLength, BY
 		case T_PC_CONNECT_GET_GAME_SERVER_GROUP_LIST:		// 2007-05-02 by cmkwon
 			procRes = Process_PC_CONNECT_GET_GAME_SERVER_GROUP_LIST(pPacket, nLength, nBytesUsed);
 			break;
-		case T_PC_CONNECT_NETWORK_CHECK:		// 2007-06-18 by cmkwon, ³×Æ®¿öÅ© »óÅÂ Ã¼Å©
+		case T_PC_CONNECT_NETWORK_CHECK:		// 2007-06-18 by cmkwon, ë„¤íŠ¸ì›Œí¬ ìƒíƒœ ì²´í¬
 			procRes = Process_PC_CONNECT_NETWORK_CHECK(pPacket, nLength, nBytesUsed);
 			break;
-		case T_PC_CONNECT_GET_NEW_GAME_SERVER_GROUP_LIST:	// 2007-09-05 by cmkwon, EXE_1¿¡ ·Î±×ÀÎ ¼­¹ö ¼±ÅÃ ÀÎÅÍÆäÀÌ½º ¼öÁ¤ - Ãß°¡µÈ ÇÁ·ÎÅäÄİ Å¸ÀÔ Ã³¸®
+		case T_PC_CONNECT_GET_NEW_GAME_SERVER_GROUP_LIST:	// 2007-09-05 by cmkwon, EXE_1ì— ë¡œê·¸ì¸ ì„œë²„ ì„ íƒ ì¸í„°í˜ì´ìŠ¤ ìˆ˜ì • - ì¶”ê°€ëœ í”„ë¡œí† ì½œ íƒ€ì… ì²˜ë¦¬
 			procRes = Process_PC_CONNECT_GET_NEW_GAME_SERVER_GROUP_LIST(pPacket, nLength, nBytesUsed);
 			break;
 
@@ -427,10 +507,10 @@ BOOL CPreIOCPSocket::OnRecvdPacketPreServer(const char* pPacket, int nLength, BY
 		case T_FP_CONNECT_NOTIFY_FIELDSERVER_CHANGE:
 			procRes = Process_FP_CONNECT_NOTIFY_FIELDSERVER_CHANGE(pPacket, nLength, nBytesUsed);
 			break;
-		case T_FP_CONNECT_CHECK_CONNECTABLE_ACCOUNT_OK:	// 2008-04-29 by cmkwon, ¼­¹ö±º Á¤º¸ DB¿¡ Ãß°¡(½Å±Ô °èÁ¤ Ä³¸¯ÅÍ »ı¼º Á¦ÇÑ ½Ã½ºÅÛÃß°¡) - 
+		case T_FP_CONNECT_CHECK_CONNECTABLE_ACCOUNT_OK:	// 2008-04-29 by cmkwon, ì„œë²„êµ° ì •ë³´ DBì— ì¶”ê°€(ì‹ ê·œ ê³„ì • ìºë¦­í„° ìƒì„± ì œí•œ ì‹œìŠ¤í…œì¶”ê°€) - 
 			procRes = Process_FP_CONNECT_CHECK_CONNECTABLE_ACCOUNT_OK(pPacket, nLength, nBytesUsed);
 			break;
-// 2005-07-27 by cmkwon, ´Ù¸¥ ÇÊµå¼­¹ö·ÎÀÇ ¿öÇÁ´Â ¾øÀ¸¹Ç·Î »èÁ¦ÇÔ
+// 2005-07-27 by cmkwon, ë‹¤ë¥¸ í•„ë“œì„œë²„ë¡œì˜ ì›Œí”„ëŠ” ì—†ìœ¼ë¯€ë¡œ ì‚­ì œí•¨
 //		case T_FP_EVENT_NOTIFY_WARP:
 //			procRes = Process_FP_EVENT_NOTIFY_WARP(pPacket, nLength, nBytesUsed);
 //			break;
@@ -447,18 +527,18 @@ BOOL CPreIOCPSocket::OnRecvdPacketPreServer(const char* pPacket, int nLength, BY
 		case T_FP_CASH_CHANGE_CHARACTERNAME:
 			procRes = Process_FP_CASH_CHANGE_CHARACTERNAME(pPacket, nLength, nBytesUsed);
 			break;
-		case T_FP_ADMIN_BLOCKACCOUNT:		// 2008-01-31 by cmkwon, °èÁ¤ ºí·°/ÇØÁ¦ ¸í·É¾î·Î °¡´ÉÇÑ ½Ã½ºÅÛ ±¸Çö - 
+		case T_FP_ADMIN_BLOCKACCOUNT:		// 2008-01-31 by cmkwon, ê³„ì • ë¸”ëŸ­/í•´ì œ ëª…ë ¹ì–´ë¡œ ê°€ëŠ¥í•œ ì‹œìŠ¤í…œ êµ¬í˜„ - 
 			procRes = Process_FP_ADMIN_BLOCKACCOUNT(pPacket, nLength, nBytesUsed);
 			break;
-		case T_FP_ADMIN_UNBLOCKACCOUNT:		// 2008-01-31 by cmkwon, °èÁ¤ ºí·°/ÇØÁ¦ ¸í·É¾î·Î °¡´ÉÇÑ ½Ã½ºÅÛ ±¸Çö - 
+		case T_FP_ADMIN_UNBLOCKACCOUNT:		// 2008-01-31 by cmkwon, ê³„ì • ë¸”ëŸ­/í•´ì œ ëª…ë ¹ì–´ë¡œ ê°€ëŠ¥í•œ ì‹œìŠ¤í…œ êµ¬í˜„ - 
 			procRes = Process_FP_ADMIN_UNBLOCKACCOUNT(pPacket, nLength, nBytesUsed);
 			break;
 
-		// start 2011-06-22 by hskim, »ç¼³ ¼­¹ö ¹æÁö
+		// start 2011-06-22 by hskim, ì‚¬ì„¤ ì„œë²„ ë°©ì§€
 		case T_FP_AUTHENTICATION_SHUTDOWN:
 			procRes = Process_FP_AUTHENTICATION_SHUTDOWN(pPacket, nLength, nBytesUsed);
 			break;
-		// end 2011-06-22 by hskim, »ç¼³ ¼­¹ö ¹æÁö
+		// end 2011-06-22 by hskim, ì‚¬ì„¤ ì„œë²„ ë°©ì§€
 
 		///////////////////////////////////////////////////////////////////////
 		// IM Server <--> Pre Server
@@ -469,26 +549,26 @@ BOOL CPreIOCPSocket::OnRecvdPacketPreServer(const char* pPacket, int nLength, BY
 			procRes = Process_IP_GET_SERVER_GROUP_INFO_ACK(pPacket, nLength, nBytesUsed);
 			break;
 
-		// start 2011-06-22 by hskim, »ç¼³ ¼­¹ö ¹æÁö
+		// start 2011-06-22 by hskim, ì‚¬ì„¤ ì„œë²„ ë°©ì§€
 		case T_IP_AUTHENTICATION_SHUTDOWN:
 			procRes = Process_IP_AUTHENTICATION_SHUTDOWN(pPacket, nLength, nBytesUsed);
 			break;
-		// end 2011-06-22 by hskim, »ç¼³ ¼­¹ö ¹æÁö
+		// end 2011-06-22 by hskim, ì‚¬ì„¤ ì„œë²„ ë°©ì§€
 
 		///////////////////////////////////////////////////////////////////////
 		// PreServer <-- Monitor
 		case T_PM_CONNECT:
 			{
-				// 2008-06-05 by cmkwon, AdminTool, Monitor Á¢±Ù °¡´É IP¸¦ server config file ¿¡ ¼³Á¤ÇÏ±â - ¾Æ·¡¿Í °°ÀÌ ¼öÁ¤ ÇÔ
+				// 2008-06-05 by cmkwon, AdminTool, Monitor ì ‘ê·¼ ê°€ëŠ¥ IPë¥¼ server config file ì— ì„¤ì •í•˜ê¸° - ì•„ë˜ì™€ ê°™ì´ ìˆ˜ì • í•¨
 				//if(FALSE == IS_SCADMINTOOL_CONNECTABLE_IP(GetPeerIP()))
-				if(FALSE == g_pPreGlobal->CheckAllowedToolIP(this->GetPeerIP()))	// 2008-06-05 by cmkwon, AdminTool, Monitor Á¢±Ù °¡´É IP¸¦ server config file ¿¡ ¼³Á¤ÇÏ±â - 
+				if(FALSE == g_pPreGlobal->CheckAllowedToolIP(this->GetPeerIP()))	// 2008-06-05 by cmkwon, AdminTool, Monitor ì ‘ê·¼ ê°€ëŠ¥ IPë¥¼ server config file ì— ì„¤ì •í•˜ê¸° - 
 				{
-					// 2009-01-21 by cmkwon, ½Ã½ºÅÛ ·Î±× Ãß°¡
+					// 2009-01-21 by cmkwon, ì‹œìŠ¤í…œ ë¡œê·¸ ì¶”ê°€
 					g_pGlobal->WriteSystemLogEX(TRUE, "[Notify] SCMonitor connect fail !!, IP(%s)\r\n", GetPeerIP());
 					return FALSE;
 				}
 
-// 2007-11-01 by cmkwon, ¾Æ·¡¿Í °°ÀÌ ¼öÁ¤ÇÔ
+// 2007-11-01 by cmkwon, ì•„ë˜ì™€ ê°™ì´ ìˆ˜ì •í•¨
 //				char szSystemLog[256];
 //				sprintf(szSystemLog, "Monitor Client Connected, IP[%s]\r\n", GetPeerIP());
 //				DBGOUT(szSystemLog);
@@ -506,7 +586,7 @@ BOOL CPreIOCPSocket::OnRecvdPacketPreServer(const char* pPacket, int nLength, BY
 				pSendPMConnectOK->StartedTime = ms_pPreIOCP->m_dwTimeStarted;
 				STRNCPY_MEMSET(pSendPMConnectOK->ServerName, "Pre Server", SIZE_MAX_SERVER_NAME);
 				pSendPMConnectOK->nMGameEventType = g_pPreGlobal->m_enMGameEventType;
-// 2007-01-08 by cmkwon, T_PM_AUTO_UPDATE_FTP_SERVER_SETTING·Î ³ª´²¼­ Àü¼ÛÇÑ´Ù
+// 2007-01-08 by cmkwon, T_PM_AUTO_UPDATE_FTP_SERVER_SETTINGë¡œ ë‚˜ëˆ ì„œ ì „ì†¡í•œë‹¤
 //				STRNCPY_MEMSET(pSendPMConnectOK->FtpIP, g_pPreGlobal->GetUploadFTPIP(), SIZE_MAX_FTP_URL);
 //				pSendPMConnectOK->FtpPort = g_pPreGlobal->GetUploadFTPPort();
 //				STRNCPY_MEMSET(pSendPMConnectOK->FtpAccountName, g_pPreGlobal->GetUploadFTPAccount(), SIZE_MAX_ACCOUNT_NAME);
@@ -607,7 +687,7 @@ BOOL CPreIOCPSocket::OnRecvdPacketPreServer(const char* pPacket, int nLength, BY
 				//end of 10-08-2015 by inetpub
 				*(MessageType_t*)SendBuf = T_PM_SHUTDOWN_OK;
 				SendAddData(SendBuf, SIZE_FIELD_TYPE_HEADER);
-				// 2011-11-18 by shcho, ¼­¹ö´Ù¿î ÇÁ¸®Æä¾î¼­¹ö´Ù¿î Á¦°Å Ã³¸® -  ÇÁ¸®¼­¹ö ¸í·É
+				// 2011-11-18 by shcho, ì„œë²„ë‹¤ìš´ í”„ë¦¬í˜ì–´ì„œë²„ë‹¤ìš´ ì œê±° ì²˜ë¦¬ -  í”„ë¦¬ì„œë²„ ëª…ë ¹
 				// PostMessage(g_pGlobalGameServer->GetMainWndHandle(), WM_CLOSE, 0, 0);
 			}
 			break;
@@ -757,10 +837,10 @@ BOOL CPreIOCPSocket::OnRecvdPacketPreServer(const char* pPacket, int nLength, BY
 					return FALSE;
 				}
 				//end of 10-08-2015 by inetpub
-				// 2011-11-08 by shcho, °ÔÀÓ4D ÆÛÁî ÇØÅ· ¹®Á¦ ÀÓ½Ã ÇØ°á
+				// 2011-11-08 by shcho, ê²Œì„4D í¼ì¦ˆ í•´í‚¹ ë¬¸ì œ ì„ì‹œ í•´ê²°
 				g_pGlobal->WriteSystemLogEX(TRUE, "T_PM_PAUSE_SERVICE COMMAND! PeerIP:[%s]\r\n", this->GetPeerIP());				
-// 				ms_pPreIOCP->m_bPauseService = TRUE;	//¹®Á¦ ÇØ°áÀ» À§ÇØ ÀÏ´Ü Á¦°Å
-				// end 2011-11-08 by shcho, °ÔÀÓ4D ÆÛÁî ÇØÅ· ¹®Á¦ ÀÓ½Ã ÇØ°á
+// 				ms_pPreIOCP->m_bPauseService = TRUE;	//ë¬¸ì œ í•´ê²°ì„ ìœ„í•´ ì¼ë‹¨ ì œê±°
+				// end 2011-11-08 by shcho, ê²Œì„4D í¼ì¦ˆ í•´í‚¹ ë¬¸ì œ ì„ì‹œ í•´ê²°
 				MessageType_t sendMsgType = T_PM_PAUSE_SERVICE_OK;
 				SendAddData((unsigned char*)&sendMsgType, SIZE_FIELD_TYPE_HEADER);
 			}
@@ -821,13 +901,13 @@ BOOL CPreIOCPSocket::OnRecvdPacketPreServer(const char* pPacket, int nLength, BY
 				MSG_PM_SET_LIMIT_GROUP_USER_COUNTS	*pRecvLimitCounts
 					= (MSG_PM_SET_LIMIT_GROUP_USER_COUNTS*)(pPacket + nBytesUsed);
 				nBytesUsed += sizeof(MSG_PM_SET_LIMIT_GROUP_USER_COUNTS);
-				// 2011-11-18 by shcho, ¼­¹ö´Ù¿î ÇÁ¸®Æä¾î¼­¹ö´Ù¿î Á¦°Å Ã³¸® - ºí·° ¾ğºí·°µµ Åø IP¸¦ Ã¼Å©ÇÏµµ·Ï ÇÑ´Ù.
-				if(FALSE==g_pPreGlobal->CheckAllowedToolIP(this->GetPeerIP()))		// 2011-11-18 by shcho, ¼­¹ö´Ù¿î ÇÁ¸®Æä¾î¼­¹ö´Ù¿î Á¦°Å Ã³¸® - ¸®¹ÌÆ® Ä«¿îÆ®µµ Åø IP¸¦ Ã¼Å©ÇÏµµ·Ï ÇÑ´Ù.
+				// 2011-11-18 by shcho, ì„œë²„ë‹¤ìš´ í”„ë¦¬í˜ì–´ì„œë²„ë‹¤ìš´ ì œê±° ì²˜ë¦¬ - ë¸”ëŸ­ ì–¸ë¸”ëŸ­ë„ íˆ´ IPë¥¼ ì²´í¬í•˜ë„ë¡ í•œë‹¤.
+				if(FALSE==g_pPreGlobal->CheckAllowedToolIP(this->GetPeerIP()))		// 2011-11-18 by shcho, ì„œë²„ë‹¤ìš´ í”„ë¦¬í˜ì–´ì„œë²„ë‹¤ìš´ ì œê±° ì²˜ë¦¬ - ë¦¬ë¯¸íŠ¸ ì¹´ìš´íŠ¸ë„ íˆ´ IPë¥¼ ì²´í¬í•˜ë„ë¡ í•œë‹¤.
 				{
 					g_pPreGlobal->WriteSystemLogEX(TRUE, "HACKUSER!! Connect T_PM_SET_LIMIT_GROUP_USER_COUNTS Command Using: HackingIP(%15s) \r\n", this->GetPeerIP());
 					break;
 				}
-				// end 2011-11-18 by shcho, ¼­¹ö´Ù¿î ÇÁ¸®Æä¾î¼­¹ö´Ù¿î Á¦°Å Ã³¸® - ºí·° ¾ğºí·°µµ Åø IP¸¦ Ã¼Å©ÇÏµµ·Ï ÇÑ´Ù.
+				// end 2011-11-18 by shcho, ì„œë²„ë‹¤ìš´ í”„ë¦¬í˜ì–´ì„œë²„ë‹¤ìš´ ì œê±° ì²˜ë¦¬ - ë¸”ëŸ­ ì–¸ë¸”ëŸ­ë„ íˆ´ IPë¥¼ ì²´í¬í•˜ë„ë¡ í•œë‹¤.
 
 				//////////////////////////////////////////////////////////
 				// Loaded Server Group Info
@@ -906,8 +986,8 @@ BOOL CPreIOCPSocket::OnRecvdPacketPreServer(const char* pPacket, int nLength, BY
 			break;
 
 		///////////////////////////////////////////////////////////////////////////////
-		// 2008-02-22 by cmkwon, ServerPreServer->MasangPreServer ·Î ¼­ºñ½º Á¤º¸ Àü¼Û ½Ã½ºÅÛ Ãß°¡ - 
-		case T_PP_CONNECT:			// 2008-02-22 by cmkwon, ServerPreServer->MasangPreServer ·Î ¼­ºñ½º Á¤º¸ Àü¼Û ½Ã½ºÅÛ Ãß°¡ - 
+		// 2008-02-22 by cmkwon, ServerPreServer->MasangPreServer ë¡œ ì„œë¹„ìŠ¤ ì •ë³´ ì „ì†¡ ì‹œìŠ¤í…œ ì¶”ê°€ - 
+		case T_PP_CONNECT:			// 2008-02-22 by cmkwon, ServerPreServer->MasangPreServer ë¡œ ì„œë¹„ìŠ¤ ì •ë³´ ì „ì†¡ ì‹œìŠ¤í…œ ì¶”ê°€ - 
 			procRes = Process_PP_CONNECT(pPacket, nLength, nBytesUsed);
 			break;
 
@@ -917,8 +997,8 @@ BOOL CPreIOCPSocket::OnRecvdPacketPreServer(const char* pPacket, int nLength, BY
 		// 2006-08-04 by cmkwon
 		default:
 			{
-				// Protocol Error Ã³¸®(Close Ã³¸®ÇÔ)
-				// - Client·Î ºÎÅÍ ¹ŞÀº Message TypeÀÌ À¯È¿ÇÏÁö ¾Ê´Ù
+				// Protocol Error ì²˜ë¦¬(Close ì²˜ë¦¬í•¨)
+				// - Clientë¡œ ë¶€í„° ë°›ì€ Message Typeì´ ìœ íš¨í•˜ì§€ ì•Šë‹¤
 				SendErrorMessage(T_PRE_IOCP, ERR_PROTOCOL_INVALID_PROTOCOL_TYPE, 0, 0, NULL, TRUE);
 
 				char	szSystemLog[1024];
@@ -929,28 +1009,28 @@ BOOL CPreIOCPSocket::OnRecvdPacketPreServer(const char* pPacket, int nLength, BY
 			}
 		}	// end switch
 
-		// MSG °á°ú Ã³¸®
+		// MSG ê²°ê³¼ ì²˜ë¦¬
 		if (procRes == RES_BREAK)
 		{
-			// °æ¹ÌÇÑ ¿¡·¯µé. ¿¬°áÀ» ²÷Áö ¾Ê´Â´Ù.
-			// do nothing, ±×³É ³²¾ÆÀÖ´Â ´ÙÀ½ packetÀ» Ã³¸®ÇÑ´Ù
+			// ê²½ë¯¸í•œ ì—ëŸ¬ë“¤. ì—°ê²°ì„ ëŠì§€ ì•ŠëŠ”ë‹¤.
+			// do nothing, ê·¸ëƒ¥ ë‚¨ì•„ìˆëŠ” ë‹¤ìŒ packetì„ ì²˜ë¦¬í•œë‹¤
 		}
 		else if (procRes == RES_PACKET_ERROR)
 		{
-			// ÆĞÅ¶ÀÌ ¼Õ»óµÈ °æ¿ì. ³²Àº packetÀ» Ã³¸®ÇÏÁö ¾Ê°í ¹Ù·Î ¸®ÅÏÇÑ´Ù. ¼­¹ö°£ ¿¬°á¿¡¸¸ »ç¿ë.
+			// íŒ¨í‚·ì´ ì†ìƒëœ ê²½ìš°. ë‚¨ì€ packetì„ ì²˜ë¦¬í•˜ì§€ ì•Šê³  ë°”ë¡œ ë¦¬í„´í•œë‹¤. ì„œë²„ê°„ ì—°ê²°ì—ë§Œ ì‚¬ìš©.
 			return TRUE;
 		}
 		else if (procRes == RES_RETURN_TRUE)
 		{
-			// Á¤»ó
-			// do nothing, ±×³É ³²¾ÆÀÖ´Â ´ÙÀ½ packetÀ» Ã³¸®ÇÑ´Ù
+			// ì •ìƒ
+			// do nothing, ê·¸ëƒ¥ ë‚¨ì•„ìˆëŠ” ë‹¤ìŒ packetì„ ì²˜ë¦¬í•œë‹¤
 		}
 		else if (procRes == RES_RETURN_FALSE)
 		{
 			return FALSE;
 		}
 
-		nOldRecvType = nRecvType;						// 2007-04-02 by cmkwon, Ãß°¡ÇÔ
+		nOldRecvType = nRecvType;						// 2007-04-02 by cmkwon, ì¶”ê°€í•¨
 	}	// end while
 
 	return TRUE;
@@ -972,9 +1052,9 @@ void CPreIOCPSocket::OnConnect(void)
 
 		SetClientState(CP_CONNECTED, NULL);
 		m_PeerSocketType = ST_INVALID_TYPE;
-		MEMSET_ZERO(m_szAdminAccountName, SIZE_MAX_ACCOUNT_NAME);		// 2007-06-20 by cmkwon, °èÁ¤ ºí·°Á¤º¸ ½Ã½ºÅÛ ·Î±×¿¡ Ãß°¡
+		MEMSET_ZERO(m_szAdminAccountName, SIZE_MAX_ACCOUNT_NAME);		// 2007-06-20 by cmkwon, ê³„ì • ë¸”ëŸ­ì •ë³´ ì‹œìŠ¤í…œ ë¡œê·¸ì— ì¶”ê°€
 
-		m_eOtherPublisherConncect = CONNECT_PUBLISHER_DEFAULT;				// 2010-11 by dhjin, ¾Æ¶ó¸®¿À Ã¤³Î¸µ ·Î±×ÀÎ.
+		m_eOtherPublisherConncect = CONNECT_PUBLISHER_DEFAULT;				// 2010-11 by dhjin, ì•„ë¼ë¦¬ì˜¤ ì±„ë„ë§ ë¡œê·¸ì¸.
 
 		CIOCPSocket::OnConnect();
 	}
@@ -998,7 +1078,7 @@ void CPreIOCPSocket::OnClose(int reason)
 
 	m_bHasSubmitMac = false;
 
-	// 2009-03-19 by cmkwon, ½Ã½ºÅÛ ·Î±× Ãß°¡ - m_PeerSocketType Á¤º¸ Ãß°¡
+	// 2009-03-19 by cmkwon, ì‹œìŠ¤í…œ ë¡œê·¸ ì¶”ê°€ - m_PeerSocketType ì •ë³´ ì¶”ê°€
 	sprintf(szSystemLog, "Socket Closed  SocketIndex[%3d] SocketType[%d] PeerIP[%15s] Port[%4d] MaxWriteBufCounts[%4d] ==> reason %d[%#08X]\r\n",
 		this->GetClientArrayIndex(), m_PeerSocketType, m_szPeerIP, m_nPeerPort, m_nMaxWriteBufCounts, reason, reason);
 	g_pGlobal->WriteSystemLog(szSystemLog);
@@ -1038,14 +1118,14 @@ void CPreIOCPSocket::OnClose(int reason)
 	m_PeerSocketType = ST_INVALID_TYPE;
 	MEMSET_ZERO(m_szConnectedServerGroupName, SIZE_MAX_SERVER_NAME);
 
-	m_eOtherPublisherConncect = CONNECT_PUBLISHER_DEFAULT;				// 2010-11 by dhjin, ¾Æ¶ó¸®¿À Ã¤³Î¸µ ·Î±×ÀÎ.
+	m_eOtherPublisherConncect = CONNECT_PUBLISHER_DEFAULT;				// 2010-11 by dhjin, ì•„ë¼ë¦¬ì˜¤ ì±„ë„ë§ ë¡œê·¸ì¸.
 
 	CIOCPSocket::OnClose(30);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 /// \fn			ProcessResult CPreIOCPSocket::Process_PA_ADMIN_PETITION_SET_PERIOD(const char* pPacket, int nLength, int &nBytesUsed)
-/// \brief		// 2007-11-19 by cmkwon, ÁøÁ¤½Ã½ºÅÛ ¾÷µ¥ÀÌÆ® - 
+/// \brief		// 2007-11-19 by cmkwon, ì§„ì •ì‹œìŠ¤í…œ ì—…ë°ì´íŠ¸ - 
 /// \author		cmkwon
 /// \date		2007-11-20 ~ 2007-11-20
 /// \warning	
@@ -1067,7 +1147,7 @@ ProcessResult CPreIOCPSocket::Process_PA_ADMIN_PETITION_SET_PERIOD(const char* p
 
 ///////////////////////////////////////////////////////////////////////////////
 /// \fn			ProcessResult CPreIOCPSocket::Process_PA_ADMIN_SET_DBSERVER_GROUP(const char* pPacket, int nLength, int &nBytesUsed)
-/// \brief		// 2008-04-29 by cmkwon, ¼­¹ö±º Á¤º¸ DB¿¡ Ãß°¡(½Å±Ô °èÁ¤ Ä³¸¯ÅÍ »ı¼º Á¦ÇÑ ½Ã½ºÅÛÃß°¡) - 
+/// \brief		// 2008-04-29 by cmkwon, ì„œë²„êµ° ì •ë³´ DBì— ì¶”ê°€(ì‹ ê·œ ê³„ì • ìºë¦­í„° ìƒì„± ì œí•œ ì‹œìŠ¤í…œì¶”ê°€) - 
 /// \author		cmkwon
 /// \date		2008-04-30 ~ 2008-04-30
 /// \warning	
@@ -1085,19 +1165,19 @@ ProcessResult CPreIOCPSocket::Process_PA_ADMIN_SET_DBSERVER_GROUP(const char* pP
 		|| NULL == pServG->m_FieldServerInfo.pSocket
 		|| FALSE == pServG->m_FieldServerInfo.pSocket->IsUsing()
 		|| FALSE == pServG->m_FieldServerInfo.IsActive)
-	{// 2008-05-01 by cmkwon, FieldServer À¯È¿¼º Ã¼Å©
+	{// 2008-05-01 by cmkwon, FieldServer ìœ íš¨ì„± ì²´í¬
 
-		// 2009-01-30 by cmkwon, ¼­¹ö±×·ìº° Á¦ÇÑ À¯Àú¼ö ¼³Á¤ °ü·Ã ½Ã½ºÅÛ ·Î±× Ãß°¡ - 
+		// 2009-01-30 by cmkwon, ì„œë²„ê·¸ë£¹ë³„ ì œí•œ ìœ ì €ìˆ˜ ì„¤ì • ê´€ë ¨ ì‹œìŠ¤í…œ ë¡œê·¸ ì¶”ê°€ - 
 		g_pPreGlobal->WriteSystemLogEX(TRUE, "[Notify] CPreIOCPSocket::Process_PA_ADMIN_SET_DBSERVER_GROUP# invalid FieldServer !!, %s, %d %d \r\n", 
 			pRMsg->ServerGroupName, pRMsg->LimitUserCount, pRMsg->LockCreateCharacterForNewAccount);
 		return RES_BREAK;
 	}
 
-	// 2008-04-30 by cmkwon, PreServer ÀÇ µ¥ÀÌÅÍ ¾÷µ¥ÀÌÆ®
+	// 2008-04-30 by cmkwon, PreServer ì˜ ë°ì´í„° ì—…ë°ì´íŠ¸
 	pServG->m_LimitGroupUserCounts				= pRMsg->LimitUserCount;
 	pServG->m_bLockCreateCharacterForNewAccount	= pRMsg->LockCreateCharacterForNewAccount;
 
-	// 2008-04-30 by cmkwon, FieldSever ·Î Àü¼Û
+	// 2008-04-30 by cmkwon, FieldSever ë¡œ ì „ì†¡
 	INIT_MSG_WITH_BUFFER(MSG_FP_CONNECT_UPDATE_DBSERVER_GROUP, T_FP_CONNECT_UPDATE_DBSERVER_GROUP, pSMsg, SendBuf);
 	pSMsg->DBServerGroup.ServerGroupID						= pServG->m_nMGameServerID;
 	STRNCPY_MEMSET(pSMsg->DBServerGroup.ServerGroupName, pServG->m_ServerGroupName, SIZE_MAX_SERVER_NAME);
@@ -1105,7 +1185,7 @@ ProcessResult CPreIOCPSocket::Process_PA_ADMIN_SET_DBSERVER_GROUP(const char* pP
 	pSMsg->DBServerGroup.LockCreateCharacterForNewAccount	= pServG->m_bLockCreateCharacterForNewAccount;
 	pServG->SendMessageToFieldServer(SendBuf, MSG_SIZE(MSG_FP_CONNECT_UPDATE_DBSERVER_GROUP));
 
-	// 2008-05-01 by cmkwon, AdminTool ·Î Àü¼Û
+	// 2008-05-01 by cmkwon, AdminTool ë¡œ ì „ì†¡
 	INIT_MSG(MSG_PA_ADMIN_SET_DBSERVER_GROUP_OK, T_PA_ADMIN_SET_DBSERVER_GROUP_OK, pSMsgToAdmin, SendBuf);
 	*pSMsgToAdmin	= *pRMsg;
 	this->SendAddData(SendBuf, MSG_SIZE(MSG_PA_ADMIN_SET_DBSERVER_GROUP_OK));
@@ -1115,7 +1195,7 @@ ProcessResult CPreIOCPSocket::Process_PA_ADMIN_SET_DBSERVER_GROUP(const char* pP
 
 ///////////////////////////////////////////////////////////////////////////////
 /// \fn			ProcessResult CPreIOCPSocket::Process_PA_ADMIN_RELOAD_ADMIN_NOTICE_SYSTEM(const char* pPacket, int nLength, int &nBytesUsed)
-/// \brief		// 2009-01-14 by cmkwon, ¿î¿µÀÚ ÀÚµ¿ °øÁö ½Ã½ºÅÛ ±¸Çö - CPreIOCPSocket::Process_PA_ADMIN_RELOAD_ADMIN_NOTICE_SYSTEM() 
+/// \brief		// 2009-01-14 by cmkwon, ìš´ì˜ì ìë™ ê³µì§€ ì‹œìŠ¤í…œ êµ¬í˜„ - CPreIOCPSocket::Process_PA_ADMIN_RELOAD_ADMIN_NOTICE_SYSTEM() 
 /// \author		cmkwon
 /// \date		2009-01-19 ~ 2009-01-19
 /// \warning	
@@ -1126,7 +1206,7 @@ ProcessResult CPreIOCPSocket::Process_PA_ADMIN_SET_DBSERVER_GROUP(const char* pP
 ProcessResult CPreIOCPSocket::Process_PA_ADMIN_RELOAD_ADMIN_NOTICE_SYSTEM(const char* pPacket, int nLength, int &nBytesUsed)
 {// No body
 
-	// 2009-01-19 by cmkwon, ¸ğµç IMServer·Î Àü¼Û
+	// 2009-01-19 by cmkwon, ëª¨ë“  IMServerë¡œ ì „ì†¡
 	MessageType_t msgTy = T_IP_ADMIN_RELOAD_ADMIN_NOTICE_SYSTEM;
 	ms_pPreIOCP->SendMsgToAllIMServer((BYTE*)&msgTy, SIZE_FIELD_TYPE_HEADER);
 	return RES_RETURN_TRUE;
@@ -1135,7 +1215,7 @@ ProcessResult CPreIOCPSocket::Process_PA_ADMIN_RELOAD_ADMIN_NOTICE_SYSTEM(const 
 
 ///////////////////////////////////////////////////////////////////////////////
 /// \fn			
-/// \brief		// 2009-02-12 by cmkwon, EP3-3 ¿ùµå·©Å·½Ã½ºÅÛ ±¸Çö - 
+/// \brief		// 2009-02-12 by cmkwon, EP3-3 ì›”ë“œë­í‚¹ì‹œìŠ¤í…œ êµ¬í˜„ - 
 /// \author		cmkwon
 /// \date		2009-02-25 ~ 2009-02-25
 /// \warning	
@@ -1146,7 +1226,7 @@ ProcessResult CPreIOCPSocket::Process_PA_ADMIN_RELOAD_ADMIN_NOTICE_SYSTEM(const 
 ProcessResult CPreIOCPSocket::Process_PA_ADMIN_RELOAD_WORLDRANKING(const char* pPacket, int nLength, int &nBytesUsed)
 {// No body
 
-	// 2009-02-12 by cmkwon, EP3-3 ¿ùµå·©Å·½Ã½ºÅÛ ±¸Çö - 
+	// 2009-02-12 by cmkwon, EP3-3 ì›”ë“œë­í‚¹ì‹œìŠ¤í…œ êµ¬í˜„ - 
 	MessageType_t msgTy = T_FP_ADMIN_RELOAD_WORLDRANKING;
 	ms_pPreIOCP->SendMessageToAllFieldServer((BYTE*)&msgTy, SIZE_FIELD_TYPE_HEADER);
 	return RES_RETURN_TRUE;
@@ -1154,7 +1234,7 @@ ProcessResult CPreIOCPSocket::Process_PA_ADMIN_RELOAD_WORLDRANKING(const char* p
 
 ///////////////////////////////////////////////////////////////////////////////
 /// \fn			
-/// \brief		// 2009-09-16 by cmkwon, ¼¼·Â ÃÊ±âÈ­½Ã ¾îºäÂ¡ ¹æÁö ±¸Çö - 
+/// \brief		// 2009-09-16 by cmkwon, ì„¸ë ¥ ì´ˆê¸°í™”ì‹œ ì–´ë·°ì§• ë°©ì§€ êµ¬í˜„ - 
 /// \author		cmkwon
 /// \date		2009-09-22 ~ 2009-09-22
 /// \warning	
@@ -1174,7 +1254,7 @@ ProcessResult CPreIOCPSocket::Process_PA_ADMIN_RELOAD_INFLUENCERATE(const char* 
 		|| FALSE == pServG->m_FieldServerInfo.IsActive)
 	{// 2009-09-22 by cmkwon
 		
-		// 2009-09-16 by cmkwon, ¼¼·Â ÃÊ±âÈ­½Ã ¾îºäÂ¡ ¹æÁö ±¸Çö - 
+		// 2009-09-16 by cmkwon, ì„¸ë ¥ ì´ˆê¸°í™”ì‹œ ì–´ë·°ì§• ë°©ì§€ êµ¬í˜„ - 
 		g_pPreGlobal->WriteSystemLogEX(TRUE, "[Notify] CPreIOCPSocket::Process_PA_ADMIN_RELOAD_INFLUENCERATE# invalid FieldServer !!, %s \r\n", pRMsg->ServerGroupName);
 		return RES_BREAK;
 	}
@@ -1264,8 +1344,8 @@ ProcessResult CPreIOCPSocket::Process_PC_CONNECT_SINGLE_FILE_VERSION_CHECK(const
 	nRecvTypeSize = sizeof(MSG_PC_CONNECT_SINGLE_FILE_VERSION_CHECK);
 	if(nLength - nBytesUsed < nRecvTypeSize)
 	{
-		// Protocl Error Ã³¸®
-		// - Client·Î ºÎÅÍ ¹ŞÀº Data Size°¡ Field Type¿¡ µû¸¥ Data Sizeº¸´Ù ÀÛ´Ù
+		// Protocl Error ì²˜ë¦¬
+		// - Clientë¡œ ë¶€í„° ë°›ì€ Data Sizeê°€ Field Typeì— ë”°ë¥¸ Data Sizeë³´ë‹¤ ì‘ë‹¤
 		// Error Code : ERR_PROTOCOL_INVALID_FIELD_DATA
 		SendErrorMessage(T_PC_CONNECT_SINGLE_FILE_VERSION_CHECK, ERR_PROTOCOL_INVALID_FIELD_DATA);
 
@@ -1278,7 +1358,7 @@ ProcessResult CPreIOCPSocket::Process_PC_CONNECT_SINGLE_FILE_VERSION_CHECK(const
 
 	if (GetClientState(NULL) != CP_CONNECTED)
 	{
-		// Protocol Error Ã³¸®
+		// Protocol Error ì²˜ë¦¬
 		// Error Code : ERR_PROTOCOL_INVALID_PRESERVER_CLIENT_STATE
 		SendErrorMessage(T_PC_CONNECT_SINGLE_FILE_VERSION_CHECK, ERR_PROTOCOL_INVALID_PRESERVER_CLIENT_STATE);
 
@@ -1322,7 +1402,7 @@ ProcessResult CPreIOCPSocket::Process_PC_CONNECT_SINGLE_FILE_VERSION_CHECK(const
 	if (bDownloadDeleteFileList || bDownloadNotice)
 	{
 		INIT_MSG_WITH_BUFFER(MSG_PC_CONNECT_SINGLE_FILE_UPDATE_INFO, T_PC_CONNECT_SINGLE_FILE_UPDATE_INFO, msgUpdateInfo, msgUpdateInfoBuf);
-		msgUpdateInfo->nAutoUpdateServerType		= g_pPreGlobal->GetAutoUpdateServerType();						// 2007-01-08 by cmkwon, Ãß°¡ÇÔ
+		msgUpdateInfo->nAutoUpdateServerType		= g_pPreGlobal->GetAutoUpdateServerType();						// 2007-01-08 by cmkwon, ì¶”ê°€í•¨
 		msgUpdateInfo->NewDeleteFileListVersion[0]	= ms_pPreIOCP->m_LatestDeleteFileListVersion.GetVersion()[0];
 		msgUpdateInfo->NewDeleteFileListVersion[1]	= ms_pPreIOCP->m_LatestDeleteFileListVersion.GetVersion()[1];
 		msgUpdateInfo->NewDeleteFileListVersion[2]	= ms_pPreIOCP->m_LatestDeleteFileListVersion.GetVersion()[2];
@@ -1337,7 +1417,7 @@ ProcessResult CPreIOCPSocket::Process_PC_CONNECT_SINGLE_FILE_VERSION_CHECK(const
 		STRNCPY_MEMSET(msgUpdateInfo->FtpPassword, g_pPreGlobal->GetDownloadServerPassword(), SIZE_MAX_PASSWORD);
 		STRNCPY_MEMSET(msgUpdateInfo->DeleteFileListDownloadPath, g_pPreGlobal->GetDeleteFileListDownloadPath(), SIZE_MAX_FTP_FILE_PATH);
 		STRNCPY_MEMSET(msgUpdateInfo->NoticeFileDownloadPath, g_pPreGlobal->GetNoticeFileDownloadPath(), SIZE_MAX_FTP_FILE_PATH);
-// 2007-01-08 by cmkwon, À§°ú °°ÀÌ ¼öÁ¤ÇÔ - Http ¾÷µ¥ÀÌÆ® ±â´É Ãß°¡
+// 2007-01-08 by cmkwon, ìœ„ê³¼ ê°™ì´ ìˆ˜ì •í•¨ - Http ì—…ë°ì´íŠ¸ ê¸°ëŠ¥ ì¶”ê°€
 //		STRNCPY_MEMSET(msgUpdateInfo->FtpIP, g_pPreGlobal->GetRandomDownloadFTPIP(), SIZE_MAX_FTP_URL);
 //		msgUpdateInfo->FtpPort						= g_pPreGlobal->GetDownloadFTPPort();
 //		STRNCPY_MEMSET(msgUpdateInfo->FtpAccountName, g_pPreGlobal->GetDownloadFTPAccount(), SIZE_MAX_ACCOUNT_NAME);
@@ -1366,8 +1446,8 @@ ProcessResult CPreIOCPSocket::Process_PC_CONNECT_VERSION(const char* pPacket, in
 	nRecvTypeSize = sizeof(MSG_PC_CONNECT_VERSION);
 	if(nLength - nBytesUsed < nRecvTypeSize)
 	{
-		// Protocl Error Ã³¸®
-		// - Client·Î ºÎÅÍ ¹ŞÀº Data Size°¡ Field Type¿¡ µû¸¥ Data Sizeº¸´Ù ÀÛ´Ù
+		// Protocl Error ì²˜ë¦¬
+		// - Clientë¡œ ë¶€í„° ë°›ì€ Data Sizeê°€ Field Typeì— ë”°ë¥¸ Data Sizeë³´ë‹¤ ì‘ë‹¤
 		// Error Code : ERR_PROTOCOL_INVALID_FIELD_DATA
 		SendErrorMessage(T_PC_CONNECT_VERSION, ERR_PROTOCOL_INVALID_FIELD_DATA);
 
@@ -1395,7 +1475,7 @@ ProcessResult CPreIOCPSocket::Process_PC_CONNECT_VERSION(const char* pPacket, in
 
 	if (GetClientState(NULL) != CP_SINGLE_FILE_VERSIONCHECKED)
 	{
-		// Protocol Error Ã³¸®
+		// Protocol Error ì²˜ë¦¬
 		// Error Code : ERR_PROTOCOL_INVALID_PRESERVER_CLIENT_STATE
 		SendErrorMessage(T_PC_CONNECT_VERSION, ERR_PROTOCOL_INVALID_PRESERVER_CLIENT_STATE);
 
@@ -1452,7 +1532,7 @@ ProcessResult CPreIOCPSocket::Process_PC_CONNECT_VERSION(const char* pPacket, in
 		STRNCPY_MEMSET(pMsgUpdateInfo->FtpAccountName, g_pPreGlobal->GetDownloadServerAccountName(), SIZE_MAX_ACCOUNT_NAME);
 		STRNCPY_MEMSET(pMsgUpdateInfo->FtpPassword, g_pPreGlobal->GetDownloadServerPassword(), SIZE_MAX_PASSWORD);
 		STRNCPY_MEMSET(pMsgUpdateInfo->FtpUpdateDownloadDir, g_pPreGlobal->GetClientUpdateDownloadDir(), SIZE_MAX_FTP_FILE_PATH);
-// 2007-01-08 by cmkwon, À§¿Í °°ÀÌ ¼öÁ¤ÇÔ, FTP or Http ¾÷µ¥ÀÌÆ® °¡´É
+// 2007-01-08 by cmkwon, ìœ„ì™€ ê°™ì´ ìˆ˜ì •í•¨, FTP or Http ì—…ë°ì´íŠ¸ ê°€ëŠ¥
 //		STRNCPY_MEMSET(pMsgUpdateInfo->FtpIP, g_pPreGlobal->GetRandomDownloadFTPIP(), SIZE_MAX_FTP_URL);
 //		pMsgUpdateInfo->FtpPort = g_pPreGlobal->GetDownloadFTPPort();
 //		STRNCPY_MEMSET(pMsgUpdateInfo->FtpAccountName, g_pPreGlobal->GetDownloadFTPAccount(), SIZE_MAX_ACCOUNT_NAME);
@@ -1476,8 +1556,8 @@ ProcessResult CPreIOCPSocket::Process_PC_DEFAULT_UPDATE_LAUNCHER_VERSION(const c
 	nRecvTypeSize = sizeof(MSG_PC_DEFAULT_UPDATE_LAUNCHER_VERSION);
 	if(nLength - nBytesUsed < nRecvTypeSize)
 	{
-		// Protocl Error Ã³¸®
-		// - Client·Î ºÎÅÍ ¹ŞÀº Data Size°¡ Field Type¿¡ µû¸¥ Data Sizeº¸´Ù ÀÛ´Ù
+		// Protocl Error ì²˜ë¦¬
+		// - Clientë¡œ ë¶€í„° ë°›ì€ Data Sizeê°€ Field Typeì— ë”°ë¥¸ Data Sizeë³´ë‹¤ ì‘ë‹¤
 		// Error Code : ERR_PROTOCOL_INVALID_FIELD_DATA
 		SendErrorMessage(T_PC_DEFAULT_UPDATE_LAUNCHER_VERSION, ERR_PROTOCOL_INVALID_FIELD_DATA);
 		Close(0x11003, TRUE);
@@ -1497,7 +1577,7 @@ ProcessResult CPreIOCPSocket::Process_PC_DEFAULT_UPDATE_LAUNCHER_VERSION(const c
 		SendAddMessageType(T_PC_DEFAULT_UPDATE_LAUNCHER_VERSION_OK);
 	}
 	else
-	{// Launcher ¹öÁ¯ÀÌ ´Ù¸£¸é ¹«Á¶°Ç UpdateÇÑ´Ù
+	{// Launcher ë²„ì ¼ì´ ë‹¤ë¥´ë©´ ë¬´ì¡°ê±´ Updateí•œë‹¤
 		// send UPDATE_INFO
 		INIT_MSG_WITH_BUFFER(MSG_PC_DEFAULT_UPDATE_LAUNCHER_UPDATE_INFO, T_PC_DEFAULT_UPDATE_LAUNCHER_UPDATE_INFO, pMsgUpdateInfo, SendBuf);		
 		VersionInfo *pNewVersion = &(ms_pPreIOCP->m_LatestLauncherVersion);
@@ -1539,8 +1619,8 @@ ProcessResult CPreIOCPSocket::Process_PC_CONNECT_LOGIN(const char* pPacket, int 
 		return RES_BREAK;
 	}
 
-	// 2010. 11. 24. by hsLee. ¾Æ¶ó¸®¿À Ã¤³Î¸µ ·Î±×ÀÎ °ü·Ã - Ã¤³Î¸µ ÆÛºí¸®¼Å Ã¼Å©¿Í »ó°ü¾øÀÌ ¿øº»'AccountName'°ªÀº À¯ÁöÇÏµµ·Ï ¼öÁ¤.
-	// 2010-11 by dhjin, ¾Æ¶ó¸®¿À Ã¤³Î¸µ ·Î±×ÀÎ.
+	// 2010. 11. 24. by hsLee. ì•„ë¼ë¦¬ì˜¤ ì±„ë„ë§ ë¡œê·¸ì¸ ê´€ë ¨ - ì±„ë„ë§ í¼ë¸”ë¦¬ì…” ì²´í¬ì™€ ìƒê´€ì—†ì´ ì›ë³¸'AccountName'ê°’ì€ ìœ ì§€í•˜ë„ë¡ ìˆ˜ì •.
+	// 2010-11 by dhjin, ì•„ë¼ë¦¬ì˜¤ ì±„ë„ë§ ë¡œê·¸ì¸.
 #ifdef S_ARARIO_HSSON
 	char AccountNameArario[SIZE_MAX_ACCOUNT_NAME];
 
@@ -1570,28 +1650,28 @@ ProcessResult CPreIOCPSocket::Process_PC_CONNECT_LOGIN(const char* pPacket, int 
 	}
 	else if(pSGroup->GetUserCount() >= pSGroup->m_LimitGroupUserCounts)
 	{
-		// 2008-06-05 by cmkwon, AdminTool, Monitor Á¢±Ù °¡´É IP¸¦ server config file ¿¡ ¼³Á¤ÇÏ±â - ¾Æ·¡¿Í °°ÀÌ ¼öÁ¤ ÇÔ
+		// 2008-06-05 by cmkwon, AdminTool, Monitor ì ‘ê·¼ ê°€ëŠ¥ IPë¥¼ server config file ì— ì„¤ì •í•˜ê¸° - ì•„ë˜ì™€ ê°™ì´ ìˆ˜ì • í•¨
 		//if(FALSE == IS_SCADMINTOOL_CONNECTABLE_IP(GetPeerIP()))
-		if(FALSE == g_pPreGlobal->CheckAllowedToolIP(this->GetPeerIP()))	// 2008-06-05 by cmkwon, AdminTool, Monitor Á¢±Ù °¡´É IP¸¦ server config file ¿¡ ¼³Á¤ÇÏ±â - 
-		{// 2006-04-20 by cmkwon, »ç³»¿¡¼­´Â Á¢±Ù °¡´É
+		if(FALSE == g_pPreGlobal->CheckAllowedToolIP(this->GetPeerIP()))	// 2008-06-05 by cmkwon, AdminTool, Monitor ì ‘ê·¼ ê°€ëŠ¥ IPë¥¼ server config file ì— ì„¤ì •í•˜ê¸° - 
+		{// 2006-04-20 by cmkwon, ì‚¬ë‚´ì—ì„œëŠ” ì ‘ê·¼ ê°€ëŠ¥
 			SendErrorMessage(T_PC_CONNECT_LOGIN, ERR_PROTOCOL_LIMIT_GROUP_USER_COUNT);
 			SAFE_DELETE(pRecvMsg);
 			return RES_BREAK;
 		}
 	}
 
-// 2007-11-15 by cmkwon, ÁÖ¼® Ã³¸® ÇÔ
+// 2007-11-15 by cmkwon, ì£¼ì„ ì²˜ë¦¬ í•¨
 //	///////////////////////////////////////////////////////////////////////////////
-//	// 2007-10-31 by cmkwon, ¿¹´ç G-Star_¼­¹ö Ã³¸® - ±â°£:2007-11-01 ~ 2007-11-12
+//	// 2007-10-31 by cmkwon, ì˜ˆë‹¹ G-Star_ì„œë²„ ì²˜ë¦¬ - ê¸°ê°„:2007-11-01 ~ 2007-11-12
 //	if(LANGUAGE_TYPE_KOREAN == g_pPreGlobal->GetLanguageType())
 //	{
 //		MSG_PC_CONNECT_LOGIN *pLogin = (MSG_PC_CONNECT_LOGIN *)pRecvMsg;
 //
-//		// 2007-11-02 by cmkwon, 'G-Star_¼­¹ö'°¡ ¾Æ´Ò¶§¸¸ Ã¼Å©
-//		if(0 != stricmp("G-Star_¼­¹ö", pLogin->FieldServerGroupName))
+//		// 2007-11-02 by cmkwon, 'G-Star_ì„œë²„'ê°€ ì•„ë‹ë•Œë§Œ ì²´í¬
+//		if(0 != stricmp("G-Star_ì„œë²„", pLogin->FieldServerGroupName))
 //		{
 //			///////////////////////////////////////////////////////////////////////////////
-//			// 2007-10-31 by cmkwon, G-Star_¼­¹ö Á¢¼Ó Çã°¡ °¡´ÉÇÑ °èÁ¤Àº ¿¬°á Á¾·á
+//			// 2007-10-31 by cmkwon, G-Star_ì„œë²„ ì ‘ì† í—ˆê°€ ê°€ëŠ¥í•œ ê³„ì •ì€ ì—°ê²° ì¢…ë£Œ
 //			if(0 == stricmp("acetest050", pLogin->AccountName) || 0 == stricmp("acetest051", pLogin->AccountName) || 0 == stricmp("acetest052", pLogin->AccountName)
 //				 || 0 == stricmp("acetest053", pLogin->AccountName) || 0 == stricmp("acetest054", pLogin->AccountName) || 0 == stricmp("acetest055", pLogin->AccountName)
 //				 || 0 == stricmp("acetest056", pLogin->AccountName) || 0 == stricmp("acetest057", pLogin->AccountName) || 0 == stricmp("acetest058", pLogin->AccountName)
@@ -1607,18 +1687,18 @@ ProcessResult CPreIOCPSocket::Process_PC_CONNECT_LOGIN(const char* pPacket, int 
 //	}
 
 	
-	_strlwr(((MSG_PC_CONNECT_LOGIN*)pRecvMsg)->AccountName);		// 2006-05-06 by cmkwon, ¼Ò¹®ÀÚ·Î º¯°æÇÑ´Ù.
-	STRNCPY_MEMSET(((MSG_PC_CONNECT_LOGIN*)pRecvMsg)->ClientIP, this->GetPeerIP(), SIZE_MAX_IPADDRESS);	// 2008-10-08 by cmkwon, ´ë¸¸ Netpower_Tpe ¿ÜºÎÀÎÁõ ±¸Çö - 
+	_strlwr(((MSG_PC_CONNECT_LOGIN*)pRecvMsg)->AccountName);		// 2006-05-06 by cmkwon, ì†Œë¬¸ìë¡œ ë³€ê²½í•œë‹¤.
+	STRNCPY_MEMSET(((MSG_PC_CONNECT_LOGIN*)pRecvMsg)->ClientIP, this->GetPeerIP(), SIZE_MAX_IPADDRESS);	// 2008-10-08 by cmkwon, ëŒ€ë§Œ Netpower_Tpe ì™¸ë¶€ì¸ì¦ êµ¬í˜„ - 
 
 	//////////////////////////////////////////
-	// Blocked Accounts °Ë»ç
+	// Blocked Accounts ê²€ì‚¬
 	//////////////////////////////////////////
 	char szTmpAccountName[SIZE_MAX_ACCOUNT_NAME];
 	STRNCPY_MEMSET(szTmpAccountName, ((MSG_PC_CONNECT_LOGIN*)pRecvMsg)->AccountName, SIZE_MAX_ACCOUNT_NAME);
 
 	if(LANGUAGE_TYPE_TAIWANESE != g_pPreGlobal->GetLanguageType()
 		|| g_pPreGlobal->IsExternalAuthentication())
-	{// 2008-10-09 by cmkwon, ´ë¸¸ Netpower_Tpe´Â ¿ÜºÎ ÀÎÁõÈÄ¿¡ Ã¼Å©ÇÏµµ·Ï ÇÑ´Ù. 2´Ü°è °èÁ¤½Ã½ºÅÛ Àû¿ëÀ¸·Î
+	{// 2008-10-09 by cmkwon, ëŒ€ë§Œ Netpower_TpeëŠ” ì™¸ë¶€ ì¸ì¦í›„ì— ì²´í¬í•˜ë„ë¡ í•œë‹¤. 2ë‹¨ê³„ ê³„ì •ì‹œìŠ¤í…œ ì ìš©ìœ¼ë¡œ
 		SBLOCKED_ACCOUNT_INFO tmBlockedInfo;
 		MEMSET_ZERO(&tmBlockedInfo, sizeof(SBLOCKED_ACCOUNT_INFO));
 		BOOL bBlocked = ms_pPreIOCP->m_pAccountBlockManager->IsCheckBlockedAccountInfoByAccountName(&tmBlockedInfo, szTmpAccountName, NULL);
@@ -1644,7 +1724,7 @@ ProcessResult CPreIOCPSocket::Process_PC_CONNECT_LOGIN(const char* pPacket, int 
 //	{
 //		ms_pPreIOCP->m_setBlockedAccounts.unlock();
 //
-//		// ¸·Èù °èÁ¤ÀÓ
+//		// ë§‰íŒ ê³„ì •ì„
 //		SendErrorMessage(T_PC_CONNECT_LOGIN, ERR_PROTOCOL_ACCOUNT_BLOCKED, 0, 0, ((MSG_PC_CONNECT_LOGIN*)pRecvMsg)->AccountName);
 //		SAFE_DELETE(pRecvMsg);
 //		return RES_BREAK;
@@ -1663,7 +1743,7 @@ ProcessResult CPreIOCPSocket::Process_PC_CONNECT_LOGIN(const char* pPacket, int 
 	pRecvMsg = NULL;
 
 	///////////////////////////////////////////////////////////////////////////////
-	// 2008-04-29 by cmkwon, ¼­¹ö±º Á¤º¸ DB¿¡ Ãß°¡(½Å±Ô °èÁ¤ Ä³¸¯ÅÍ »ı¼º Á¦ÇÑ ½Ã½ºÅÛÃß°¡) - 
+	// 2008-04-29 by cmkwon, ì„œë²„êµ° ì •ë³´ DBì— ì¶”ê°€(ì‹ ê·œ ê³„ì • ìºë¦­í„° ìƒì„± ì œí•œ ì‹œìŠ¤í…œì¶”ê°€) - 
 	STRNCPY_MEMSET(m_szAdminAccountName, szTmpAccountName, SIZE_MAX_ACCOUNT_NAME);
 
 	return RES_RETURN_TRUE;
@@ -1683,14 +1763,14 @@ ProcessResult CPreIOCPSocket::Process_PC_CONNECT_GET_SERVER_GROUP_LIST(const cha
 	{
 		CServerGroup *pServerGroup = *itr;
 
-		// 2008-06-13 by dhjin, ¾Æ·¹³ª ÅëÇÕ - ¾Æ·¹³ª ¼­¹ö ½ÇÇà µÇ¾î ÀÖÁö ¾ÊÀ»¶§ ·±ÃÄ È­¸é¿¡ º¸ÀÌ´Â ºÎºĞ ¾Èº¸ÀÌ°Ô ¼öÁ¤
+		// 2008-06-13 by dhjin, ì•„ë ˆë‚˜ í†µí•© - ì•„ë ˆë‚˜ ì„œë²„ ì‹¤í–‰ ë˜ì–´ ìˆì§€ ì•Šì„ë•Œ ëŸ°ì³ í™”ë©´ì— ë³´ì´ëŠ” ë¶€ë¶„ ì•ˆë³´ì´ê²Œ ìˆ˜ì •
 		if(10090 == pServerGroup->m_nMGameServerID)
 		{
 			continue;
 		}
 
 		if(pServerGroup->m_bEnableServerGroup
-			&& FALSE == pServerGroup->m_bForbidViewServer	// 2007-12-22 by dhjin, ¾Æ·¹³ª ÅëÇÕ - ·±ÃÄ ¸®½ºÆ®¿¡¼­ º¸ÀÌ¸é ¾ÈµÇ´Â ¼­¹ö Ã¼Å©, TRUE = º¸ÀÌÁö ¾Ê´Â´Ù.	
+			&& FALSE == pServerGroup->m_bForbidViewServer	// 2007-12-22 by dhjin, ì•„ë ˆë‚˜ í†µí•© - ëŸ°ì³ ë¦¬ìŠ¤íŠ¸ì—ì„œ ë³´ì´ë©´ ì•ˆë˜ëŠ” ì„œë²„ ì²´í¬, TRUE = ë³´ì´ì§€ ì•ŠëŠ”ë‹¤.	
 			)	
 		{
 			
@@ -1786,7 +1866,7 @@ ProcessResult CPreIOCPSocket::Process_PC_DEFAULT_NEW_UPDATE_LAUNCHER_VERSION(con
 ///////////////////////////////////////////////////////////////////////////////
 ProcessResult CPreIOCPSocket::Process_PC_CONNECT_GET_GAME_SERVER_GROUP_LIST(const char* pPacket, int nLength, int &nBytesUsed)
 {
-	// 2007-10-19 by cmkwon, AllowedIP ½Ã½ºÅÛ º¯°æ - Çã°¡ IP Ã¼Å© ÇÔ¼ö
+	// 2007-10-19 by cmkwon, AllowedIP ì‹œìŠ¤í…œ ë³€ê²½ - í—ˆê°€ IP ì²´í¬ í•¨ìˆ˜
 	if(FALSE == g_pPreGlobal->CheckAllowedIP(this->GetPeerIP()))
 	{
 		SendErrorMessage(T_PC_CONNECT_GET_GAME_SERVER_GROUP_LIST, ERR_NOT_ALLOWED_IP, 0, 0, this->GetPeerIP());
@@ -1806,7 +1886,7 @@ ProcessResult CPreIOCPSocket::Process_PC_CONNECT_GET_GAME_SERVER_GROUP_LIST(cons
 
 ///////////////////////////////////////////////////////////////////////////////
 /// \fn			ProcessResult CPreIOCPSocket::Process_PC_CONNECT_GET_NEW_GAME_SERVER_GROUP_LIST(const char* pPacket, int nLength, int &nBytesUsed)
-/// \brief		// 2007-09-05 by cmkwon, EXE_1¿¡ ·Î±×ÀÎ ¼­¹ö ¼±ÅÃ ÀÎÅÍÆäÀÌ½º ¼öÁ¤ - Ãß°¡µÈ ÇÁ·ÎÅäÄİ Ã³¸®ÇÔ¼ö
+/// \brief		// 2007-09-05 by cmkwon, EXE_1ì— ë¡œê·¸ì¸ ì„œë²„ ì„ íƒ ì¸í„°í˜ì´ìŠ¤ ìˆ˜ì • - ì¶”ê°€ëœ í”„ë¡œí† ì½œ ì²˜ë¦¬í•¨ìˆ˜
 /// \author		cmkwon
 /// \date		2007-05-02 ~ 2007-05-02
 /// \warning	
@@ -1816,7 +1896,7 @@ ProcessResult CPreIOCPSocket::Process_PC_CONNECT_GET_GAME_SERVER_GROUP_LIST(cons
 ///////////////////////////////////////////////////////////////////////////////
 ProcessResult CPreIOCPSocket::Process_PC_CONNECT_GET_NEW_GAME_SERVER_GROUP_LIST(const char* pPacket, int nLength, int &nBytesUsed)
 {
-	// 2007-10-19 by cmkwon, AllowedIP ½Ã½ºÅÛ º¯°æ - Çã°¡ IP Ã¼Å© ÇÔ¼ö
+	// 2007-10-19 by cmkwon, AllowedIP ì‹œìŠ¤í…œ ë³€ê²½ - í—ˆê°€ IP ì²´í¬ í•¨ìˆ˜
 	if(FALSE == g_pPreGlobal->CheckAllowedIP(this->GetPeerIP()))
 	{
 		SendErrorMessage(T_PC_CONNECT_GET_NEW_GAME_SERVER_GROUP_LIST, ERR_NOT_ALLOWED_IP, 0, 0, this->GetPeerIP());
@@ -1836,7 +1916,7 @@ ProcessResult CPreIOCPSocket::Process_PC_CONNECT_GET_NEW_GAME_SERVER_GROUP_LIST(
 
 ///////////////////////////////////////////////////////////////////////////////
 /// \fn			ProcessResult CPreIOCPSocket::Process_PC_CONNECT_NETWORK_CHECK(const char* pPacket, int nLength, int &nBytesUsed)
-/// \brief		// 2007-06-18 by cmkwon, ³×Æ®¿öÅ© »óÅÂ Ã¼Å©
+/// \brief		// 2007-06-18 by cmkwon, ë„¤íŠ¸ì›Œí¬ ìƒíƒœ ì²´í¬
 /// \author		cmkwon
 /// \date		2007-05-02 ~ 2007-05-02
 /// \warning	
@@ -1875,8 +1955,8 @@ ProcessResult CPreIOCPSocket::Process_FP_CONNECT_AUTH_USER(const char* pPacket, 
 	nRecvTypeSize = sizeof(MSG_FP_CONNECT_AUTH_USER);
 	if(nLength - nBytesUsed < nRecvTypeSize)
 	{
-		// Protocl Error Ã³¸®
-		// - Client·Î ºÎÅÍ ¹ŞÀº Data Size°¡ Field Type¿¡ µû¸¥ Data Sizeº¸´Ù ÀÛ´Ù
+		// Protocl Error ì²˜ë¦¬
+		// - Clientë¡œ ë¶€í„° ë°›ì€ Data Sizeê°€ Field Typeì— ë”°ë¥¸ Data Sizeë³´ë‹¤ ì‘ë‹¤
 		// Error Code : ERR_PROTOCOL_INVALID_FIELD_DATA
 		SendErrorMessage(T_FP_CONNECT_AUTH_USER, ERR_PROTOCOL_INVALID_FIELD_DATA);
 		return RES_PACKET_ERROR;
@@ -1889,7 +1969,7 @@ ProcessResult CPreIOCPSocket::Process_FP_CONNECT_AUTH_USER(const char* pPacket, 
 
 	switch(nRetedErrorNum)
 	{
-	case 0:// ÀÎÁõ ¼º°ø
+	case 0:// ì¸ì¦ ì„±ê³µ
 		{
 			//
 			CServerGroup* pSGroup = ms_pPreIOCP->GetServerGroup(tmAccountInfo.CurrentServerGroup);
@@ -1912,11 +1992,11 @@ ProcessResult CPreIOCPSocket::Process_FP_CONNECT_AUTH_USER(const char* pPacket, 
 			pSendMsg->AccountRegisteredDate	= tmAccountInfo.AccountRegisteredDate;		// 2006-06-02 by cmkwon
 			pSendMsg->GameContinueTimeInSecondOfToday	= tmAccountInfo.GameContinueTimeInSecondOfToday;		// 2006-11-15 by cmkwon
 			pSendMsg->LastGameEndDate					= tmAccountInfo.LastGameEndDate;						// 2006-11-15 by cmkwon
-			pSendMsg->Birthday							= tmAccountInfo.atBirthday;								// 2007-06-28 by cmkwon, Áß±¹ ¹æ½ÉÃë°ü·Ã(Ãâ»ı³â¿ùÀÏ FielServer·Î °¡Á®¿À±â) - ÇÁ·ÎÅäÄİ ¼öÁ¤
+			pSendMsg->Birthday							= tmAccountInfo.atBirthday;								// 2007-06-28 by cmkwon, ì¤‘êµ­ ë°©ì‹¬ì·¨ê´€ë ¨(ì¶œìƒë…„ì›”ì¼ FielServerë¡œ ê°€ì ¸ì˜¤ê¸°) - í”„ë¡œí† ì½œ ìˆ˜ì •
 			STRNCPY_MEMSET(pSendMsg->PasswordFromDB, tmAccountInfo.PasswordFromDB, SIZE_MAX_PASSWORD_MD5_STRING);	// 2006-06-02 by cmkwon
-			STRNCPY_MEMSET(pSendMsg->SecondaryPassword, tmAccountInfo.SecondaryPassword, SIZE_MAX_PASSWORD_MD5_STRING);	// 2007-09-12 by cmkwon, º£Æ®³² 2Â÷ÆĞ½º¿öµå ±¸Çö - Field Server·Î Àü´Ş
+			STRNCPY_MEMSET(pSendMsg->SecondaryPassword, tmAccountInfo.SecondaryPassword, SIZE_MAX_PASSWORD_MD5_STRING);	// 2007-09-12 by cmkwon, ë² íŠ¸ë‚¨ 2ì°¨íŒ¨ìŠ¤ì›Œë“œ êµ¬í˜„ - Field Serverë¡œ ì „ë‹¬
 #ifdef S_ARARIO_HSSON
-			pSendMsg->eOtherPublisherConncect = tmAccountInfo.eOtherPublisherConncect;				// 2010-11 by dhjin, ¾Æ¶ó¸®¿À Ã¤³Î¸µ ·Î±×ÀÎ.
+			pSendMsg->eOtherPublisherConncect = tmAccountInfo.eOtherPublisherConncect;				// 2010-11 by dhjin, ì•„ë¼ë¦¬ì˜¤ ì±„ë„ë§ ë¡œê·¸ì¸.
 #endif
 
 			SendAddData(pSendBuf, MSG_SIZE(MSG_FP_CONNECT_AUTH_USER_OK));			
@@ -1925,21 +2005,21 @@ ProcessResult CPreIOCPSocket::Process_FP_CONNECT_AUTH_USER(const char* pPacket, 
 		break;
 	case ERR_PROTOCOL_NOT_LOGINED:
 		{
-			// Protocol Error Ã³¸®
+			// Protocol Error ì²˜ë¦¬
 			// Error Code : ERR_PROTOCOL_NOT_LOGINED
 			SendErrorMessage(T_FP_CONNECT_AUTH_USER, ERR_PROTOCOL_NOT_LOGINED, pMsgRecvAuthUser->ClientIndex);
 		}
 		break;
 	case ERR_PROTOCOL_INVALID_PRESERVER_CLIENT_STATE:
 		{
-			// Protocol Error Ã³¸®
+			// Protocol Error ì²˜ë¦¬
 			// Error Code : ERR_PROTOCOL_INVALID_PRESERVER_CLIENT_STATE
 			SendErrorMessage(T_FP_CONNECT_AUTH_USER, ERR_PROTOCOL_INVALID_PRESERVER_CLIENT_STATE, pMsgRecvAuthUser->ClientIndex);
 		}
 		break;
 	case ERR_PROTOCOL_FIELD_SERVER_ID_NOT_MATCHED:
 		{
-			// Protocol Error Ã³¸®
+			// Protocol Error ì²˜ë¦¬
 			// Error Code : ERR_PROTOCOL_FIELD_SERVER_ID_NOT_MATCHED
 			DBGOUT("ERR_PROTOCOL_FIELD_SERVER_ID_NOT_MATCHED: %s != %s\n", tmAccountInfo.CurrentFieldServerID.GetString(string()), pMsgRecvAuthUser->FieldServerID.GetString(string()));
 			SendErrorMessage(T_FP_CONNECT_AUTH_USER, ERR_PROTOCOL_FIELD_SERVER_ID_NOT_MATCHED, pMsgRecvAuthUser->ClientIndex, 0, tmAccountInfo.AccountName);
@@ -1947,7 +2027,7 @@ ProcessResult CPreIOCPSocket::Process_FP_CONNECT_AUTH_USER(const char* pPacket, 
 		break;
 	/*case ERR_PROTOCOL_CLIENT_IP_NOT_MATCHED:
 		{
-			// Protocol Error Ã³¸®
+			// Protocol Error ì²˜ë¦¬
 			// Error Code : ERR_PROTOCOL_CLIENT_IP_NOT_MATCHED
 #ifdef _DEBUG
 			DBGOUT("MSG_FP_CONNECT_AUTH_USER(%s) != CAccountInfo(%s)\n", pMsgRecvAuthUser->PrivateIP, tmAccountInfo.PrivateClientIP);
@@ -1982,8 +2062,8 @@ ProcessResult CPreIOCPSocket::Process_IP_CONNECT_IM_CONNECT(const char* pPacket,
 	nRecvTypeSize = sizeof(MSG_IP_CONNECT_IM_CONNECT);
 	if(nLength - nBytesUsed < nRecvTypeSize)
 	{
-		// Protocl Error Ã³¸®
-		// - Client·Î ºÎÅÍ ¹ŞÀº Data Size°¡ Field Type¿¡ µû¸¥ Data Sizeº¸´Ù ÀÛ´Ù
+		// Protocl Error ì²˜ë¦¬
+		// - Clientë¡œ ë¶€í„° ë°›ì€ Data Sizeê°€ Field Typeì— ë”°ë¥¸ Data Sizeë³´ë‹¤ ì‘ë‹¤
 		// Error Code : ERR_PROTOCOL_INVALID_FIELD_DATA
 		SendErrorMessage(T_IP_CONNECT_IM_CONNECT, ERR_PROTOCOL_INVALID_FIELD_DATA);
 		return RES_PACKET_ERROR;
@@ -2003,7 +2083,7 @@ ProcessResult CPreIOCPSocket::Process_IP_CONNECT_IM_CONNECT(const char* pPacket,
 		&& pServerGroup->m_IMServerInfo.pSocket
 		&& pServerGroup->m_IMServerInfo.pSocket->IsUsing())
 	{
-		// error: ÀÌ¹Ì ¿¬°áµÈ ¼ÒÄÏÀÌ ÀÖÀ½
+		// error: ì´ë¯¸ ì—°ê²°ëœ ì†Œì¼“ì´ ìˆìŒ
 		SendErrorMessage(T_IP_CONNECT_IM_CONNECT, ERR_PROTOCOL_IMSERVER_ALREADY_CONNECTED);
 		Close(0x1100A, TRUE);
 		return RES_RETURN_FALSE;
@@ -2012,7 +2092,7 @@ ProcessResult CPreIOCPSocket::Process_IP_CONNECT_IM_CONNECT(const char* pPacket,
 	STRNCPY_MEMSET(this->m_szConnectedServerGroupName, pServerGroup->m_ServerGroupName, SIZE_MAX_SERVER_NAME);
 	m_PeerSocketType = ST_IM_SERVER;
 	
-// 2006-05-10 by cmkwon, ¾Æ·¡¿Í °°ÀÌ IMServer IPµµ Àü¼Û¹ŞÀº°ÍÀ» ÀúÀåÇÑ´Ù
+// 2006-05-10 by cmkwon, ì•„ë˜ì™€ ê°™ì´ IMServer IPë„ ì „ì†¡ë°›ì€ê²ƒì„ ì €ì¥í•œë‹¤
 //	pServerGroup->m_IMServerInfo.serverID.SetValue(GetPeerIP(), pMsgRecvIMConnect->IMServerListenPort);
 	pServerGroup->m_IMServerInfo.serverID	= pMsgRecvIMConnect->IMServerID;
 	pServerGroup->m_IMServerInfo.IsActive	= TRUE;
@@ -2020,7 +2100,7 @@ ProcessResult CPreIOCPSocket::Process_IP_CONNECT_IM_CONNECT(const char* pPacket,
 	pServerGroup->m_IMServerInfo.ServerType	= ST_IM_SERVER;
 	
 	char szTemp[1024];
-	// 2009-04-15 by cmkwon, ½Ã½ºÅÛ ·Î±× ¼öÁ¤ - 
+	// 2009-04-15 by cmkwon, ì‹œìŠ¤í…œ ë¡œê·¸ ìˆ˜ì • - 
 	wsprintf(szTemp, "ServerGroupName(%s) IMServer(%s), PeerIPPort[%s:%d] registeration done...\r\n", pServerGroup->m_ServerGroupName, pServerGroup->m_IMServerInfo.serverID.IP, GetPeerIP(), GetPeerPort());
 	DBGOUT(szTemp);
 	g_pPreGlobal->WriteSystemLog(szTemp);
@@ -2049,8 +2129,8 @@ ProcessResult CPreIOCPSocket::Process_IP_GET_SERVER_GROUP_INFO_ACK(const char* p
 	nRecvTypeSize = sizeof(MSG_IP_GET_SERVER_GROUP_INFO_ACK);
 	if(nLength - nBytesUsed < nRecvTypeSize)
 	{
-		// Protocl Error Ã³¸®
-		// - Client·Î ºÎÅÍ ¹ŞÀº Data Size°¡ Field Type¿¡ µû¸¥ Data Sizeº¸´Ù ÀÛ´Ù
+		// Protocl Error ì²˜ë¦¬
+		// - Clientë¡œ ë¶€í„° ë°›ì€ Data Sizeê°€ Field Typeì— ë”°ë¥¸ Data Sizeë³´ë‹¤ ì‘ë‹¤
 		// Error Code : ERR_PROTOCOL_INVALID_FIELD_DATA
 		SendErrorMessage(T_IP_GET_SERVER_GROUP_INFO_ACK, ERR_PROTOCOL_INVALID_FIELD_DATA);
 		return RES_PACKET_ERROR;
@@ -2091,7 +2171,7 @@ ProcessResult CPreIOCPSocket::Process_PM_PREPARE_SHUTDOWN(const char* pPacket, i
 		return RES_RETURN_FALSE;
 	}
 	//end of 10-08-2015 by inetpub
-	//return RES_RETURN_TRUE; // 2011-11-18 by shcho, ¼­¹ö´Ù¿î ÇÁ¸®Æä¾î¼­¹ö´Ù¿î Á¦°Å Ã³¸® - //10-08-2015 by inetpub - enable prepareshutdown for allowedtools
+	//return RES_RETURN_TRUE; // 2011-11-18 by shcho, ì„œë²„ë‹¤ìš´ í”„ë¦¬í˜ì–´ì„œë²„ë‹¤ìš´ ì œê±° ì²˜ë¦¬ - //10-08-2015 by inetpub - enable prepareshutdown for allowedtools
 
 	DECLARE_MESSAGE_AND_CHECK_SIZE(pPacket, nLength, nBytesUsed, T_PM_PREPARE_SHUTDOWN
 		, MSG_PM_PREPARE_SHUTDOWN, pRMsg);
@@ -2239,7 +2319,7 @@ ProcessResult CPreIOCPSocket::Process_PM_RELOAD_VERSION_INFO_DONE(const char* pP
 	///////////////////////////////////////////////////////////////////////////////
 	// 2007-01-09 by cmkwon
 	if (false == ms_pPreIOCP->m_mtmapVersionOld2New.empty())
-	{// 2007-01-09 by cmkwon, ¸¶Áö¸· ¹öÁ¯ ¼³Á¤
+	{// 2007-01-09 by cmkwon, ë§ˆì§€ë§‰ ë²„ì ¼ ì„¤ì •
 		ms_pPreIOCP->m_LatestClientVersion		= ms_pPreIOCP->m_mtmapVersionOld2New.rbegin()->second;
 	}
 	
@@ -2259,7 +2339,7 @@ ProcessResult CPreIOCPSocket::Process_PM_RELOAD_VERSION_INFO_DONE(const char* pP
 	SendAddMessageType(T_PM_RELOAD_VERSION_INFO_OK);
 
 	///////////////////////////////////////////////////////////////////////////////
-	// 2008-09-08 by cmkwon, SCMonitor¿¡¼­ ReloadVersionInfo½Ã¿¡ ÀÏºÎ Ã¼Å©¼¶ÆÄÀÏ(.\Res-Tex\*.*)µµ ¸®·ÎµåÇÏ±â - ¸ğµç FieldServer·Î ¸Ş½ÃÁö Àü¼Û
+	// 2008-09-08 by cmkwon, SCMonitorì—ì„œ ReloadVersionInfoì‹œì— ì¼ë¶€ ì²´í¬ì„¬íŒŒì¼(.\Res-Tex\*.*)ë„ ë¦¬ë¡œë“œí•˜ê¸° - ëª¨ë“  FieldServerë¡œ ë©”ì‹œì§€ ì „ì†¡
 	MessageType_t msgTy = T_FP_MONITOR_RELOAD_VERSION_INFO_OK;
 	ms_pPreIOCP->SendMessageToAllFieldServer((BYTE*)(&msgTy), SIZE_FIELD_TYPE_HEADER);
 
@@ -2269,7 +2349,7 @@ ProcessResult CPreIOCPSocket::Process_PM_RELOAD_VERSION_INFO_DONE(const char* pP
 
 ///////////////////////////////////////////////////////////////////////////////
 /// \fn			ProcessResult CPreIOCPSocket::Process_PP_CONNECT(const char* pPacket, int nLength, int &nBytesUsed)
-/// \brief		// 2008-02-22 by cmkwon, ServerPreServer->MasangPreServer ·Î ¼­ºñ½º Á¤º¸ Àü¼Û ½Ã½ºÅÛ Ãß°¡ - 
+/// \brief		// 2008-02-22 by cmkwon, ServerPreServer->MasangPreServer ë¡œ ì„œë¹„ìŠ¤ ì •ë³´ ì „ì†¡ ì‹œìŠ¤í…œ ì¶”ê°€ - 
 /// \author		cmkwon
 /// \date		2008-02-22 ~ 2008-02-22
 /// \warning	
@@ -2288,20 +2368,20 @@ ProcessResult CPreIOCPSocket::Process_PP_CONNECT(const char* pPacket, int nLengt
 		return RES_RETURN_FALSE;
 	}
 	//end of 10-08-2015 by inetpub
-	// 2008-02-22 by cmkwon, ¿¬°á Á¤º¸µµ ¹«Á¶°Ç ÀúÀåÇÑ´Ù.
+	// 2008-02-22 by cmkwon, ì—°ê²° ì •ë³´ë„ ë¬´ì¡°ê±´ ì €ì¥í•œë‹¤.
 	g_pPreGlobal->WriteSystemLogEX(TRUE, "[Notify] Service PreServer Connected: PreServerIP(%15s)\r\n", GetPeerIP());
 
 	DECLARE_MESSAGE_AND_CHECK_SIZE(pPacket, nLength, nBytesUsed, T_PP_CONNECT, MSG_PP_CONNECT, pRMsg);
 
 	///////////////////////////////////////////////////////////////////////////////
-	// 2008-02-22 by cmkwon, ¹ŞÀº Á¤º¸¸¦ ½Ã½ºÅÛ ·Î±×·¹ ÀúÀåÇÑ´Ù.
+	// 2008-02-22 by cmkwon, ë°›ì€ ì •ë³´ë¥¼ ì‹œìŠ¤í…œ ë¡œê·¸ë ˆ ì €ì¥í•œë‹¤.
 	char szGameLog[1024];
 	MEMSET_ZERO(szGameLog, 1024);
 	pRMsg->GetWriteLogString(szGameLog);
 	g_pPreGlobal->WriteSystemLogEX(TRUE, "[Notify] Service PreServer      Info: PreServerIP(%15s) %s", GetPeerIP(), szGameLog);
 
 	///////////////////////////////////////////////////////////////////////////////
-	// 2008-02-22 by cmkwon, ÇâÈÄ Ã¼Å© ÇÊ¿äÇÑ ºÎºĞ ÇöÀç´Â ¹«Á¶°Ç T_PP_CONNECT_OK ¸¦ Àü¼ÛÇÑ´Ù.
+	// 2008-02-22 by cmkwon, í–¥í›„ ì²´í¬ í•„ìš”í•œ ë¶€ë¶„ í˜„ì¬ëŠ” ë¬´ì¡°ê±´ T_PP_CONNECT_OK ë¥¼ ì „ì†¡í•œë‹¤.
 	INIT_MSG_WITH_BUFFER(MSG_PP_CONNECT_OK, T_PP_CONNECT_OK, pSMsg, SendBuf);
 	pSMsg->szPreServerODBCDSN;
 	pSMsg->szPreServerODBCUID;
@@ -2309,16 +2389,16 @@ ProcessResult CPreIOCPSocket::Process_PP_CONNECT(const char* pPacket, int nLengt
 	this->SendAddData(SendBuf, MSG_SIZE(MSG_PP_CONNECT_OK));
 
 	///////////////////////////////////////////////////////////////////////////////
-	// 2008-02-22 by cmkwon, ¹Ù·Î Á¾·á ·çÆ¾ ¿äÃ» Àü¼Û
+	// 2008-02-22 by cmkwon, ë°”ë¡œ ì¢…ë£Œ ë£¨í‹´ ìš”ì²­ ì „ì†¡
 	this->SendAddMessageType(T_PP_CONNECT_DO_CLOSE);
 	return RES_RETURN_TRUE;
 }
 
 /*
-1. ÇÊµå ¼­¹ö¸¦ active »óÅÂ·Î ÀüÈ¯
-2. ÇÁ¸® ¼­¹ö°¡ ±âÁö°í ÀÖ´Â ip¿Í ÇÊµå ¼­¹ö ÀÌ¸§, ¼­¹ö±º ÀÌ¸§À» ºñ±³ È®ÀÎ
+1. í•„ë“œ ì„œë²„ë¥¼ active ìƒíƒœë¡œ ì „í™˜
+2. í”„ë¦¬ ì„œë²„ê°€ ê¸°ì§€ê³  ìˆëŠ” ipì™€ í•„ë“œ ì„œë²„ ì´ë¦„, ì„œë²„êµ° ì´ë¦„ì„ ë¹„êµ í™•ì¸
 
-- ÀÌ ÇÁ·ÎÅäÄİÀº ÇÊµå ¼­¹ö¸¦ ÇÁ¸® ¼­¹ö¿¡ µî·Ï½ÃÅ°±â À§ÇÔ
+- ì´ í”„ë¡œí† ì½œì€ í•„ë“œ ì„œë²„ë¥¼ í”„ë¦¬ ì„œë²„ì— ë“±ë¡ì‹œí‚¤ê¸° ìœ„í•¨
 */
 ProcessResult CPreIOCPSocket::Process_FP_CONNECT_FIELD_CONNECT(const char* pPacket, int nLength, int &nBytesUsed)
 {
@@ -2339,8 +2419,8 @@ ProcessResult CPreIOCPSocket::Process_FP_CONNECT_FIELD_CONNECT(const char* pPack
 			+ ((MSG_FP_CONNECT_FIELD_CONNECT*)(pPacket+nBytesUsed))->NumOfMapIndex * sizeof(MapIndex_t);
 	if(nLength - nBytesUsed < nRecvTypeSize)
 	{
-		// Protocl Error Ã³¸®
-		// - Client·Î ºÎÅÍ ¹ŞÀº Data Size°¡ Field Type¿¡ µû¸¥ Data Sizeº¸´Ù ÀÛ´Ù
+		// Protocl Error ì²˜ë¦¬
+		// - Clientë¡œ ë¶€í„° ë°›ì€ Data Sizeê°€ Field Typeì— ë”°ë¥¸ Data Sizeë³´ë‹¤ ì‘ë‹¤
 		// Error Code : ERR_PROTOCOL_INVALID_FIELD_DATA
 		SendErrorMessage(T_FP_CONNECT_FIELD_CONNECT, ERR_PROTOCOL_INVALID_FIELD_DATA);
 		return RES_PACKET_ERROR;
@@ -2367,13 +2447,13 @@ ProcessResult CPreIOCPSocket::Process_FP_CONNECT_FIELD_CONNECT(const char* pPack
 	m_PeerSocketType = ST_FIELD_SERVER;
 
 	///////////////////////////////////////////////////////////////////////////////
-	// 2008-04-29 by cmkwon, ¼­¹ö±º Á¤º¸ DB¿¡ Ãß°¡(½Å±Ô °èÁ¤ Ä³¸¯ÅÍ »ı¼º Á¦ÇÑ ½Ã½ºÅÛÃß°¡) - 
+	// 2008-04-29 by cmkwon, ì„œë²„êµ° ì •ë³´ DBì— ì¶”ê°€(ì‹ ê·œ ê³„ì • ìºë¦­í„° ìƒì„± ì œí•œ ì‹œìŠ¤í…œì¶”ê°€) - 
 	pServerGroup->m_LimitGroupUserCounts				= pMsgRecvFieldConnect->DBServerGroup.LimitUserCount;
 	pServerGroup->m_bLockCreateCharacterForNewAccount	= pMsgRecvFieldConnect->DBServerGroup.LockCreateCharacterForNewAccount;
 
-	// 2007-12-26 by dhjin, ¾Æ·¹³ª ÅëÇÕ - TRUE => ¾Æ·¹³ª ÇÊµå ¼­¹ö
+	// 2007-12-26 by dhjin, ì•„ë ˆë‚˜ í†µí•© - TRUE => ì•„ë ˆë‚˜ í•„ë“œ ì„œë²„
 	if(TRUE == pMsgRecvFieldConnect->ArenaFieldServerCheck)
-	{// 2007-12-26 by dhjin, ¾Æ·¹³ª ÅëÇÕ - ¾Æ·¹³ª ¼­¹ö´Â ·±ÃÄ ¸ñ·Ï¿¡¼­ Á¦¿ÜÇÑ´Ù.
+	{// 2007-12-26 by dhjin, ì•„ë ˆë‚˜ í†µí•© - ì•„ë ˆë‚˜ ì„œë²„ëŠ” ëŸ°ì³ ëª©ë¡ì—ì„œ ì œì™¸í•œë‹¤.
 		pServerGroup->m_bForbidViewServer = TRUE;
 	}
 	FieldServerInfo *pFieldServerInfo = &pServerGroup->m_FieldServerInfo;
@@ -2384,7 +2464,7 @@ ProcessResult CPreIOCPSocket::Process_FP_CONNECT_FIELD_CONNECT(const char* pPack
 	{
 		MapIndex_t tmpMapIndex
 			= *(MapIndex_t*)(((char*)pMsgRecvFieldConnect) + sizeof(MSG_FP_CONNECT_FIELD_CONNECT) + sizeof(MapIndex_t)*i);
-// 2004-12-15 by cmkwon, FieldServerµµ ¼­¹ö±º´ç ÇÏ³ªÀÓ
+// 2004-12-15 by cmkwon, FieldServerë„ ì„œë²„êµ°ë‹¹ í•˜ë‚˜ì„
 //		BOOL ret = pServerGroup->m_MapIndex2FieldServerMap.insertLock(tmpMapIndex, pFieldServerInfo);
 //
 //		if (!ret)
@@ -2399,10 +2479,10 @@ ProcessResult CPreIOCPSocket::Process_FP_CONNECT_FIELD_CONNECT(const char* pPack
 		DBGOUT("FieldServer(%s) -> %04d\n", pFieldServerInfo->serverID.GetString(string()), tmpMapIndex);
 #endif
 	}
-	pFieldServerInfo->IsActive = TRUE;				// MapÀ» ¸ğµÎ Ãß°¡ÇÏ°í TRUE¸¦ ¼³Á¤ÇÑ´Ù
+	pFieldServerInfo->IsActive = TRUE;				// Mapì„ ëª¨ë‘ ì¶”ê°€í•˜ê³  TRUEë¥¼ ì„¤ì •í•œë‹¤
 
 	char szTemp[1024];
-	// 2009-04-15 by cmkwon, ½Ã½ºÅÛ ·Î±× ¼öÁ¤ - 
+	// 2009-04-15 by cmkwon, ì‹œìŠ¤í…œ ë¡œê·¸ ìˆ˜ì • - 
 	wsprintf(szTemp, "ServerGroup(%s) FieldServer(%s), PeerIPPort[%s:%d] registeration done...\r\n", pServerGroup->m_ServerGroupName, pFieldServerInfo->serverID.GetString(string()), GetPeerIP(), GetPeerPort());
 	DBGOUT(szTemp);
 	g_pPreGlobal->WriteSystemLog(szTemp);
@@ -2432,8 +2512,8 @@ ProcessResult CPreIOCPSocket::Process_FP_CONNECT_NOTIFY_CLOSE(const char* pPacke
 	nRecvTypeSize = sizeof(MSG_FP_CONNECT_NOTIFY_CLOSE);
 	if(nLength - nBytesUsed < nRecvTypeSize)
 	{
-		// Protocl Error Ã³¸®
-		// - Client·Î ºÎÅÍ ¹ŞÀº Data Size°¡ Field Type¿¡ µû¸¥ Data Sizeº¸´Ù ÀÛ´Ù
+		// Protocl Error ì²˜ë¦¬
+		// - Clientë¡œ ë¶€í„° ë°›ì€ Data Sizeê°€ Field Typeì— ë”°ë¥¸ Data Sizeë³´ë‹¤ ì‘ë‹¤
 		// Error Code : ERR_PROTOCOL_INVALID_FIELD_DATA
 		SendErrorMessage(T_FP_CONNECT_NOTIFY_CLOSE, ERR_PROTOCOL_INVALID_FIELD_DATA);
 		return RES_PACKET_ERROR;
@@ -2445,10 +2525,10 @@ ProcessResult CPreIOCPSocket::Process_FP_CONNECT_NOTIFY_CLOSE(const char* pPacke
 	DBGOUT("%s NOTIFY_CLOSE: %s\n", GetTimeString(string()), pMsgRecvClose->AccountName);
 #endif
 
-	// 2010-04-26 by cmkwon, ·¯½Ã¾Æ Innva ÀÎÁõ/ºô¸µ ½Ã½ºÅÛ º¯°æ - 
+	// 2010-04-26 by cmkwon, ëŸ¬ì‹œì•„ Innva ì¸ì¦/ë¹Œë§ ì‹œìŠ¤í…œ ë³€ê²½ - 
 	//ms_pPreIOCP->DeleteAccountInfo(pMsgRecvClose->AccountName);
 	///////////////////////////////////////////////////////////////////////////////
-	// 2010-04-26 by cmkwon, ·¯½Ã¾Æ Innva ÀÎÁõ/ºô¸µ ½Ã½ºÅÛ º¯°æ - 
+	// 2010-04-26 by cmkwon, ëŸ¬ì‹œì•„ Innva ì¸ì¦/ë¹Œë§ ì‹œìŠ¤í…œ ë³€ê²½ - 
 	if(ms_pPreIOCP->DeleteAccountInfo(pMsgRecvClose->AccountName))
 	{
 		ms_pPreIOCP->INNBILL_LogOut(pMsgRecvClose->AccountName);
@@ -2473,15 +2553,15 @@ ProcessResult CPreIOCPSocket::Process_FP_EVENT_NOTIFY_WARP(const char* pPacket, 
 	}
 	//end of 10-08-2015 by inetpub
 
-// 2005-07-27 by cmkwon, ´Ù¸¥ ÇÊµå¼­¹ö·ÎÀÇ ¿öÇÁ´Â ¾øÀ¸¹Ç·Î »èÁ¦ÇÔ
+// 2005-07-27 by cmkwon, ë‹¤ë¥¸ í•„ë“œì„œë²„ë¡œì˜ ì›Œí”„ëŠ” ì—†ìœ¼ë¯€ë¡œ ì‚­ì œí•¨
 //	int		nRecvTypeSize	= 0;
 //	MSG_FP_EVENT_NOTIFY_WARP *pMsgRecvWarp;
 //
 //	nRecvTypeSize = sizeof(MSG_FP_EVENT_NOTIFY_WARP);
 //	if(nLength - nBytesUsed < nRecvTypeSize)
 //	{
-//		// Protocl Error Ã³¸®
-//		// - Client·Î ºÎÅÍ ¹ŞÀº Data Size°¡ Field Type¿¡ µû¸¥ Data Sizeº¸´Ù ÀÛ´Ù
+//		// Protocl Error ì²˜ë¦¬
+//		// - Clientë¡œ ë¶€í„° ë°›ì€ Data Sizeê°€ Field Typeì— ë”°ë¥¸ Data Sizeë³´ë‹¤ ì‘ë‹¤
 //		// Error Code : ERR_PROTOCOL_INVALID_FIELD_DATA
 //		SendErrorMessage(T_FP_EVENT_NOTIFY_WARP, ERR_PROTOCOL_INVALID_FIELD_DATA);
 //		return RES_PACKET_ERROR;
@@ -2492,7 +2572,7 @@ ProcessResult CPreIOCPSocket::Process_FP_EVENT_NOTIFY_WARP(const char* pPacket, 
 //	int nRetedErrorNum = ms_pPreIOCP->On_MSG_FP_EVENT_NOTIFY_WARP(pMsgRecvWarp);
 //	switch(nRetedErrorNum)
 //	{
-//	case 0:// ÀÎÁõ ¼º°ø
+//	case 0:// ì¸ì¦ ì„±ê³µ
 //		{
 //			//////////////////////////////
 //			// Send AUTH_USER_OK
@@ -2505,14 +2585,14 @@ ProcessResult CPreIOCPSocket::Process_FP_EVENT_NOTIFY_WARP(const char* pPacket, 
 //		break;
 //	case ERR_PROTOCOL_NOT_LOGINED:
 //		{
-//			// Protocol Error Ã³¸®
+//			// Protocol Error ì²˜ë¦¬
 //			// Error Code : ERR_PROTOCOL_NOT_LOGINED
 //			SendErrorMessage(T_FP_EVENT_NOTIFY_WARP, ERR_PROTOCOL_NOT_LOGINED, pMsgRecvWarp->CharacterUniqueNumber, 0, pMsgRecvWarp->AccountName);
 //		}
 //		break;
 //	case ERR_PROTOCOL_INVALID_PRESERVER_CLIENT_STATE:
 //		{
-//			// Protocol Error Ã³¸®
+//			// Protocol Error ì²˜ë¦¬
 //			// Error Code : ERR_PROTOCOL_INVALID_PRESERVER_CLIENT_STATE
 //			SendErrorMessage(T_FP_EVENT_NOTIFY_WARP, ERR_PROTOCOL_INVALID_PRESERVER_CLIENT_STATE, pMsgRecvWarp->CharacterUniqueNumber,  0, pMsgRecvWarp->AccountName);
 //		}
@@ -2688,7 +2768,7 @@ ProcessResult CPreIOCPSocket::Process_FP_CASH_CHANGE_CHARACTERNAME(const char* p
 
 ///////////////////////////////////////////////////////////////////////////////
 /// \fn			ProcessResult CPreIOCPSocket::Process_FP_ADMIN_BLOCKACCOUNT(const char* pPacket, int nLength, int &nBytesUsed)
-/// \brief		// 2008-01-31 by cmkwon, °èÁ¤ ºí·°/ÇØÁ¦ ¸í·É¾î·Î °¡´ÉÇÑ ½Ã½ºÅÛ ±¸Çö - CPreIOCPSocket::Process_FP_ADMIN_BLOCKACCOUNT() Ãß°¡
+/// \brief		// 2008-01-31 by cmkwon, ê³„ì • ë¸”ëŸ­/í•´ì œ ëª…ë ¹ì–´ë¡œ ê°€ëŠ¥í•œ ì‹œìŠ¤í…œ êµ¬í˜„ - CPreIOCPSocket::Process_FP_ADMIN_BLOCKACCOUNT() ì¶”ê°€
 /// \author		cmkwon
 /// \date		2008-01-31 ~ 2008-01-31
 /// \warning	
@@ -2712,7 +2792,7 @@ ProcessResult CPreIOCPSocket::Process_FP_ADMIN_BLOCKACCOUNT(const char* pPacket,
 											MSG_FP_ADMIN_BLOCKACCOUNT, pRMsg);
 
 	///////////////////////////////////////////////////////////////////////////////
-	// 2008-01-31 by cmkwon, °èÁ¤ ºí·°/ÇØÁ¦ ¸í·É¾î·Î °¡´ÉÇÑ ½Ã½ºÅÛ ±¸Çö - 
+	// 2008-01-31 by cmkwon, ê³„ì • ë¸”ëŸ­/í•´ì œ ëª…ë ¹ì–´ë¡œ ê°€ëŠ¥í•œ ì‹œìŠ¤í…œ êµ¬í˜„ - 
 	g_pPreGlobal->WriteSystemLogEX(TRUE, "[Notify] Account Block: AdminAccountName(%20s), BlockedUserAccName(%20s) Period(%s ~ %s)\r\n"
 		, pRMsg->blockAccInfo.szBlockAdminAccountName, pRMsg->blockAccInfo.szBlockedAccountName
 		, pRMsg->blockAccInfo.atimeStartTime.GetDateTimeString(STRNBUF(SIZE_MAX_ATUM_DATE_TIME_STRING))
@@ -2724,7 +2804,7 @@ ProcessResult CPreIOCPSocket::Process_FP_ADMIN_BLOCKACCOUNT(const char* pPacket,
 
 ///////////////////////////////////////////////////////////////////////////////
 /// \fn			ProcessResult CPreIOCPSocket::Process_FP_ADMIN_UNBLOCKACCOUNT(const char* pPacket, int nLength, int &nBytesUsed)
-/// \brief		// 2008-01-31 by cmkwon, °èÁ¤ ºí·°/ÇØÁ¦ ¸í·É¾î·Î °¡´ÉÇÑ ½Ã½ºÅÛ ±¸Çö - CPreIOCPSocket::Process_FP_ADMIN_UNBLOCKACCOUNT() Ãß°¡
+/// \brief		// 2008-01-31 by cmkwon, ê³„ì • ë¸”ëŸ­/í•´ì œ ëª…ë ¹ì–´ë¡œ ê°€ëŠ¥í•œ ì‹œìŠ¤í…œ êµ¬í˜„ - CPreIOCPSocket::Process_FP_ADMIN_UNBLOCKACCOUNT() ì¶”ê°€
 /// \author		cmkwon
 /// \date		2008-01-31 ~ 2008-01-31
 /// \warning	
@@ -2748,7 +2828,7 @@ ProcessResult CPreIOCPSocket::Process_FP_ADMIN_UNBLOCKACCOUNT(const char* pPacke
 											MSG_FP_ADMIN_UNBLOCKACCOUNT, pRMsg);
 
 	///////////////////////////////////////////////////////////////////////////////
-	// 2007-06-20 by cmkwon, °èÁ¤ ºí·°Á¤º¸ ½Ã½ºÅÛ ·Î±×¿¡ Ãß°¡
+	// 2007-06-20 by cmkwon, ê³„ì • ë¸”ëŸ­ì •ë³´ ì‹œìŠ¤í…œ ë¡œê·¸ì— ì¶”ê°€
 	g_pPreGlobal->WriteSystemLogEX(TRUE, "[Notify] Account Unblock: AdminAccountName(%20s), BlockedUserAccName(%20s)\r\n"
 		, pRMsg->blockAccInfo.szBlockAdminAccountName, pRMsg->blockAccInfo.szBlockedAccountName);
 
@@ -2756,7 +2836,7 @@ ProcessResult CPreIOCPSocket::Process_FP_ADMIN_UNBLOCKACCOUNT(const char* pPacke
 	pRMsg->blockAccInfo.atimeEndTime = pRMsg->blockAccInfo.atimeStartTime;
 	if(FALSE == ms_pPreIOCP->UnblockAccount(&pRMsg->blockAccInfo, this))
 	{
-		// 2008-02-01 by cmkwon, ºí·Ï ¸®½ºÆ®¿¡ ¾ø´Ù.
+		// 2008-02-01 by cmkwon, ë¸”ë¡ ë¦¬ìŠ¤íŠ¸ì— ì—†ë‹¤.
 		INIT_MSG_WITH_BUFFER(MSG_FP_ADMIN_UNBLOCKACCOUNT_OK, T_FP_ADMIN_UNBLOCKACCOUNT_OK, pSMsg, SendBuf);
 		pSMsg->ErrCode		= ERR_NOT_ACCOUNT_BLOCKED;
 		STRNCPY_MEMSET(pSMsg->UnblockedAccName, pRMsg->blockAccInfo.szBlockedAccountName, SIZE_MAX_ACCOUNT_NAME);
@@ -2784,8 +2864,8 @@ ProcessResult CPreIOCPSocket::Process_FP_CONNECT_NOTIFY_FIELDSERVER_CHANGE(const
 	nRecvTypeSize = sizeof(MSG_FP_CONNECT_NOTIFY_FIELDSERVER_CHANGE);
 	if(nLength - nBytesUsed < nRecvTypeSize)
 	{
-		// Protocl Error Ã³¸®
-		// - Client·Î ºÎÅÍ ¹ŞÀº Data Size°¡ Field Type¿¡ µû¸¥ Data Sizeº¸´Ù ÀÛ´Ù
+		// Protocl Error ì²˜ë¦¬
+		// - Clientë¡œ ë¶€í„° ë°›ì€ Data Sizeê°€ Field Typeì— ë”°ë¥¸ Data Sizeë³´ë‹¤ ì‘ë‹¤
 		// Error Code : ERR_PROTOCOL_INVALID_FIELD_DATA
 		SendErrorMessage(T_FP_CONNECT_NOTIFY_FIELDSERVER_CHANGE, ERR_PROTOCOL_INVALID_FIELD_DATA);
 		return RES_PACKET_ERROR;
@@ -2828,7 +2908,7 @@ ProcessResult CPreIOCPSocket::Process_FP_CONNECT_NOTIFY_FIELDSERVER_CHANGE(const
 
 ///////////////////////////////////////////////////////////////////////////////
 /// \fn			ProcessResult CPreIOCPSocket::Process_FP_CONNECT_CHECK_CONNECTABLE_ACCOUNT_OK(const char* pPacket, int nLength, int &nBytesUsed)
-/// \brief		// 2008-04-29 by cmkwon, ¼­¹ö±º Á¤º¸ DB¿¡ Ãß°¡(½Å±Ô °èÁ¤ Ä³¸¯ÅÍ »ı¼º Á¦ÇÑ ½Ã½ºÅÛÃß°¡) - CPreIOCPSocket::Process_FP_CONNECT_CHECK_CONNECTABLE_ACCOUNT_OK() Ãß°¡
+/// \brief		// 2008-04-29 by cmkwon, ì„œë²„êµ° ì •ë³´ DBì— ì¶”ê°€(ì‹ ê·œ ê³„ì • ìºë¦­í„° ìƒì„± ì œí•œ ì‹œìŠ¤í…œì¶”ê°€) - CPreIOCPSocket::Process_FP_CONNECT_CHECK_CONNECTABLE_ACCOUNT_OK() ì¶”ê°€
 /// \author		cmkwon
 /// \date		2008-04-30 ~ 2008-04-30
 /// \warning	
@@ -2854,12 +2934,12 @@ ProcessResult CPreIOCPSocket::Process_FP_CONNECT_CHECK_CONNECTABLE_ACCOUNT_OK(co
 	CAccountInfo tmPreAccountInfo;	
 	BOOL bReted = ms_pPreIOCP->GetAccountInfo(&tmPreAccountInfo, pRecvMsg->AccountName);
 	if(FALSE == bReted)
-	{// 2008-04-30 by cmkwon, °èÁ¤ Á¤º¸°¡ ¾ø´Ù.
+	{// 2008-04-30 by cmkwon, ê³„ì • ì •ë³´ê°€ ì—†ë‹¤.
 		return RES_BREAK;
 	}
 
 	if(FALSE == tmPreAccountInfo.CurrentFieldServerID.CompareValue(pRecvMsg->PCConnectLoginOK.FieldServerIP, pRecvMsg->PCConnectLoginOK.FieldServerPort))
-	{// 2008-04-30 by cmkwon, FieldServer Á¤º¸°¡ ´Ù¸£´Ù
+	{// 2008-04-30 by cmkwon, FieldServer ì •ë³´ê°€ ë‹¤ë¥´ë‹¤
 		return RES_BREAK;
 	}
 
@@ -2880,13 +2960,53 @@ ProcessResult CPreIOCPSocket::Process_FP_CONNECT_CHECK_CONNECTABLE_ACCOUNT_OK(co
 	INIT_MSG_WITH_BUFFER(MSG_PC_CONNECT_LOGIN_OK, T_PC_CONNECT_LOGIN_OK, pSMsg, SendBuf);
 	*pSMsg		= pRecvMsg->PCConnectLoginOK;
 	pPISoc->SendAddData(SendBuf, MSG_SIZE(MSG_PC_CONNECT_LOGIN_OK));
+	pPISoc->SendLauncherSessionToken(pRecvMsg->AccountName);
 	
-	// 2010-06-01 by shcho, GLogDB °ü·Ã -
+	// 2010-06-01 by shcho, GLogDB ê´€ë ¨ -
 	QPARAM_GLOG_INSERT_ACCOUNT * pQMsg = new QPARAM_GLOG_INSERT_ACCOUNT;
 	STRNCPY_MEMSET(pQMsg->szAccountName, pRecvMsg->AccountName, SIZE_MAX_ACCOUNT_NAME);
 	ms_pPreIOCP->m_pAtumDBManager->MakeAndEnqueueQuery(QT_InsertGlogAccount, this, (void*)pQMsg);
 
 	return RES_RETURN_TRUE;
+}
+
+void CPreIOCPSocket::SendLauncherSessionToken(const char* accountName)
+{
+	if (!accountName || !accountName[0] || !IsUsing())
+		return;
+
+	char secret[256];
+	if (!AceTRLoadLauncherSecret(secret, sizeof(secret)))
+	{
+		g_pPreGlobal->WriteSystemLogEX(TRUE,
+			"[LauncherAPI] Session token not issued: ACETR_LAUNCHER_API_SECRET / launcher_api_secret.txt missing.\r\n");
+		return;
+	}
+
+	unsigned int r1 = 0, r2 = 0, r3 = 0, r4 = 0;
+	rand_s(&r1); rand_s(&r2); rand_s(&r3); rand_s(&r4);
+
+	char nonce[40];
+	wsprintf(nonce, "%08x%08x%08x%08x", r1, r2, r3, r4);
+
+	long expiry = (long)time(NULL) + (30 * 60);
+	char payload[128];
+	wsprintf(payload, "%s|%ld|%s", accountName, expiry, nonce);
+
+	unsigned char digest[32];
+	AceTRHmacSha256((const unsigned char*)secret, (unsigned int)strlen(secret),
+		(const unsigned char*)payload, (unsigned int)strlen(payload), digest);
+
+	char signature[65];
+	MEMSET_ZERO(signature, sizeof(signature));
+	AceTRHex(digest, 32, signature, sizeof(signature));
+
+	INIT_MSG_WITH_BUFFER(MSG_PC_CONNECT_LAUNCHER_SESSION, T_PC_CONNECT_LAUNCHER_SESSION, pSession, sessionBuf);
+	wsprintf(pSession->SessionToken, "%s|%s", payload, signature);
+	SendAddData(sessionBuf, MSG_SIZE(MSG_PC_CONNECT_LAUNCHER_SESSION));
+
+	SecureZeroMemory(secret, sizeof(secret));
+	SecureZeroMemory(digest, sizeof(digest));
 }
 
 BOOL CPreIOCPSocket::ResPreLogin(MSG_PC_CONNECT_LOGIN *pRecvMsgLogin, CAccountInfo *i_pAccInfo, Err_t nErr)
@@ -2904,7 +3024,7 @@ BOOL CPreIOCPSocket::ResPreLogin(MSG_PC_CONNECT_LOGIN *pRecvMsgLogin, CAccountIn
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////
-	// ¼­¹ö ±×·ìÀÇ ¼­¹öµéÀÌ È°¼ºÈ­ µÇ¾îÀÖ´ÂÁö Ã¼Å©
+	// ì„œë²„ ê·¸ë£¹ì˜ ì„œë²„ë“¤ì´ í™œì„±í™” ë˜ì–´ìˆëŠ”ì§€ ì²´í¬
 	CServerGroup *serverGroup = ms_pPreIOCP->GetServerGroup(pRecvMsgLogin->FieldServerGroupName);
 	if (serverGroup == NULL)
 	{
@@ -2912,7 +3032,7 @@ BOOL CPreIOCPSocket::ResPreLogin(MSG_PC_CONNECT_LOGIN *pRecvMsgLogin, CAccountIn
 		return FALSE;
 	}
 	
-	// IM ¼­¹ö ½ÇÇà ¿©ºÎ È®ÀÎ
+	// IM ì„œë²„ ì‹¤í–‰ ì—¬ë¶€ í™•ì¸
 	if (!serverGroup->m_IMServerInfo.IsActive)
 	{
 		SendErrorMessage(T_PC_CONNECT_LOGIN, ERR_PROTOCOL_IM_SERVER_NOT_ALIVE, serverGroup->m_IMServerInfo.IsActive, 0, pRecvMsgLogin->FieldServerGroupName);
@@ -2931,7 +3051,7 @@ BOOL CPreIOCPSocket::ResPreLogin(MSG_PC_CONNECT_LOGIN *pRecvMsgLogin, CAccountIn
 	{
 		DBGOUT("  NOT ALLOWED IP or Account: Account(%s) Private(%s) Public(%s)\r\n"
 			, pRecvMsgLogin->AccountName, pRecvMsgLogin->PrivateIP, this->GetPeerIP());
-		SendErrorMessage(T_PC_CONNECT_LOGIN, ERR_PERMISSION_DENIED);					// 2006-09-27 by cmkwon, error code º¯°æ
+		SendErrorMessage(T_PC_CONNECT_LOGIN, ERR_PERMISSION_DENIED);					// 2006-09-27 by cmkwon, error code ë³€ê²½
 		return FALSE;
 	}
 
@@ -2939,25 +3059,25 @@ BOOL CPreIOCPSocket::ResPreLogin(MSG_PC_CONNECT_LOGIN *pRecvMsgLogin, CAccountIn
 	ms_pPreIOCP->m_AccountInfoMap.lock();
 	BOOL bReted = ms_pPreIOCP->GetAccountInfo(&tmPreAccountInfo, pRecvMsgLogin->AccountName);
 	if(bReted)
-	{// °èÁ¤ Á¤º¸°¡ ÀÖÀ½
+	{// ê³„ì • ì •ë³´ê°€ ìˆìŒ
 
 		if (strncmp(tmPreAccountInfo.PrivateClientIP, pRecvMsgLogin->PrivateIP, SIZE_MAX_IPADDRESS) != 0
 			|| GetClientState(&tmPreAccountInfo) >= CP_FIELD_LOGINED)
-		{// ÀÌÁß ·Î±×ÀÎ, ¾ç ÂÊÀÇ ¿¬°áÀ» ´Ù ²÷´Â´Ù. AccountInfoMap¿¡¼­ Á¦°ÅÇÑ´Ù.
+		{// ì´ì¤‘ ë¡œê·¸ì¸, ì–‘ ìª½ì˜ ì—°ê²°ì„ ë‹¤ ëŠëŠ”ë‹¤. AccountInfoMapì—ì„œ ì œê±°í•œë‹¤.
 
 			///////////////////////////////////////////////////////////////////////////////
-			// Account Á¤º¸ Áö¿ì±â
+			// Account ì •ë³´ ì§€ìš°ê¸°
 			ms_pPreIOCP->DeleteAccountInfo(pRecvMsgLogin->AccountName);
 			ms_pPreIOCP->m_AccountInfoMap.unlock();
 
 			///////////////////////////////////////////////////////////////////////////////
-			// ±âÁ¸ÀÇ user ¿¬°á ²÷±â: ÇÊµå ¼­¹ö¿¡ ¿¡·¯ ¸Ş¼¼Áö¸¦ º¸³½´Ù
+			// ê¸°ì¡´ì˜ user ì—°ê²° ëŠê¸°: í•„ë“œ ì„œë²„ì— ì—ëŸ¬ ë©”ì„¸ì§€ë¥¼ ë³´ë‚¸ë‹¤
 			ms_pPreIOCP->SendErrorToFieldServer(tmPreAccountInfo.CurrentServerGroup, tmPreAccountInfo.CurrentFieldServerID
 				, T_PC_CONNECT_LOGIN, ERR_PROTOCOL_DUPLICATE_LOGIN
 				, tmPreAccountInfo.CurrentClientIndex, 0, pRecvMsgLogin->AccountName);
 
 			///////////////////////////////////////////////////////////////////////////////
-			// »õ·Î¿î(¹æ±İ Á¢¼ÓÀ» ½ÃµµÇÏ´Â) user ¿¬°á ²÷±â
+			// ìƒˆë¡œìš´(ë°©ê¸ˆ ì ‘ì†ì„ ì‹œë„í•˜ëŠ”) user ì—°ê²° ëŠê¸°
 			SendErrorMessage(T_PC_CONNECT_LOGIN, ERR_PROTOCOL_DUPLICATE_LOGIN, 0, 0, pRecvMsgLogin->AccountName);
 			Sleep(100);
 			Close(0x11015, TRUE);			
@@ -2965,27 +3085,27 @@ BOOL CPreIOCPSocket::ResPreLogin(MSG_PC_CONNECT_LOGIN *pRecvMsgLogin, CAccountIn
 		}
 		else
 		{
-			// Laucher¸¸  ·Î±×ÀÎÈÄ ´Ù½Ã Launcher·Î ·Î±×ÀÎ ½Ãµµ¸¦ ÇÑ»óÅÂ
-			// Launcher ½ÇÇàÈÄ Å¬¶óÀÌ¾ğÆ®°¡ ½ÇÇàÁ¢¼Ó µÇÁö¾Ê°í Á¾·áµÈ »óÅÂÀÓ
+			// Laucherë§Œ  ë¡œê·¸ì¸í›„ ë‹¤ì‹œ Launcherë¡œ ë¡œê·¸ì¸ ì‹œë„ë¥¼ í•œìƒíƒœ
+			// Launcher ì‹¤í–‰í›„ í´ë¼ì´ì–¸íŠ¸ê°€ ì‹¤í–‰ì ‘ì† ë˜ì§€ì•Šê³  ì¢…ë£Œëœ ìƒíƒœì„
 			ms_pPreIOCP->DeleteAccountInfo(tmPreAccountInfo.AccountName);
 		}
 	}
 	
 	///////////////////////////////////////////////////////////////////////////////
-	// Ãß°¡ÇÒ °èÁ¤ Á¤º¸¸¦ ¼³Á¤ÇÑ´Ù.
+	// ì¶”ê°€í•  ê³„ì • ì •ë³´ë¥¼ ì„¤ì •í•œë‹¤.
 	CAccountInfo *pCurrentAccountInfo					= new CAccountInfo;
 	*pCurrentAccountInfo								= *i_pAccInfo;				// 2006-06-02 by cmkwon
 	STRNCPY_MEMSET(pCurrentAccountInfo->AccountName, pRecvMsgLogin->AccountName, SIZE_MAX_ACCOUNT_NAME);
 	STRNCPY_MEMSET(pCurrentAccountInfo->PrivateClientIP, pRecvMsgLogin->PrivateIP, SIZE_MAX_IPADDRESS);
 	STRNCPY_MEMSET(pCurrentAccountInfo->PublicClientIP, GetPeerIP(), SIZE_MAX_IPADDRESS);
-	STRNCPY_MEMSET(pCurrentAccountInfo->CurrentCharacterName, "", SIZE_MAX_CHARACTER_NAME);	// check: È®ÀÎ!
-	pCurrentAccountInfo->CurrentCharacterUniqueNumber	= 0;							// check: È®ÀÎ!
+	STRNCPY_MEMSET(pCurrentAccountInfo->CurrentCharacterName, "", SIZE_MAX_CHARACTER_NAME);	// check: í™•ì¸!
+	pCurrentAccountInfo->CurrentCharacterUniqueNumber	= 0;							// check: í™•ì¸!
 	STRNCPY_MEMSET(pCurrentAccountInfo->CurrentServerGroup, pRecvMsgLogin->FieldServerGroupName, SIZE_MAX_SERVER_NAME);	
 	pCurrentAccountInfo->CurrentFieldServerID			= serverInfo->serverID;
 	SetClientState(CP_LOGINED, pCurrentAccountInfo);
 	pCurrentAccountInfo->LauncherLoginTime.SetCurrentDateTime();
-	pCurrentAccountInfo->CurrentPreServerClientIndex	= this->GetClientArrayIndex();		// 2008-04-29 by cmkwon, ¼­¹ö±º Á¤º¸ DB¿¡ Ãß°¡(½Å±Ô °èÁ¤ Ä³¸¯ÅÍ »ı¼º Á¦ÇÑ ½Ã½ºÅÛÃß°¡) - 
-	// 2010-11 by dhjin, ¾Æ¶ó¸®¿À Ã¤³Î¸µ ·Î±×ÀÎ.
+	pCurrentAccountInfo->CurrentPreServerClientIndex	= this->GetClientArrayIndex();		// 2008-04-29 by cmkwon, ì„œë²„êµ° ì •ë³´ DBì— ì¶”ê°€(ì‹ ê·œ ê³„ì • ìºë¦­í„° ìƒì„± ì œí•œ ì‹œìŠ¤í…œì¶”ê°€) - 
+	// 2010-11 by dhjin, ì•„ë¼ë¦¬ì˜¤ ì±„ë„ë§ ë¡œê·¸ì¸.
 #ifdef S_ARARIO_HSSON
 	if(CONNECT_PUBLISHER_NHN_JPN == m_eOtherPublisherConncect)
 	{
@@ -2994,29 +3114,29 @@ BOOL CPreIOCPSocket::ResPreLogin(MSG_PC_CONNECT_LOGIN *pRecvMsgLogin, CAccountIn
  #endif	// S_ARARIO_HSSON
 
 	/////////////////////////////////////////////////////
-	// ¸Ş½ÃÁö¸¦ ¹Ì¸® ¸¸µç´Ù, MSG_PC_CONNECT_LOGIN_OK to client
+	// ë©”ì‹œì§€ë¥¼ ë¯¸ë¦¬ ë§Œë“ ë‹¤, MSG_PC_CONNECT_LOGIN_OK to client
 	INIT_MSG_WITH_BUFFER(MSG_PC_CONNECT_LOGIN_OK, T_PC_CONNECT_LOGIN_OK, pSendMsg, pSendBuf);
-	STRNCPY_MEMSET(pSendMsg->AccountName, pRecvMsgLogin->AccountName, SIZE_MAX_ACCOUNT_NAME);	// 2008-10-08 by cmkwon, ´ë¸¸ 2´Ü°è °èÁ¤ ½Ã½ºÅÛ Áö¿ø ±¸Çö(email->uid) - 2´Ü°è °èÁ¤À» Àü¼ÛÇÑ´Ù.
+	STRNCPY_MEMSET(pSendMsg->AccountName, pRecvMsgLogin->AccountName, SIZE_MAX_ACCOUNT_NAME);	// 2008-10-08 by cmkwon, ëŒ€ë§Œ 2ë‹¨ê³„ ê³„ì • ì‹œìŠ¤í…œ ì§€ì› êµ¬í˜„(email->uid) - 2ë‹¨ê³„ ê³„ì •ì„ ì „ì†¡í•œë‹¤.
 	STRNCPY_MEMSET(pSendMsg->FieldServerIP, pCurrentAccountInfo->CurrentFieldServerID.IP, SIZE_MAX_IPADDRESS);
 	pSendMsg->FieldServerPort = (USHORT)pCurrentAccountInfo->CurrentFieldServerID.port;
 	STRNCPY_MEMSET(pSendMsg->IMServerIP, serverGroup->m_IMServerInfo.serverID.IP, SIZE_MAX_IPADDRESS);
 	pSendMsg->IMServerPort = (USHORT)serverGroup->m_IMServerInfo.serverID.port;
 
 	/////////////////////////////////////////////////////
-	// °ü¸®¸¦ À§ÇØ ·Î±×ÀÎ ÇÑ accountµéÀÇ list¿¡ Ãß°¡
+	// ê´€ë¦¬ë¥¼ ìœ„í•´ ë¡œê·¸ì¸ í•œ accountë“¤ì˜ listì— ì¶”ê°€
 	BOOL bInserted = ms_pPreIOCP->InsertAccountInfo(pCurrentAccountInfo->AccountName, pCurrentAccountInfo);
 	if (FALSE == bInserted)
-	{// ÀÌÁß ·Î±×ÀÎ, ¾ç ÂÊÀÇ ¿¬°áÀ» ´Ù ²÷´Â´Ù. AccountInfoMap¿¡¼­ Á¦°ÅÇÑ´Ù.
+	{// ì´ì¤‘ ë¡œê·¸ì¸, ì–‘ ìª½ì˜ ì—°ê²°ì„ ë‹¤ ëŠëŠ”ë‹¤. AccountInfoMapì—ì„œ ì œê±°í•œë‹¤.
 		
 		g_pPreGlobal->WriteSystemLogEX(TRUE, STRMSG_S_P2PRENOTIFY_0003, pRecvMsgLogin->AccountName, pRecvMsgLogin->PrivateIP);
 
 		///////////////////////////////////////////////////////////////////////////////
-		// »õ·Î¿î(¹æ±İ Á¢¼ÓÀ» ½ÃµµÇÏ´Â) user ¿¬°á ²÷±â
+		// ìƒˆë¡œìš´(ë°©ê¸ˆ ì ‘ì†ì„ ì‹œë„í•˜ëŠ”) user ì—°ê²° ëŠê¸°
 		SendErrorMessage(T_PC_CONNECT_LOGIN, ERR_PROTOCOL_DUPLICATE_LOGIN, 0, 0, pCurrentAccountInfo->AccountName);
 		Close(0x11016, TRUE);
 		
 		///////////////////////////////////////////////////////////////////////////////
-		// ±âÁ¸ÀÇ user ¿¬°á ²÷±â: ÇÊµå ¼­¹ö¿¡ ¿¡·¯ ¸Ş¼¼Áö¸¦ º¸³½´Ù
+		// ê¸°ì¡´ì˜ user ì—°ê²° ëŠê¸°: í•„ë“œ ì„œë²„ì— ì—ëŸ¬ ë©”ì„¸ì§€ë¥¼ ë³´ë‚¸ë‹¤
 		if(ms_pPreIOCP->GetAccountInfo(&tmPreAccountInfo, pCurrentAccountInfo->AccountName))
 		{
 			ms_pPreIOCP->SendErrorToFieldServer(tmPreAccountInfo.CurrentServerGroup, tmPreAccountInfo.CurrentFieldServerID
@@ -3024,7 +3144,7 @@ BOOL CPreIOCPSocket::ResPreLogin(MSG_PC_CONNECT_LOGIN *pRecvMsgLogin, CAccountIn
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////
-		// Account Á¤º¸ Áö¿ì±â
+		// Account ì •ë³´ ì§€ìš°ê¸°
 		ms_pPreIOCP->DeleteAccountInfo(pRecvMsgLogin->AccountName);
 		ms_pPreIOCP->m_AccountInfoMap.unlock();
 
@@ -3034,12 +3154,13 @@ BOOL CPreIOCPSocket::ResPreLogin(MSG_PC_CONNECT_LOGIN *pRecvMsgLogin, CAccountIn
 	ms_pPreIOCP->m_AccountInfoMap.unlock();
 
 	///////////////////////////////////////////////////////////////////////////////
-	// 2008-04-29 by cmkwon, ¼­¹ö±º Á¤º¸ DB¿¡ Ãß°¡(½Å±Ô °èÁ¤ Ä³¸¯ÅÍ »ı¼º Á¦ÇÑ ½Ã½ºÅÛÃß°¡) - 
-	if( COMPARE_BIT_FLAG(i_pAccInfo->AccountType, RACE_OPERATION|RACE_GAMEMASTER)	// 2008-05-19 by cmkwon, °ü¸®ÀÚ/¿î¿µÀÚ´Â ¼­¹ö±º Á¢¼Ó °¡´É¿©ºÎ Ã¼Å© ÇÏÁö ¾Ê°í ¼º°øÀ» ¹Ù·Î Àü¼Û
+	// 2008-04-29 by cmkwon, ì„œë²„êµ° ì •ë³´ DBì— ì¶”ê°€(ì‹ ê·œ ê³„ì • ìºë¦­í„° ìƒì„± ì œí•œ ì‹œìŠ¤í…œì¶”ê°€) - 
+	if( COMPARE_BIT_FLAG(i_pAccInfo->AccountType, RACE_OPERATION|RACE_GAMEMASTER)	// 2008-05-19 by cmkwon, ê´€ë¦¬ì/ìš´ì˜ìëŠ” ì„œë²„êµ° ì ‘ì† ê°€ëŠ¥ì—¬ë¶€ ì²´í¬ í•˜ì§€ ì•Šê³  ì„±ê³µì„ ë°”ë¡œ ì „ì†¡
 		|| FALSE == serverGroup->m_bLockCreateCharacterForNewAccount )
 	{
 		SendAddData(pSendBuf, MSG_SIZE(MSG_PC_CONNECT_LOGIN_OK));
-		// 2010-06-01 by shcho, GLogDB °ü·Ã -
+		SendLauncherSessionToken(pCurrentAccountInfo->AccountName);
+		// 2010-06-01 by shcho, GLogDB ê´€ë ¨ -
 		QPARAM_GLOG_INSERT_ACCOUNT * pQMsg = new QPARAM_GLOG_INSERT_ACCOUNT;
 		STRNCPY_MEMSET(pQMsg->szAccountName, pCurrentAccountInfo->AccountName, SIZE_MAX_ACCOUNT_NAME)
 
@@ -3058,7 +3179,7 @@ BOOL CPreIOCPSocket::ResPreLogin(MSG_PC_CONNECT_LOGIN *pRecvMsgLogin, CAccountIn
 	return TRUE;
 }
 
-// start 2011-06-22 by hskim, »ç¼³ ¼­¹ö ¹æÁö
+// start 2011-06-22 by hskim, ì‚¬ì„¤ ì„œë²„ ë°©ì§€
 ProcessResult CPreIOCPSocket::Process_IP_AUTHENTICATION_SHUTDOWN(const char* pPacket, int nLength, int &nBytesUsed)
 {
 	//10-08-2015 by inetpub - filtering BIN<=>BIN allowed ip
@@ -3074,7 +3195,7 @@ ProcessResult CPreIOCPSocket::Process_IP_AUTHENTICATION_SHUTDOWN(const char* pPa
 	DECLARE_MESSAGE_AND_CHECK_SIZE_SERVER(pPacket, nLength, nBytesUsed, T_IP_AUTHENTICATION_SHUTDOWN,
 		MSG_IP_AUTHENTICATION_SHUTDOWN, pRMsg);
 	/*
-	g_pPreGlobal->WriteSystemLogEX(TRUE, STRMSG_AUTHENTICATION_PRESERVER_SHUTDOWN_LOG, 1024);		// ·Î±× Ãâ·Â
+	g_pPreGlobal->WriteSystemLogEX(TRUE, STRMSG_AUTHENTICATION_PRESERVER_SHUTDOWN_LOG, 1024);		// ë¡œê·¸ ì¶œë ¥
 
 	if( FALSE == g_pPreGlobal->m_pSecurityManager->GetAuthentication() && pRMsg->bFlag == TRUE )
 	{
@@ -3099,7 +3220,7 @@ ProcessResult CPreIOCPSocket::Process_FP_AUTHENTICATION_SHUTDOWN(const char* pPa
 	DECLARE_MESSAGE_AND_CHECK_SIZE_SERVER(pPacket, nLength, nBytesUsed, T_FP_AUTHENTICATION_SHUTDOWN,
 		MSG_FP_AUTHENTICATION_SHUTDOWN, pRMsg);
 	/*
-	g_pPreGlobal->WriteSystemLogEX(TRUE, STRMSG_AUTHENTICATION_PRESERVER_SHUTDOWN_LOG, 8629);		// ·Î±× Ãâ·Â
+	g_pPreGlobal->WriteSystemLogEX(TRUE, STRMSG_AUTHENTICATION_PRESERVER_SHUTDOWN_LOG, 8629);		// ë¡œê·¸ ì¶œë ¥
 
 	if( FALSE == g_pPreGlobal->m_pSecurityManager->GetAuthentication() && pRMsg->bFlag == TRUE )
 	{
@@ -3108,10 +3229,10 @@ ProcessResult CPreIOCPSocket::Process_FP_AUTHENTICATION_SHUTDOWN(const char* pPa
 	*/
 	return RES_RETURN_TRUE;
 }
-// end 2011-06-22 by hskim, »ç¼³ ¼­¹ö ¹æÁö
+// end 2011-06-22 by hskim, ì‚¬ì„¤ ì„œë²„ ë°©ì§€
 
 
-// error ¸Ş¼¼Áö¸¦ Àü¼Û
+// error ë©”ì„¸ì§€ë¥¼ ì „ì†¡
 void CPreIOCPSocket::SendErrorMessage(MessageType_t msgType, Err_t err, int errParam1, int errParam2, char* errMsg, BOOL bCloseConnection)
 {
 	MSG_ERROR	*pMsgError;
