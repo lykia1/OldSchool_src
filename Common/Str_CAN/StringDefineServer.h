@@ -881,82 +881,91 @@ Lutfen yamayi Ana Sayfadan(%s) indirip yeniden baglanin.
 // 2007-08-23 by cmkwon, Wide 해상도 1280x720(16:9) 추가 - 스트링 추가
 #define STRMSG_WINDOW_DEGREE_W1280x720_LOW			"1280x720 (low-wide)"
 #define STRMSG_WINDOW_DEGREE_W1280x720_MEDIUM		"1280x720 (medium-wide)"
-#define STRMSG_WINDOW_DEGREE_W1280x720_HIGH			"1280x720 (high-wide)"
+#define STRMSG_WINDOW_DEGREE_W1280x720_HIGH			"1280x720 (yuksek-genis)"
 
 // 2007-08-30 by cmkwon, 회의룸 시스템 구현 - 스트링 추가
-#define STRMSG_070830_0001                                   "This command can only be used after nation has been selected."
-#define STRMSG_070830_0002                                   "Conference room map(%d) of corresponding nation is not available"
-#define STRMSG_070830_0003                                   "Number of users that can enter conference room : %dpeople(s)"
-#define STRMSG_070830_0004                                   "'%s' has already been added to entrance list."
-#define STRMSG_070830_0005                                   "'%s' does not have entrance permission."
-#define STRMSG_070830_0006                                   "'%s' is not a valid character."
-#define STRMSG_070830_0007                                 "'%s' cannot be added to conference room entrance list.(Maximum %d people)"
-#define STRMSG_070830_0008                                   "'%s' have received the authority of entering conference room."
-#define STRMSG_070830_0009                                   "Permission to enter conference room has been given."
-#define STRMSG_070830_0010                                   "Permission to enter conference room has been cancelled."
+#define STRMSG_070830_0001                                   "Bu komut yalnizca ulus secildikten sonra kullanilabilir."
+#define STRMSG_070830_0002                                   "Ilgili ulusun konferans odasi haritasi(%d) kullanilabilir degil"
+#define STRMSG_070830_0003                                   "Konferans odasina girebilecek kullanici sayisi : %dkisi"
+#define STRMSG_070830_0004                                   "'%s' zaten giris listesine eklenmis."
+#define STRMSG_070830_0005                                   "'%s' giris iznine sahip degil."
+#define STRMSG_070830_0006                                   "'%s' gecerli bir karakter degil."
+#define STRMSG_070830_0007                                 "'%s' konferans odasi giris listesine eklenemez.(Maksimum %d kisi)"
+#define STRMSG_070830_0008                                   "'%s' konferans odasina giris yetkisi aldi."
+#define STRMSG_070830_0009                                   "Konferans odasina giris izni verildi."
+#define STRMSG_070830_0010                                   "Konferans odasina giris izni iptal edildi."
 #define STRMSG_070830_0011                                   "'%s'"
 
 // 2007-11-13 by cmkwon, just for Korean service, 
-#define STRMSG_071115_0001									"\\y%s send you %s as a present."
-#define STRMSG_071115_0002									"Present list : \'%s(%d pieces)\'"
-#define STRMSG_071115_0003									"\\y%s send a present to %s.  Present is  %s. Please check the warehouse."
+#define STRMSG_071115_0001									"\\y%s size %s hediye gonderdi."
+#define STRMSG_071115_0002									"Hediye listesi : '%s(%d adet)'"
+#define STRMSG_071115_0003									"\\y%s, %s oyuncusuna hediye gonderdi. Hediye: %s. Lutfen depoyu kontrol edin."
  
 // 2007-11-19 by cmkwon, callGM system 
-#define STRMSG_071120_0001									"Appeal system is not in effect. Please use the customer centre."
-#define STRMSG_071120_0002									"Appeal system is activated."
-#define STRMSG_071120_0003									"Appeal system is concluded."
-#define STRMSG_071120_0004									"Appeal system will start from %s to %s."
+#define STRMSG_071120_0001									"Destek sistemi aktif degil. Lutfen musteri hizmetlerini kullanin."
+#define STRMSG_071120_0002									"Destek sistemi etkinlestirildi."
+#define STRMSG_071120_0003									"Destek sistemi sona erdi."
+#define STRMSG_071120_0004									"Destek sistemi %s ile %s arasinda aktif olacak."
 
 // 2007-11-28 by cmkwon, 통지시스템 구현 - 
-#define STRMSG_071128_0001									"%s has sent you %s(%d) as a present. Please check at your warehouse."
+#define STRMSG_071128_0001									"%s size %s(%d) hediye gonderdi. Lutfen deponuzu kontrol edin."
 
 // 2007-12-27 by cmkwon, 윈도우즈 모드 기능 추가 - 
-#define STRMSG_071228_0001				"Resolution setting is invalid. Please check again."
+#define STRMSG_071228_0001				"Cozunurluk ayari gecersiz. Lutfen tekrar kontrol edin."
 
 // 2008-01-31 by cmkwon, 계정 블럭/해제 명령어로 가능한 시스템 구현 - 
-#define STRMSG_080201_0001									"'Error exists in %s' block setting. ErrorCode(%d)"
-#define STRMSG_080201_0002									"'%s' account has been blocked.[Block End Date: %s]"
-#define STRMSG_080201_0003									"'%s' account does not exist in block list. ErrorCode(%d)"
-#define STRMSG_080201_0004									"'Erros has occured in the process of blocking %s' account. ErrorCode(%d)"
-#define STRMSG_080201_0005									"'%s' account has been removed from block list." 
+#define STRMSG_080201_0001									"'%s' engelleme ayarinda hata var. HataKodu(%d)"
+#define STRMSG_080201_0002									"'%s' hesabi engellendi.[Engel Bitis Tarihi: %s]"
+#define STRMSG_080201_0003									"'%s' hesabi engelleme listesinde bulunmuyor. HataKodu(%d)"
+#define STRMSG_080201_0004									"'%s' hesabini engelleme sirasinda hata olustu. HataKodu(%d)"
+#define STRMSG_080201_0005									"'%s' hesabi engelleme listesinden cikarildi." 
 
 // 2008-02-11 by cmkwon, 해상도 추가(1440x900) - 
-#define STRMSG_WINDOW_DEGREE_1440x900_LOW			"1440x900 (low-wide)"
-#define STRMSG_WINDOW_DEGREE_1440x900_MEDIUM		"1440x900 (medium-wide)"
-#define STRMSG_WINDOW_DEGREE_1440x900_HIGH			"1440x900 (high-wide)"
+#define STRMSG_WINDOW_DEGREE_1440x900_LOW			"1440x900 (dusuk-genis)"
+#define STRMSG_WINDOW_DEGREE_1440x900_MEDIUM		"1440x900 (orta-genis)"
+#define STRMSG_WINDOW_DEGREE_1440x900_HIGH			"1440x900 (yuksek-genis)"
 
 // 2007-12-27 by dhjin, 아레나통합- 아레나서버연결관련오류
-#define STRMSG_S_MF2AFCONNECT_0000                       "[Error] WndProc(), Can't connect to  ArenaServer[%15s:%4d] Reconnect\r\n"
-#define STRMSG_S_MF2AFCONNECT_0001                       "Connected to Arena Server.\r\n"
-#define STRMSG_S_MF2AFCONNECT_0002                       "Connection to Arena Server[%15s:%4d] is closed. Trying to re-connect.\r\n"
-#define STRMSG_S_MF2AFCONNECT_0003                       "  T_ERROR %s(%#04X) received from %s[%s]\r\n"
-#define STRMSG_S_MF2AFCONNECT_0004                       "Unknown Error@WM_FIELD_PACKET_NOTIFY: %s(%#04x)\n"
-#define STRMSG_ARENAEVENT_080310_0001                    "Number \\y%d Arena waiting room has been given event attribute.\r\n"
-#define STRMSG_ARENAEVENT_080310_0002                    "Number \\y%d Arena waiting room has been discharged from event attribute.\r\n"
-#define STRMSG_ARENAEVENT_080310_0003                    "\\yFailed to give Arena attribute.\r\n"
-#define STRMSG_080428_0001					"\\y%s has been shot down.\\y"          // 2008-04-28 by dhjin, Arena integration - String is added when taking down the opponent, only in Arena map 
+#define STRMSG_S_MF2AFCONNECT_0000                       "[Hata] WndProc(), ArenaServer[%15s:%4d] baglantisi kurulamadi. Yeniden baglaniliyor
+"
+#define STRMSG_S_MF2AFCONNECT_0001                       "Arena Server'a baglanildi.
+"
+#define STRMSG_S_MF2AFCONNECT_0002                       "Arena Server[%15s:%4d] baglantisi kapandi. Yeniden baglaniliyor.
+"
+#define STRMSG_S_MF2AFCONNECT_0003                       "  %s[%s] kaynagindan T_ERROR %s(%#04X) alindi
+"
+#define STRMSG_S_MF2AFCONNECT_0004                       "Bilinmeyen Hata@WM_FIELD_PACKET_NOTIFY: %s(%#04x)
+"
+#define STRMSG_ARENAEVENT_080310_0001                    "%d numarali Arena bekleme odasina etkinlik ozelligi verildi.
+"
+#define STRMSG_ARENAEVENT_080310_0002                    "%d numarali Arena bekleme odasindan etkinlik ozelligi kaldirildi.
+"
+#define STRMSG_ARENAEVENT_080310_0003                    "\\yArena ozelligi verilemedi.
+"
+#define STRMSG_080428_0001					"\\y%s vurularak dusuruldu.\\y"          // 2008-04-28 by dhjin, Arena integration - String is added when taking down the opponent, only in Arena map 
 
 // 2008-04-29 by cmkwon, 서버군 정보 DB에 추가(신규 계정 캐릭터 생성 제한 시스템추가) - 
-#define STRMSG_080430_0001					"Selected server is a server where creation of new character is not available."
+#define STRMSG_080430_0001					"Secilen sunucuda yeni karakter olusturulamiyor."
 
 // 2008-06-13 by dhjin, EP3 여단 수정 사항 - 
-#define STRMSG_080613_0001					"Request for entering %s brigade was rejected."
+#define STRMSG_080613_0001					"%s tugayina giris istegi reddedildi."
 
 // 2008-09-04 by cmkwon, don't need translation, SystemLog 
-#define STRMSG_080904_0001					 "[DB Error] No such DB query process(QP_xxx) function !! QueryType(%d:%s)\r\n"
+#define STRMSG_080904_0001					 "[DB Hatasi] Boyle bir DB sorgu isleme(QP_xxx) fonksiyonu yok !! QueryType(%d:%s)
+"
 
 
 // 2008-12-30 by cmkwon, 지도자 채팅 제한 카드 구현 - 
-#define STRMSG_081230_0001					"\\y%s will be restricted from chatting for %d minutes.\\y"
-#define STRMSG_081230_0002					"\\yChatting has been restricted by the leader for %d minutes.\\y"
-#define STRMSG_081230_0003					"\\yChatting restriction by leader is released.\\y"
+#define STRMSG_081230_0001					"\\y%s kullanicisinin sohbeti %d dakika kisitlanacak.\\y"
+#define STRMSG_081230_0002					"\\ySohbet lider tarafindan %d dakika kisitlandi.\\y"
+#define STRMSG_081230_0003					"\\yLider tarafindan uygulanan sohbet kisitlamasi kaldirildi.\\y"
 
 ///////////////////////////////////////////////////////////////////////////////
 // 2009-08-31 by cmkwon, Gameforge4D 게임가드 동의창 띄우기 - 
 // 2009-09-02 by cmkwon, Gameforge4D 게임 가드 동의창 WebPage로 처리 - STRMSG_090831_0001는 웹페이지로 처리
 //#define STRMSG_090831_0001					"AirRivals is now protected from cheaters with a hackshield.\r\nPlease install it to help us to make AirRivals even safer.\r\nYou can only continue gameplay once you have installed the hackshield.\r\nPlease read the privacy policy< http://agb.gameforge.de/mmog/index.php?lang=en&art=datenschutz_mmog&special=airrivals&&f_text=b1daf2&f_text_hover=ffffff&f_text_h=061229&f_text_hr=061229&f_text_hrbg=061229&f_text_hrborder=9EBDE4&f_text_font=arial%2C+arial%2C+arial%2C+sans-serif&f_bg=000000 > to find out more about the hackshield's function."
-#define STRMSG_090831_0002					"Install hackshield"
-#define STRMSG_090831_0003					"cancel"
+#define STRMSG_090831_0002					"HackShield'i yukle"
+#define STRMSG_090831_0003					"iptal"
 
 ///////////////////////////////////////////////////////////////////////////////
 // 2009-09-02 by cmkwon, Gameforge4D 게임 가드 동의창 WebPage로 처리 - 
@@ -976,10 +985,10 @@ Lutfen yamayi Ana Sayfadan(%s) indirip yeniden baglanin.
 
 ///////////////////////////////////////////////////////////////////////////////
 // 2011-01-26 by hskim, 인증 서버의 접속 허용 상황
-#define STRMSG_AUTHENTICATION_ACCEPT_COMMENT_NOT_REGISTER			"Not Registered Server (It can be Illegal Private Server.)"
-#define STRMSG_AUTHENTICATION_ACCEPT_COMMENT_DB_ERROR				"Error occurs during linkage with DB"
-#define STRMSG_AUTHENTICATION_ACCEPT_COMMENT_OK						"Authentication succeed"
-#define STRMSG_AUTHENTICATION_ACCEPT_COMMENT_BLOCKED				"Registered Server IP But proceed Authentication Denied"
-#define STRMSG_AUTHENTICATION_ACCEPT_COMMENT_SHUTDOWN				"Windows Shut Down command is sent to the server."
+#define STRMSG_AUTHENTICATION_ACCEPT_COMMENT_NOT_REGISTER			"Kayitli Olmayan Sunucu (Yasadisi Ozel Sunucu olabilir.)"
+#define STRMSG_AUTHENTICATION_ACCEPT_COMMENT_DB_ERROR				"DB baglantisi sirasinda hata olustu"
+#define STRMSG_AUTHENTICATION_ACCEPT_COMMENT_OK						"Kimlik dogrulama basarili"
+#define STRMSG_AUTHENTICATION_ACCEPT_COMMENT_BLOCKED				"Sunucu IP kayitli ancak Kimlik Dogrulama reddedildi"
+#define STRMSG_AUTHENTICATION_ACCEPT_COMMENT_SHUTDOWN				"Windows kapatma komutu sunucuya gonderildi."
 
 #endif // end_#ifndef _STRING_DEFINE_SERVER_H_
