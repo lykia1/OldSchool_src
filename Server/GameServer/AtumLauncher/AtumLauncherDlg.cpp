@@ -97,6 +97,25 @@ static const CRect ACETR_ACCOUNT_EMAIL_RECT(875, 255, 1125, 295);
 static const CRect ACETR_ACCOUNT_CHARACTERS_RECT(875, 305, 1125, 345);
 static const CRect ACETR_ACCOUNT_SECURITY_RECT(875, 355, 1125, 395);
 
+static size_t LauncherApiWriteCallback(void* contents, size_t size, size_t nmemb, void* userp)
+{
+	const size_t total = size * nmemb;
+	std::string* output = reinterpret_cast<std::string*>(userp);
+	output->append(reinterpret_cast<const char*>(contents), total);
+	return total;
+}
+
+static CString GetLauncherApiBaseUrl()
+{
+	char baseUrl[1024] = {0};
+	GetPrivateProfileString("LauncherApi", "BaseUrl", "http://127.0.0.1:5080",
+		baseUrl, sizeof(baseUrl), _INI_FILE_NAME);
+	CString result(baseUrl);
+	while (!result.IsEmpty() && result.Right(1) == "/")
+		result = result.Left(result.GetLength() - 1);
+	return result;
+}
+
 static void OpenLauncherConfiguredUrl(LPCSTR key)
 {
 	char defaultUrl[1024] = {0};
@@ -261,6 +280,8 @@ CAtumLauncherDlg::CAtumLauncherDlg(CWnd* pParent /*=NULL*/)
 	m_bModernNavTracking = FALSE;
 	m_bLauncherLoggedIn = FALSE;
 	m_nLauncherAccountPage = 0;
+	m_szLauncherSessionToken.Empty();
+	m_szLauncherCharacterData.Empty();
 	MEMSET_ZERO(m_szLaunchCmdLine, sizeof(m_szLaunchCmdLine));
 	MEMSET_ZERO(m_szLaunchAppPath, sizeof(m_szLaunchAppPath));
 	MEMSET_ZERO(m_szLaunchCmdParam, sizeof(m_szLaunchCmdParam));
@@ -1388,6 +1409,37 @@ void CAtumLauncherDlg::OnPaint()
 				PaintDC.SelectObject(prevPen);
 				PaintDC.SelectObject(prevBrush);
 			}
+			else if (m_nLauncherAccountPage == 3)
+			{
+				PaintDC.TextOut(875, 120, "KARAKTERLERİM");
+				PaintDC.SelectObject(&smallFont);
+				PaintDC.SetTextColor(RGB(150, 157, 174));
+				PaintDC.TextOut(875, 155, "Hesabına bağlı karakterler");
+
+				CString data = m_szLauncherCharacterData;
+				int tokenPos = 0;
+				int y = 198;
+				int shown = 0;
+				CString line = data.Tokenize("\n", tokenPos);
+				while (!line.IsEmpty() && shown < 7)
+				{
+					line.Replace("\r", "");
+					PaintDC.SetTextColor(shown == 0 ? RGB(245, 247, 251) : RGB(210, 214, 224));
+					PaintDC.TextOut(875, y, line);
+					y += 34;
+					++shown;
+					line = data.Tokenize("\n", tokenPos);
+				}
+
+				CBrush* prevBrush = PaintDC.SelectObject(&actionBrush);
+				CPen* prevPen = PaintDC.SelectObject(&actionPen);
+				PaintDC.RoundRect(ACETR_ACCOUNT_BACK_RECT, CPoint(10, 10));
+				PaintDC.SetTextColor(RGB(180, 186, 198));
+				CRect rBackCharacters = ACETR_ACCOUNT_BACK_RECT;
+				PaintDC.DrawText("GERİ", &rBackCharacters, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+				PaintDC.SelectObject(prevPen);
+				PaintDC.SelectObject(prevBrush);
+			}
 			else
 			{
 				PaintDC.TextOut(875, 120, "DESTEK");
@@ -2178,6 +2230,14 @@ LONG CAtumLauncherDlg::OnSocketNotify(WPARAM wParam, LPARAM lParam)
 						Invalidate(FALSE);
 					}
 					break;
+				case T_PC_CONNECT_LAUNCHER_SESSION:
+					{
+						MSG_PC_CONNECT_LAUNCHER_SESSION* pSession =
+							(MSG_PC_CONNECT_LAUNCHER_SESSION*)(pPacket + SIZE_FIELD_TYPE_HEADER);
+						m_szLauncherSessionToken = pSession->SessionToken;
+					}
+					break;
+
 				case T_PC_CONNECT_GET_SERVER_GROUP_LIST_OK:
 					{
 						MSG_PC_CONNECT_GET_SERVER_GROUP_LIST_OK *pServerListOK
@@ -3879,6 +3939,74 @@ void CAtumLauncherDlg::OnCancel()
 	CDialog::OnCancel();
 }
 
+BOOL CAtumLauncherDlg::LoadLauncherCharacters()
+{
+	m_szLauncherCharacterData.Empty();
+
+	if (m_szLauncherSessionToken.IsEmpty())
+	{
+		SetProgressGroupText("Launcher oturumu hazir degil. PreServer session ayarini kontrol et.");
+		return FALSE;
+	}
+
+	CString url = GetLauncherApiBaseUrl() + "/api/launcher/characters";
+	CURL* curl = curl_easy_init();
+	if (!curl)
+	{
+		SetProgressGroupText("Hesap servisi baslatilamadi.");
+		return FALSE;
+	}
+
+	std::string response;
+	struct curl_slist* headers = NULL;
+	CString sessionHeader;
+	sessionHeader.Format("X-AceTR-Session: %s", (LPCSTR)m_szLauncherSessionToken);
+	headers = curl_slist_append(headers, (LPCSTR)sessionHeader);
+	headers = curl_slist_append(headers, "Accept: text/plain");
+
+	curl_easy_setopt(curl, CURLOPT_URL, (LPCSTR)url);
+	curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, LauncherApiWriteCallback);
+	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
+	curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 4L);
+	curl_easy_setopt(curl, CURLOPT_TIMEOUT, 8L);
+	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+
+	CURLcode code = curl_easy_perform(curl);
+	long httpCode = 0;
+	curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);
+
+	curl_slist_free_all(headers);
+	curl_easy_cleanup(curl);
+
+	if (code != CURLE_OK)
+	{
+		SetProgressGroupText("Hesap servisine ulasilamadi.");
+		return FALSE;
+	}
+
+	if (httpCode == 401)
+	{
+		SetProgressGroupText("Launcher oturumunun suresi doldu. Tekrar giris yap.");
+		return FALSE;
+	}
+
+	if (httpCode != 200)
+	{
+		CString err;
+		err.Format("Hesap servisi hata verdi (HTTP %ld).", httpCode);
+		SetProgressGroupText(err);
+		return FALSE;
+	}
+
+	m_szLauncherCharacterData = response.c_str();
+	if (m_szLauncherCharacterData.IsEmpty())
+		m_szLauncherCharacterData = "Bu hesapta karakter bulunamadi.";
+
+	SetProgressGroupText("Karakter bilgileri guncellendi.");
+	return TRUE;
+}
+
 void CAtumLauncherDlg::LogoutLauncherAccount()
 {
 	m_bLauncherLoggedIn = FALSE;
@@ -4266,7 +4394,12 @@ void CAtumLauncherDlg::OnLButtonDown(UINT nFlags, CPoint point)
 		ACETR_NAV_DISCORD_RECT.PtInRect(point) ||
 		(m_bLauncherLoggedIn && ACETR_ACCOUNT_MANAGE_RECT.PtInRect(point)) ||
 		(m_bLauncherLoggedIn && ACETR_ACCOUNT_SUPPORT_RECT.PtInRect(point)) ||
-		(m_bLauncherLoggedIn && ACETR_ACCOUNT_LOGOUT_RECT.PtInRect(point)))
+		(m_bLauncherLoggedIn && ACETR_ACCOUNT_LOGOUT_RECT.PtInRect(point)) ||
+		(m_bLauncherLoggedIn && ACETR_ACCOUNT_BACK_RECT.PtInRect(point)) ||
+		(m_bLauncherLoggedIn && ACETR_ACCOUNT_PASSWORD_RECT.PtInRect(point)) ||
+		(m_bLauncherLoggedIn && ACETR_ACCOUNT_EMAIL_RECT.PtInRect(point)) ||
+		(m_bLauncherLoggedIn && ACETR_ACCOUNT_CHARACTERS_RECT.PtInRect(point)) ||
+		(m_bLauncherLoggedIn && ACETR_ACCOUNT_SECURITY_RECT.PtInRect(point)))
 	{
 		return;
 	}
@@ -4333,7 +4466,11 @@ void CAtumLauncherDlg::OnLButtonUp(UINT nFlags, CPoint point)
 	}
 	if (m_bLauncherLoggedIn && m_nLauncherAccountPage == 1 && ACETR_ACCOUNT_CHARACTERS_RECT.PtInRect(point))
 	{
-		SetProgressGroupText("Karakter bilgileri launcher içinde gösterilecek.");
+		if (LoadLauncherCharacters())
+		{
+			m_nLauncherAccountPage = 3;
+			InvalidateRect(CRect(850, 95, 1150, 555), FALSE);
+		}
 		return;
 	}
 	if (m_bLauncherLoggedIn && m_nLauncherAccountPage == 1 && ACETR_ACCOUNT_SECURITY_RECT.PtInRect(point))
@@ -4408,7 +4545,15 @@ BOOL CAtumLauncherDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 		ACETR_NAV_NEWS_RECT.PtInRect(point) ||
 		ACETR_NAV_EVENTS_RECT.PtInRect(point) ||
 		ACETR_NAV_WEB_RECT.PtInRect(point) ||
-		ACETR_NAV_DISCORD_RECT.PtInRect(point))
+		ACETR_NAV_DISCORD_RECT.PtInRect(point) ||
+		(m_bLauncherLoggedIn && ACETR_ACCOUNT_MANAGE_RECT.PtInRect(point)) ||
+		(m_bLauncherLoggedIn && ACETR_ACCOUNT_SUPPORT_RECT.PtInRect(point)) ||
+		(m_bLauncherLoggedIn && ACETR_ACCOUNT_LOGOUT_RECT.PtInRect(point)) ||
+		(m_bLauncherLoggedIn && ACETR_ACCOUNT_BACK_RECT.PtInRect(point)) ||
+		(m_bLauncherLoggedIn && ACETR_ACCOUNT_PASSWORD_RECT.PtInRect(point)) ||
+		(m_bLauncherLoggedIn && ACETR_ACCOUNT_EMAIL_RECT.PtInRect(point)) ||
+		(m_bLauncherLoggedIn && ACETR_ACCOUNT_CHARACTERS_RECT.PtInRect(point)) ||
+		(m_bLauncherLoggedIn && ACETR_ACCOUNT_SECURITY_RECT.PtInRect(point)))
 	{
 		::SetCursor(::LoadCursor(NULL, IDC_HAND));
 		return TRUE;
