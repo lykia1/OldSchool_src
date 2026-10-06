@@ -2983,11 +2983,17 @@ void CPreIOCPSocket::SendLauncherSessionToken(const char* accountName)
 		return;
 	}
 
-	unsigned int r1 = 0, r2 = 0, r3 = 0, r4 = 0;
-	rand_s(&r1); rand_s(&r2); rand_s(&r3); rand_s(&r4);
+	LARGE_INTEGER perf;
+	QueryPerformanceCounter(&perf);
+	char nonceSeed[256];
+	wsprintf(nonceSeed, "%s|%s|%lu|%lu|%I64d",
+		accountName, GetPeerIP(), GetTickCount(), GetCurrentThreadId(), perf.QuadPart);
 
-	char nonce[40];
-	wsprintf(nonce, "%08x%08x%08x%08x", r1, r2, r3, r4);
+	unsigned char nonceDigest[32];
+	AceTRSha256((const unsigned char*)nonceSeed, (unsigned int)strlen(nonceSeed), nonceDigest);
+	char nonce[33];
+	MEMSET_ZERO(nonce, sizeof(nonce));
+	AceTRHex(nonceDigest, 16, nonce, sizeof(nonce));
 
 	long expiry = (long)time(NULL) + (30 * 60);
 	char payload[128];
