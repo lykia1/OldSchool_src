@@ -356,6 +356,7 @@ public:
 	BOOL				m_bModernNavTracking;
 	BOOL				m_bLauncherLoggedIn;
 	int					m_nLauncherAccountPage; // 0=overview, 1=account, 2=support, 3=characters
+	int					m_nLauncherMainPage; // 0=home, 1=news, 2=events, 3=web, 4=discord
 	CString				m_szLauncherSessionToken;
 	CString				m_szLauncherCharacterData;
 	char				m_szLaunchCmdLine[2048];
@@ -553,6 +554,7 @@ public:
 	void EnableControls();
 	void LogoutLauncherAccount();
 	BOOL LoadLauncherCharacters();
+	void SetLauncherMainPage(int page);
 
 	void SetPrivateIP();
 
