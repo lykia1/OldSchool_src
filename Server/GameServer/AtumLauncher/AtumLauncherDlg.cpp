@@ -401,96 +401,96 @@ BOOL CAtumLauncherDlg::ReadNoticeFile()
 	return TRUE;
 }
 
-	#define EXE2_LAUNCHER_BG_SIZE_X					577
-	#define EXE2_LAUNCHER_BG_SIZE_Y					200 //576
+	#define EXE2_LAUNCHER_BG_SIZE_X                 1200
+#define EXE2_LAUNCHER_BG_SIZE_Y                 700
 
-	#define EXE2_BG_TITLE_BAR_SIZE_X				EXE2_LAUNCHER_BG_SIZE_X	// Ĺ¸ŔĚĆ˛ąŮ ŔĚąĚÁö Width
-	#define EXE2_BG_TITLE_BAR_SIZE_Y				24						// Ĺ¸ŔĚĆ˛ąŮ Height
+#define EXE2_BG_TITLE_BAR_SIZE_X                EXE2_LAUNCHER_BG_SIZE_X
+#define EXE2_BG_TITLE_BAR_SIZE_Y                64
 
-	#define EXE2_BG_BACKGROUND_IMAGE_SIZE_X			EXE2_LAUNCHER_BG_SIZE_X									// ąč°ć ŔĚąĚÁö Width
-	#define EXE2_BG_BACKGROUND_IMAGE_SIZE_Y			(EXE2_LAUNCHER_BG_SIZE_Y - EXE2_BG_TITLE_BAR_SIZE_Y)	// ąč°ć ŔĚąĚÁö Height
+#define EXE2_BG_BACKGROUND_IMAGE_SIZE_X         EXE2_LAUNCHER_BG_SIZE_X
+#define EXE2_BG_BACKGROUND_IMAGE_SIZE_Y         EXE2_LAUNCHER_BG_SIZE_Y
 
-	#define EXE2_BG_RESOLUTION_COMBOBOX_POS_X		341		// ÇŘ»óµµ Ľ±ĹĂ Combo Box Ŕ§Äˇ X
-	#define EXE2_BG_RESOLUTION_COMBOBOX_POS_Y		93		// ÇŘ»óµµ Ľ±ĹĂ Combo Box Ŕ§Äˇ Y
-	#define EXE2_BG_RESOLUTION_COMBOBOX_WIDTH		93		// ÇŘ»óµµ Ľ±ĹĂ Combo Box Width
-	#define EXE2_BG_RESOLUTION_COMBOBOX_HEIGHT		18		// ÇŘ»óµµ Ľ±ĹĂ Combo Box Height
+// AceTR modern launcher - right login panel
+#define EXE2_BG_RESOLUTION_COMBOBOX_POS_X       885
+#define EXE2_BG_RESOLUTION_COMBOBOX_POS_Y       455
+#define EXE2_BG_RESOLUTION_COMBOBOX_WIDTH       245
+#define EXE2_BG_RESOLUTION_COMBOBOX_HEIGHT      180
 
-	#define EXE2_BG_WINDOWSMODE_CHECKBOX_POS_X		535		// 2007-12-27 by cmkwon, Ŕ©µµżěÁî ¸đµĺ ±â´É Ăß°ˇ - Windows Mode Check Box Ŕ§Äˇ X
-	#define EXE2_BG_WINDOWSMODE_CHECKBOX_POS_Y		97		// 2007-12-27 by cmkwon, Ŕ©µµżěÁî ¸đµĺ ±â´É Ăß°ˇ - Windows Mode Check Box Ŕ§Äˇ Y
+#define EXE2_BG_WINDOWSMODE_CHECKBOX_POS_X      885
+#define EXE2_BG_WINDOWSMODE_CHECKBOX_POS_Y      495
+#define EXE2_BG_WINDOWSMODE_CHECKBOX_WIDTH      16
+#define EXE2_BG_WINDOWSMODE_CHECKBOX_HEIGHT     16
 
-	#define EXE2_BG_WINDOWSMODE_CHECKBOX_WIDTH		13		// 2007-12-27 by cmkwon, Ŕ©µµżěÁî ¸đµĺ ±â´É Ăß°ˇ - Windows Mode Check Box Width
-	#define EXE2_BG_WINDOWSMODE_CHECKBOX_HEIGHT		13		// 2007-12-27 by cmkwon, Ŕ©µµżěÁî ¸đµĺ ±â´É Ăß°ˇ - Windows Mode Check Box Height
+#define EXE2_BG_ACCOUNTNAME_EDIT_POS_X          885
+#define EXE2_BG_ACCOUNTNAME_EDIT_POS_Y          330
+#define EXE2_BG_ACCOUNTNAME_EDIT_WIDTH          245
+#define EXE2_BG_ACCOUNTNAME_EDIT_HEIGHT         32
 
-	#define EXE2_BG_ACCOUNTNAME_EDIT_POS_X			140		// AccountName Edit Box Ŕ§Äˇ X
-	#define EXE2_BG_ACCOUNTNAME_EDIT_POS_Y			98		// AccountName Edit Box Ŕ§Äˇ Y
-	#define EXE2_BG_ACCOUNTNAME_EDIT_WIDTH			89		// AccountName Edit Box Width
-	#define EXE2_BG_ACCOUNTNAME_EDIT_HEIGHT			13		// AccountName Edit Box Height
+#define EXE2_BG_PASSWORD_EDIT_POS_X             885
+#define EXE2_BG_PASSWORD_EDIT_POS_Y             385
+#define EXE2_BG_PASSWORD_EDIT_WIDTH              245
+#define EXE2_BG_PASSWORD_EDIT_HEIGHT             32
 
-	#define EXE2_BG_PASSWORD_EDIT_POS_X				140		// Password Edit Box Ŕ§Äˇ X
-	#define EXE2_BG_PASSWORD_EDIT_POS_Y				119		// Password Edit Box Ŕ§Äˇ Y
-	#define EXE2_BG_PASSWORD_EDIT_WIDTH				89		// Password Edit Box Width
-	#define EXE2_BG_PASSWORD_EDIT_HEIGHT			13		// Password Edit Box Height
+// Server list
+#define EXE2_BG_SERVERLIST_BOX_POS_X            70
+#define EXE2_BG_SERVERLIST_BOX_POS_Y            520
+#define EXE2_BG_SERVERLIST_BOX_WIDTH            650
+#define EXE2_BG_SERVERLIST_BOX_HEIGHT           88
 
-	#define EXE2_BG_SERVERLIST_BOX_POS_X			10		// ServerList Box Ŕ§Äˇ X
-	#define EXE2_BG_SERVERLIST_BOX_POS_Y			500		// ServerList Box Ŕ§Äˇ Y
-	#define EXE2_BG_SERVERLIST_BOX_WIDTH			176		// ServerList Box Width
-	#define EXE2_BG_SERVERLIST_BOX_HEIGHT			30		// ServerList Box Height
+#define EXE2_BG_SERVERLIST_ITEM_BG_WIDTH        640
+#define EXE2_BG_SERVERLIST_ITEM_BG_HEIGHT       32
+#define EXE2_BG_SERVERLIST_ITEM_ICON_POS_X      12
+#define EXE2_BG_SERVERLIST_ITEM_ICON_POS_Y      10
+#define EXE2_BG_SERVERLIST_ITEM_ICON_WIDTH      19
+#define EXE2_BG_SERVERLIST_ITEM_ICON_HEIGHT     10
 
-	#define EXE2_BG_SERVERLIST_ITEM_BG_WIDTH		177		// ServerList Item Background Width
-	#define EXE2_BG_SERVERLIST_ITEM_BG_HEIGHT		25		// ServerList Item Background Height
+// Window chrome
+#define EXE2_BG_MINIMIZED_BTN_POS_X             1125
+#define EXE2_BG_MINIMIZED_BTN_POS_Y             18
+#define EXE2_BG_MINIMIZED_BTN_WIDTH             26
+#define EXE2_BG_MINIMIZED_BTN_HEIGHT            26
+#define EXE2_BG_CANCEL_BTN_POS_X                1158
+#define EXE2_BG_CANCEL_BTN_POS_Y                18
+#define EXE2_BG_CANCEL_BTN_WIDTH                26
+#define EXE2_BG_CANCEL_BTN_HEIGHT               26
 
-	#define EXE2_BG_SERVERLIST_ITEM_ICON_POS_X		3		// ServerList Item Icon Ŕ§Äˇ X
-	#define EXE2_BG_SERVERLIST_ITEM_ICON_POS_Y		8		// ServerList Item Icon Ŕ§Äˇ Y
-	#define EXE2_BG_SERVERLIST_ITEM_ICON_WIDTH		19		// ServerList Item Icon Width
-	#define EXE2_BG_SERVERLIST_ITEM_ICON_HEIGHT		10		// ServerList Item Icon Height
+// Primary action
+#define EXE2_BG_GAMESTART_BTN_POS_X             885
+#define EXE2_BG_GAMESTART_BTN_POS_Y             555
+#define EXE2_BG_GAMESTART_BTN_WIDTH             245
+#define EXE2_BG_GAMESTART_BTN_HEIGHT            58
 
-	#define EXE2_BG_MINIMIZED_BTN_POS_X				537		// Minimized Button Ŕ§Äˇ X
-	#define EXE2_BG_MINIMIZED_BTN_POS_Y				17		// Minimized Button Ŕ§Äˇ Y
-	#define EXE2_BG_MINIMIZED_BTN_WIDTH				15		// Minimized Button Width
-	#define EXE2_BG_MINIMIZED_BTN_HEIGHT			15		// Minimized Button Height
-	#define EXE2_BG_CANCEL_BTN_POS_X				552		// Cancel Button Ŕ§Äˇ X
-	#define EXE2_BG_CANCEL_BTN_POS_Y				17		// Cancel Button Ŕ§Äˇ Y
-	#define EXE2_BG_CANCEL_BTN_WIDTH				15		// Cancel Button Width
-	#define EXE2_BG_CANCEL_BTN_HEIGHT				15		// Cancel Button Height
-	
-	#define EXE2_BG_GAMESTART_BTN_POS_X				456		// GameStart Button Ŕ§Äˇ X
-	#define EXE2_BG_GAMESTART_BTN_POS_Y				117		// GameStart Button Ŕ§Äˇ Y --117 ->479 = 362
-	#define EXE2_BG_GAMESTART_BTN_WIDTH				100		// GameStart Button Width
-	#define EXE2_BG_GAMESTART_BTN_HEIGHT			24		// GameStart Button Height
+// Patch/update area
+#define EXE2_BG_UPDATE_PROGRESS_BAR_POS_X       70
+#define EXE2_BG_UPDATE_PROGRESS_BAR_POS_Y       655
+#define EXE2_BG_UPDATE_PROGRESS_BAR_WIDTH       1060
+#define EXE2_BG_UPDATE_PROGRESS_BAR_HEIGHT      10
 
-	#define EXE2_BG_UPDATE_PROGRESS_BAR_POS_X		28		// Update Progress Bar Ŕ§Äˇ X
-	#define EXE2_BG_UPDATE_PROGRESS_BAR_POS_Y		144//506		// Update Progress Bar Ŕ§Äˇ Y = (EXE2_LAUNCHER_BG_SIZE_Y - 23)
-	#define EXE2_BG_UPDATE_PROGRESS_BAR_WIDTH		520		// Update Progress Bar Width = (EXE2_LAUNCHER_BG_SIZE_X - 2*EXE2_BG_UPDATE_PROGRESS_BAR_POS_X)
-	#define EXE2_BG_UPDATE_PROGRESS_BAR_HEIGHT		7		// Update Progress Bar Height
+#define EXE2_BG_DOWNLOAD_FILE_STATIC_POS_X      70
+#define EXE2_BG_DOWNLOAD_FILE_STATIC_POS_Y      625
+#define EXE2_BG_DOWNLOAD_FILE_STATIC_WIDTH      1060
+#define EXE2_BG_DOWNLOAD_FILE_STATIC_HEIGHT     20
+#define EXE2_BG_DOWNLOAD_FILE_FONT_SIZE         15
+#define EXE2_BG_DOWNLOAD_FILE_FONT_WEIGHT       FW_NORMAL
+#define EXE2_BG_DOWNLOAD_FILE_FONT_COLOR        RGB(205,205,215)
 
-	#define EXE2_BG_DOWNLOAD_FILE_STATIC_POS_X		90		// Download file info static control Ŕ§Äˇ X
-	#define EXE2_BG_DOWNLOAD_FILE_STATIC_POS_Y		217//579		// Download file info static control Ŕ§Äˇ Y
-	#define EXE2_BG_DOWNLOAD_FILE_STATIC_WIDTH		200		// Download file info static control Width
-	#define EXE2_BG_DOWNLOAD_FILE_STATIC_HEIGHT		13		// Download file info static control Height
-	#define EXE2_BG_DOWNLOAD_FILE_FONT_SIZE			12		// Download file info static control font Size
-	#define EXE2_BG_DOWNLOAD_FILE_FONT_WEIGHT		FW_NORMAL	// Download file info static control font ±˝±â
+#define EXE2_BG_UPDATE_INFO_STATIC_POS_X        70
+#define EXE2_BG_UPDATE_INFO_STATIC_POS_Y        625
+#define EXE2_BG_UPDATE_INFO_STATIC_WIDTH        1060
+#define EXE2_BG_UPDATE_INFO_STATIC_HEIGHT       20
+#define EXE2_BG_UPDATE_INFO_FONT_SIZE           15
+#define EXE2_BG_UPDATE_INFO_FONT_WEIGHT         FW_NORMAL
+#define EXE2_BG_UPDATE_INFO_FONT_COLOR          RGB(205,205,215)
 
-	#define EXE2_BG_DOWNLOAD_FILE_FONT_COLOR		RGB(0,0,0)	// Download file info static control font Color
+#define EXE2_BG_REMEMBERID_CHECKBOX_POS_X       885
+#define EXE2_BG_REMEMBERID_CHECKBOX_POS_Y       425
+#define EXE2_BG_REMEMBERID_CHECKBOX_WIDTH       16
+#define EXE2_BG_REMEMBERID_CHECKBOX_HEIGHT      16
 
-	#define EXE2_BG_UPDATE_INFO_STATIC_POS_X		20		// Update info static control Ŕ§Äˇ X
-	#define EXE2_BG_UPDATE_INFO_STATIC_POS_Y		133//495		// Update info static control Ŕ§Äˇ Y
-	#define EXE2_BG_UPDATE_INFO_STATIC_WIDTH		500		// Update info static control Width
-	#define EXE2_BG_UPDATE_INFO_STATIC_HEIGHT		13		// Update info static control Height
-	#define EXE2_BG_UPDATE_INFO_FONT_SIZE			12		// Update info static control font Size
-	#define EXE2_BG_UPDATE_INFO_FONT_WEIGHT			FW_NORMAL	// Update info static control font ±˝±â
-
-	#define EXE2_BG_UPDATE_INFO_FONT_COLOR			RGB(0,0,0)	// Update info static control font Color
-
-	#define EXE2_BG_REMEMBERID_CHECKBOX_POS_X		341		// Remember ID CheckBox Ŕ§Äˇ X
-	#define EXE2_BG_REMEMBERID_CHECKBOX_POS_Y		118//480		// Remember ID CheckBox Ŕ§Äˇ Y
-	#define EXE2_BG_REMEMBERID_CHECKBOX_WIDTH		13		// Remember ID CheckBox Width
-	#define EXE2_BG_REMEMBERID_CHECKBOX_HEIGHT		13		// Remember ID CheckBox Height
-
-#define PLAYERCNT_Y -60
-#define PLAYERCNT_X 160
-
-#define PLAYERCNT1_Y -90
-#define PLAYERCNT1_X 15
+#define PLAYERCNT_Y 0
+#define PLAYERCNT_X 0
+#define PLAYERCNT1_Y 0
+#define PLAYERCNT1_X 0
 
 BOOL CAtumLauncherDlg::OnInitDialog()
 {
@@ -564,6 +564,12 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 
 	CWinSocket::SocketInit();		// Initialize winsock 2.0
 
+	// AceTR modern launcher: resize the actual MFC window in pixels.
+	SetWindowPos(nullptr, 0, 0,
+		EXE2_LAUNCHER_BG_SIZE_X,
+		EXE2_LAUNCHER_BG_SIZE_Y,
+		SWP_NOMOVE | SWP_NOZORDER);
+
 	this->MoveWindow2Center();	// 2007-09-07 by cmkwon, şŁĆ®ł˛ ·±Ăł ŔÎĹÍĆäŔĚ˝ş ĽöÁ¤ - Č­¸é ÁßľÓŔ¸·Î Ŕ§Äˇ
 	RECT rtBG;
 	this->GetClientRect(&rtBG);
@@ -598,8 +604,8 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	GetDlgItem(IDC_CHARACTER_NAME)->ShowWindow(SW_HIDE);
 
 	// AccountName Edit Box, Password Edit Box
-	GetDlgItem(IDC_EDIT_ACCOUNT)->MoveWindow(EXE2_BG_ACCOUNTNAME_EDIT_POS_X, EXE2_BG_ACCOUNTNAME_EDIT_POS_Y, EXE2_BG_ACCOUNTNAME_EDIT_WIDTH, 14);
-	GetDlgItem(IDC_EDIT_PASSWORD)->MoveWindow(EXE2_BG_PASSWORD_EDIT_POS_X, EXE2_BG_PASSWORD_EDIT_POS_Y, EXE2_BG_PASSWORD_EDIT_WIDTH, 14);
+	GetDlgItem(IDC_EDIT_ACCOUNT)->MoveWindow(EXE2_BG_ACCOUNTNAME_EDIT_POS_X, EXE2_BG_ACCOUNTNAME_EDIT_POS_Y, EXE2_BG_ACCOUNTNAME_EDIT_WIDTH, EXE2_BG_ACCOUNTNAME_EDIT_HEIGHT);
+	GetDlgItem(IDC_EDIT_PASSWORD)->MoveWindow(EXE2_BG_PASSWORD_EDIT_POS_X, EXE2_BG_PASSWORD_EDIT_POS_Y, EXE2_BG_PASSWORD_EDIT_WIDTH, EXE2_BG_PASSWORD_EDIT_HEIGHT);
 
 #if !defined(SERVICE_TYPE_KOREAN_SERVER_2) || defined(_DEBUG)	// 2007-09-07 by cmkwon, ÇŃ±ą żąĹ¸ŔÓ¸¸ Release¸¸ ŔÔ·ÂŔĚ ľř´Ů
 	GetDlgItem(IDC_EDIT_ACCOUNT)->ShowWindow(SW_SHOW);
@@ -629,7 +635,7 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 	m_ctlINETCfgBtn.SetToolTipText("Game Settings");
 	m_ctlINETCfgBtn.SetBmpButtonImage(IDB_SETTINGS_BUTT, RGB(0, 0, 255));
 
-	GetDlgItem(IDC_BTN_VIEW_INET_CFG)->MoveWindow(500, 17, 15, 15);
+	GetDlgItem(IDC_BTN_VIEW_INET_CFG)->MoveWindow(1088, 18, 26, 26);
 #endif	
 	// 2007-09-07 by cmkwon, »çżëÇĎÁö ľĘ´Â ąöĆ°ŔÓ
 	//// Join Button
@@ -659,7 +665,7 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 
 	//m_progressCtrl.SetBorders(0);
 	m_progressCtrl.SetBkColor(RGB(0, 0, 0));
-	m_progressCtrl.SetGradientColors(RGB(105, 144, 206), RGB(105, 144, 206));
+	m_progressCtrl.SetGradientColors(RGB(225, 82, 35), RGB(225, 82, 35));
 #endif
 	// end 2008-12-17 by ckPark ·Ż˝ĂľĆ ·±ĂÄ
 
@@ -681,14 +687,14 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 							  CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH , SG_BOX_FONT_FACENAME);    // "System" Font´Â ´ëÇĄŔűŔÎ Fixed FontŔÓ´Ů.
 	GetDlgItem(IDC_FILE_INFO)->SetFont(&m_fontFileInfo);
 
-	GetDlgItem(IDC_NOTICE2)->MoveWindow(EXE2_BG_UPDATE_INFO_STATIC_POS_X + PLAYERCNT1_X, EXE2_BG_UPDATE_INFO_STATIC_POS_Y + PLAYERCNT1_Y, EXE2_BG_UPDATE_INFO_STATIC_WIDTH, EXE2_BG_UPDATE_INFO_STATIC_HEIGHT);
+	GetDlgItem(IDC_NOTICE2)->MoveWindow(70, 92, 700, 22);
 	wndStyle = ::GetWindowLong(GetDlgItem(IDC_NOTICE2)->m_hWnd, GWL_STYLE);
 	::SetWindowLong(GetDlgItem(IDC_NOTICE2)->m_hWnd, GWL_STYLE, wndStyle | SS_CENTERIMAGE);	// ĂëµćÇŃ Ŕ©µµżě ĽöÁ÷ÁßľÓ(SS_CENTERIMAGE)ĽÓĽşŔ» Ăß°ˇ
 	m_fontNotice.CreateFont(13, 0, 0, 0, EXE2_BG_UPDATE_INFO_FONT_WEIGHT, 0, FALSE, FALSE, SG_BOX_FONT_CHARSET, OUT_DEFAULT_PRECIS,
 							CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH, "Verdana");    // "System" Font´Â ´ëÇĄŔűŔÎ Fixed FontŔÓ´Ů.
 	GetDlgItem(IDC_NOTICE2)->SetFont(&m_fontNotice);
 
-	GetDlgItem(IDC_PLAYER_CNT)->MoveWindow(EXE2_BG_UPDATE_INFO_STATIC_POS_X+PLAYERCNT_X, EXE2_BG_UPDATE_INFO_STATIC_POS_Y+ PLAYERCNT_Y, EXE2_BG_UPDATE_INFO_STATIC_WIDTH, EXE2_BG_UPDATE_INFO_STATIC_HEIGHT);
+	GetDlgItem(IDC_PLAYER_CNT)->MoveWindow(885, 285, 245, 22);
 	wndStyle = ::GetWindowLong(GetDlgItem(IDC_PLAYER_CNT)->m_hWnd, GWL_STYLE);
 	::SetWindowLong(GetDlgItem(IDC_PLAYER_CNT)->m_hWnd, GWL_STYLE, wndStyle | SS_CENTERIMAGE);	// ĂëµćÇŃ Ŕ©µµżě ĽöÁ÷ÁßľÓ(SS_CENTERIMAGE)ĽÓĽşŔ» Ăß°ˇ
 	m_fontPlayers.CreateFont(13, 0, 0, 0, EXE2_BG_UPDATE_INFO_FONT_WEIGHT, 0, FALSE, FALSE, SG_BOX_FONT_CHARSET, OUT_DEFAULT_PRECIS,
@@ -826,14 +832,56 @@ BOOL CAtumLauncherDlg::OnInitDialog()
 
 	// ąč°ć Č­¸é ±×¸®±â(Background)
 
-	BitmapRgn(IDB_BG_VTC_MASK, RGB(255, 255, 255), 0, 0);
+	// AceTR modern background. Kept in native GDI so the launcher does not
+	// depend on a new bitmap while the UI migration is in progress.
+	CBrush brushBase(RGB(14, 16, 22));
+	CBrush brushTop(RGB(22, 25, 34));
+	CBrush brushPanel(RGB(27, 30, 40));
+	CBrush brushPanel2(RGB(20, 23, 31));
+	CBrush brushAccent(RGB(225, 82, 35));
+	CPen penBorder(PS_SOLID, 1, RGB(53, 58, 72));
 
-	tmBitmap.LoadBitmap(IDB_BG_VTC);
-	pTmOldBitmap = tmMemDC.SelectObject(&tmBitmap);
-	memDCBackGround.BitBlt(-3, -3,EXE2_BG_BACKGROUND_IMAGE_SIZE_X, EXE2_BG_BACKGROUND_IMAGE_SIZE_Y,&tmMemDC,0,0,SRCCOPY);
-	tmMemDC.SelectObject(pTmOldBitmap);
-	tmBitmap.DeleteObject();
+	memDCBackGround.FillRect(CRect(0, 0, 1200, 700), &brushBase);
+	memDCBackGround.FillRect(CRect(0, 0, 1200, 64), &brushTop);
 
+	CPen* pOldPen = memDCBackGround.SelectObject(&penBorder);
+	CBrush* pOldBrush = memDCBackGround.SelectObject(&brushPanel);
+
+	// Main news/banner area.
+	memDCBackGround.RoundRect(CRect(55, 82, 800, 485), CPoint(18, 18));
+
+	// Login/server panel.
+	memDCBackGround.SelectObject(&brushPanel2);
+	memDCBackGround.RoundRect(CRect(840, 82, 1160, 625), CPoint(18, 18));
+
+	// Bottom patch strip.
+	memDCBackGround.SelectObject(&brushPanel2);
+	memDCBackGround.RoundRect(CRect(55, 615, 1160, 682), CPoint(14, 14));
+
+	// Accent line and simple brand text.
+	memDCBackGround.FillRect(CRect(0, 62, 1200, 64), &brushAccent);
+	memDCBackGround.SetBkMode(TRANSPARENT);
+	memDCBackGround.SetTextColor(RGB(245, 245, 248));
+
+	CFont brandFont;
+	brandFont.CreateFont(30, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0,
+		DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
+		CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
+	CFont* pOldFont = memDCBackGround.SelectObject(&brandFont);
+	memDCBackGround.TextOut(28, 17, "AceTR");
+
+	CFont sectionFont;
+	sectionFont.CreateFont(18, 0, 0, 0, FW_SEMIBOLD, FALSE, FALSE, 0,
+		DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
+		CLEARTYPE_QUALITY, DEFAULT_PITCH | FF_SWISS, "Segoe UI");
+	memDCBackGround.SelectObject(&sectionFont);
+	memDCBackGround.SetTextColor(RGB(205, 208, 218));
+	memDCBackGround.TextOut(70, 105, "HABERLER & ETKINLIKLER");
+	memDCBackGround.TextOut(865, 105, "SUNUCU / GIRIS");
+
+	memDCBackGround.SelectObject(pOldFont);
+	memDCBackGround.SelectObject(pOldBrush);
+	memDCBackGround.SelectObject(pOldPen);
 	memDCBackGround.SelectObject(pOldBitmapBackGround);
 
 #endif
@@ -4828,4 +4876,3 @@ HRGN CAtumLauncherDlg::BitmapToRegion(HBITMAP hBmp, COLORREF cTransparentColor/*
 
 	return hRgn;
 }
-
