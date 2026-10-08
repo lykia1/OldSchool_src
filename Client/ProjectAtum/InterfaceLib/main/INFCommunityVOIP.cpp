@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "INFCommunityVOIP.h"
+#include "AceTRVoiceBridge.h"
 #include "AtumApplication.h"
 #include "INFImage.h"
 #include "GameDataLast.h"
@@ -19,7 +20,7 @@
 #include "INFCommunity.h"
 #include "INFCommunityGuild.h"
 #include "INFWindow.h"
-// 2007-11-22 by bhsohn ¾Æ·¹³ª ÅëÇÕ¼­¹ö
+// 2007-11-22 by bhsohn ì•„ë ˆë‚˜ í†µí•©ì„œë²„
 #include "IMSocketManager.h"
 //#include "IMSocket.h"
 
@@ -45,10 +46,10 @@ enum{ B_UP, B_DOWN, B_NON, B_NORMAL};
 #define INPUTTEXT_POS_X (MAIN_WINDOW_X + 42)
 #define INPUTTEXT_POS_Y (MAIN_WINDOW_Y + 92)
 
-// 2006-03-07 by ispark, ¾ğ¾î¿¡ µû¶ó À§Ä¡ ¼öÁ¤
-#if defined(LANGUAGE_ENGLISH) || defined(LANGUAGE_VIETNAM)|| defined(LANGUAGE_THAI)// 2008-04-30 by bhsohn ÅÂ±¹ ¹öÀü Ãß°¡
-#define RADIO_BUTTON_X (MAIN_WINDOW_X + 21)			// 2005-10-17 by ispark ±Û·Î¹úÀº ÇÑ±¹°ú À§Ä¡ ¿ÀÂ÷°¡ ÀÖ´Ù.
-#define RADIO_BUTTON_Y2 (MAIN_WINDOW_Y + 93)		// 2005-10-17 by ispark ±Û·Î¹úÀº ÇÑ±¹°ú À§Ä¡ ¿ÀÂ÷°¡ ÀÖ´Ù.
+// 2006-03-07 by ispark, ì–¸ì–´ì— ë”°ë¼ ìœ„ì¹˜ ìˆ˜ì •
+#if defined(LANGUAGE_ENGLISH) || defined(LANGUAGE_VIETNAM)|| defined(LANGUAGE_THAI)// 2008-04-30 by bhsohn íƒœêµ­ ë²„ì „ ì¶”ê°€
+#define RADIO_BUTTON_X (MAIN_WINDOW_X + 21)			// 2005-10-17 by ispark ê¸€ë¡œë²Œì€ í•œêµ­ê³¼ ìœ„ì¹˜ ì˜¤ì°¨ê°€ ìˆë‹¤.
+#define RADIO_BUTTON_Y2 (MAIN_WINDOW_Y + 93)		// 2005-10-17 by ispark ê¸€ë¡œë²Œì€ í•œêµ­ê³¼ ìœ„ì¹˜ ì˜¤ì°¨ê°€ ìˆë‹¤.
 #else
 #define RADIO_BUTTON_X (MAIN_WINDOW_X + 45)
 #define RADIO_BUTTON_Y2 (MAIN_WINDOW_Y + 90)
@@ -66,7 +67,7 @@ CINFCommunityVOIP::CINFCommunityVOIP()
 	m_ptWindowTitleDown.y = 0;
 
 	m_nMenuTab = 0;
-	m_nVOIPIndex = 0;					// ¾Æ¹« ¼±ÅÃµÇ¾î ÀÖÁö ¾ÊÀ½
+	m_nVOIPIndex = 0;					// ì•„ë¬´ ì„ íƒë˜ì–´ ìˆì§€ ì•ŠìŒ
 
 	m_nOkButton = 0;
 	m_nCancelButton = 0;
@@ -309,13 +310,13 @@ int CINFCommunityVOIP::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam)
 					m_bMouseLDown = TRUE;
 				}
 
-			if(VOICE_PARTY <= m_nMenuTab)	// Æí´ë, ¿¬´ë
+			if(VOICE_PARTY <= m_nMenuTab)	// í¸ëŒ€, ì—°ëŒ€
 			{
 				if(MAIN_WINDOW_Y + 70 <= pt.y && MAIN_WINDOW_Y + 84 >= pt.y)
 				{
 					if(MAIN_WINDOW_X + 45 <= pt.x && MAIN_WINDOW_X + 208 >= pt.x)
 					{
-						// ¸ğµÎ µ¿½ÃÅëÈ­ °¡´ÉÇÏ°Ô ¼³Á¤
+						// ëª¨ë‘ ë™ì‹œí†µí™” ê°€ëŠ¥í•˜ê²Œ ì„¤ì •
 						m_bMouseLDown = TRUE;
 					}
 				}
@@ -323,7 +324,7 @@ int CINFCommunityVOIP::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam)
 				{
 					if(MAIN_WINDOW_X + 45 <= pt.x && MAIN_WINDOW_X + 208 >= pt.x)
 					{
-						// ÇÑ»ç¶÷¾¿ ÅëÈ­ °¡´ÉÇÏ°Ô ¼³Á¤
+						// í•œì‚¬ëŒì”© í†µí™” ê°€ëŠ¥í•˜ê²Œ ì„¤ì •
 						m_bMouseLDown = TRUE;
 					}
 				}
@@ -392,33 +393,33 @@ int CINFCommunityVOIP::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam)
 					if(VOICE_PARTY == m_nMenuTab && 
 						g_pShuttleChild->m_pClientParty->GetPartyInfo().bPartyType != _PARTYMASTER)
 					{
-						// Æí´ëÀåÀÌ ¾Æ´Ï¶ó¸é
+						// í¸ëŒ€ì¥ì´ ì•„ë‹ˆë¼ë©´
 						m_nMenuTab = nOldMenuTab;
 					}
 
 					if(VOICE_GUILD == m_nMenuTab &&
 						g_pGameMain->m_pCommunity->GetGuild()->GetMyGuildRank() != GUILD_RANK_COMMANDER)
 					{
-						// ¿©´ÜÀåÀÌ ¾Æ´Ï¸é
+						// ì—¬ë‹¨ì¥ì´ ì•„ë‹ˆë©´
 						m_nMenuTab = nOldMenuTab;
 					}
 				}
 
-			if(VOICE_PARTY <= m_nMenuTab)	// Æí´ë, ¿¬´ë
+			if(VOICE_PARTY <= m_nMenuTab)	// í¸ëŒ€, ì—°ëŒ€
 			{
 				if(MAIN_WINDOW_Y + 70 <= pt.y && MAIN_WINDOW_Y + 84 >= pt.y)
 				{
 					if(MAIN_WINDOW_X + 45 <= pt.x && MAIN_WINDOW_X + 208 >= pt.x)
 					{
-						// ¸ğµÎ µ¿½ÃÅëÈ­ °¡´ÉÇÏ°Ô ¼³Á¤
-						m_nVOIPIndex = 1;		// Æí´ë
+						// ëª¨ë‘ ë™ì‹œí†µí™” ê°€ëŠ¥í•˜ê²Œ ì„¤ì •
+						m_nVOIPIndex = 1;		// í¸ëŒ€
 					}
 				}
 				else if(MAIN_WINDOW_Y + 95 <= pt.y && MAIN_WINDOW_Y + 109 >= pt.y)
 				{
 					if(MAIN_WINDOW_X + 45 <= pt.x && MAIN_WINDOW_X + 208 >= pt.x)
 					{
-						// ÇÑ»ç¶÷¾¿ ÅëÈ­ °¡´ÉÇÏ°Ô ¼³Á¤
+						// í•œì‚¬ëŒì”© í†µí™” ê°€ëŠ¥í•˜ê²Œ ì„¤ì •
 						m_nVOIPIndex = 2;
 					}
 				}
@@ -427,7 +428,7 @@ int CINFCommunityVOIP::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam)
 			if(OK_BUTTON_Y <= pt.y && OK_BUTTON_Y + 17 >= pt.y)
 				if(OK_BUTTON_X <= pt.x && OK_BUTTON_X + 38 >= pt.x)
 				{
-					// È®ÀÎ
+					// í™•ì¸
 					if(OnButtonClicked() == TRUE)
 					{
 						m_nMenuTab = 0;
@@ -439,7 +440,7 @@ int CINFCommunityVOIP::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam)
 			if(CANCEL_BUTTON_Y <= pt.y && CANCEL_BUTTON_Y + 17 >= pt.y)
 				if(CANCEL_BUTTON_X <= pt.x && CANCEL_BUTTON_X + 38 >= pt.x)
 				{
-					// Ãë¼Ò
+					// ì·¨ì†Œ
 					m_nCancelButton = B_NORMAL;
 					m_nMenuTab = 0;
 					g_pGameMain->m_bVOIPFlag = FALSE;
@@ -452,7 +453,7 @@ int CINFCommunityVOIP::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam)
 			if(CLOSE_X <= pt.x && CLOSE_X + 17 >= pt.x)
 				if(CLOSE_Y <= pt.y && CLOSE_Y + 19 >= pt.y)
 				{
-					// Á¾·á
+					// ì¢…ë£Œ
 					m_nMenuTab = 0;
 					g_pGameMain->m_bVOIPFlag = FALSE;
 					if(g_pD3dApp->m_pSound)
@@ -527,7 +528,7 @@ int CINFCommunityVOIP::WndProc(UINT uMsg, WPARAM wParam, LPARAM lParam)
 			ZERO_MEMORY(text);
 			ZERO_MEMORY(stringtext);
 
-			// 2007-11-06 by bhsohn º£Æ®³² ¹ÙÀÚ»óÁ¡¿¡¼­  ÀÔ·ÂÅ° ¾ÈµÇ´Â ¹®Á¦ Ã³¸®
+			// 2007-11-06 by bhsohn ë² íŠ¸ë‚¨ ë°”ììƒì ì—ì„œ  ì…ë ¥í‚¤ ì•ˆë˜ëŠ” ë¬¸ì œ ì²˜ë¦¬
 			//int strlenInput = g_input.GetInput(text, sizeof(text));
 			int nLanguageConversion = g_pD3dApp->m_inputkey.GetInputLanguage();					
 			int strlenInput = g_input.GetInput(text, sizeof(text), nLanguageConversion);
@@ -579,7 +580,7 @@ BOOL CINFCommunityVOIP::OnButtonClicked()
 			{
 				if(strlen(m_strInputMessage) <= 0)
 				{
-					g_pGameMain->m_pInfWindow->AddMsgBox(STRMSG_C_051013_0001, _Q_VOIP_ONE_NAME);//"¸Ş´º¸¦ ¼±ÅÃÇÏ¼¼¿ä"
+					g_pGameMain->m_pInfWindow->AddMsgBox(STRMSG_C_051013_0001, _Q_VOIP_ONE_NAME);//"ë©”ë‰´ë¥¼ ì„ íƒí•˜ì„¸ìš”"
 					break;
 				}
 
@@ -589,11 +590,11 @@ BOOL CINFCommunityVOIP::OnButtonClicked()
 					// 2006-05-22 by ispark, strcmp -> stricmp
 					if(!stricmp(itEnemy->second->m_infoCharacter.CharacterInfo.CharacterName, m_strInputMessage))
 					{
-						// 2006-01-07 by ispark, ¼¼·Â ºñ±³
+						// 2006-01-07 by ispark, ì„¸ë ¥ ë¹„êµ
 						if(!IsInfluenceCharacter(g_pShuttleChild->m_myShuttleInfo.InfluenceType, itEnemy->second->m_infoCharacter.CharacterInfo.InfluenceType))
 						{
-							// 2006-01-07 by ispark, ¼­·Î ´Ù¸¥ ¼¼·Â³¢¸® ¼±ÅÃ ¾ÈµÊ
-							g_pD3dApp->m_pChat->CreateChatChild(STRMSG_C_051208_0102, COLOR_ERROR);// "¼­·Î ´Ù¸¥ ¼¼·Â³¢¸® ¼±ÅÃÀ» ÇÒ ¼ö ¾ø½À´Ï´Ù."
+							// 2006-01-07 by ispark, ì„œë¡œ ë‹¤ë¥¸ ì„¸ë ¥ë¼ë¦¬ ì„ íƒ ì•ˆë¨
+							g_pD3dApp->m_pChat->CreateChatChild(STRMSG_C_051208_0102, COLOR_ERROR);// "ì„œë¡œ ë‹¤ë¥¸ ì„¸ë ¥ë¼ë¦¬ ì„ íƒì„ í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤."
 							break;
 						}
 						
@@ -621,22 +622,31 @@ BOOL CINFCommunityVOIP::OnButtonClicked()
 			}
 			else if(g_pD3dApp->m_VOIPState.nVOIPState == _VOIP_ERRORSTATE)
 			{
-				g_pD3dApp->m_pChat->CreateChatChild(STRMSG_C_VOIP_0008, COLOR_VOIP);//"±³½ÅÀ» ÇÒ ¼ö ¾ø´Â »óÅÂÀÔ´Ï´Ù."
+				g_pD3dApp->m_pChat->CreateChatChild(STRMSG_C_VOIP_0008, COLOR_VOIP);//"êµì‹ ì„ í•  ìˆ˜ ì—†ëŠ” ìƒíƒœì…ë‹ˆë‹¤."
 			}
 			else
 			{
-				g_pD3dApp->m_pChat->CreateChatChild(STRMSG_C_VOIP_0016, COLOR_VOIP);//"ÅëÈ­ÁßÀÔ´Ï´Ù."
+				g_pD3dApp->m_pChat->CreateChatChild(STRMSG_C_VOIP_0016, COLOR_VOIP);//"í†µí™”ì¤‘ì…ë‹ˆë‹¤."
 			}
 		}
 		break;
 	case VOICE_PARTY:
 		{
+			// AceTR Voice 2.0 prototype bridge: local IPC event only, no audio yet.
+			// Do not switch legacy VOIP state while using the new bridge.
+			if (!AceTRVoiceBridge::SendPrototypeCommand("JOIN_PARTY"))
+			{
+				MessageBoxA(NULL, "AceTR Voice Bridge is not running.", "AceTR Voice 2.0", MB_OK | MB_ICONWARNING);
+				return FALSE;
+			}
+			return TRUE;
+
 			if(g_pD3dApp->m_VOIPState.nVOIPState == _VOIP_NOTLOGIN)
 			{
-				// 2005-10-11 by ispark Æí´ëÅëÈ­ ¼±ÅÃ
-				if(m_nVOIPIndex == 0)				// ¼±ÅÃ ¾ÈÇÏ¸é ½ÂÀÎ ¾ÈÇÔ
+				// 2005-10-11 by ispark í¸ëŒ€í†µí™” ì„ íƒ
+				if(m_nVOIPIndex == 0)				// ì„ íƒ ì•ˆí•˜ë©´ ìŠ¹ì¸ ì•ˆí•¨
 				{
-					g_pGameMain->m_pInfWindow->AddMsgBox(STRMSG_C_051013_0002, _Q_VOIP_MENU);//"¸Ş´º¸¦ ¼±ÅÃÇÏ¼¼¿ä"
+					g_pGameMain->m_pInfWindow->AddMsgBox(STRMSG_C_051013_0002, _Q_VOIP_MENU);//"ë©”ë‰´ë¥¼ ì„ íƒí•˜ì„¸ìš”"
 					break;
 				}
 				else if(m_nVOIPIndex == 1)
@@ -644,7 +654,7 @@ BOOL CINFCommunityVOIP::OnButtonClicked()
 				else if(m_nVOIPIndex == 2)
 					g_pD3dApp->m_VOIPState.nConnectCount = 1;
 
-				g_pGameMain->m_pInfWindow->AddMsgBox(STRMSG_C_VOIP_0014, _Q_PARTYMASTER_VOIP);//"Æí´ë°£ ÅëÈ­¸¦ ÇÏ½Ã°Ú½À´Ï±î?"
+				g_pGameMain->m_pInfWindow->AddMsgBox(STRMSG_C_VOIP_0014, _Q_PARTYMASTER_VOIP);//"í¸ëŒ€ê°„ í†µí™”ë¥¼ í•˜ì‹œê² ìŠµë‹ˆê¹Œ?"
 				g_pD3dApp->m_VOIPState.bCaller = TRUE;
 				g_pD3dApp->m_VOIPState.nVOIPState = _VOIP_TRY_REGISTER;
 
@@ -656,17 +666,17 @@ BOOL CINFCommunityVOIP::OnButtonClicked()
 					g_pShuttleChild->m_pClientParty->GetNtoNCallState() == TRUE &&
 					g_pShuttleChild->m_pClientParty->GetPartyInfo().bPartyType == _PARTYMASTER)
 				{
-					g_pGameMain->m_pInfWindow->AddMsgBox(STRMSG_C_VOIP_0015, _Q_PARTY_VOIP_END);//"Æí´ë°£ ÅëÈ­¸¦ Á¾·á ÇÏ½Ã°Ú½À´Ï±î?"
+					g_pGameMain->m_pInfWindow->AddMsgBox(STRMSG_C_VOIP_0015, _Q_PARTY_VOIP_END);//"í¸ëŒ€ê°„ í†µí™”ë¥¼ ì¢…ë£Œ í•˜ì‹œê² ìŠµë‹ˆê¹Œ?"
 				}
 				else
 				{
 					if(g_pD3dApp->m_VOIPState.nCallState == _CALLSTATE_1TO1)
 					{
-						g_pGameMain->m_pInfWindow->AddMsgBox(STRMSG_C_VOIP_0011, _Q_VOIP_USING);//"1:1 À½¼ºÅëÈ­¸¦ ÇÏ°í ÀÖ½À´Ï´Ù"
+						g_pGameMain->m_pInfWindow->AddMsgBox(STRMSG_C_VOIP_0011, _Q_VOIP_USING);//"1:1 ìŒì„±í†µí™”ë¥¼ í•˜ê³  ìˆìŠµë‹ˆë‹¤"
 					}
 					else if(g_pD3dApp->m_VOIPState.nCallState == _CALLSTATE_GUILD)
 					{
-						g_pGameMain->m_pInfWindow->AddMsgBox(STRMSG_C_VOIP_0013, _Q_VOIP_USING);//"¿©´Ü À½¼ºÅëÈ­¸¦ ÇÏ°í ÀÖ½À´Ï´Ù"
+						g_pGameMain->m_pInfWindow->AddMsgBox(STRMSG_C_VOIP_0013, _Q_VOIP_USING);//"ì—¬ë‹¨ ìŒì„±í†µí™”ë¥¼ í•˜ê³  ìˆìŠµë‹ˆë‹¤"
 					}
 					else if(g_pD3dApp->m_VOIPState.nCallState == _CALLSTATE_PARTY)
 					{
@@ -678,15 +688,24 @@ BOOL CINFCommunityVOIP::OnButtonClicked()
 		break;
 	case VOICE_GUILD:
 		{
+			// AceTR Voice 2.0 prototype bridge: local IPC event only, no audio yet.
+			// Do not switch legacy VOIP state while using the new bridge.
+			if (!AceTRVoiceBridge::SendPrototypeCommand("JOIN_GUILD"))
+			{
+				MessageBoxA(NULL, "AceTR Voice Bridge is not running.", "AceTR Voice 2.0", MB_OK | MB_ICONWARNING);
+				return FALSE;
+			}
+			return TRUE;
+
 			if(g_pGameMain->m_pCommunity->GetGuild()->GetGuildInfo() == NULL ||
 				g_pGameMain->m_pCommunity->GetGuild()->GetGuildInfo()->GuildState != GUILD_STATE_NORMAL)
 				break;
 			if( g_pD3dApp->m_VOIPState.nVOIPState == _VOIP_NOTLOGIN )
 			{
-				// 2005-10-11 by ispark ¿©´ÜÅëÈ­ ¼±ÅÃ
-				if(m_nVOIPIndex == 0)				// ¼±ÅÃ ¾ÈÇÏ¸é ½ÂÀÎ ¾ÈÇÔ
+				// 2005-10-11 by ispark ì—¬ë‹¨í†µí™” ì„ íƒ
+				if(m_nVOIPIndex == 0)				// ì„ íƒ ì•ˆí•˜ë©´ ìŠ¹ì¸ ì•ˆí•¨
 				{
-					g_pGameMain->m_pInfWindow->AddMsgBox(STRMSG_C_051013_0002, _Q_VOIP_MENU);//"¸Ş´º¸¦ ¼±ÅÃÇÏ¼¼¿ä"
+					g_pGameMain->m_pInfWindow->AddMsgBox(STRMSG_C_051013_0002, _Q_VOIP_MENU);//"ë©”ë‰´ë¥¼ ì„ íƒí•˜ì„¸ìš”"
 					break;
 				}
 				else if(m_nVOIPIndex == 1)
@@ -699,7 +718,7 @@ BOOL CINFCommunityVOIP::OnButtonClicked()
 					g_pShuttleChild->m_pClientParty->GetNtoNCallState() == FALSE &&
 					g_pGameMain->m_pCommunity->GetGuild()->GetNtoNCallState() == FALSE )
 				{
-					g_pGameMain->m_pInfWindow->AddMsgBox(STRMSG_C_VOIP_0007, _Q_GUILDMASTER_VOIP);//"¿©´Ü ÅëÈ­¸¦ ÇÏ½Ã°Ú½À´Ï±î?"
+					g_pGameMain->m_pInfWindow->AddMsgBox(STRMSG_C_VOIP_0007, _Q_GUILDMASTER_VOIP);//"ì—¬ë‹¨ í†µí™”ë¥¼ í•˜ì‹œê² ìŠµë‹ˆê¹Œ?"
 					g_pD3dApp->m_VOIPState.bCaller = TRUE;
 					g_pD3dApp->m_VOIPState.nVOIPState = _VOIP_TRY_REGISTER;
 
@@ -707,11 +726,11 @@ BOOL CINFCommunityVOIP::OnButtonClicked()
 				}
 				else if(g_pD3dApp->m_VOIPState.nVOIPState == _VOIP_ERRORSTATE)
 				{
-					g_pD3dApp->m_pChat->CreateChatChild(STRMSG_C_VOIP_0008, COLOR_VOIP);//"±³½ÅÀ» ÇÒ ¼ö ¾ø´Â »óÅÂÀÔ´Ï´Ù."
+					g_pD3dApp->m_pChat->CreateChatChild(STRMSG_C_VOIP_0008, COLOR_VOIP);//"êµì‹ ì„ í•  ìˆ˜ ì—†ëŠ” ìƒíƒœì…ë‹ˆë‹¤."
 				}
 				else
 				{
-					g_pD3dApp->m_pChat->CreateChatChild(STRMSG_C_VOIP_0009, COLOR_VOIP);//"ÀÌ¹Ì ÅëÈ­ÁßÀÔ´Ï´Ù."
+					g_pD3dApp->m_pChat->CreateChatChild(STRMSG_C_VOIP_0009, COLOR_VOIP);//"ì´ë¯¸ í†µí™”ì¤‘ì…ë‹ˆë‹¤."
 				}
 			}
 			else
@@ -720,21 +739,21 @@ BOOL CINFCommunityVOIP::OnButtonClicked()
 					g_pGameMain->m_pCommunity->GetGuild()->GetNtoNCallState() == TRUE &&
 					g_pGameMain->m_pCommunity->GetGuild()->GetMyGuildRank() == GUILD_RANK_COMMANDER)
 				{
-					g_pGameMain->m_pInfWindow->AddMsgBox(STRMSG_C_VOIP_0010, _Q_GUILD_VOIP_END);//"¿©´Ü ÅëÈ­¸¦ Á¾·á ÇÏ½Ã°Ú½À´Ï±î?"
+					g_pGameMain->m_pInfWindow->AddMsgBox(STRMSG_C_VOIP_0010, _Q_GUILD_VOIP_END);//"ì—¬ë‹¨ í†µí™”ë¥¼ ì¢…ë£Œ í•˜ì‹œê² ìŠµë‹ˆê¹Œ?"
 				}
 				else
 				{
 					if(g_pD3dApp->m_VOIPState.nCallState == _CALLSTATE_1TO1)
 					{
-						g_pGameMain->m_pInfWindow->AddMsgBox(STRMSG_C_VOIP_0011, _Q_VOIP_USING);//"1:1 À½¼ºÅëÈ­¸¦ ÇÏ°í ÀÖ½À´Ï´Ù"
+						g_pGameMain->m_pInfWindow->AddMsgBox(STRMSG_C_VOIP_0011, _Q_VOIP_USING);//"1:1 ìŒì„±í†µí™”ë¥¼ í•˜ê³  ìˆìŠµë‹ˆë‹¤"
 					}
 					else if(g_pD3dApp->m_VOIPState.nCallState == _CALLSTATE_PARTY)
 					{
-						g_pGameMain->m_pInfWindow->AddMsgBox(STRMSG_C_VOIP_0012, _Q_VOIP_USING);//"Æí´ë À½¼ºÅëÈ­¸¦ ÇÏ°í ÀÖ½À´Ï´Ù"
+						g_pGameMain->m_pInfWindow->AddMsgBox(STRMSG_C_VOIP_0012, _Q_VOIP_USING);//"í¸ëŒ€ ìŒì„±í†µí™”ë¥¼ í•˜ê³  ìˆìŠµë‹ˆë‹¤"
 					}
 					else if(g_pD3dApp->m_VOIPState.nCallState == _CALLSTATE_GUILD)
 					{
-						g_pGameMain->m_pInfWindow->AddMsgBox(STRMSG_C_VOIP_0013, _Q_VOIP_USING);//"¿©´Ü À½¼ºÅëÈ­¸¦ ÇÏ°í ÀÖ½À´Ï´Ù"
+						g_pGameMain->m_pInfWindow->AddMsgBox(STRMSG_C_VOIP_0013, _Q_VOIP_USING);//"ì—¬ë‹¨ ìŒì„±í†µí™”ë¥¼ í•˜ê³  ìˆìŠµë‹ˆë‹¤"
 					}
 				}				
 			}
